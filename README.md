@@ -21,7 +21,7 @@ This source-code is Copyright (c) 2020-2021 [ginlo.net Gesellschaft für Datenko
 
 Any and all open-source releated issues are managed by CDSK e.V. (please contact the maintainers here).
 
-For any commercial requests, please visit [ginlo.net GmbH] on https://ginlo.net.
+For any commercial requests, please visit [ginlo.net GmbH](https://ginlo.net).
 
 The repository is licensed according to the [license-file](LICENSE.txt) in this repository.
 
