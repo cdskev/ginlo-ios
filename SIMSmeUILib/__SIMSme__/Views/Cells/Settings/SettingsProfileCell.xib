@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="80" id="ZOY-x3-kE0" customClass="SettingsProfileCell" customModule="SIMSmeUILib" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ZOY-x3-kE0" id="hnR-cg-ffv">
+                <rect key="frame" x="0.0" y="0.0" width="341" height="79.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="center" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="0NV-WF-IFU">
+                        <rect key="frame" x="16" y="8" width="325" height="64"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JBJ-aY-Enk">
+                                <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="64" id="6FX-Vv-irN"/>
+                                    <constraint firstAttribute="height" constant="64" id="vaZ-rM-Hvs"/>
+                                </constraints>
+                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Hg4-Nc-kYz">
+                                <rect key="frame" x="80" y="13.5" width="245" height="36.5"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Firstname Lastname" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xuJ-Lc-SR4">
+                                        <rect key="frame" x="0.0" y="0.0" width="245" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Account Details" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hma-Yy-d5K">
+                                        <rect key="frame" x="0.0" y="20.5" width="245" height="16"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                    </stackView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="0NV-WF-IFU" firstAttribute="leading" secondItem="hnR-cg-ffv" secondAttribute="leading" constant="16" id="2XR-TQ-B7R"/>
+                    <constraint firstAttribute="trailing" secondItem="0NV-WF-IFU" secondAttribute="trailing" id="8V7-W4-ACn"/>
+                    <constraint firstItem="0NV-WF-IFU" firstAttribute="centerY" secondItem="hnR-cg-ffv" secondAttribute="centerY" id="Lpj-0H-gz5"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="accountDetailsLabel" destination="hma-Yy-d5K" id="QO7-gC-R3f"/>
+                <outlet property="nameLabel" destination="xuJ-Lc-SR4" id="3v5-V2-RLW"/>
+                <outlet property="profileImageView" destination="JBJ-aY-Enk" id="O7C-49-csR"/>
+            </connections>
+            <point key="canvasLocation" x="32.799999999999997" y="102.54872563718142"/>
+        </tableViewCell>
+    </objects>
+</document>

@@ -1,0 +1,15 @@
+/* Localized versions of Info.plist keys */
+
+NSCameraUsageDescription = "Dies ist nötig, um Fotos zu machen und diese mit Chatpartnern zu teilen. Verschlüsselt zu jedem Zeitpunkt.";
+
+NSContactsUsageDescription = "Dies ist nötig, um andere App-Nutzer unter den Kontakten zu finden. Die Kontaktdaten liegen uns zu keinem Zeitpunkt im Klartext vor.";
+
+NSLocationWhenInUseUsageDescription = "Dies ist nötig, um den Standort mit Chatpartnern zu teilen. Verschlüsselt zu jedem Zeitpunkt.";
+
+NSLocationUsageDescription = "Dies ist nötig, um den Standort mit Chatpartnern zu teilen. Verschlüsselt zu jedem Zeitpunkt.";
+
+NSMicrophoneUsageDescription = "Dies ist nötig, um Videos und Sprachnachrichten mit Chatpartnern zu teilen. Verschlüsselt zu jedem Zeitpunkt.";
+
+NSPhotoLibraryUsageDescription = "Dies ist nötig, um Fotos mit Chatpartnern zu teilen. Verschlüsselt zu jedem Zeitpunkt.";
+
+NSFaceIDUsageDescription = "Dies ist nötig, um die App mit Face ID anstatt mit dem Gerätepasswort zu entsperren.";

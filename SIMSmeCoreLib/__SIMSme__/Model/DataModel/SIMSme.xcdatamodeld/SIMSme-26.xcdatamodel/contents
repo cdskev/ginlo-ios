@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14490.99" systemVersion="18F132" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="SIMSAccount" representedClassName=".SIMSAccount" syncable="YES">
+        <attribute name="additionalData" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="attribute" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="guid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="hasChanged" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="key_guid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="phone" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="publicKey" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="state" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="checksumRelationship" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="SIMSChecksum" inverseName="accountRelationship" inverseEntity="SIMSChecksum" syncable="YES"/>
+        <relationship name="keyRelationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSKey" inverseName="accountRelationship" inverseEntity="SIMSKey" syncable="YES"/>
+        <relationship name="stateMessages" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="SIMSAccountStateMessage" inverseName="account" inverseEntity="SIMSAccountStateMessage" syncable="YES"/>
+        <fetchIndex name="byGuidIndex">
+            <fetchIndexElement property="guid" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="SIMSAccountStateMessage" representedClassName=".SIMSAccountStateMessage" syncable="YES">
+        <attribute name="idx" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSAccount" inverseName="stateMessages" inverseEntity="SIMSAccount" syncable="YES"/>
+    </entity>
+    <entity name="SIMSChannel" representedClassName=".SIMSChannel" syncable="YES">
+        <attribute name="additionalData" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="aes_key" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="checksum" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="feedType" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="guid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="iv" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="layout" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name_long" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name_short" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="options" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="subscribed" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="assets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SIMSChannelAsset" inverseName="channel" inverseEntity="SIMSChannelAsset" syncable="YES"/>
+        <relationship name="rootOptions" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="SIMSChannelOption" inverseName="channel" inverseEntity="SIMSChannelOption" syncable="YES"/>
+        <relationship name="stream" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="SIMSMessageStreamChannel" inverseName="channel" inverseEntity="SIMSMessageStreamChannel" syncable="YES"/>
+        <fetchIndex name="byGuidIndex">
+            <fetchIndexElement property="guid" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="SIMSChannelAsset" representedClassName=".SIMSChannelAsset" syncable="YES">
+        <attribute name="data" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="channel" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSChannel" inverseName="assets" inverseEntity="SIMSChannel" syncable="YES"/>
+    </entity>
+    <entity name="SIMSChannelOption" representedClassName=".SIMSChannelOption" isAbstract="YES" syncable="YES">
+        <attribute name="filterValue" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ident" attributeType="String" syncable="YES"/>
+        <attribute name="label" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="labelSub" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="value" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="channel" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSChannel" inverseName="rootOptions" inverseEntity="SIMSChannel" syncable="YES"/>
+        <relationship name="children" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SIMSChannelOptionChildren" inverseName="option" inverseEntity="SIMSChannelOptionChildren" syncable="YES"/>
+        <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSChannelOptionChildren" inverseName="items" inverseEntity="SIMSChannelOptionChildren" syncable="YES"/>
+        <fetchIndex name="byIdentIndex">
+            <fetchIndexElement property="ident" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="SIMSChannelOptionChildren" representedClassName=".SIMSChannelOptionChildren" syncable="YES">
+        <attribute name="forValue" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="items" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="SIMSChannelOption" inverseName="parent" inverseEntity="SIMSChannelOption" syncable="YES"/>
+        <relationship name="option" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSChannelOption" inverseName="children" inverseEntity="SIMSChannelOption" syncable="YES"/>
+    </entity>
+    <entity name="SIMSChannelToggle" representedClassName=".SIMSChannelToggle" parentEntity="SIMSChannelOption" syncable="YES"/>
+    <entity name="SIMSChecksum" representedClassName=".SIMSChecksum" syncable="YES">
+        <attribute name="guid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="local_checksum" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="accountRelationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSAccount" inverseName="checksumRelationship" inverseEntity="SIMSAccount" syncable="YES"/>
+        <relationship name="contactIndexEntryRelationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSContactIndexEntry" inverseName="checksumRelationship" inverseEntity="SIMSContactIndexEntry" syncable="YES"/>
+        <relationship name="contactRelationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSContact" inverseName="checksumRelationship" inverseEntity="SIMSContact" syncable="YES"/>
+        <relationship name="deviceRelationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSDevice" inverseName="checksumRelationship" inverseEntity="SIMSDevice" syncable="YES"/>
+        <relationship name="groupRelationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSGroup" inverseName="checksumRelationship" inverseEntity="SIMSGroup" syncable="YES"/>
+        <relationship name="keyRelationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSKey" inverseName="checksumRelationships" inverseEntity="SIMSKey" syncable="YES"/>
+        <fetchIndex name="byGuidIndex">
+            <fetchIndexElement property="guid" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="SIMSCompanyContact" representedClassName=".SIMSCompanyContact" syncable="YES">
+        <attribute name="checksum" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="data" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="guid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="keyIv" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="publicKey" optional="YES" attributeType="String" syncable="YES"/>
+        <fetchIndex name="byGuidIndex">
+            <fetchIndexElement property="guid" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="SIMSContact" representedClassName=".SIMSContact" syncable="YES">
+        <attribute name="attribute" attributeType="String" syncable="YES"/>
+        <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="displayName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="guid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="phone" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="publicKey" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="recordRef" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="statusMessage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="statusMessageCreatedAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="updatedAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="wasDeleted" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="checksumRelationship" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="SIMSChecksum" inverseName="contactRelationship" inverseEntity="SIMSChecksum" syncable="YES"/>
+        <relationship name="keyRelationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSKey" inverseName="contactRelationships" inverseEntity="SIMSKey" syncable="YES"/>
+        <relationship name="messageReceiver" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SIMSMessageReceiver" inverseName="contact" inverseEntity="SIMSMessageReceiver" syncable="YES"/>
+        <relationship name="stream" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSMessageStreamPrivate" inverseName="contact" inverseEntity="SIMSMessageStreamPrivate" syncable="YES"/>
+        <fetchIndex name="byGuidIndex">
+            <fetchIndexElement property="guid" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byPhoneIndex">
+            <fetchIndexElement property="phone" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="SIMSContactIndexEntry" representedClassName=".SIMSContactIndexEntry" syncable="YES">
+        <attribute name="attribute" attributeType="String" syncable="YES"/>
+        <attribute name="guid" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="checksumRelationship" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="SIMSChecksum" inverseName="contactIndexEntryRelationship" inverseEntity="SIMSChecksum" syncable="YES"/>
+        <relationship name="keyRelationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSKey" inverseName="contactIndexEntryRelationships" inverseEntity="SIMSKey" syncable="YES"/>
+        <relationship name="messageReceiver" toMany="YES" deletionRule="Nullify" destinationEntity="SIMSMessageReceiver" inverseName="contactIndexEntry" inverseEntity="SIMSMessageReceiver" syncable="YES"/>
+        <relationship name="stream" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="SIMSMessageStreamPrivate" inverseName="contactIndexEntry" inverseEntity="SIMSMessageStreamPrivate" syncable="YES"/>
+        <fetchIndex name="byGuidIndex">
+            <fetchIndexElement property="guid" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="SIMSDevice" representedClassName=".SIMSDevice" syncable="YES">
+        <attribute name="account_guid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="additionalData" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="attribute" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="guid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="key_guid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ownDevice" optional="YES" attributeType="Boolean" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="pass_token" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="public_key" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="checksumRelationship" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="SIMSChecksum" inverseName="deviceRelationship" inverseEntity="SIMSChecksum" syncable="YES"/>
+        <relationship name="keyRelationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSKey" inverseName="deviceRelationship" inverseEntity="SIMSKey" syncable="YES"/>
+        <fetchIndex name="byGuidIndex">
+            <fetchIndexElement property="guid" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="SIMSGroup" representedClassName=".SIMSGroup" syncable="YES">
+        <attribute name="additionalData" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="attribute" attributeType="String" syncable="YES"/>
+        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="guid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="invitedAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="jsonData" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ownerGuid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="checksumRelationship" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="SIMSChecksum" inverseName="groupRelationship" inverseEntity="SIMSChecksum" syncable="YES"/>
+        <relationship name="keyRelationship" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSKey" inverseName="groupRelationships" inverseEntity="SIMSKey" syncable="YES"/>
+        <relationship name="members" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SIMSGroupMember" inverseName="groups" inverseEntity="SIMSGroupMember" syncable="YES"/>
+        <relationship name="stream" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="SIMSMessageStreamGroup" inverseName="group" inverseEntity="SIMSMessageStreamGroup" syncable="YES"/>
+        <fetchIndex name="byGuidIndex">
+            <fetchIndexElement property="guid" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byTypeIndex">
+            <fetchIndexElement property="type" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="SIMSGroupMember" representedClassName=".SIMSGroupMember" syncable="YES">
+        <attribute name="accountGuid" attributeType="String" syncable="YES"/>
+        <relationship name="groups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SIMSGroup" inverseName="members" inverseEntity="SIMSGroup" syncable="YES"/>
+        <fetchIndex name="byAccountGuidIndex">
+            <fetchIndexElement property="accountGuid" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="SIMSKey" representedClassName=".SIMSKey" syncable="YES">
+        <attribute name="aes_key" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="device_guid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="guid" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="accountRelationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSAccount" inverseName="keyRelationship" inverseEntity="SIMSAccount" syncable="YES"/>
+        <relationship name="checksumRelationships" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SIMSChecksum" inverseName="keyRelationship" inverseEntity="SIMSChecksum" syncable="YES"/>
+        <relationship name="contactIndexEntryRelationships" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SIMSContactIndexEntry" inverseName="keyRelationship" inverseEntity="SIMSContactIndexEntry" syncable="YES"/>
+        <relationship name="contactRelationships" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SIMSContact" inverseName="keyRelationship" inverseEntity="SIMSContact" syncable="YES"/>
+        <relationship name="deviceRelationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSDevice" inverseName="keyRelationship" inverseEntity="SIMSDevice" syncable="YES"/>
+        <relationship name="groupRelationships" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SIMSGroup" inverseName="keyRelationship" inverseEntity="SIMSGroup" syncable="YES"/>
+        <fetchIndex name="byGuidIndex">
+            <fetchIndexElement property="guid" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="SIMSMessage" representedClassName=".SIMSMessage" isAbstract="YES" syncable="YES">
+        <attribute name="additionalData" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="attachment" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="attachmentHash" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="attachmentHash256" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="data" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dataSignature" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dataSignature256" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dateDownloaded" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="dateReadLocal" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="dateReadServer" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="dateSendLocal" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="dateSendServer" attributeType="Date" usesScalarValueType="NO" elementID="dateSendServerAttribute" syncable="YES"/>
+        <attribute name="errorType" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="fromAccountGuid" attributeType="String" syncable="YES"/>
+        <attribute name="guid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="hashes" optional="YES" transient="YES" attributeType="String" syncable="YES"/>
+        <attribute name="hashes256" optional="YES" transient="YES" attributeType="String" syncable="YES"/>
+        <attribute name="messageOrderId" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="messageType" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="options" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="rawSignature" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="rawSignature256" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sectionTitle" optional="YES" transient="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sendingState" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="attributes" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="SIMSMessageAttributes" inverseName="message" inverseEntity="SIMSMessageAttributes" syncable="YES"/>
+        <relationship name="receiver" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SIMSMessageReceiver" inverseName="message" inverseEntity="SIMSMessageReceiver" syncable="YES"/>
+        <relationship name="stream" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSMessageStream" inverseName="messages" inverseEntity="SIMSMessageStream" syncable="YES"/>
+        <fetchIndex name="byDateSendLocalIndex">
+            <fetchIndexElement property="dateSendLocal" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byDateSendServerIndex">
+            <fetchIndexElement property="dateSendServer" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byFromAccountGuidIndex">
+            <fetchIndexElement property="fromAccountGuid" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byGuidIndex">
+            <fetchIndexElement property="guid" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="SIMSMessageAttributes" representedClassName=".SIMSMessageAttributes" syncable="YES">
+        <attribute name="dateDownloaded" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="dateReadLocal" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="dateReadServer" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="message" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSMessage" inverseName="attributes" inverseEntity="SIMSMessage" syncable="YES"/>
+    </entity>
+    <entity name="SIMSMessageChannel" representedClassName=".SIMSChannelMessage" parentEntity="SIMSMessage" versionHashModifier="indexrenamed" syncable="YES">
+        <attribute name="fromKey" attributeType="String" syncable="YES"/>
+        <attribute name="toAccountGuid" attributeType="String" syncable="YES"/>
+        <attribute name="toKey" attributeType="String" syncable="YES"/>
+        <fetchIndex name="bySIMSMessageChannelToAccountGuidIndex">
+            <fetchIndexElement property="toAccountGuid" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="SIMSMessageGroup" representedClassName=".SIMSGroupMessage" parentEntity="SIMSMessage" syncable="YES">
+        <attribute name="toGroupGuid" attributeType="String" syncable="YES"/>
+        <fetchIndex name="byToGroupGuidIndex">
+            <fetchIndexElement property="toGroupGuid" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="SIMSMessagePrivate" representedClassName=".SIMSPrivateMessage" parentEntity="SIMSMessage" syncable="YES">
+        <attribute name="aesKey2IV" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="fromKey" attributeType="String" syncable="YES"/>
+        <attribute name="fromKey2" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="toAccountGuid" attributeType="String" syncable="YES"/>
+        <attribute name="toKey" attributeType="String" syncable="YES"/>
+        <attribute name="toKey2" optional="YES" attributeType="String" syncable="YES"/>
+        <fetchIndex name="byToAccountGuidIndex">
+            <fetchIndexElement property="toAccountGuid" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="SIMSMessageReceiver" representedClassName=".SIMSMessageReceiver" syncable="YES">
+        <attribute name="dateDownloaded" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="dateRead" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="sendsReadConfirmation" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="contact" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSContact" inverseName="messageReceiver" inverseEntity="SIMSContact" syncable="YES"/>
+        <relationship name="contactIndexEntry" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSContactIndexEntry" inverseName="messageReceiver" inverseEntity="SIMSContactIndexEntry" syncable="YES"/>
+        <relationship name="message" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSMessage" inverseName="receiver" inverseEntity="SIMSMessage" syncable="YES"/>
+    </entity>
+    <entity name="SIMSMessageStream" representedClassName=".SIMSMessageStream" isAbstract="YES" syncable="YES">
+        <attribute name="draft" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="guid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isConfirmed" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="lastMessageDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="options" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="streamType" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="wasDeleted" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="messages" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="SIMSMessage" inverseName="stream" inverseEntity="SIMSMessage" syncable="YES"/>
+        <fetchIndex name="byGuidIndex">
+            <fetchIndexElement property="guid" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="SIMSMessageStreamChannel" representedClassName=".SIMSChannelStream" parentEntity="SIMSMessageStream" syncable="YES">
+        <relationship name="channel" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSChannel" inverseName="stream" inverseEntity="SIMSChannel" syncable="YES"/>
+    </entity>
+    <entity name="SIMSMessageStreamGroup" representedClassName=".SIMSGroupStream" parentEntity="SIMSMessageStream" syncable="YES">
+        <relationship name="group" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSGroup" inverseName="stream" inverseEntity="SIMSGroup" syncable="YES"/>
+    </entity>
+    <entity name="SIMSMessageStreamPrivate" representedClassName=".SIMSStream" parentEntity="SIMSMessageStream" syncable="YES">
+        <relationship name="contact" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSContact" inverseName="stream" inverseEntity="SIMSContact" syncable="YES"/>
+        <relationship name="contactIndexEntry" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSContactIndexEntry" inverseName="stream" inverseEntity="SIMSContactIndexEntry" syncable="YES"/>
+    </entity>
+    <entity name="SIMSMessageToSend" representedClassName=".SIMSMessageToSend" isAbstract="YES" syncable="YES">
+        <attribute name="additionalData" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="attachment" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="attachmentHash" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="attachmentHash256" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="data" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dataSignature" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dataSignature256" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dateCreated" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="dateToSend" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="guid" attributeType="String" syncable="YES"/>
+        <attribute name="messageType" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="options" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="rawSignature" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="rawSignature256" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sectionTitle" optional="YES" transient="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sendingState" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="streamGuid" attributeType="String" syncable="YES"/>
+        <fetchIndex name="byGuidIndex">
+            <fetchIndexElement property="guid" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byStreamGuidIndex">
+            <fetchIndexElement property="streamGuid" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="SIMSMessageToSendGroup" representedClassName=".SIMSMessageToSendGroup" parentEntity="SIMSMessageToSend" syncable="YES">
+        <attribute name="toGroupGuid" attributeType="String" syncable="YES"/>
+        <fetchIndex name="byToGroupGuidIndex">
+            <fetchIndexElement property="toGroupGuid" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="SIMSMessageToSendPrivate" representedClassName=".SIMSMessageToSendPrivate" parentEntity="SIMSMessageToSend" syncable="YES">
+        <attribute name="aesKey2IV" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="fromKey" attributeType="String" syncable="YES"/>
+        <attribute name="fromKey2" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="toAccountGuid" attributeType="String" syncable="YES"/>
+        <attribute name="toKey" attributeType="String" syncable="YES"/>
+        <attribute name="toKey2" optional="YES" attributeType="String" syncable="YES"/>
+        <fetchIndex name="byToAccountGuidIndex">
+            <fetchIndexElement property="toAccountGuid" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="SIMSPrivateInternalMessage" representedClassName=".SIMSPrivateInternalMessage" syncable="YES">
+        <attribute name="data" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dataSignature" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dateSend" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="errorType" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="fromAccountGuid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="fromKey" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="guid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="hashes" optional="YES" transient="YES" attributeType="String" syncable="YES"/>
+        <attribute name="toAccountGuid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="toKey" optional="YES" attributeType="String" syncable="YES"/>
+        <fetchIndex name="byGuidIndex">
+            <fetchIndexElement property="guid" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="SIMSSelfDestructMessage" representedClassName=".SIMSSelfDestructMessage" syncable="YES">
+        <attribute name="dateDestruction" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="messageGuid" optional="YES" attributeType="String" syncable="YES"/>
+        <fetchIndex name="byMessageGuidIndex">
+            <fetchIndexElement property="messageGuid" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <elements>
+        <element name="SIMSAccount" positionX="367" positionY="-144" width="128" height="210"/>
+        <element name="SIMSAccountStateMessage" positionX="-225" positionY="18" width="128" height="90"/>
+        <element name="SIMSChannel" positionX="-225" positionY="18" width="128" height="255"/>
+        <element name="SIMSChannelAsset" positionX="-207" positionY="36" width="128" height="90"/>
+        <element name="SIMSChannelOption" positionX="-243" positionY="0" width="128" height="165"/>
+        <element name="SIMSChannelOptionChildren" positionX="-234" positionY="9" width="128" height="90"/>
+        <element name="SIMSChannelToggle" positionX="-225" positionY="18" width="128" height="45"/>
+        <element name="SIMSChecksum" positionX="-387" positionY="-144" width="128" height="165"/>
+        <element name="SIMSCompanyContact" positionX="-252" positionY="-9" width="128" height="120"/>
+        <element name="SIMSContact" positionX="45" positionY="123" width="128" height="270"/>
+        <element name="SIMSContactIndexEntry" positionX="-252" positionY="-9" width="128" height="135"/>
+        <element name="SIMSDevice" positionX="-117" positionY="279" width="128" height="195"/>
+        <element name="SIMSGroup" positionX="-216" positionY="27" width="128" height="225"/>
+        <element name="SIMSGroupMember" positionX="403" positionY="45" width="128" height="75"/>
+        <element name="SIMSKey" positionX="52" positionY="-117" width="128" height="180"/>
+        <element name="SIMSMessage" positionX="-243" positionY="0" width="128" height="450"/>
+        <element name="SIMSMessageAttributes" positionX="-252" positionY="-9" width="128" height="105"/>
+        <element name="SIMSMessageChannel" positionX="-243" positionY="0" width="128" height="90"/>
+        <element name="SIMSMessageGroup" positionX="223" positionY="231" width="128" height="60"/>
+        <element name="SIMSMessagePrivate" positionX="-153" positionY="-162" width="128" height="135"/>
+        <element name="SIMSMessageReceiver" positionX="-252" positionY="-9" width="128" height="135"/>
+        <element name="SIMSMessageStream" positionX="-234" positionY="9" width="128" height="165"/>
+        <element name="SIMSMessageStreamChannel" positionX="-252" positionY="-9" width="128" height="60"/>
+        <element name="SIMSMessageStreamGroup" positionX="-297" positionY="210" width="128" height="60"/>
+        <element name="SIMSMessageStreamPrivate" positionX="-459" positionY="-9" width="128" height="75"/>
+        <element name="SIMSMessageToSend" positionX="-252" positionY="-9" width="128" height="300"/>
+        <element name="SIMSMessageToSendGroup" positionX="-234" positionY="9" width="128" height="60"/>
+        <element name="SIMSMessageToSendPrivate" positionX="-243" positionY="0" width="128" height="135"/>
+        <element name="SIMSPrivateInternalMessage" positionX="106" positionY="-99" width="128" height="195"/>
+        <element name="SIMSSelfDestructMessage" positionX="-252" positionY="-9" width="128" height="75"/>
+    </elements>
+</model>

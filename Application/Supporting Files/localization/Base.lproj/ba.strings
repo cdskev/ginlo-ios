@@ -1,0 +1,42 @@
+"contacts.eMailMessageBody" = "Hi!
+I want to invite you to SIMSme Business. This is THE secure messenger specifically for companies.
+Use the following to speed up communication with contacts and colleagues:
+- Faster exchange on the team – individual and group chats, channels and distribution lists
+- Simple sharing of contents – video and audio messages, photos and documents
+- Working efficiently with colleagues – commenting, prioritising and delayed sending
+- Available on all devices – computers, tablets and smartphones
+Download the app now at https://www.ginlo.net/join and try it out.
+Kind regards";
+"settings.informFriends" = "Invite colleagues";
+"contacts.eMailMessageSubject" = "Join me on ginlo Business, the secure business messenger";
+"contacts.options.invite" = "Invite colleagues";
+"contacts.search.empty.search" = "Search for colleagues with %@";
+"contacts.search.empty.invite" = "Invite colleagues";
+"settings.profile.qr_code_desc" = "Increase your trust status among your colleagues and let your profile code be scanned";
+"contacts.invitationActionSheetTitle" = "Invite colleagues to SIMSme";
+"invite.friends.after.chatcreation.message" = "You seem to enjoy using SIMSme. Do you want to invite more colleagues?";
+"settings.companyemail.askafterinstall.hint" = "When you specify your email address, SIMSme can find your colleagues with the same email domain automatically. Would you like to link a professional email to your account?";
+"settings.profile.statusLabel" = "Availability";
+"contacts.smsMessageBody" = "Hello! I use the SIMSme Business Messenger. Download the app here: https://www.ginlo.net/join";
+"settings.companyprofile.contactsoverview.empty.text2" = "Unfortunately, we could not find any contacts that have linked a professional email address with the domain %@.\n\nRecommend to your colleagues that use SIMSme to link an email address.";
+"registration.agb.AGB" = "Terms & Conditions";
+"registration.backup.not_found.headline" = "We could not find a backup";
+"registration.backup.not_found.description" = "This telephone number is already registered with %@, but we could not find a chat backup for it. A backup lets you transfer your existing chats, contacts and media. Creating a backup:";
+"registration.backup.not_found.step1" = "Open your old %@ installation.";
+"registration.createDevice.welcome.description" = "Would you like to backup this device or use the device with your existing account?";
+"registration.headline.phoneAndCountryCode" = "Please specify country code & telephone number or e-mail address";
+"intro.screen0.description2" = "GDPR-compliant";
+"intro.screen1.buttonCreateDeviceTitle" = "I already use SIMSme Business";
+"settings.termsandcondition" = "Terms and Conditions (Business)";
+"settings.termsandcondition.url" = "https://app.ginlo.net/dp/business/en/terms";
+"settings.termsandcondition_dpag.url" = "https://app.ginlo.net/dp/business/en/terms";
+"settings.faq.url" = "https://app-help.ginlo.net/business/en/support";
+"settings.privacy" = "Privacy Policy";
+"settings.privacy.url" = "https://app.ginlo.net/dp/business/en/privacy/";
+"settings.privacy_dpag.url" = "https://app.ginlo.net/dp/business/en/privacy";
+"settings.support.customerCare.hint.email" = "business@ginlo.net";
+"rate.title" = "Rate Ginlo Business";
+"noContactsView.title.titleTextView" = "ginlo Business needs permissions to access your contacts. You can set this permission in your device's app settings.";
+"noCameraView.title.titleTextView" = "ginlo Business needs permissions to access your camera. You can set this permission in your device's app settings.";
+"noPhotoLibraryView.title.titleTextView" = "ginlo Business needs permissions to access your photos. You can set this permission in your device's app settings.";
+"noLocationView.title.titleTextView" = "ginlo Business needs permissions to access your location. You can set this permission in your device's app settings.";

@@ -1,0 +1,17 @@
+# macOS
+.DS_Store
+
+# User settings
+**/xcuserdata/
+
+DerivedData/
+
+# sqlcipher
+**/sqlcipher/config.log
+**/sqlcipher/config.status
+**/sqlcipher/libtool
+**/sqlcipher/Makefile
+
+# POds
+Pods
+Pods/*

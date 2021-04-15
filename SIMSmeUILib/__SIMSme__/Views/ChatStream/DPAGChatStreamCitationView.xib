@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina5_9" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="O38-eq-FrV" customClass="DPAGChatStreamCitationView" customModule="SIMSmeUILib" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="74"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Vhz-lf-4S3">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="73.666666666666671"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZiN-9M-aiR">
+                            <rect key="frame" x="0.0" y="9" width="56" height="56"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="56" id="49C-q0-jrR"/>
+                                <constraint firstAttribute="width" secondItem="ZiN-9M-aiR" secondAttribute="height" multiplier="1:1" id="6gf-SN-Jzb"/>
+                            </constraints>
+                        </imageView>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4qG-m3-SH2">
+                            <rect key="frame" x="56" y="0.0" width="319" height="73.666666666666671"/>
+                            <subviews>
+                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="BVN-Is-sVu">
+                                    <rect key="frame" x="8" y="4" width="300" height="65.666666666666671"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="OYN-wL-EJt">
+                                            <rect key="frame" x="0.0" y="0.3333333333333357" width="272" height="65"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="cA1-Sx-oss">
+                                                    <rect key="frame" x="0.0" y="0.0" width="272" height="13.333333333333334"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="999" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1wX-LI-aOn">
+                                                            <rect key="frame" x="0.0" y="0.0" width="240.33333333333334" height="13.333333333333334"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Als-tl-38T">
+                                                            <rect key="frame" x="243.33333333333329" y="0.0" width="28.666666666666657" height="13.333333333333334"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="999" verticalCompressionResistancePriority="999" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W1z-wq-Rvw">
+                                                    <rect key="frame" x="0.0" y="13.333333333333339" width="272" height="51.666666666666657"/>
+                                                    <string key="text">ernalWithNotifications[244]: "checkForNewMessagesInternalWithNotifications: failed"
+2018-05-25 14:46:47.989832+0200 simsme[46633:15753580] &lt;BG&gt; DPAGHttpService.swift - taskFailureBlock(withResponseBlock:)[840]: "Error: Error Domain=NSURLErrorDomain Code=-1005 "Die Netzwerkverbindung wurde unterbrochen." UserInfo={NSUnderlyingError=0x608000852990 {Error Domain=kCFErrorDomainCFNetwork Code=-1005 "(null)" UserInfo={NSErrorPeerAddressKey=&lt;CFData 0x60800049a900 [0x10cbe5c80]&gt;{length = 16, capacity = 16, bytes = 0x10021f90ac1f04140000000000000000}, _kCFStreamErrorCodeKey=-4, _kCFStreamErrorDomainKey=4}}, NSErrorFailingURLStringKey=https://simsme-test.docwallet-de.de/MessageService/MsgService/LazyService, NSErrorFailingURLKey=https://simsme-test.docwallet-de.de/MessageService/MsgService/LazyService, _kCFStreamErrorDomainKey=4, _kCFStreamErrorCodeKey=-4, NSLocalizedDescription=Die Netzwerkverbindung wurde unterbrochen.}"
+2018-05-25 14:46:48.991681+0200 simsme[46633:15753580] &lt;BG&gt; DPAGHttpService.swift - requestAndManager(request:)[267]: "executing: getNewMessages"</string>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </stackView>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="121-Fg-l7J">
+                                            <rect key="frame" x="272" y="19" width="28" height="28"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="28" id="jpW-Cs-f50"/>
+                                                <constraint firstAttribute="width" secondItem="121-Fg-l7J" secondAttribute="height" multiplier="1:1" id="m2x-Am-2uw"/>
+                                            </constraints>
+                                        </button>
+                                    </subviews>
+                                </stackView>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="BVN-Is-sVu" firstAttribute="leading" secondItem="4qG-m3-SH2" secondAttribute="leading" constant="8" id="mXA-At-bUj"/>
+                                <constraint firstAttribute="trailing" secondItem="BVN-Is-sVu" secondAttribute="trailing" constant="11" id="nTz-PF-Di6"/>
+                                <constraint firstItem="BVN-Is-sVu" firstAttribute="top" secondItem="4qG-m3-SH2" secondAttribute="top" constant="4" id="spX-eD-XE7"/>
+                                <constraint firstAttribute="bottom" secondItem="BVN-Is-sVu" secondAttribute="bottom" constant="4" id="wXG-5i-D1n"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="74" id="Zta-Ub-6e3"/>
+                    </constraints>
+                </stackView>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="Vhz-lf-4S3" secondAttribute="bottom" id="9Xx-iV-iUK"/>
+                <constraint firstItem="XY8-Pf-nsA" firstAttribute="trailing" secondItem="Vhz-lf-4S3" secondAttribute="trailing" id="PqW-WL-C9l"/>
+                <constraint firstItem="Vhz-lf-4S3" firstAttribute="top" secondItem="O38-eq-FrV" secondAttribute="top" id="U5U-nB-J4i"/>
+                <constraint firstItem="Vhz-lf-4S3" firstAttribute="leading" secondItem="XY8-Pf-nsA" secondAttribute="leading" id="fKL-Nm-7sV"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="XY8-Pf-nsA"/>
+            <connections>
+                <outlet property="btnCitationCancel" destination="121-Fg-l7J" id="XPo-rS-hHM"/>
+                <outlet property="imageViewCitation" destination="ZiN-9M-aiR" id="nv1-uK-ZGD"/>
+                <outlet property="labelCitationContent" destination="W1z-wq-Rvw" id="rmh-kO-ocK"/>
+                <outlet property="labelCitationFrom" destination="1wX-LI-aOn" id="sRZ-TF-fcY"/>
+                <outlet property="labelCitationInfo" destination="Als-tl-38T" id="x9r-ml-VHZ"/>
+            </connections>
+        </view>
+    </objects>
+</document>

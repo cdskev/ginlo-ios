@@ -1,0 +1,14 @@
+#include "00_application.xcconfig"
+
+KEYCHAIN_ACCESS_GROUP_NAME = 8UNQ4626FQ.keychain.eu.ginlo-apps.ginlo
+KEYCHAIN_ACCESS_GROUP_NAME_B2B = 8UNQ4626FQ.keychain.eu.ginlo-apps.ginloba
+
+APPLICATION_GROUP_ID = group.eu.ginlo-apps.ginlo
+APPLICATION_GROUP_ID_B2B = group.eu.ginlo-apps.ginloba
+
+APPLICATION_ICLOUD_ID_BETA = iCloud.eu.ginlo-apps.ginlo.beta
+APPLICATION_ICLOUD_ID_RELEASE = iCloud.eu.ginlo-apps.ginlo
+
+URL_HTTP_SERVICE = 
+VOIP_AVC_SERVER = 
+

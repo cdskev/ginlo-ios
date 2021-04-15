@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="97" id="ICn-OR-Kum" customClass="DPAGChatCell" customModule="SIMSmeUILib" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="97"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ICn-OR-Kum" id="bcQ-m8-Mh2">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="97"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kPi-pC-856" userLabel="Profile Image">
+                        <rect key="frame" x="8" y="16" width="64" height="64"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="64" id="CHA-oW-9dG"/>
+                            <constraint firstAttribute="width" constant="64" id="bLI-fq-Lcg"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Date" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ard-w9-Mmy">
+                        <rect key="frame" x="278.5" y="6" width="26.5" height="14.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="x2a-Q5-XxZ">
+                        <rect key="frame" x="80" y="19" width="201" height="20.5"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="40F-VC-DIi" userLabel="Name">
+                                <rect key="frame" x="0.0" y="0.0" width="201" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                    </stackView>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="751" text="Preview iphone 5 Sim 8.4" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tTb-a8-PFA" userLabel="Preview">
+                        <rect key="frame" x="80" y="39.5" width="225" height="19.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="x2a-Q5-XxZ" firstAttribute="top" secondItem="ard-w9-Mmy" secondAttribute="bottom" constant="-1.5" id="4sB-OX-avj"/>
+                    <constraint firstItem="tTb-a8-PFA" firstAttribute="leading" secondItem="x2a-Q5-XxZ" secondAttribute="leading" id="6dG-Zl-vhb"/>
+                    <constraint firstItem="ard-w9-Mmy" firstAttribute="top" secondItem="bcQ-m8-Mh2" secondAttribute="top" constant="6" id="CWO-6U-81S"/>
+                    <constraint firstItem="kPi-pC-856" firstAttribute="top" secondItem="bcQ-m8-Mh2" secondAttribute="top" constant="16" id="FHE-iH-5P4"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="tTb-a8-PFA" secondAttribute="bottom" constant="14" id="IXf-6u-8KM"/>
+                    <constraint firstItem="tTb-a8-PFA" firstAttribute="top" secondItem="x2a-Q5-XxZ" secondAttribute="bottom" id="J8g-ow-Fxe"/>
+                    <constraint firstItem="x2a-Q5-XxZ" firstAttribute="top" relation="greaterThanOrEqual" secondItem="bcQ-m8-Mh2" secondAttribute="top" constant="19" id="Jee-uX-UCD"/>
+                    <constraint firstItem="kPi-pC-856" firstAttribute="leading" secondItem="bcQ-m8-Mh2" secondAttribute="leading" constant="8" id="RBm-DD-Dl3"/>
+                    <constraint firstItem="x2a-Q5-XxZ" firstAttribute="leading" secondItem="kPi-pC-856" secondAttribute="trailing" constant="8" id="RnM-iS-Waq"/>
+                    <constraint firstAttribute="trailing" secondItem="x2a-Q5-XxZ" secondAttribute="trailing" constant="39" id="Ypo-gh-hhS"/>
+                    <constraint firstAttribute="trailing" secondItem="ard-w9-Mmy" secondAttribute="trailing" constant="15" id="c4W-vu-rui"/>
+                    <constraint firstAttribute="bottom" secondItem="kPi-pC-856" secondAttribute="bottom" priority="999" constant="16" id="dL0-zD-0mr"/>
+                    <constraint firstItem="tTb-a8-PFA" firstAttribute="trailing" secondItem="ard-w9-Mmy" secondAttribute="trailing" id="elb-07-Ykg"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="labelDate" destination="ard-w9-Mmy" id="cBU-Gt-gYR"/>
+                <outlet property="labelName" destination="40F-VC-DIi" id="xn1-AF-Hf6"/>
+                <outlet property="labelPreview" destination="tTb-a8-PFA" id="A2h-eJ-gcP"/>
+                <outlet property="viewProfileImage" destination="kPi-pC-856" id="V2K-bf-4KK"/>
+            </connections>
+            <point key="canvasLocation" x="3.2000000000000002" y="72.413793103448285"/>
+        </tableViewCell>
+    </objects>
+</document>

@@ -1,0 +1,39 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "ee6034bf-7d84-6a4b-9453-77ba06c99dcf++2183",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+    "ee6034bf-7d84-6a4b-9453-77ba06c99dcf++9968" : {
+
+    }
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "ee6034bf-7d84-6a4b-9453-77ba06c99dcf++2183" : 0,
+    "ee6034bf-7d84-6a4b-9453-77ba06c99dcf++9968" : 0,
+    "ee6034bf-7d84-6a4b-9453-77ba06c99dcf++8170" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "F3BBBBA8-83F7-4F93-8586-A6CF6901F6CC",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "ee6034bf-7d84-6a4b-9453-77ba06c99dcf++2183" : "dpag-simsme",
+    "ee6034bf-7d84-6a4b-9453-77ba06c99dcf++9968" : "dpag-simsmeClient\/iOS\/Deutsche_Post_SIMSme_iOS\/app\/Libraries\/Categories\/NSMutableURLRequest-BasicAuth",
+    "ee6034bf-7d84-6a4b-9453-77ba06c99dcf++8170" : "dpag-simsmeClient\/iOS\/Deutsche_Post_SIMSme_iOS\/app\/Libraries\/NSDate-Extensions"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "SIMSme",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Client\/iOS\/Deutsche_Post_SIMSme_iOS\/app\/SIMSme.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "http:\/\/srv-scm2.pdv.lan\/svn\/src",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Subversion",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "ee6034bf-7d84-6a4b-9453-77ba06c99dcf++2183"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "http:\/\/srv-scm2.pdv.lan\/svn\/src",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Subversion",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "ee6034bf-7d84-6a4b-9453-77ba06c99dcf++8170"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "http:\/\/srv-scm2.pdv.lan\/svn\/src",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Subversion",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "ee6034bf-7d84-6a4b-9453-77ba06c99dcf++9968"
+    }
+  ]
+}

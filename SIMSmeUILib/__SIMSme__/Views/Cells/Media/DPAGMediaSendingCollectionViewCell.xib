@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="DPAGMediaSendingCollectionViewCell" customModule="SIMSmeUILib" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="klY-Ba-7mO">
+                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aYN-1s-bRr">
+                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vyQ-XT-qBp">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="50" id="dip-zW-MyQ"/>
+                                            <constraint firstAttribute="width" secondItem="vyQ-XT-qBp" secondAttribute="height" multiplier="1:1" id="dvz-r9-n4P"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="vyQ-XT-qBp" secondAttribute="bottom" id="HUA-mV-36P"/>
+                                    <constraint firstAttribute="width" secondItem="aYN-1s-bRr" secondAttribute="height" multiplier="1:1" id="Pl9-uj-UIo"/>
+                                    <constraint firstAttribute="trailing" secondItem="vyQ-XT-qBp" secondAttribute="trailing" id="TQh-a0-ig4"/>
+                                    <constraint firstItem="vyQ-XT-qBp" firstAttribute="leading" secondItem="aYN-1s-bRr" secondAttribute="leading" id="mdj-01-7kV"/>
+                                    <constraint firstItem="vyQ-XT-qBp" firstAttribute="top" secondItem="aYN-1s-bRr" secondAttribute="top" id="oD8-TJ-Gbs"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Ngy-cv-02T"/>
+                    </stackView>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstItem="klY-Ba-7mO" firstAttribute="trailing" secondItem="ZTg-uK-7eu" secondAttribute="trailing" id="9BN-Rh-PzH"/>
+                <constraint firstItem="klY-Ba-7mO" firstAttribute="bottom" secondItem="ZTg-uK-7eu" secondAttribute="bottom" id="i7D-kp-Mrf"/>
+                <constraint firstItem="ZTg-uK-7eu" firstAttribute="top" secondItem="klY-Ba-7mO" secondAttribute="top" id="mkM-2D-jSI"/>
+                <constraint firstItem="ZTg-uK-7eu" firstAttribute="leading" secondItem="klY-Ba-7mO" secondAttribute="leading" id="yJJ-OC-hUf"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <connections>
+                <outlet property="imageView" destination="vyQ-XT-qBp" id="Byh-s1-cxU"/>
+            </connections>
+        </collectionViewCell>
+    </objects>
+</document>

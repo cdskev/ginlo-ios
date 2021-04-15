@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DPAGSendOptionsCellView" customModule="SIMSmeUILib" customModuleProvider="target">
+            <connections>
+                <outlet property="imageViewHighPriority" destination="MFZ-8o-fe7" id="h9v-nb-OPH"/>
+                <outlet property="imageViewSelfDestruct" destination="Ayv-KG-Uby" id="DNH-md-uvI"/>
+                <outlet property="imageViewSendTimed" destination="b9X-eN-zSn" id="zeQ-pB-Oc0"/>
+                <outlet property="labelSelfDestruct" destination="0GE-Jq-VV7" id="71L-YB-8Qc"/>
+                <outlet property="labelSendTimed" destination="7WS-LQ-QA8" id="TDD-Hv-raH"/>
+                <outlet property="viewHighPriority" destination="mbP-Qx-c4K" id="uLY-iV-Ohx"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uuv-59-KdQ">
+            <rect key="frame" x="0.0" y="0.0" width="185" height="24"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bf0-ef-ucm">
+                    <rect key="frame" x="8" y="0.0" width="173" height="24"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mbP-Qx-c4K" customClass="DPAGStackViewContentView" customModule="SIMSmeUILib" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="0.0" width="41" height="24"/>
+                            <subviews>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="MFZ-8o-fe7">
+                                    <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="24" id="16a-Qe-VmO"/>
+                                        <constraint firstAttribute="width" constant="24" id="61o-F1-fQG"/>
+                                    </constraints>
+                                </imageView>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="MFZ-8o-fe7" firstAttribute="top" secondItem="mbP-Qx-c4K" secondAttribute="top" id="24h-S5-tad"/>
+                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="MFZ-8o-fe7" secondAttribute="trailing" constant="4" id="BvM-GK-60t"/>
+                                <constraint firstAttribute="bottom" secondItem="MFZ-8o-fe7" secondAttribute="bottom" id="mg9-lL-plf"/>
+                                <constraint firstItem="MFZ-8o-fe7" firstAttribute="leading" secondItem="mbP-Qx-c4K" secondAttribute="leading" id="uPj-PT-Yk5"/>
+                            </constraints>
+                        </view>
+                        <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0b6-ag-dCv">
+                            <rect key="frame" x="41" y="0.0" width="132" height="24"/>
+                            <subviews>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ayv-KG-Uby">
+                                    <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="24" id="xc9-1w-n9J"/>
+                                        <constraint firstAttribute="height" constant="24" id="xlE-Yl-LIv"/>
+                                    </constraints>
+                                </imageView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0GE-Jq-VV7">
+                                    <rect key="frame" x="24" y="0.0" width="42" height="24"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="b9X-eN-zSn">
+                                    <rect key="frame" x="66" y="0.0" width="24" height="24"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="24" id="6PF-zB-jGA"/>
+                                        <constraint firstAttribute="width" constant="24" id="KP0-Dy-Iov"/>
+                                    </constraints>
+                                </imageView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7WS-LQ-QA8">
+                                    <rect key="frame" x="90" y="0.0" width="42" height="24"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                        </stackView>
+                    </subviews>
+                </stackView>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="top" secondItem="bf0-ef-ucm" secondAttribute="top" id="189-wo-NoX"/>
+                <constraint firstAttribute="height" constant="24" id="3Y7-qw-ObE"/>
+                <constraint firstItem="bf0-ef-ucm" firstAttribute="leading" secondItem="uuv-59-KdQ" secondAttribute="leading" constant="8" id="Mul-0K-gCJ"/>
+                <constraint firstAttribute="trailing" secondItem="bf0-ef-ucm" secondAttribute="trailing" constant="4" id="PVL-yi-8eF"/>
+                <constraint firstItem="bf0-ef-ucm" firstAttribute="bottom" secondItem="uuv-59-KdQ" secondAttribute="bottom" id="sKy-xm-sTn"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="129.5" y="54"/>
+        </view>
+    </objects>
+</document>

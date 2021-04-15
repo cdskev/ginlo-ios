@@ -1,0 +1,6 @@
+framework module SIMSmeUILib {
+  umbrella header "SIMSmeUILib-umbrella.h"
+
+  export *
+  module * { export * }
+}

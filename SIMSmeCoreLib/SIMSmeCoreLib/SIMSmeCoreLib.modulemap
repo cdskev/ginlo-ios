@@ -1,0 +1,6 @@
+framework module SIMSmeCore {
+  umbrella header "SIMSmeCoreLib-umbrella.h"
+
+  export *
+  module * { export * }
+}

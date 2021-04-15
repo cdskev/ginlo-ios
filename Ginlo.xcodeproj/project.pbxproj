@@ -1,0 +1,1416 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 51;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2710D34321B503B6003526C2 /* shareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 2710D33921B503B4003526C2 /* shareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		2710D3C121B506F5003526C2 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CCFC19FE180C445A0030E81B /* Localizable.strings */; };
+		274B3C6120C542A400E7B771 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CCFC19FE180C445A0030E81B /* Localizable.strings */; };
+		277C461322CC1A8500D20DAF /* SIMSmeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 277C460F22CC1A7E00D20DAF /* SIMSmeCore.framework */; };
+		277C461422CC1A8E00D20DAF /* SIMSmeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 277C460F22CC1A7E00D20DAF /* SIMSmeCore.framework */; };
+		277C461522CC1A8E00D20DAF /* SIMSmeUILib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 277C461122CC1A7E00D20DAF /* SIMSmeUILib.framework */; };
+		279FB23A21C1600A003E01E8 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 279FB23921C16009003E01E8 /* Media.xcassets */; };
+		27A4F50C22CCE0AF00315FAA /* SIMSmeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 277C460F22CC1A7E00D20DAF /* SIMSmeCore.framework */; };
+		27A4F50D22CCE0AF00315FAA /* SIMSmeCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 277C460F22CC1A7E00D20DAF /* SIMSmeCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		27A4F50E22CCE0AF00315FAA /* SIMSmeUILib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 277C461122CC1A7E00D20DAF /* SIMSmeUILib.framework */; };
+		27A4F50F22CCE0AF00315FAA /* SIMSmeUILib.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 277C461122CC1A7E00D20DAF /* SIMSmeUILib.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		27E987AF20BF466C004B607F /* notificationExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 27E987A820BF466C004B607F /* notificationExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		27E987D220BF46DD004B607F /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A059D9D7204E9C9F000C438A /* NotificationService.swift */; };
+		27E98BB82304350C00DA3929 /* Glassian.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 359FA99C22C4FAF200562C32 /* Glassian.aiff */; };
+		27E98BB92304350C00DA3929 /* Droplets.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 359FA99D22C4FAF200562C32 /* Droplets.aiff */; };
+		27E98BBA2304350C00DA3929 /* Kalimba.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 359FA99F22C4FAF200562C32 /* Kalimba.aiff */; };
+		27E98BBB2304350C00DA3929 /* Nylon.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 359FA9A022C4FAF200562C32 /* Nylon.aiff */; };
+		27E98BBC2304350C00DA3929 /* Strings.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 359FA9A322C4FAF200562C32 /* Strings.aiff */; };
+		27E98BBD2304350C00DA3929 /* Blissful_01.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 359FA9A422C4FAF200562C32 /* Blissful_01.aiff */; };
+		27E98BBE2304350C00DA3929 /* Piano.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 359FA9A522C4FAF200562C32 /* Piano.aiff */; };
+		27E98BBF2304350C00DA3929 /* Blissful_02.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 359FA9A622C4FAF200562C32 /* Blissful_02.aiff */; };
+		27E98BC02304350C00DA3929 /* Chilling.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 359FA9A722C4FAF200562C32 /* Chilling.aiff */; };
+		27E98BC12304350C00DA3929 /* Astral.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 359FA9A822C4FAF200562C32 /* Astral.aiff */; };
+		27E98BC22304350C00DA3929 /* Balaphonia.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 359FA9A922C4FAF200562C32 /* Balaphonia.aiff */; };
+		27E98BC32304350C00DA3929 /* Marimba.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 359FA9AA22C4FAF200562C32 /* Marimba.aiff */; };
+		27E98BC42304350C00DA3929 /* Glockenspiel.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 359FA9AB22C4FAF200562C32 /* Glockenspiel.aiff */; };
+		27E98BC52304350C00DA3929 /* Ukulele.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 359FA9AC22C4FAF200562C32 /* Ukulele.aiff */; };
+		27F67830209AEECB006513A0 /* DPAGAppDelegateExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F6782A209AEECB006513A0 /* DPAGAppDelegateExt.swift */; };
+		27F7706022CB41A000B7E9C4 /* DPAGRuntimeConfigBA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F7705C22CB419F00B7E9C4 /* DPAGRuntimeConfigBA.swift */; };
+		27F7706122CB41A000B7E9C4 /* DPAGRuntimeConfigWhiteLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F7705D22CB419F00B7E9C4 /* DPAGRuntimeConfigWhiteLabel.swift */; };
+		27F7706222CB41A000B7E9C4 /* DPAGRuntimeConfigUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F7705E22CB419F00B7E9C4 /* DPAGRuntimeConfigUI.swift */; };
+		359FA9AD22C4FAF200562C32 /* invitedContacts.plist in Resources */ = {isa = PBXBuildFile; fileRef = 359FA99B22C4FAF200562C32 /* invitedContacts.plist */; };
+		359FA9B022C4FAF200562C32 /* send_sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 359FA99E22C4FAF200562C32 /* send_sound.mp3 */; };
+		359FA9B322C4FAF200562C32 /* SZF_Sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 359FA9A122C4FAF200562C32 /* SZF_Sound.mp3 */; };
+		359FA9B422C4FAF200562C32 /* read_sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 359FA9A222C4FAF200562C32 /* read_sound.mp3 */; };
+		4EC077F11A779EED0044420D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 27D4C74F1A2157960054DB56 /* Images.xcassets */; };
+		4EC077F81A779EED0044420D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CCFC19FE180C445A0030E81B /* Localizable.strings */; };
+		4EC077FF1A779EED0044420D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CC6F654917E1D2490083C7C6 /* InfoPlist.strings */; };
+		4EC078391A779EED0044420D /* InAppKitSettings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CCD2F5D518940A4B00EB6C0D /* InAppKitSettings.bundle */; };
+		718AABCF5D26710945EF541E /* Pods_notificationExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5BCC7381B55212CFB848D84 /* Pods_notificationExtension.framework */; };
+		725D5254248902960098B36D /* ringback.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 725D5252248902960098B36D /* ringback.aiff */; };
+		725D5255248902960098B36D /* ringing.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 725D5253248902960098B36D /* ringing.aiff */; };
+		7260CDEE24D18E1A00C6F4D7 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7260CDED24D18E1A00C6F4D7 /* ShareViewController.swift */; };
+		728CD9052600C04B00F29572 /* DPAGAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728CD9042600C04B00F29572 /* DPAGAppDelegate.swift */; };
+		A30451422289AA05001B1716 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A30451412289AA04001B1716 /* Launch Screen.storyboard */; };
+		BA99A4DD4A9BA7F4EAAF4282 /* Pods_shareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56DF174CBF78CE710FAC45C7 /* Pods_shareExtension.framework */; };
+		F0A18BFE4855D36FE186F883 /* Pods_ginlo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B1EC1CA7D761486DA2E36F9 /* Pods_ginlo.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		2710D34121B503B6003526C2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CC6F653317E1D2490083C7C6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2710D33821B503B4003526C2;
+			remoteInfo = shareExtension;
+		};
+		27E987AD20BF466C004B607F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CC6F653317E1D2490083C7C6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 27E987A720BF466C004B607F;
+			remoteInfo = notificationExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		273F171A20C025AE003806B0 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				27A4F50F22CCE0AF00315FAA /* SIMSmeUILib.framework in Embed Frameworks */,
+				27A4F50D22CCE0AF00315FAA /* SIMSmeCore.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		27E987B620BF466C004B607F /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				2710D34321B503B6003526C2 /* shareExtension.appex in Embed App Extensions */,
+				27E987AF20BF466C004B607F /* notificationExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		044B46BE59C93085982FDB16 /* Pods-shareExtension.beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-shareExtension.beta.xcconfig"; path = "Pods/Target Support Files/Pods-shareExtension/Pods-shareExtension.beta.xcconfig"; sourceTree = "<group>"; };
+		1060C3E72C56E12C1953F63E /* Pods-shareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-shareExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-shareExtension/Pods-shareExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		172437891C8DD01F00B9D50D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		177B5B1D1D2D7AD500DB4371 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		1E1D6FDD0D376A2DB01BFEAF /* Pods-simsme-dpag-release.beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simsme-dpag-release.beta.xcconfig"; path = "Pods/Target Support Files/Pods-simsme-dpag-release/Pods-simsme-dpag-release.beta.xcconfig"; sourceTree = "<group>"; };
+		1ED6213B6BE123D151A0950E /* Pods-simsme-dpag-release.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simsme-dpag-release.release.xcconfig"; path = "Pods/Target Support Files/Pods-simsme-dpag-release/Pods-simsme-dpag-release.release.xcconfig"; sourceTree = "<group>"; };
+		2336BB8D1531BD102D337200 /* Pods-shareExtension.test.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-shareExtension.test.xcconfig"; path = "Pods/Target Support Files/Pods-shareExtension/Pods-shareExtension.test.xcconfig"; sourceTree = "<group>"; };
+		2710D33921B503B4003526C2 /* shareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = shareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		272B76551DF152CC00AB5DAE /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		277C460F22CC1A7E00D20DAF /* SIMSmeCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SIMSmeCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		277C461122CC1A7E00D20DAF /* SIMSmeUILib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SIMSmeUILib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		279FB23921C16009003E01E8 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Media.xcassets; path = Application/Ressources/Images/Media.xcassets; sourceTree = SOURCE_ROOT; };
+		27D4C74F1A2157960054DB56 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Application/Ressources/Images/Images.xcassets; sourceTree = SOURCE_ROOT; };
+		27E987A820BF466C004B607F /* notificationExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = notificationExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		27F6782A209AEECB006513A0 /* DPAGAppDelegateExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DPAGAppDelegateExt.swift; sourceTree = "<group>"; };
+		27F7705C22CB419F00B7E9C4 /* DPAGRuntimeConfigBA.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DPAGRuntimeConfigBA.swift; path = "SIMSmeUILib/__SIMSme__/Resources/Supporting Files/DPAGRuntimeConfigBA.swift"; sourceTree = SOURCE_ROOT; };
+		27F7705D22CB419F00B7E9C4 /* DPAGRuntimeConfigWhiteLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DPAGRuntimeConfigWhiteLabel.swift; path = "SIMSmeUILib/__SIMSme__/Resources/Supporting Files/DPAGRuntimeConfigWhiteLabel.swift"; sourceTree = SOURCE_ROOT; };
+		27F7705E22CB419F00B7E9C4 /* DPAGRuntimeConfigUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DPAGRuntimeConfigUI.swift; path = "SIMSmeUILib/__SIMSme__/Resources/Supporting Files/DPAGRuntimeConfigUI.swift"; sourceTree = SOURCE_ROOT; };
+		35122888E3215A991CA4F6EA /* Pods-simsme-dpag-release.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simsme-dpag-release.debug.xcconfig"; path = "Pods/Target Support Files/Pods-simsme-dpag-release/Pods-simsme-dpag-release.debug.xcconfig"; sourceTree = "<group>"; };
+		359FA99B22C4FAF200562C32 /* invitedContacts.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = invitedContacts.plist; path = SIMSmeUILib/__SIMSme__/Resources/Other/invitedContacts.plist; sourceTree = SOURCE_ROOT; };
+		359FA99C22C4FAF200562C32 /* Glassian.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = Glassian.aiff; path = SIMSmeUILib/__SIMSme__/Resources/Other/Glassian.aiff; sourceTree = SOURCE_ROOT; };
+		359FA99D22C4FAF200562C32 /* Droplets.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = Droplets.aiff; path = SIMSmeUILib/__SIMSme__/Resources/Other/Droplets.aiff; sourceTree = SOURCE_ROOT; };
+		359FA99E22C4FAF200562C32 /* send_sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = send_sound.mp3; path = SIMSmeUILib/__SIMSme__/Resources/Other/send_sound.mp3; sourceTree = SOURCE_ROOT; };
+		359FA99F22C4FAF200562C32 /* Kalimba.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = Kalimba.aiff; path = SIMSmeUILib/__SIMSme__/Resources/Other/Kalimba.aiff; sourceTree = SOURCE_ROOT; };
+		359FA9A022C4FAF200562C32 /* Nylon.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = Nylon.aiff; path = SIMSmeUILib/__SIMSme__/Resources/Other/Nylon.aiff; sourceTree = SOURCE_ROOT; };
+		359FA9A122C4FAF200562C32 /* SZF_Sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = SZF_Sound.mp3; path = SIMSmeUILib/__SIMSme__/Resources/Other/SZF_Sound.mp3; sourceTree = SOURCE_ROOT; };
+		359FA9A222C4FAF200562C32 /* read_sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = read_sound.mp3; path = SIMSmeUILib/__SIMSme__/Resources/Other/read_sound.mp3; sourceTree = SOURCE_ROOT; };
+		359FA9A322C4FAF200562C32 /* Strings.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = Strings.aiff; path = SIMSmeUILib/__SIMSme__/Resources/Other/Strings.aiff; sourceTree = SOURCE_ROOT; };
+		359FA9A422C4FAF200562C32 /* Blissful_01.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = Blissful_01.aiff; path = SIMSmeUILib/__SIMSme__/Resources/Other/Blissful_01.aiff; sourceTree = SOURCE_ROOT; };
+		359FA9A522C4FAF200562C32 /* Piano.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = Piano.aiff; path = SIMSmeUILib/__SIMSme__/Resources/Other/Piano.aiff; sourceTree = SOURCE_ROOT; };
+		359FA9A622C4FAF200562C32 /* Blissful_02.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = Blissful_02.aiff; path = SIMSmeUILib/__SIMSme__/Resources/Other/Blissful_02.aiff; sourceTree = SOURCE_ROOT; };
+		359FA9A722C4FAF200562C32 /* Chilling.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = Chilling.aiff; path = SIMSmeUILib/__SIMSme__/Resources/Other/Chilling.aiff; sourceTree = SOURCE_ROOT; };
+		359FA9A822C4FAF200562C32 /* Astral.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = Astral.aiff; path = SIMSmeUILib/__SIMSme__/Resources/Other/Astral.aiff; sourceTree = SOURCE_ROOT; };
+		359FA9A922C4FAF200562C32 /* Balaphonia.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = Balaphonia.aiff; path = SIMSmeUILib/__SIMSme__/Resources/Other/Balaphonia.aiff; sourceTree = SOURCE_ROOT; };
+		359FA9AA22C4FAF200562C32 /* Marimba.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = Marimba.aiff; path = SIMSmeUILib/__SIMSme__/Resources/Other/Marimba.aiff; sourceTree = SOURCE_ROOT; };
+		359FA9AB22C4FAF200562C32 /* Glockenspiel.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = Glockenspiel.aiff; path = SIMSmeUILib/__SIMSme__/Resources/Other/Glockenspiel.aiff; sourceTree = SOURCE_ROOT; };
+		359FA9AC22C4FAF200562C32 /* Ukulele.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = Ukulele.aiff; path = SIMSmeUILib/__SIMSme__/Resources/Other/Ukulele.aiff; sourceTree = SOURCE_ROOT; };
+		391876AE0C67A076A5861166 /* Pods-notificationExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-notificationExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-notificationExtension/Pods-notificationExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		48E497E6314623BDC93A78A1 /* Pods-simsme-dpag-release.test.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simsme-dpag-release.test.xcconfig"; path = "Pods/Target Support Files/Pods-simsme-dpag-release/Pods-simsme-dpag-release.test.xcconfig"; sourceTree = "<group>"; };
+		4E8099A81B218CD9004512D5 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		4EC078621A779EED0044420D /* ginlo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ginlo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		56DF174CBF78CE710FAC45C7 /* Pods_shareExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_shareExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5A5D5FC6ACF7B757FA2E7DD3 /* Pods-ginlo.adhoc.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ginlo.adhoc.xcconfig"; path = "Pods/Target Support Files/Pods-ginlo/Pods-ginlo.adhoc.xcconfig"; sourceTree = "<group>"; };
+		632BC42D6934AF156C400854 /* Pods-shareExtension.adhoc.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-shareExtension.adhoc.xcconfig"; path = "Pods/Target Support Files/Pods-shareExtension/Pods-shareExtension.adhoc.xcconfig"; sourceTree = "<group>"; };
+		69305D441951C4FF00E024D5 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		69305D451951C4FF00E024D5 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		69305D471951C50500E024D5 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		69305D481951C50500E024D5 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		69305D4A1951C54000E024D5 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		69305D4B1951C54000E024D5 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
+		6B1EC1CA7D761486DA2E36F9 /* Pods_ginlo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ginlo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		71D408DCD6EE4DC6BB00C18D /* Pods-simsme-dpag-release.adhoc.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simsme-dpag-release.adhoc.xcconfig"; path = "Pods/Target Support Files/Pods-simsme-dpag-release/Pods-simsme-dpag-release.adhoc.xcconfig"; sourceTree = "<group>"; };
+		725D5252248902960098B36D /* ringback.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = ringback.aiff; path = SIMSmeUILib/__SIMSme__/Resources/Other/ringback.aiff; sourceTree = SOURCE_ROOT; };
+		725D5253248902960098B36D /* ringing.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = ringing.aiff; path = SIMSmeUILib/__SIMSme__/Resources/Other/ringing.aiff; sourceTree = SOURCE_ROOT; };
+		7260CDED24D18E1A00C6F4D7 /* ShareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
+		728CD70025FF56C000F29572 /* 01_application_debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = 01_application_debug.xcconfig; path = Configuration/Config/01_application_debug.xcconfig; sourceTree = SOURCE_ROOT; };
+		728CD70125FF56C000F29572 /* 01_application_beta.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = 01_application_beta.xcconfig; path = Configuration/Config/01_application_beta.xcconfig; sourceTree = SOURCE_ROOT; };
+		728CD70225FF56C000F29572 /* 01_application_release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = 01_application_release.xcconfig; path = Configuration/Config/01_application_release.xcconfig; sourceTree = SOURCE_ROOT; };
+		728CD70325FF56C000F29572 /* 99_product_test.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = 99_product_test.xcconfig; path = Configuration/Config/99_product_test.xcconfig; sourceTree = SOURCE_ROOT; };
+		728CD70425FF56C100F29572 /* 01_application.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = 01_application.xcconfig; path = Configuration/Config/01_application.xcconfig; sourceTree = SOURCE_ROOT; };
+		728CD70525FF56C100F29572 /* 00_environment.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = 00_environment.xcconfig; path = Configuration/Config/00_environment.xcconfig; sourceTree = SOURCE_ROOT; };
+		728CD70625FF56C100F29572 /* 99_product_release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = 99_product_release.xcconfig; path = Configuration/Config/99_product_release.xcconfig; sourceTree = SOURCE_ROOT; };
+		728CD70725FF56C100F29572 /* 99_product_beta.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = 99_product_beta.xcconfig; path = Configuration/Config/99_product_beta.xcconfig; sourceTree = SOURCE_ROOT; };
+		728CD70825FF56C100F29572 /* 99_product_debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = 99_product_debug.xcconfig; path = Configuration/Config/99_product_debug.xcconfig; sourceTree = SOURCE_ROOT; };
+		728CD70925FF56C200F29572 /* 01_application_test.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = 01_application_test.xcconfig; path = Configuration/Config/01_application_test.xcconfig; sourceTree = SOURCE_ROOT; };
+		728CD70A25FF56C200F29572 /* 01_application_adhoc.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = 01_application_adhoc.xcconfig; path = Configuration/Config/01_application_adhoc.xcconfig; sourceTree = SOURCE_ROOT; };
+		728CD70B25FF56C200F29572 /* 99_product_adhoc.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = 99_product_adhoc.xcconfig; path = Configuration/Config/99_product_adhoc.xcconfig; sourceTree = SOURCE_ROOT; };
+		728CD85E25FFA6C000F29572 /* ginlo-private.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = "ginlo-private.entitlements"; path = "Configuration/Entitlements/ginlo-private.entitlements"; sourceTree = SOURCE_ROOT; };
+		728CD85F25FFA6D000F29572 /* ginlo-private-info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "ginlo-private-info.plist"; path = "Configuration/InfoPlist/ginlo-private-info.plist"; sourceTree = SOURCE_ROOT; };
+		728CD86C25FFA80C00F29572 /* notificationExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = notificationExtension.entitlements; path = Configuration/Entitlements/notificationExtension.entitlements; sourceTree = SOURCE_ROOT; };
+		728CD86D25FFA81500F29572 /* shareExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = shareExtension.entitlements; path = Configuration/Entitlements/shareExtension.entitlements; sourceTree = SOURCE_ROOT; };
+		728CD86E25FFA82300F29572 /* shareExtension-info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "shareExtension-info.plist"; path = "Configuration/InfoPlist/shareExtension-info.plist"; sourceTree = SOURCE_ROOT; };
+		728CD86F25FFA82F00F29572 /* notificationExtension-info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "notificationExtension-info.plist"; path = "Configuration/InfoPlist/notificationExtension-info.plist"; sourceTree = SOURCE_ROOT; };
+		728CD9042600C04B00F29572 /* DPAGAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DPAGAppDelegate.swift; sourceTree = "<group>"; };
+		72FFDBEFA4F0E9E6E0913424 /* Pods-notificationExtension.beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-notificationExtension.beta.xcconfig"; path = "Pods/Target Support Files/Pods-notificationExtension/Pods-notificationExtension.beta.xcconfig"; sourceTree = "<group>"; };
+		78E8E56508A5044ED993BA0F /* Pods-ginlo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ginlo.release.xcconfig"; path = "Pods/Target Support Files/Pods-ginlo/Pods-ginlo.release.xcconfig"; sourceTree = "<group>"; };
+		81D9058C0CB96B3D101F17DC /* Pods-notificationExtension.adhoc.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-notificationExtension.adhoc.xcconfig"; path = "Pods/Target Support Files/Pods-notificationExtension/Pods-notificationExtension.adhoc.xcconfig"; sourceTree = "<group>"; };
+		99C328A531A8F3564911A946 /* Pods-ginlo.beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ginlo.beta.xcconfig"; path = "Pods/Target Support Files/Pods-ginlo/Pods-ginlo.beta.xcconfig"; sourceTree = "<group>"; };
+		9B0B7E4618A3BB0300CB66C9 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		9B16983518BE41D600FDDA06 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		9F30F5E3F3C469117F87E358 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		A059D9D7204E9C9F000C438A /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		A30451412289AA04001B1716 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		AA06DEB322EA2C313135FEAD /* Pods-ginlo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ginlo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ginlo/Pods-ginlo.debug.xcconfig"; sourceTree = "<group>"; };
+		ABB3F16622B885422F649EBF /* Pods-ginlo.test.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ginlo.test.xcconfig"; path = "Pods/Target Support Files/Pods-ginlo/Pods-ginlo.test.xcconfig"; sourceTree = "<group>"; };
+		BE4D87662C47403FA1138023 /* Pods-shareExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-shareExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-shareExtension/Pods-shareExtension.release.xcconfig"; sourceTree = "<group>"; };
+		BF25D67596C673D276F01B9A /* Pods-notificationExtension.test.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-notificationExtension.test.xcconfig"; path = "Pods/Target Support Files/Pods-notificationExtension/Pods-notificationExtension.test.xcconfig"; sourceTree = "<group>"; };
+		CC2A4C1C17EC85EA006426AC /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		CC3B05F617F44B4C00466BB2 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		CC3B06BE17F48D1B00466BB2 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		CC456B7F184F737C00BC92F9 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		CC456B81184F738F00BC92F9 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		CC456B83184F739900BC92F9 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		CC456B85184F73A000BC92F9 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		CC456B87184F73A800BC92F9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		CC5C534917ECEA82000553F0 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		CC6F653E17E1D2490083C7C6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		CC6F654017E1D2490083C7C6 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		CC6F654217E1D2490083C7C6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		CC6F654417E1D2490083C7C6 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		CC6F654A17E1D2490083C7C6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		CC6F654E17E1D2490083C7C6 /* Ginlo-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Ginlo-Prefix.pch"; sourceTree = "<group>"; };
+		CCAD742118BC699700681193 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		CCD2F5D518940A4B00EB6C0D /* InAppKitSettings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = InAppKitSettings.bundle; sourceTree = "<group>"; };
+		CCF530E9181FE1D20087D2F7 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		CCFC19FD180C445A0030E81B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CCFC19FF180C445E0030E81B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		D33EFB34E5CE1A86665CBDD4 /* Pods-notificationExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-notificationExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-notificationExtension/Pods-notificationExtension.release.xcconfig"; sourceTree = "<group>"; };
+		D40C21C119AF6B6500F0BD17 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		D444944A19A4AA4300D48BE9 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		F5BCC7381B55212CFB848D84 /* Pods_notificationExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_notificationExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2710D33621B503B4003526C2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				277C461422CC1A8E00D20DAF /* SIMSmeCore.framework in Frameworks */,
+				277C461522CC1A8E00D20DAF /* SIMSmeUILib.framework in Frameworks */,
+				BA99A4DD4A9BA7F4EAAF4282 /* Pods_shareExtension.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		27E987A520BF466C004B607F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				277C461322CC1A8500D20DAF /* SIMSmeCore.framework in Frameworks */,
+				718AABCF5D26710945EF541E /* Pods_notificationExtension.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4EC077D71A779EED0044420D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				27A4F50E22CCE0AF00315FAA /* SIMSmeUILib.framework in Frameworks */,
+				27A4F50C22CCE0AF00315FAA /* SIMSmeCore.framework in Frameworks */,
+				F0A18BFE4855D36FE186F883 /* Pods_ginlo.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		17615C121C7B46B6003A3C17 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				27D4C74F1A2157960054DB56 /* Images.xcassets */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
+		270DAB19209C3B3300FD916A /* Launch */ = {
+			isa = PBXGroup;
+			children = (
+				A30451412289AA04001B1716 /* Launch Screen.storyboard */,
+			);
+			name = Launch;
+			sourceTree = "<group>";
+		};
+		2710D33A21B503B6003526C2 /* shareExtension */ = {
+			isa = PBXGroup;
+			children = (
+				728CD86E25FFA82300F29572 /* shareExtension-info.plist */,
+				728CD86D25FFA81500F29572 /* shareExtension.entitlements */,
+				279FB23921C16009003E01E8 /* Media.xcassets */,
+				7260CDED24D18E1A00C6F4D7 /* ShareViewController.swift */,
+			);
+			name = shareExtension;
+			path = Application/shareExtension;
+			sourceTree = "<group>";
+		};
+		27BF87131DD60BC500F1C87A /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				728CD70525FF56C100F29572 /* 00_environment.xcconfig */,
+				728CD70425FF56C100F29572 /* 01_application.xcconfig */,
+				728CD70A25FF56C200F29572 /* 01_application_adhoc.xcconfig */,
+				728CD70125FF56C000F29572 /* 01_application_beta.xcconfig */,
+				728CD70025FF56C000F29572 /* 01_application_debug.xcconfig */,
+				728CD70225FF56C000F29572 /* 01_application_release.xcconfig */,
+				728CD70925FF56C200F29572 /* 01_application_test.xcconfig */,
+				728CD70B25FF56C200F29572 /* 99_product_adhoc.xcconfig */,
+				728CD70725FF56C100F29572 /* 99_product_beta.xcconfig */,
+				728CD70825FF56C100F29572 /* 99_product_debug.xcconfig */,
+				728CD70625FF56C100F29572 /* 99_product_release.xcconfig */,
+				728CD70325FF56C000F29572 /* 99_product_test.xcconfig */,
+			);
+			name = Config;
+			path = Configuration/Config;
+			sourceTree = SOURCE_ROOT;
+		};
+		359FA99A22C4FAF200562C32 /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				725D5252248902960098B36D /* ringback.aiff */,
+				725D5253248902960098B36D /* ringing.aiff */,
+				359FA99B22C4FAF200562C32 /* invitedContacts.plist */,
+				359FA99C22C4FAF200562C32 /* Glassian.aiff */,
+				359FA99D22C4FAF200562C32 /* Droplets.aiff */,
+				359FA99E22C4FAF200562C32 /* send_sound.mp3 */,
+				359FA99F22C4FAF200562C32 /* Kalimba.aiff */,
+				359FA9A022C4FAF200562C32 /* Nylon.aiff */,
+				359FA9A122C4FAF200562C32 /* SZF_Sound.mp3 */,
+				359FA9A222C4FAF200562C32 /* read_sound.mp3 */,
+				359FA9A322C4FAF200562C32 /* Strings.aiff */,
+				359FA9A422C4FAF200562C32 /* Blissful_01.aiff */,
+				359FA9A522C4FAF200562C32 /* Piano.aiff */,
+				359FA9A622C4FAF200562C32 /* Blissful_02.aiff */,
+				359FA9A722C4FAF200562C32 /* Chilling.aiff */,
+				359FA9A822C4FAF200562C32 /* Astral.aiff */,
+				359FA9A922C4FAF200562C32 /* Balaphonia.aiff */,
+				359FA9AA22C4FAF200562C32 /* Marimba.aiff */,
+				359FA9AB22C4FAF200562C32 /* Glockenspiel.aiff */,
+				359FA9AC22C4FAF200562C32 /* Ukulele.aiff */,
+			);
+			name = Other;
+			path = SIMSmeUILib/__SIMSme__/Resources/Other;
+			sourceTree = SOURCE_ROOT;
+		};
+		A059D9D6204E9C9F000C438A /* notificationExtension */ = {
+			isa = PBXGroup;
+			children = (
+				728CD86C25FFA80C00F29572 /* notificationExtension.entitlements */,
+				728CD86F25FFA82F00F29572 /* notificationExtension-info.plist */,
+				A059D9D7204E9C9F000C438A /* NotificationService.swift */,
+			);
+			name = notificationExtension;
+			path = Application/notificationExtension;
+			sourceTree = "<group>";
+		};
+		B60842ECC3A506B0C7AF985F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				391876AE0C67A076A5861166 /* Pods-notificationExtension.debug.xcconfig */,
+				BF25D67596C673D276F01B9A /* Pods-notificationExtension.test.xcconfig */,
+				D33EFB34E5CE1A86665CBDD4 /* Pods-notificationExtension.release.xcconfig */,
+				72FFDBEFA4F0E9E6E0913424 /* Pods-notificationExtension.beta.xcconfig */,
+				81D9058C0CB96B3D101F17DC /* Pods-notificationExtension.adhoc.xcconfig */,
+				1060C3E72C56E12C1953F63E /* Pods-shareExtension.debug.xcconfig */,
+				2336BB8D1531BD102D337200 /* Pods-shareExtension.test.xcconfig */,
+				BE4D87662C47403FA1138023 /* Pods-shareExtension.release.xcconfig */,
+				044B46BE59C93085982FDB16 /* Pods-shareExtension.beta.xcconfig */,
+				632BC42D6934AF156C400854 /* Pods-shareExtension.adhoc.xcconfig */,
+				35122888E3215A991CA4F6EA /* Pods-simsme-dpag-release.debug.xcconfig */,
+				48E497E6314623BDC93A78A1 /* Pods-simsme-dpag-release.test.xcconfig */,
+				1ED6213B6BE123D151A0950E /* Pods-simsme-dpag-release.release.xcconfig */,
+				1E1D6FDD0D376A2DB01BFEAF /* Pods-simsme-dpag-release.beta.xcconfig */,
+				71D408DCD6EE4DC6BB00C18D /* Pods-simsme-dpag-release.adhoc.xcconfig */,
+				AA06DEB322EA2C313135FEAD /* Pods-ginlo.debug.xcconfig */,
+				ABB3F16622B885422F649EBF /* Pods-ginlo.test.xcconfig */,
+				78E8E56508A5044ED993BA0F /* Pods-ginlo.release.xcconfig */,
+				99C328A531A8F3564911A946 /* Pods-ginlo.beta.xcconfig */,
+				5A5D5FC6ACF7B757FA2E7DD3 /* Pods-ginlo.adhoc.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		CC6F653217E1D2490083C7C6 = {
+			isa = PBXGroup;
+			children = (
+				CC6F654617E1D2490083C7C6 /* Application */,
+				A059D9D6204E9C9F000C438A /* notificationExtension */,
+				2710D33A21B503B6003526C2 /* shareExtension */,
+				CC6F653D17E1D2490083C7C6 /* Frameworks */,
+				B60842ECC3A506B0C7AF985F /* Pods */,
+				CC6F653C17E1D2490083C7C6 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CC6F653C17E1D2490083C7C6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4EC078621A779EED0044420D /* ginlo.app */,
+				27E987A820BF466C004B607F /* notificationExtension.appex */,
+				2710D33921B503B4003526C2 /* shareExtension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CC6F653D17E1D2490083C7C6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9B0B7E4618A3BB0300CB66C9 /* AdSupport.framework */,
+				D40C21C119AF6B6500F0BD17 /* AudioToolbox.framework */,
+				CC456B7F184F737C00BC92F9 /* AVFoundation.framework */,
+				CC6F654417E1D2490083C7C6 /* CoreData.framework */,
+				CC6F654017E1D2490083C7C6 /* CoreGraphics.framework */,
+				CCAD742118BC699700681193 /* CoreLocation.framework */,
+				CC456B81184F738F00BC92F9 /* CoreMedia.framework */,
+				4E8099A81B218CD9004512D5 /* CoreMotion.framework */,
+				CCF530E9181FE1D20087D2F7 /* CoreTelephony.framework */,
+				CC456B83184F739900BC92F9 /* CoreVideo.framework */,
+				CC6F653E17E1D2490083C7C6 /* Foundation.framework */,
+				D444944A19A4AA4300D48BE9 /* iAd.framework */,
+				CC456B85184F73A000BC92F9 /* ImageIO.framework */,
+				CC2A4C1C17EC85EA006426AC /* MapKit.framework */,
+				9B16983518BE41D600FDDA06 /* MediaPlayer.framework */,
+				9F30F5E3F3C469117F87E358 /* MessageUI.framework */,
+				CC3B06BE17F48D1B00466BB2 /* MobileCoreServices.framework */,
+				F5BCC7381B55212CFB848D84 /* Pods_notificationExtension.framework */,
+				56DF174CBF78CE710FAC45C7 /* Pods_shareExtension.framework */,
+				CC456B87184F73A800BC92F9 /* QuartzCore.framework */,
+				CC3B05F617F44B4C00466BB2 /* Security.framework */,
+				277C460F22CC1A7E00D20DAF /* SIMSmeCore.framework */,
+				277C461122CC1A7E00D20DAF /* SIMSmeUILib.framework */,
+				177B5B1D1D2D7AD500DB4371 /* StoreKit.framework */,
+				CC6F654217E1D2490083C7C6 /* UIKit.framework */,
+				6B1EC1CA7D761486DA2E36F9 /* Pods_ginlo.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CC6F654617E1D2490083C7C6 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				728CD9042600C04B00F29572 /* DPAGAppDelegate.swift */,
+				27F6782A209AEECB006513A0 /* DPAGAppDelegateExt.swift */,
+				270DAB19209C3B3300FD916A /* Launch */,
+				D9A0425811C1751A5C0EB2EA /* Ressources */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		CC6F654717E1D2490083C7C6 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				27F7705C22CB419F00B7E9C4 /* DPAGRuntimeConfigBA.swift */,
+				27F7705E22CB419F00B7E9C4 /* DPAGRuntimeConfigUI.swift */,
+				27F7705D22CB419F00B7E9C4 /* DPAGRuntimeConfigWhiteLabel.swift */,
+				27BF87131DD60BC500F1C87A /* Config */,
+				CCD2F5D518940A4B00EB6C0D /* InAppKitSettings.bundle */,
+				CC6F654917E1D2490083C7C6 /* InfoPlist.strings */,
+				CCFC19FE180C445A0030E81B /* Localizable.strings */,
+				728CD85E25FFA6C000F29572 /* ginlo-private.entitlements */,
+				728CD85F25FFA6D000F29572 /* ginlo-private-info.plist */,
+				CC6F654E17E1D2490083C7C6 /* Ginlo-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			path = "../Supporting Files";
+			sourceTree = "<group>";
+		};
+		D9A0425811C1751A5C0EB2EA /* Ressources */ = {
+			isa = PBXGroup;
+			children = (
+				359FA99A22C4FAF200562C32 /* Other */,
+				17615C121C7B46B6003A3C17 /* Images */,
+				CC6F654717E1D2490083C7C6 /* Supporting Files */,
+			);
+			path = Ressources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2710D33821B503B4003526C2 /* shareExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2710D34921B503B6003526C2 /* Build configuration list for PBXNativeTarget "shareExtension" */;
+			buildPhases = (
+				D8341B2B9C9023CEEB0F77D3 /* [CP] Check Pods Manifest.lock */,
+				2710D33521B503B4003526C2 /* Sources */,
+				2710D33621B503B4003526C2 /* Frameworks */,
+				2710D33721B503B4003526C2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = shareExtension;
+			productName = shareExtension;
+			productReference = 2710D33921B503B4003526C2 /* shareExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		27E987A720BF466C004B607F /* notificationExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 27E987B020BF466C004B607F /* Build configuration list for PBXNativeTarget "notificationExtension" */;
+			buildPhases = (
+				02B10DA91C1C3F3BBBE3F804 /* [CP] Check Pods Manifest.lock */,
+				27E987A420BF466C004B607F /* Sources */,
+				27E987A520BF466C004B607F /* Frameworks */,
+				27E987A620BF466C004B607F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = notificationExtension;
+			productName = notificationExtension;
+			productReference = 27E987A820BF466C004B607F /* notificationExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		4EC076E51A779EED0044420D /* ginlo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4EC0785C1A779EED0044420D /* Build configuration list for PBXNativeTarget "ginlo" */;
+			buildPhases = (
+				F44A37CDCAF81FCB93DE3C1D /* [CP] Check Pods Manifest.lock */,
+				4EC076E71A779EED0044420D /* Sources */,
+				4EC077D71A779EED0044420D /* Frameworks */,
+				4EC077F01A779EED0044420D /* Resources */,
+				27E987B620BF466C004B607F /* Embed App Extensions */,
+				760E3512DDBCAB6923CA0C89 /* [CP] Embed Pods Frameworks */,
+				273F171A20C025AE003806B0 /* Embed Frameworks */,
+				35EEA0E4232B9CA300FAFD91 /* Signing */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				27E987AE20BF466C004B607F /* PBXTargetDependency */,
+				2710D34221B503B6003526C2 /* PBXTargetDependency */,
+			);
+			name = ginlo;
+			productName = SIMSme;
+			productReference = 4EC078621A779EED0044420D /* ginlo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CC6F653317E1D2490083C7C6 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = "";
+				LastSwiftUpdateCheck = 1130;
+				LastTestingUpgradeCheck = 0700;
+				LastUpgradeCheck = 1240;
+				ORGANIZATIONNAME = "ginlo.net GmbH";
+				TargetAttributes = {
+					2710D33821B503B4003526C2 = {
+						CreatedOnToolsVersion = 10.1;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
+					};
+					27E987A720BF466C004B607F = {
+						CreatedOnToolsVersion = 9.4;
+					};
+					4EC076E51A779EED0044420D = {
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.DataProtection = {
+								enabled = 1;
+							};
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
+					};
+				};
+			};
+			buildConfigurationList = CC6F653617E1D2490083C7C6 /* Build configuration list for PBXProject "Ginlo" */;
+			compatibilityVersion = "Xcode 10.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				de,
+				es,
+				fr,
+				it,
+				Base,
+			);
+			mainGroup = CC6F653217E1D2490083C7C6;
+			productRefGroup = CC6F653C17E1D2490083C7C6 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				4EC076E51A779EED0044420D /* ginlo */,
+				27E987A720BF466C004B607F /* notificationExtension */,
+				2710D33821B503B4003526C2 /* shareExtension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2710D33721B503B4003526C2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2710D3C121B506F5003526C2 /* Localizable.strings in Resources */,
+				359FA9B022C4FAF200562C32 /* send_sound.mp3 in Resources */,
+				359FA9B322C4FAF200562C32 /* SZF_Sound.mp3 in Resources */,
+				359FA9B422C4FAF200562C32 /* read_sound.mp3 in Resources */,
+				279FB23A21C1600A003E01E8 /* Media.xcassets in Resources */,
+				359FA9AD22C4FAF200562C32 /* invitedContacts.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		27E987A620BF466C004B607F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				274B3C6120C542A400E7B771 /* Localizable.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4EC077F01A779EED0044420D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4EC077F11A779EED0044420D /* Images.xcassets in Resources */,
+				27E98BC42304350C00DA3929 /* Glockenspiel.aiff in Resources */,
+				27E98BBB2304350C00DA3929 /* Nylon.aiff in Resources */,
+				27E98BC12304350C00DA3929 /* Astral.aiff in Resources */,
+				4EC077F81A779EED0044420D /* Localizable.strings in Resources */,
+				27E98BC22304350C00DA3929 /* Balaphonia.aiff in Resources */,
+				4EC077FF1A779EED0044420D /* InfoPlist.strings in Resources */,
+				27E98BBA2304350C00DA3929 /* Kalimba.aiff in Resources */,
+				27E98BBD2304350C00DA3929 /* Blissful_01.aiff in Resources */,
+				27E98BB82304350C00DA3929 /* Glassian.aiff in Resources */,
+				27E98BB92304350C00DA3929 /* Droplets.aiff in Resources */,
+				A30451422289AA05001B1716 /* Launch Screen.storyboard in Resources */,
+				27E98BC32304350C00DA3929 /* Marimba.aiff in Resources */,
+				27E98BBF2304350C00DA3929 /* Blissful_02.aiff in Resources */,
+				27E98BBE2304350C00DA3929 /* Piano.aiff in Resources */,
+				27E98BC02304350C00DA3929 /* Chilling.aiff in Resources */,
+				725D5254248902960098B36D /* ringback.aiff in Resources */,
+				27E98BC52304350C00DA3929 /* Ukulele.aiff in Resources */,
+				27E98BBC2304350C00DA3929 /* Strings.aiff in Resources */,
+				725D5255248902960098B36D /* ringing.aiff in Resources */,
+				4EC078391A779EED0044420D /* InAppKitSettings.bundle in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		02B10DA91C1C3F3BBBE3F804 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-notificationExtension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		35EEA0E4232B9CA300FAFD91 /* Signing */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = Signing;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file fro# Type a script or drag a script file from your workspace to insert its path.\necho \"Signing subframeworks\"\npushd \"${TARGET_BUILD_DIR}\"/\"${PRODUCT_NAME}\".app/Frameworks/ginloVV.framework/Frameworks\nfor EACH in *.framework; do\necho \"-- signing ${EACH}\"\n/usr/bin/codesign --force --deep --sign \"${EXPANDED_CODE_SIGN_IDENTITY}\" --entitlements \"${TARGET_TEMP_DIR}/${PRODUCT_NAME}.app.xcent\" --timestamp=none $EACH\ndone\npopd\n\necho \"BUILD DIR ${TARGET_BUILD_DIR}\"m your workspace to insert its path.\n";
+		};
+		760E3512DDBCAB6923CA0C89 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ginlo/Pods-ginlo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ginlo/Pods-ginlo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ginlo/Pods-ginlo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D8341B2B9C9023CEEB0F77D3 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-shareExtension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F44A37CDCAF81FCB93DE3C1D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ginlo-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2710D33521B503B4003526C2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7260CDEE24D18E1A00C6F4D7 /* ShareViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		27E987A420BF466C004B607F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				27E987D220BF46DD004B607F /* NotificationService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4EC076E71A779EED0044420D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				27F7706122CB41A000B7E9C4 /* DPAGRuntimeConfigWhiteLabel.swift in Sources */,
+				27F7706022CB41A000B7E9C4 /* DPAGRuntimeConfigBA.swift in Sources */,
+				27F67830209AEECB006513A0 /* DPAGAppDelegateExt.swift in Sources */,
+				27F7706222CB41A000B7E9C4 /* DPAGRuntimeConfigUI.swift in Sources */,
+				728CD9052600C04B00F29572 /* DPAGAppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2710D34221B503B6003526C2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2710D33821B503B4003526C2 /* shareExtension */;
+			targetProxy = 2710D34121B503B6003526C2 /* PBXContainerItemProxy */;
+		};
+		27E987AE20BF466C004B607F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 27E987A720BF466C004B607F /* notificationExtension */;
+			targetProxy = 27E987AD20BF466C004B607F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		CC6F654917E1D2490083C7C6 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CC6F654A17E1D2490083C7C6 /* en */,
+				CC5C534917ECEA82000553F0 /* de */,
+				69305D441951C4FF00E024D5 /* es */,
+				69305D481951C50500E024D5 /* fr */,
+				69305D4A1951C54000E024D5 /* it */,
+				272B76551DF152CC00AB5DAE /* Base */,
+			);
+			name = InfoPlist.strings;
+			path = localization;
+			sourceTree = "<group>";
+		};
+		CCFC19FE180C445A0030E81B /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CCFC19FD180C445A0030E81B /* en */,
+				CCFC19FF180C445E0030E81B /* de */,
+				69305D451951C4FF00E024D5 /* es */,
+				69305D471951C50500E024D5 /* fr */,
+				69305D4B1951C54000E024D5 /* it */,
+				172437891C8DD01F00B9D50D /* Base */,
+			);
+			name = Localizable.strings;
+			path = localization;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		2710D34421B503B6003526C2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1060C3E72C56E12C1953F63E /* Pods-shareExtension.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/Configuration/Entitlements/shareExtension.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8UNQ4626FQ;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"$(inherited)",
+					"SQLITE_HAS_CODEC=1",
+					"EXTENSION=1",
+				);
+				INFOPLIST_FILE = "$(SRCROOT)/Configuration/InfoPlist/shareExtension-info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "eu.ginlo-apps.ginlo.sharing";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)  SHARE_EXT";
+				SWIFT_VERSION = 5.0;
+				VALID_ARCHS = arm64;
+			};
+			name = Debug;
+		};
+		2710D34521B503B6003526C2 /* Test */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2336BB8D1531BD102D337200 /* Pods-shareExtension.test.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/Configuration/Entitlements/shareExtension.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8UNQ4626FQ;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"$(inherited)",
+					"SQLITE_HAS_CODEC=1",
+					"EXTENSION=1",
+				);
+				INFOPLIST_FILE = "$(SRCROOT)/Configuration/InfoPlist/shareExtension-info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "eu.ginlo-apps.ginlo.sharing";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)  SHARE_EXT";
+				SWIFT_VERSION = 5.0;
+				VALID_ARCHS = arm64;
+			};
+			name = Test;
+		};
+		2710D34621B503B6003526C2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BE4D87662C47403FA1138023 /* Pods-shareExtension.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/Configuration/Entitlements/shareExtension.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8UNQ4626FQ;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"$(inherited)",
+					"SQLITE_HAS_CODEC=1",
+					"EXTENSION=1",
+				);
+				INFOPLIST_FILE = "$(SRCROOT)/Configuration/InfoPlist/shareExtension-info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "eu.ginlo-apps.ginlo.sharing";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)  SHARE_EXT";
+				SWIFT_VERSION = 5.0;
+				VALID_ARCHS = arm64;
+			};
+			name = Release;
+		};
+		2710D34721B503B6003526C2 /* Beta */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 044B46BE59C93085982FDB16 /* Pods-shareExtension.beta.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/Configuration/Entitlements/shareExtension.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8UNQ4626FQ;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"$(inherited)",
+					"SQLITE_HAS_CODEC=1",
+					"EXTENSION=1",
+				);
+				INFOPLIST_FILE = "$(SRCROOT)/Configuration/InfoPlist/shareExtension-info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "eu.ginlo-apps.ginlo.sharing";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)  SHARE_EXT";
+				SWIFT_VERSION = 5.0;
+				VALID_ARCHS = arm64;
+			};
+			name = Beta;
+		};
+		2710D34821B503B6003526C2 /* AdHoc */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 632BC42D6934AF156C400854 /* Pods-shareExtension.adhoc.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/Configuration/Entitlements/shareExtension.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8UNQ4626FQ;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"$(inherited)",
+					"SQLITE_HAS_CODEC=1",
+					"EXTENSION=1",
+				);
+				INFOPLIST_FILE = "$(SRCROOT)/Configuration/InfoPlist/shareExtension-info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "eu.ginlo-apps.ginlo.sharing";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)  SHARE_EXT";
+				SWIFT_VERSION = 5.0;
+				VALID_ARCHS = arm64;
+			};
+			name = AdHoc;
+		};
+		27E987B120BF466C004B607F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 391876AE0C67A076A5861166 /* Pods-notificationExtension.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/Configuration/Entitlements/notificationExtension.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 8UNQ4626FQ;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"$(inherited)",
+					"SQLITE_HAS_CODEC=1",
+					"EXTENSION=1",
+				);
+				INFOPLIST_FILE = "$(SRCROOT)/Configuration/InfoPlist/notificationExtension-info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "eu.ginlo-apps.ginlo.notification";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG NOTIFICATION_EXT";
+				VALID_ARCHS = arm64;
+			};
+			name = Debug;
+		};
+		27E987B220BF466C004B607F /* Test */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BF25D67596C673D276F01B9A /* Pods-notificationExtension.test.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/Configuration/Entitlements/notificationExtension.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 8UNQ4626FQ;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"$(inherited)",
+					"SQLITE_HAS_CODEC=1",
+					"EXTENSION=1",
+				);
+				INFOPLIST_FILE = "$(SRCROOT)/Configuration/InfoPlist/notificationExtension-info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "eu.ginlo-apps.ginlo.notification";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "TEST NOTIFICATION_EXT";
+				VALID_ARCHS = arm64;
+			};
+			name = Test;
+		};
+		27E987B320BF466C004B607F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D33EFB34E5CE1A86665CBDD4 /* Pods-notificationExtension.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/Configuration/Entitlements/notificationExtension.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 8UNQ4626FQ;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"$(inherited)",
+					"SQLITE_HAS_CODEC=1",
+					"EXTENSION=1",
+				);
+				INFOPLIST_FILE = "$(SRCROOT)/Configuration/InfoPlist/notificationExtension-info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "eu.ginlo-apps.ginlo.notification";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "RELEASE NOTIFICATION_EXT";
+				VALID_ARCHS = arm64;
+			};
+			name = Release;
+		};
+		27E987B420BF466C004B607F /* Beta */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 72FFDBEFA4F0E9E6E0913424 /* Pods-notificationExtension.beta.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/Configuration/Entitlements/notificationExtension.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 8UNQ4626FQ;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"$(inherited)",
+					"SQLITE_HAS_CODEC=1",
+					"EXTENSION=1",
+				);
+				INFOPLIST_FILE = "$(SRCROOT)/Configuration/InfoPlist/notificationExtension-info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "eu.ginlo-apps.ginlo.notification";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "BETA NOTIFICATION_EXT";
+				VALID_ARCHS = arm64;
+			};
+			name = Beta;
+		};
+		27E987B520BF466C004B607F /* AdHoc */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 81D9058C0CB96B3D101F17DC /* Pods-notificationExtension.adhoc.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/Configuration/Entitlements/notificationExtension.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 8UNQ4626FQ;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"$(inherited)",
+					"SQLITE_HAS_CODEC=1",
+					"EXTENSION=1",
+				);
+				INFOPLIST_FILE = "$(SRCROOT)/Configuration/InfoPlist/notificationExtension-info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "eu.ginlo-apps.ginlo.notification";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "ADHOC NOTIFICATION_EXT";
+				VALID_ARCHS = arm64;
+			};
+			name = AdHoc;
+		};
+		4E7735E91A39B668005F564D /* Test */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 728CD70325FF56C000F29572 /* 99_product_test.xcconfig */;
+			buildSettings = {
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				PRODUCT_NAME = ginlo;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Test;
+		};
+		4EC0785D1A779EED0044420D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = AA06DEB322EA2C313135FEAD /* Pods-ginlo.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/Configuration/Entitlements/ginlo-private.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8UNQ4626FQ;
+				INFOPLIST_FILE = "$(SRCROOT)/Configuration/InfoPlist/ginlo-private-info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = "eu.ginlo-apps.ginlo";
+				PRODUCT_MODULE_NAME = ginlo;
+				PRODUCT_NAME = ginlo;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = arm64;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		4EC0785E1A779EED0044420D /* Test */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = ABB3F16622B885422F649EBF /* Pods-ginlo.test.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/Configuration/Entitlements/ginlo-private.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8UNQ4626FQ;
+				INFOPLIST_FILE = "$(SRCROOT)/Configuration/InfoPlist/ginlo-private-info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = "eu.ginlo-apps.ginlo";
+				PRODUCT_MODULE_NAME = ginlo;
+				PRODUCT_NAME = ginlo;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = arm64;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Test;
+		};
+		4EC0785F1A779EED0044420D /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 78E8E56508A5044ED993BA0F /* Pods-ginlo.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/Configuration/Entitlements/ginlo-private.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8UNQ4626FQ;
+				INFOPLIST_FILE = "$(SRCROOT)/Configuration/InfoPlist/ginlo-private-info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = "eu.ginlo-apps.ginlo";
+				PRODUCT_MODULE_NAME = ginlo;
+				PRODUCT_NAME = ginlo;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = arm64;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		4EC078601A779EED0044420D /* Beta */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 99C328A531A8F3564911A946 /* Pods-ginlo.beta.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/Configuration/Entitlements/ginlo-private.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8UNQ4626FQ;
+				INFOPLIST_FILE = "$(SRCROOT)/Configuration/InfoPlist/ginlo-private-info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = "eu.ginlo-apps.ginlo";
+				PRODUCT_MODULE_NAME = ginlo;
+				PRODUCT_NAME = ginlo;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = arm64;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Beta;
+		};
+		4EC078611A779EED0044420D /* AdHoc */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5A5D5FC6ACF7B757FA2E7DD3 /* Pods-ginlo.adhoc.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/Configuration/Entitlements/ginlo-private.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8UNQ4626FQ;
+				INFOPLIST_FILE = "$(SRCROOT)/Configuration/InfoPlist/ginlo-private-info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = "eu.ginlo-apps.ginlo";
+				PRODUCT_MODULE_NAME = ginlo;
+				PRODUCT_NAME = ginlo;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = arm64;
+				WRAPPER_EXTENSION = app;
+			};
+			name = AdHoc;
+		};
+		CC38E31E18EDEDEF0015EBF9 /* Beta */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 728CD70725FF56C100F29572 /* 99_product_beta.xcconfig */;
+			buildSettings = {
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				PRODUCT_NAME = ginlo;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Beta;
+		};
+		CC5C534617ECEA63000553F0 /* AdHoc */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 728CD70B25FF56C200F29572 /* 99_product_adhoc.xcconfig */;
+			buildSettings = {
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"ADHOC=1",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				PRODUCT_NAME = ginlo;
+				SWIFT_VERSION = 5.0;
+			};
+			name = AdHoc;
+		};
+		CC6F656B17E1D2490083C7C6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 728CD70825FF56C100F29572 /* 99_product_debug.xcconfig */;
+			buildSettings = {
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				PRODUCT_NAME = ginlo;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		CC6F656C17E1D2490083C7C6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 728CD70625FF56C100F29572 /* 99_product_release.xcconfig */;
+			buildSettings = {
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"RELEASE=1",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				PRODUCT_NAME = ginlo;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2710D34921B503B6003526C2 /* Build configuration list for PBXNativeTarget "shareExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2710D34421B503B6003526C2 /* Debug */,
+				2710D34521B503B6003526C2 /* Test */,
+				2710D34621B503B6003526C2 /* Release */,
+				2710D34721B503B6003526C2 /* Beta */,
+				2710D34821B503B6003526C2 /* AdHoc */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = AdHoc;
+		};
+		27E987B020BF466C004B607F /* Build configuration list for PBXNativeTarget "notificationExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				27E987B120BF466C004B607F /* Debug */,
+				27E987B220BF466C004B607F /* Test */,
+				27E987B320BF466C004B607F /* Release */,
+				27E987B420BF466C004B607F /* Beta */,
+				27E987B520BF466C004B607F /* AdHoc */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = AdHoc;
+		};
+		4EC0785C1A779EED0044420D /* Build configuration list for PBXNativeTarget "ginlo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4EC0785D1A779EED0044420D /* Debug */,
+				4EC0785E1A779EED0044420D /* Test */,
+				4EC0785F1A779EED0044420D /* Release */,
+				4EC078601A779EED0044420D /* Beta */,
+				4EC078611A779EED0044420D /* AdHoc */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = AdHoc;
+		};
+		CC6F653617E1D2490083C7C6 /* Build configuration list for PBXProject "Ginlo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CC6F656B17E1D2490083C7C6 /* Debug */,
+				4E7735E91A39B668005F564D /* Test */,
+				CC6F656C17E1D2490083C7C6 /* Release */,
+				CC38E31E18EDEDEF0015EBF9 /* Beta */,
+				CC5C534617ECEA63000553F0 /* AdHoc */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = AdHoc;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CC6F653317E1D2490083C7C6 /* Project object */;
+}

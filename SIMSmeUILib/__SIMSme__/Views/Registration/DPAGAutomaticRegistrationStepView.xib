@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="DPAGAutomaticRegistrationStepView" customModule="SIMSmeUILib" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="58"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="wqr-Ey-mpG">
+                    <rect key="frame" x="16" y="9" width="343" height="40"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TlJ-5j-dVU">
+                            <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                            <subviews>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iconProcessUpcoming" translatesAutoresizingMaskIntoConstraints="NO" id="SWE-91-tLb">
+                                    <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                                </imageView>
+                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="gqh-KW-Vct">
+                                    <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                                </activityIndicatorView>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iconProcessCheck" translatesAutoresizingMaskIntoConstraints="NO" id="JIu-db-XkC">
+                                    <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" secondItem="JIu-db-XkC" secondAttribute="height" multiplier="1:1" id="I6i-Tt-jFC"/>
+                                        <constraint firstAttribute="width" constant="40" id="oe7-lU-0cA"/>
+                                    </constraints>
+                                </imageView>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="SWE-91-tLb" firstAttribute="height" secondItem="TlJ-5j-dVU" secondAttribute="height" id="2Na-C3-wF6"/>
+                                <constraint firstItem="gqh-KW-Vct" firstAttribute="centerX" secondItem="TlJ-5j-dVU" secondAttribute="centerX" id="5Di-aI-5f8"/>
+                                <constraint firstAttribute="width" constant="40" id="OkA-6s-QcU"/>
+                                <constraint firstItem="gqh-KW-Vct" firstAttribute="centerY" secondItem="TlJ-5j-dVU" secondAttribute="centerY" id="YcQ-XZ-YZR"/>
+                                <constraint firstItem="SWE-91-tLb" firstAttribute="centerX" secondItem="TlJ-5j-dVU" secondAttribute="centerX" id="Yjm-tR-sbs"/>
+                                <constraint firstItem="SWE-91-tLb" firstAttribute="width" secondItem="TlJ-5j-dVU" secondAttribute="width" id="Zve-3I-KN6"/>
+                                <constraint firstItem="JIu-db-XkC" firstAttribute="centerY" secondItem="TlJ-5j-dVU" secondAttribute="centerY" id="c4p-al-6rd"/>
+                                <constraint firstItem="JIu-db-XkC" firstAttribute="centerX" secondItem="TlJ-5j-dVU" secondAttribute="centerX" id="e9u-br-8g1"/>
+                                <constraint firstItem="gqh-KW-Vct" firstAttribute="height" secondItem="TlJ-5j-dVU" secondAttribute="height" id="h35-bd-Wy8"/>
+                                <constraint firstItem="gqh-KW-Vct" firstAttribute="width" secondItem="TlJ-5j-dVU" secondAttribute="width" id="hxt-5C-g2Q"/>
+                                <constraint firstItem="SWE-91-tLb" firstAttribute="centerY" secondItem="TlJ-5j-dVU" secondAttribute="centerY" id="jxZ-xb-SYc"/>
+                                <constraint firstItem="JIu-db-XkC" firstAttribute="width" secondItem="TlJ-5j-dVU" secondAttribute="width" id="n7r-Sy-97H"/>
+                                <constraint firstItem="JIu-db-XkC" firstAttribute="height" secondItem="TlJ-5j-dVU" secondAttribute="height" id="oYp-sY-xNa"/>
+                            </constraints>
+                        </view>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="LXP-sE-jzw">
+                            <rect key="frame" x="48" y="0.0" width="295" height="40"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="749" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Vi-fB-5XA">
+                                    <rect key="frame" x="0.0" y="0.0" width="295" height="16.5"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SHL-jO-Vt0">
+                                    <rect key="frame" x="0.0" y="19.5" width="295" height="20.5"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                        </stackView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="TlJ-5j-dVU" firstAttribute="leading" secondItem="wqr-Ey-mpG" secondAttribute="leading" id="s4I-Na-zlb"/>
+                    </constraints>
+                </stackView>
+            </subviews>
+            <constraints>
+                <constraint firstItem="wqr-Ey-mpG" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="9" id="ImD-y7-jTF"/>
+                <constraint firstAttribute="bottom" secondItem="wqr-Ey-mpG" secondAttribute="bottom" constant="9" id="TIQ-97-BEP"/>
+                <constraint firstAttribute="trailing" secondItem="wqr-Ey-mpG" secondAttribute="trailing" constant="16" id="X1U-Zc-h4L"/>
+                <constraint firstItem="wqr-Ey-mpG" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="yIi-lk-uZt"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="actProcessing" destination="gqh-KW-Vct" id="Qqb-Wl-IB2"/>
+                <outlet property="imgProcessCheck" destination="JIu-db-XkC" id="MmZ-VI-bT4"/>
+                <outlet property="imgProcessUpcoming" destination="SWE-91-tLb" id="xZk-rH-1sU"/>
+                <outlet property="lblDescription" destination="7Vi-fB-5XA" id="Omg-Eg-qQ6"/>
+                <outlet property="lblProgress" destination="SHL-jO-Vt0" id="Xdy-4D-qLq"/>
+            </connections>
+        </view>
+    </objects>
+    <resources>
+        <image name="iconProcessCheck" width="40" height="40"/>
+        <image name="iconProcessUpcoming" width="40" height="40"/>
+    </resources>
+</document>

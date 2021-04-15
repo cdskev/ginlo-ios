@@ -1,0 +1,3 @@
+#include "10_corelib.xcconfig"
+#include "01_application_test.xcconfig"
+

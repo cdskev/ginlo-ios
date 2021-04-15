@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DPAGSupportViewController" customModule="SIMSmeUILib" customModuleProvider="target">
+            <connections>
+                <outlet property="CustomerCareEmailButton" destination="0p6-Lm-3R8" id="X1f-yP-1mz"/>
+                <outlet property="CustomerCareLabel" destination="BjW-0A-99y" id="RAJ-IO-jTP"/>
+                <outlet property="CustomerCareTitleLabel" destination="JlN-NN-T1g" id="8Em-KR-q7d"/>
+                <outlet property="SendLogFileButton" destination="cJN-Lo-tO3" id="DwQ-UJ-rmq"/>
+                <outlet property="SendLogFileLabel" destination="cG2-eR-RW3" id="mIU-bT-FQq"/>
+                <outlet property="SendLogFileNoteLabel" destination="yQA-oZ-57C" id="CaN-ry-Vxd"/>
+                <outlet property="SendLogFileTitleLabel" destination="5Xa-4z-ZJr" id="4cU-Hf-XNH"/>
+                <outlet property="view" destination="iN0-l3-epB" id="7yv-oy-MAV"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pu8-VI-wCd">
+                    <rect key="frame" x="16" y="16" width="343" height="635"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="# Contact Our Customer Care" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JlN-NN-T1g" userLabel="Customer Care Title Label" customClass="InfoLabel" customModule="SIMSmeUILib" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="0.0" width="343" height="21"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="# Got stuck? Our Customer Care is here to help:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BjW-0A-99y" userLabel="Customer Care Label" customClass="InfoSubLabel" customModule="SIMSmeUILib" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="29" width="343" height="17"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0p6-Lm-3R8" userLabel="Customer Care Email Button">
+                            <rect key="frame" x="0.0" y="54" width="343" height="30"/>
+                            <state key="normal">
+                                <attributedString key="attributedTitle">
+                                    <fragment content="# ">
+                                        <attributes>
+                                            <font key="NSFont" metaFont="system" size="15"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="support@sims.me">
+                                        <attributes>
+                                            <font key="NSFont" metaFont="system" size="15"/>
+                                            <integer key="NSUnderline" value="1"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                            </state>
+                            <connections>
+                                <action selector="sendEmailToSupport:" destination="-1" eventType="touchUpInside" id="2wv-ub-AIX"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="# Send Log File" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Xa-4z-ZJr" userLabel="Send Log File Title Label" customClass="InfoLabel" customModule="SIMSmeUILib" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="116" width="343" height="21"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cG2-eR-RW3" userLabel="Send Log File Label" customClass="InfoSubLabel" customModule="SIMSmeUILib" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="145" width="343" height="67"/>
+                            <string key="text"># Our Customer Care may ask you to send them your app's log file. It contains data about the app, your device, and actions performed - but none of your personal content.</string>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cJN-Lo-tO3" userLabel="Send Log File Button">
+                            <rect key="frame" x="0.0" y="220" width="343" height="30"/>
+                            <state key="normal">
+                                <attributedString key="attributedTitle">
+                                    <fragment content="# Send Log File Now">
+                                        <attributes>
+                                            <font key="NSFont" metaFont="system" size="15"/>
+                                            <integer key="NSUnderline" value="1"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                            </state>
+                            <connections>
+                                <action selector="sendLogToSupport:" destination="-1" eventType="touchUpInside" id="gdB-P6-AoV"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yQA-oZ-57C" userLabel="Send Log File Note Label" customClass="InfoSubLabel" customModule="SIMSmeUILib" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="282" width="343" height="0.0"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="BjW-0A-99y" firstAttribute="leading" secondItem="Pu8-VI-wCd" secondAttribute="leading" id="8Fj-jo-sf6"/>
+                        <constraint firstItem="JlN-NN-T1g" firstAttribute="top" secondItem="Pu8-VI-wCd" secondAttribute="top" id="A6u-fY-jVB"/>
+                        <constraint firstAttribute="trailing" secondItem="BjW-0A-99y" secondAttribute="trailing" id="FmU-yF-hGz"/>
+                        <constraint firstAttribute="trailing" secondItem="cG2-eR-RW3" secondAttribute="trailing" id="HSD-1N-G4b"/>
+                        <constraint firstItem="cJN-Lo-tO3" firstAttribute="leading" secondItem="Pu8-VI-wCd" secondAttribute="leading" id="Hmo-Jg-IhJ"/>
+                        <constraint firstItem="cG2-eR-RW3" firstAttribute="leading" secondItem="Pu8-VI-wCd" secondAttribute="leading" id="L6a-CF-2kR"/>
+                        <constraint firstItem="BjW-0A-99y" firstAttribute="top" secondItem="JlN-NN-T1g" secondAttribute="bottom" constant="8" id="Mj3-Ze-Q6L"/>
+                        <constraint firstAttribute="trailing" secondItem="yQA-oZ-57C" secondAttribute="trailing" id="Nji-cw-KN1"/>
+                        <constraint firstItem="5Xa-4z-ZJr" firstAttribute="top" secondItem="0p6-Lm-3R8" secondAttribute="bottom" constant="32" id="O8c-8J-Mf0"/>
+                        <constraint firstAttribute="trailing" secondItem="cJN-Lo-tO3" secondAttribute="trailing" id="Tmu-hQ-4ds"/>
+                        <constraint firstItem="JlN-NN-T1g" firstAttribute="leading" secondItem="Pu8-VI-wCd" secondAttribute="leading" id="UUI-fV-SPC"/>
+                        <constraint firstAttribute="trailing" secondItem="0p6-Lm-3R8" secondAttribute="trailing" id="WQp-j0-g7Q"/>
+                        <constraint firstItem="cJN-Lo-tO3" firstAttribute="top" secondItem="cG2-eR-RW3" secondAttribute="bottom" constant="8" id="XoV-Lm-FoJ"/>
+                        <constraint firstItem="cG2-eR-RW3" firstAttribute="top" secondItem="5Xa-4z-ZJr" secondAttribute="bottom" constant="8" id="c7h-hd-WGc"/>
+                        <constraint firstAttribute="trailing" secondItem="cG2-eR-RW3" secondAttribute="trailing" id="cYY-0W-ztV"/>
+                        <constraint firstItem="yQA-oZ-57C" firstAttribute="top" secondItem="cJN-Lo-tO3" secondAttribute="bottom" constant="32" id="gcQ-k4-AlL"/>
+                        <constraint firstItem="5Xa-4z-ZJr" firstAttribute="leading" secondItem="Pu8-VI-wCd" secondAttribute="leading" id="hhw-Cq-PRX"/>
+                        <constraint firstItem="0p6-Lm-3R8" firstAttribute="leading" secondItem="Pu8-VI-wCd" secondAttribute="leading" id="jdV-jw-BjG"/>
+                        <constraint firstItem="cG2-eR-RW3" firstAttribute="leading" secondItem="Pu8-VI-wCd" secondAttribute="leading" id="kwH-Gk-4cA"/>
+                        <constraint firstItem="0p6-Lm-3R8" firstAttribute="top" secondItem="BjW-0A-99y" secondAttribute="bottom" constant="8" id="mFy-58-8Ec"/>
+                        <constraint firstItem="yQA-oZ-57C" firstAttribute="leading" secondItem="Pu8-VI-wCd" secondAttribute="leading" id="n6S-cH-AKM"/>
+                        <constraint firstAttribute="trailing" secondItem="5Xa-4z-ZJr" secondAttribute="trailing" id="rA9-2y-SmO"/>
+                        <constraint firstAttribute="trailing" secondItem="JlN-NN-T1g" secondAttribute="trailing" id="t60-ZD-Suy"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Pu8-VI-wCd" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="DZE-ke-H2d"/>
+                <constraint firstItem="Pu8-VI-wCd" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="16" id="Ybf-b2-0ym"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="Pu8-VI-wCd" secondAttribute="bottom" constant="16" id="YpX-p9-msA"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Pu8-VI-wCd" secondAttribute="trailing" constant="16" id="bhb-JA-kby"/>
+            </constraints>
+            <point key="canvasLocation" x="-319" y="152"/>
+        </view>
+    </objects>
+    <designables>
+        <designable name="5Xa-4z-ZJr">
+            <size key="intrinsicContentSize" width="123.5" height="20.5"/>
+        </designable>
+        <designable name="BjW-0A-99y">
+            <size key="intrinsicContentSize" width="309.5" height="17"/>
+        </designable>
+        <designable name="JlN-NN-T1g">
+            <size key="intrinsicContentSize" width="240.5" height="20.5"/>
+        </designable>
+        <designable name="cG2-eR-RW3">
+            <size key="intrinsicContentSize" width="1103" height="17"/>
+        </designable>
+        <designable name="yQA-oZ-57C"/>
+    </designables>
+</document>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina5_9" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DPAGLaunchScreenMigrationViewController">
+            <connections>
+                <outlet property="activityIndicator" destination="Bdn-pF-XFB" id="OaU-qx-qIx"/>
+                <outlet property="labelInfo" destination="mLx-gd-o3u" id="xrE-7t-4o4"/>
+                <outlet property="view" destination="hbL-JD-saX" id="dFN-ky-ppV"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="hbL-JD-saX">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Bdn-pF-XFB">
+                    <rect key="frame" x="169" y="392.66666666666669" width="37" height="37"/>
+                </activityIndicatorView>
+                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mLx-gd-o3u">
+                    <rect key="frame" x="20" y="432.66666666666669" width="335" height="20.333333333333314"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <constraints>
+                <constraint firstItem="mLx-gd-o3u" firstAttribute="top" secondItem="Bdn-pF-XFB" secondAttribute="bottom" constant="3" id="0t3-tz-x4f"/>
+                <constraint firstItem="Bdn-pF-XFB" firstAttribute="centerY" secondItem="2EN-lk-J23" secondAttribute="centerY" id="Gsk-X6-iyW"/>
+                <constraint firstItem="Bdn-pF-XFB" firstAttribute="centerX" secondItem="2EN-lk-J23" secondAttribute="centerX" id="awj-oP-fq4"/>
+                <constraint firstItem="mLx-gd-o3u" firstAttribute="leading" secondItem="2EN-lk-J23" secondAttribute="leading" constant="20" id="gQU-Uy-99S"/>
+                <constraint firstItem="2EN-lk-J23" firstAttribute="trailing" secondItem="mLx-gd-o3u" secondAttribute="trailing" constant="20" id="z4t-Wa-EE9"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="2EN-lk-J23"/>
+            <point key="canvasLocation" x="329" y="262"/>
+        </view>
+    </objects>
+</document>

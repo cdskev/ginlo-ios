@@ -1,0 +1,11 @@
+#include "00_VERSION.xcconfig"
+
+TARGETED_DEVICE_FAMILY = 1
+SWIFT_OPTIMIZATION_LEVEL = -Onone
+
+CHILKAT_LICENSE = anykey
+
+VALID_ARCHS = arm64
+VALID_ARCHS[sdk=iphonesimulator*] = x86_64
+
+MARKETING_VERSION = $(VERSION)

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina5_9" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="DPAGTableHeaderViewPlain" customModule="SIMSmeUILib" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Ln9-Jn-O4p">
+                    <rect key="frame" x="16" y="16" width="343" height="790"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V8z-RT-phR">
+                            <rect key="frame" x="0.0" y="0.0" width="293.33333333333331" height="790"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hQt-cf-zCb">
+                            <rect key="frame" x="301.33333333333331" y="0.0" width="41.666666666666686" height="790"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                </stackView>
+            </subviews>
+            <constraints>
+                <constraint firstItem="zyg-GJ-jkP" firstAttribute="trailing" secondItem="Ln9-Jn-O4p" secondAttribute="trailing" constant="16" id="54h-N5-1vw"/>
+                <constraint firstItem="Ln9-Jn-O4p" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="16" id="JKH-JX-298"/>
+                <constraint firstItem="Ln9-Jn-O4p" firstAttribute="leading" secondItem="zyg-GJ-jkP" secondAttribute="leading" constant="16" id="YVo-RQ-xXf"/>
+                <constraint firstAttribute="bottom" secondItem="Ln9-Jn-O4p" secondAttribute="bottom" constant="6" id="ZoI-cm-pmQ"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="zyg-GJ-jkP"/>
+            <connections>
+                <outlet property="label" destination="V8z-RT-phR" id="bc0-KZ-5WI"/>
+                <outlet property="labelDetail" destination="hQt-cf-zCb" id="GIS-rs-Fcs"/>
+            </connections>
+        </view>
+    </objects>
+</document>

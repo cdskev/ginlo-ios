@@ -1,0 +1,2 @@
+*.a filter=lfs diff=lfs merge=lfs -text
+*.framework=lfs diff=lfs merge=mfs -text

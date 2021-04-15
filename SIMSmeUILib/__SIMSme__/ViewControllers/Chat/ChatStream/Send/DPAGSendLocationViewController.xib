@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina5_9" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DPAGSendLocationViewController">
+            <connections>
+                <outlet property="sendButton" destination="U5m-3S-fRz" id="1xE-Xj-MJ8"/>
+                <outlet property="view" destination="iN0-l3-epB" id="W4b-j3-0Tj"/>
+                <outlet property="viewLocationInfo" destination="PBI-Tc-vPg" id="Iec-uE-5ug"/>
+                <outlet property="viewSend" destination="Jr3-LG-hPS" id="PzR-2U-BzZ"/>
+                <outlet property="viewShowLocation" destination="Sid-v7-3hB" id="jgF-Mc-Jzy"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sid-v7-3hB">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jr3-LG-hPS">
+                    <rect key="frame" x="0.0" y="598" width="375" height="56"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U5m-3S-fRz">
+                            <rect key="frame" x="327" y="6" width="44" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="44" id="a9u-gx-dCH"/>
+                                <constraint firstAttribute="height" constant="44" id="e38-rS-GXp"/>
+                            </constraints>
+                            <state key="normal">
+                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="sendButtonPressed:" destination="-1" eventType="touchUpInside" id="TKN-Xc-Jhz"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.66666668653488159" green="0.66666668653488159" blue="0.66666668653488159" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstItem="U5m-3S-fRz" firstAttribute="top" secondItem="Jr3-LG-hPS" secondAttribute="top" constant="6" id="Ldy-vj-yWt"/>
+                        <constraint firstItem="8K6-Eb-MKl" firstAttribute="trailing" secondItem="U5m-3S-fRz" secondAttribute="trailing" constant="4" id="ekQ-P6-cRT"/>
+                        <constraint firstAttribute="height" constant="56" id="n2S-ci-3Kj"/>
+                        <constraint firstAttribute="bottom" secondItem="U5m-3S-fRz" secondAttribute="bottom" constant="6" id="uOY-3d-lWe"/>
+                    </constraints>
+                    <viewLayoutGuide key="safeArea" id="8K6-Eb-MKl"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PBI-Tc-vPg">
+                    <rect key="frame" x="0.0" y="654" width="375" height="104"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="104" id="5O5-Sm-h31"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="Sid-v7-3hB" secondAttribute="bottom" id="54S-oL-Xao"/>
+                <constraint firstAttribute="centerX" secondItem="Sid-v7-3hB" secondAttribute="centerX" id="FbG-pi-b7Z"/>
+                <constraint firstItem="Sid-v7-3hB" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Gbj-pW-3yb"/>
+                <constraint firstAttribute="trailing" secondItem="Sid-v7-3hB" secondAttribute="trailing" id="HdZ-Sn-iZp"/>
+                <constraint firstItem="PBI-Tc-vPg" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Qjv-y6-ORv"/>
+                <constraint firstItem="Sid-v7-3hB" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="T8O-Gm-2te"/>
+                <constraint firstAttribute="centerX" secondItem="PBI-Tc-vPg" secondAttribute="centerX" id="Te2-vk-Cik"/>
+                <constraint firstItem="Jr3-LG-hPS" firstAttribute="leading" secondItem="PBI-Tc-vPg" secondAttribute="leading" id="Zui-kr-wFK"/>
+                <constraint firstItem="bgX-ri-zZ3" firstAttribute="bottom" secondItem="PBI-Tc-vPg" secondAttribute="bottom" constant="20" id="a40-7m-jdo"/>
+                <constraint firstItem="PBI-Tc-vPg" firstAttribute="top" secondItem="Jr3-LG-hPS" secondAttribute="bottom" id="gva-cY-n5m"/>
+                <constraint firstAttribute="trailing" secondItem="PBI-Tc-vPg" secondAttribute="trailing" id="pX9-cY-23O"/>
+                <constraint firstItem="Jr3-LG-hPS" firstAttribute="trailing" secondItem="PBI-Tc-vPg" secondAttribute="trailing" id="rNJ-a4-ieU"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="bgX-ri-zZ3"/>
+            <point key="canvasLocation" x="278" y="474"/>
+        </view>
+    </objects>
+</document>

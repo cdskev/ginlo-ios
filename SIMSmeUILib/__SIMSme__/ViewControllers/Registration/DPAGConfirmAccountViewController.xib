@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina5_9" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DPAGConfirmAccountViewController">
+            <connections>
+                <outlet property="labelConfirmationInput" destination="LeT-og-IqW" id="1Re-lw-f9N"/>
+                <outlet property="labelConfirmationText" destination="WyL-aA-XuX" id="Sg6-d8-bFE"/>
+                <outlet property="labelHeadline" destination="Iai-ym-Px3" id="J1v-T9-KL1"/>
+                <outlet property="labelTimer" destination="bE8-Kl-oPN" id="ASB-m3-o2l"/>
+                <outlet property="scrollView" destination="WDX-En-70F" id="UfX-27-jCZ"/>
+                <outlet property="textField0" destination="hOk-TU-ydR" id="JWB-b1-tdJ"/>
+                <outlet property="textField1" destination="UaX-2K-Z3K" id="cwO-VU-XfB"/>
+                <outlet property="textFieldConfirmCode" destination="ccP-t5-dJ4" id="Xwb-Uh-STH"/>
+                <outlet property="view" destination="1" id="3"/>
+                <outlet property="viewAlphaNum" destination="F0d-sr-lbc" id="qxS-Yl-qxZ"/>
+                <outlet property="viewButtonNext" destination="hxG-QG-ehI" id="8zy-Ae-kCL"/>
+                <outlet property="viewDigits" destination="1h7-1x-nbE" id="hSn-Ve-QXF"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="1">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3ra-od-DjJ">
+                    <rect key="frame" x="0.0" y="44" width="375" height="768"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="xMk-h3-bum">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="768"/>
+                            <subviews>
+                                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WDX-En-70F">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="678"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="s4z-L8-FLO">
+                                            <rect key="frame" x="16" y="16" width="343" height="309.33333333333331"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Aktivierungscode eintragen" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iai-ym-Px3">
+                                                    <rect key="frame" x="0.0" y="0.0" width="343" height="20.333333333333332"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WyL-aA-XuX">
+                                                    <rect key="frame" x="0.0" y="28.333333333333329" width="343" height="20.333333333333329"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LeT-og-IqW">
+                                                    <rect key="frame" x="0.0" y="56.666666666666679" width="343" height="20.333333333333336"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="ARK-Pg-HvD">
+                                                    <rect key="frame" x="0.0" y="85" width="343" height="196"/>
+                                                    <subviews>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1h7-1x-nbE">
+                                                            <rect key="frame" x="0.0" y="0.0" width="343" height="98"/>
+                                                            <subviews>
+                                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="CRN-Rq-GPm">
+                                                                    <rect key="frame" x="47.666666666666657" y="8" width="247.99999999999997" height="82"/>
+                                                                    <subviews>
+                                                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hOk-TU-ydR" customClass="DPAGTextField" customModule="SIMSmeUILib" customModuleProvider="target">
+                                                                            <rect key="frame" x="0.0" y="0.0" width="120" height="82"/>
+                                                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                            <constraints>
+                                                                                <constraint firstAttribute="width" constant="120" id="GYe-Bg-nXX"/>
+                                                                                <constraint firstAttribute="height" constant="82" id="bUW-wb-5Uj"/>
+                                                                            </constraints>
+                                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" enablesReturnKeyAutomatically="YES"/>
+                                                                        </textField>
+                                                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="UaX-2K-Z3K" customClass="DPAGTextField" customModule="SIMSmeUILib" customModuleProvider="target">
+                                                                            <rect key="frame" x="128" y="0.0" width="120" height="82"/>
+                                                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                            <constraints>
+                                                                                <constraint firstAttribute="height" constant="82" id="H8G-FZ-4hi"/>
+                                                                                <constraint firstAttribute="width" constant="120" id="UFb-Cj-bcE"/>
+                                                                            </constraints>
+                                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" enablesReturnKeyAutomatically="YES"/>
+                                                                        </textField>
+                                                                    </subviews>
+                                                                </stackView>
+                                                            </subviews>
+                                                            <constraints>
+                                                                <constraint firstItem="CRN-Rq-GPm" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="1h7-1x-nbE" secondAttribute="leading" constant="8" id="6Ck-YU-jor"/>
+                                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="CRN-Rq-GPm" secondAttribute="trailing" constant="8" id="Hcw-QM-bcp"/>
+                                                                <constraint firstItem="CRN-Rq-GPm" firstAttribute="centerX" secondItem="1h7-1x-nbE" secondAttribute="centerX" id="O36-dn-Z6l"/>
+                                                                <constraint firstItem="CRN-Rq-GPm" firstAttribute="top" secondItem="1h7-1x-nbE" secondAttribute="top" constant="8" id="WLR-Wx-7Y3"/>
+                                                                <constraint firstAttribute="bottom" secondItem="CRN-Rq-GPm" secondAttribute="bottom" constant="8" id="s1R-lk-3k5"/>
+                                                            </constraints>
+                                                        </view>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="F0d-sr-lbc">
+                                                            <rect key="frame" x="0.0" y="98" width="343" height="98"/>
+                                                            <subviews>
+                                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ccP-t5-dJ4" customClass="DPAGTextField" customModule="SIMSmeUILib" customModuleProvider="target">
+                                                                    <rect key="frame" x="8" y="8" width="327" height="82"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="height" constant="82" id="7IF-W4-YNQ"/>
+                                                                    </constraints>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
+                                                                </textField>
+                                                            </subviews>
+                                                            <constraints>
+                                                                <constraint firstAttribute="bottom" secondItem="ccP-t5-dJ4" secondAttribute="bottom" constant="8" id="5AI-N3-Xur"/>
+                                                                <constraint firstItem="ccP-t5-dJ4" firstAttribute="centerX" secondItem="F0d-sr-lbc" secondAttribute="centerX" id="6OI-nU-1b6"/>
+                                                                <constraint firstAttribute="trailing" secondItem="ccP-t5-dJ4" secondAttribute="trailing" constant="8" id="C2G-jR-BXM"/>
+                                                                <constraint firstItem="ccP-t5-dJ4" firstAttribute="top" secondItem="F0d-sr-lbc" secondAttribute="top" constant="8" id="ipF-jd-azI"/>
+                                                                <constraint firstItem="ccP-t5-dJ4" firstAttribute="leading" secondItem="F0d-sr-lbc" secondAttribute="leading" constant="8" id="uH3-DS-MK2"/>
+                                                            </constraints>
+                                                        </view>
+                                                    </subviews>
+                                                </stackView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Timer" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bE8-Kl-oPN">
+                                                    <rect key="frame" x="0.0" y="289" width="343" height="20.333333333333314"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="s4z-L8-FLO" firstAttribute="leading" secondItem="WDX-En-70F" secondAttribute="leading" constant="16" id="OVG-53-3hM"/>
+                                        <constraint firstAttribute="bottom" secondItem="s4z-L8-FLO" secondAttribute="bottom" constant="16" id="YLC-KL-E2J"/>
+                                        <constraint firstItem="s4z-L8-FLO" firstAttribute="centerX" secondItem="WDX-En-70F" secondAttribute="centerX" id="Ymp-EH-4aP"/>
+                                        <constraint firstAttribute="trailing" secondItem="s4z-L8-FLO" secondAttribute="trailing" constant="16" id="au8-eg-QlK"/>
+                                        <constraint firstItem="s4z-L8-FLO" firstAttribute="top" secondItem="WDX-En-70F" secondAttribute="top" constant="16" id="dfb-ak-UOk"/>
+                                    </constraints>
+                                </scrollView>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hxG-QG-ehI" customClass="DPAGButtonPrimaryView" customModule="SIMSmeUILib" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="678" width="375" height="90"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </view>
+                            </subviews>
+                        </stackView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="xMk-h3-bum" secondAttribute="bottom" id="0Tj-Kb-Cdy"/>
+                        <constraint firstItem="xMk-h3-bum" firstAttribute="top" secondItem="3ra-od-DjJ" secondAttribute="top" id="AUY-gn-kft"/>
+                        <constraint firstItem="xMk-h3-bum" firstAttribute="leading" secondItem="3ra-od-DjJ" secondAttribute="leading" id="nnv-IG-sAL"/>
+                        <constraint firstAttribute="trailing" secondItem="xMk-h3-bum" secondAttribute="trailing" id="txN-L5-8xo"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="LSU-ov-zlS" firstAttribute="trailing" secondItem="3ra-od-DjJ" secondAttribute="trailing" id="GLF-0N-7kA"/>
+                <constraint firstItem="3ra-od-DjJ" firstAttribute="top" secondItem="LSU-ov-zlS" secondAttribute="top" id="PYS-GU-NbQ"/>
+                <constraint firstAttribute="bottom" secondItem="3ra-od-DjJ" secondAttribute="bottom" id="USE-Sd-KAl"/>
+                <constraint firstItem="3ra-od-DjJ" firstAttribute="leading" secondItem="LSU-ov-zlS" secondAttribute="leading" id="knP-Ek-758"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="LSU-ov-zlS"/>
+            <point key="canvasLocation" x="258" y="315"/>
+        </view>
+    </objects>
+</document>

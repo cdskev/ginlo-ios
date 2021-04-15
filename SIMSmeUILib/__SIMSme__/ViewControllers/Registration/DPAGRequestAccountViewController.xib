@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina5_9" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DPAGRequestAccountViewController">
+            <connections>
+                <outlet property="labelHeadline" destination="cMA-y2-eMY" id="hEt-Aa-5Vc"/>
+                <outlet property="labelTerms" destination="KCW-MT-T5j" id="SPE-ep-cQa"/>
+                <outlet property="scrollView" destination="bsP-jY-wqQ" id="m0i-0A-x4g"/>
+                <outlet property="stackViewAll" destination="7fq-l1-fVl" id="qQM-9r-iJm"/>
+                <outlet property="view" destination="1" id="3"/>
+                <outlet property="viewButtonNext" destination="BY3-Ol-UZ0" id="qYV-sJ-3IC"/>
+                <outlet property="viewDataSelection" destination="CPM-XE-stS" id="n2e-IM-F1e"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="1">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wSE-8R-adx">
+                    <rect key="frame" x="0.0" y="44" width="375" height="768"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="u6l-OI-4Kl">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="768"/>
+                            <subviews>
+                                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bsP-jY-wqQ">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="678"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="7fq-l1-fVl">
+                                            <rect key="frame" x="16" y="16" width="343" height="273"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cMA-y2-eMY">
+                                                    <rect key="frame" x="0.0" y="0.0" width="343" height="20.333333333333332"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CPM-XE-stS" customClass="DPAGAccountIDSelectorView" customModule="SIMSmeUILib" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="35.333333333333329" width="343" height="202.33333333333337"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="showAccountID" value="NO"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KCW-MT-T5j" customClass="DPAGChatLabel" customModule="SIMSmeUILib" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="252.66666666666671" width="343" height="20.333333333333343"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="7fq-l1-fVl" firstAttribute="leading" secondItem="bsP-jY-wqQ" secondAttribute="leading" constant="16" id="0ff-7Y-s9i"/>
+                                        <constraint firstItem="7fq-l1-fVl" firstAttribute="centerX" secondItem="bsP-jY-wqQ" secondAttribute="centerX" id="3IB-b8-D5F"/>
+                                        <constraint firstAttribute="trailing" secondItem="7fq-l1-fVl" secondAttribute="trailing" constant="16" id="D3o-MB-dmJ"/>
+                                        <constraint firstAttribute="bottom" secondItem="7fq-l1-fVl" secondAttribute="bottom" constant="16" id="DHR-Hk-nPI"/>
+                                        <constraint firstItem="7fq-l1-fVl" firstAttribute="top" secondItem="bsP-jY-wqQ" secondAttribute="top" constant="16" id="Khm-f2-E6s"/>
+                                    </constraints>
+                                </scrollView>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BY3-Ol-UZ0" customClass="DPAGButtonPrimaryView" customModule="SIMSmeUILib" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="678" width="375" height="90"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </view>
+                            </subviews>
+                        </stackView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="u6l-OI-4Kl" firstAttribute="leading" secondItem="wSE-8R-adx" secondAttribute="leading" id="Wcs-6S-fei"/>
+                        <constraint firstItem="u6l-OI-4Kl" firstAttribute="top" secondItem="wSE-8R-adx" secondAttribute="top" id="dbS-ju-1wm"/>
+                        <constraint firstAttribute="bottom" secondItem="u6l-OI-4Kl" secondAttribute="bottom" id="f5S-PM-JuL"/>
+                        <constraint firstAttribute="trailing" secondItem="u6l-OI-4Kl" secondAttribute="trailing" id="mRU-IA-7bG"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="wSE-8R-adx" firstAttribute="top" secondItem="hmy-zu-gdn" secondAttribute="top" id="4zm-H1-0I6"/>
+                <constraint firstItem="hmy-zu-gdn" firstAttribute="trailing" secondItem="wSE-8R-adx" secondAttribute="trailing" id="gTa-Wo-eVh"/>
+                <constraint firstItem="wSE-8R-adx" firstAttribute="leading" secondItem="hmy-zu-gdn" secondAttribute="leading" id="pH4-yl-mc3"/>
+                <constraint firstAttribute="bottom" secondItem="wSE-8R-adx" secondAttribute="bottom" id="xXI-Ae-N7j"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="hmy-zu-gdn"/>
+            <point key="canvasLocation" x="46" y="-33"/>
+        </view>
+    </objects>
+</document>

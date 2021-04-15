@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DPAGLoginViewControllerPIN" customModule="SIMSmeUILib" customModuleProvider="target">
+            <connections>
+                <outlet property="buttonForgotPassword" destination="EV5-9K-S6I" id="Wcc-Ge-LfC"/>
+                <outlet property="cancelButton" destination="wvi-Ub-KeL" id="wku-s2-QHq"/>
+                <outlet property="constraintPasswordContainerHeight" destination="lco-C0-6b8" id="9fa-v3-3HV"/>
+                <outlet property="passwordContainer" destination="euY-3x-bQg" id="Imy-xM-XR2"/>
+                <outlet property="scrollView" destination="eRA-KV-g9Q" id="b4l-Q9-3fJ"/>
+                <outlet property="view" destination="iN0-l3-epB" id="Ec2-5T-aMC"/>
+                <outlet property="viewButtonNext" destination="bXM-Ov-UKD" id="bvx-Og-BDS"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qrl-Ot-K6o" customClass="DPAGViewBackground" customModule="SIMSmeUILib" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                </view>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="K6d-XZ-1yo">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <subviews>
+                        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eRA-KV-g9Q">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="611"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" placeholderIntrinsicWidth="240" placeholderIntrinsicHeight="128" translatesAutoresizingMaskIntoConstraints="NO" id="2Qj-ze-7Ob" customClass="LogoView" customModule="SIMSmeUILib" customModuleProvider="target">
+                                    <rect key="frame" x="67.5" y="0.0" width="240" height="128"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </view>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="euY-3x-bQg">
+                                    <rect key="frame" x="20" y="141" width="335" height="44"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="44" id="lco-C0-6b8"/>
+                                    </constraints>
+                                </view>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EV5-9K-S6I">
+                                    <rect key="frame" x="20" y="193" width="335" height="30"/>
+                                    <state key="normal" title="Passwort vergessen?">
+                                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </state>
+                                </button>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="euY-3x-bQg" firstAttribute="leading" secondItem="eRA-KV-g9Q" secondAttribute="leading" constant="20" symbolic="YES" id="2c0-ET-DMH"/>
+                                <constraint firstAttribute="centerX" secondItem="euY-3x-bQg" secondAttribute="centerX" id="ICS-fJ-kPl"/>
+                                <constraint firstAttribute="bottom" secondItem="EV5-9K-S6I" secondAttribute="bottom" constant="20" symbolic="YES" id="JRQ-H6-Qof"/>
+                                <constraint firstItem="EV5-9K-S6I" firstAttribute="leading" secondItem="eRA-KV-g9Q" secondAttribute="leading" constant="20" symbolic="YES" id="Nr7-gE-Il4"/>
+                                <constraint firstAttribute="trailing" secondItem="euY-3x-bQg" secondAttribute="trailing" constant="20" symbolic="YES" id="TYA-Sj-mc1"/>
+                                <constraint firstItem="2Qj-ze-7Ob" firstAttribute="top" secondItem="eRA-KV-g9Q" secondAttribute="top" id="U9v-GL-db5" userLabel="LogoViewConstantTopConstraint - look at the class!!!" customClass="LogoViewConstantTopConstraint" customModule="SIMSmeUILib"/>
+                                <constraint firstAttribute="trailing" secondItem="EV5-9K-S6I" secondAttribute="trailing" constant="20" symbolic="YES" id="YHj-lH-TKS">
+                                    <variation key="heightClass=compact" constant="15"/>
+                                </constraint>
+                                <constraint firstItem="2Qj-ze-7Ob" firstAttribute="centerX" secondItem="eRA-KV-g9Q" secondAttribute="centerX" id="eC1-WR-0Mj"/>
+                                <constraint firstItem="EV5-9K-S6I" firstAttribute="top" secondItem="euY-3x-bQg" secondAttribute="bottom" constant="8" id="rk0-sG-0kj"/>
+                                <constraint firstAttribute="centerX" secondItem="euY-3x-bQg" secondAttribute="trailing" constant="15" id="s41-bv-bc3">
+                                    <variation key="heightClass=compact" constant="2"/>
+                                </constraint>
+                                <constraint firstItem="euY-3x-bQg" firstAttribute="top" secondItem="2Qj-ze-7Ob" secondAttribute="bottom" constant="13" id="tKe-po-bMf"/>
+                            </constraints>
+                            <variation key="default">
+                                <mask key="constraints">
+                                    <exclude reference="s41-bv-bc3"/>
+                                </mask>
+                            </variation>
+                            <variation key="heightClass=compact">
+                                <mask key="constraints">
+                                    <exclude reference="ICS-fJ-kPl"/>
+                                    <exclude reference="TYA-Sj-mc1"/>
+                                    <include reference="s41-bv-bc3"/>
+                                    <exclude reference="YHj-lH-TKS"/>
+                                </mask>
+                            </variation>
+                        </scrollView>
+                        <view contentMode="scaleToFill" placeholderIntrinsicWidth="375" placeholderIntrinsicHeight="56" translatesAutoresizingMaskIntoConstraints="NO" id="bXM-Ov-UKD" customClass="DPAGButtonPrimaryView" customModule="SIMSmeUILib" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="611" width="375" height="56"/>
+                        </view>
+                    </subviews>
+                </stackView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wvi-Ub-KeL">
+                    <rect key="frame" x="8" y="40" width="44" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="hge-pS-0sc"/>
+                        <constraint firstAttribute="width" constant="44" id="pHh-fT-iDv"/>
+                    </constraints>
+                    <state key="normal">
+                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="0.95068097114562988" green="0.94655972719192505" blue="0.92157828807830811" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="wvi-Ub-KeL" firstAttribute="leading" secondItem="yaE-T1-rEy" secondAttribute="leading" constant="8" id="1lc-Z9-Ijl"/>
+                <constraint firstItem="qrl-Ot-K6o" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="3rG-s3-lJx"/>
+                <constraint firstItem="qrl-Ot-K6o" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="DPU-Bp-aaS"/>
+                <constraint firstItem="K6d-XZ-1yo" firstAttribute="leading" secondItem="yaE-T1-rEy" secondAttribute="leading" id="Tfk-yq-Jhe"/>
+                <constraint firstItem="K6d-XZ-1yo" firstAttribute="trailing" secondItem="yaE-T1-rEy" secondAttribute="trailing" id="YMr-Zb-PAr"/>
+                <constraint firstAttribute="bottom" secondItem="qrl-Ot-K6o" secondAttribute="bottom" id="ZvK-uW-PTm"/>
+                <constraint firstItem="K6d-XZ-1yo" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="bm5-hi-bPi"/>
+                <constraint firstItem="wvi-Ub-KeL" firstAttribute="top" secondItem="yaE-T1-rEy" secondAttribute="top" constant="20" id="iH1-3e-LZl"/>
+                <constraint firstAttribute="trailing" secondItem="qrl-Ot-K6o" secondAttribute="trailing" id="ml6-PY-1Sg"/>
+                <constraint firstItem="K6d-XZ-1yo" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottom" id="oCm-LM-MhY"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="yaE-T1-rEy"/>
+            <point key="canvasLocation" x="319.5" y="315"/>
+        </view>
+    </objects>
+</document>

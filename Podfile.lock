@@ -1,0 +1,93 @@
+PODS:
+  - AFNetworking/NSURLSession (4.0.1):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (4.0.1)
+  - AFNetworking/Security (4.0.1)
+  - AFNetworking/Serialization (4.0.1)
+  - CocoaLumberjack/Core (3.6.2)
+  - CocoaLumberjack/Swift (3.6.2):
+    - CocoaLumberjack/Core
+  - HPGrowingTextView (1.1)
+  - JFBCrypt (0.1)
+  - JitsiMeetSDK (3.2.0)
+  - MagicalRecord (2.4.0):
+    - MagicalRecord/Core (= 2.4.0)
+  - MagicalRecord/Core (2.4.0)
+  - NSHash (1.2.0)
+  - objective-zip (1.0.5)
+  - Sentry (5.2.2):
+    - Sentry/Core (= 5.2.2)
+  - Sentry/Core (5.2.2)
+  - SQLCipher (4.4.0):
+    - SQLCipher/standard (= 4.4.0)
+  - SQLCipher/common (4.4.0)
+  - SQLCipher/standard (4.4.0):
+    - SQLCipher/common
+  - ZXingObjC (3.6.5):
+    - ZXingObjC/All (= 3.6.5)
+  - ZXingObjC/All (3.6.5)
+
+DEPENDENCIES:
+  - AFNetworking/NSURLSession (= 4.0.1)
+  - AFNetworking/Reachability (= 4.0.1)
+  - AFNetworking/Security (= 4.0.1)
+  - AFNetworking/Serialization (= 4.0.1)
+  - CocoaLumberjack/Swift (= 3.6.2)
+  - HPGrowingTextView (= 1.1)
+  - JFBCrypt (from `./PatchedPods/JFBCrypt`)
+  - JitsiMeetSDK (= 3.2.0)
+  - MagicalRecord (from `./PatchedPods/MagicalRecord`)
+  - NSHash (= 1.2.0)
+  - objective-zip (= 1.0.5)
+  - Sentry (from `https://github.com/getsentry/sentry-cocoa.git`, tag `5.2.2`)
+  - SQLCipher (= 4.4.0)
+  - ZXingObjC (from `https://github.com/zxingify/zxingify-objc.git`, tag `3.6.7`)
+
+SPEC REPOS:
+  trunk:
+    - AFNetworking
+    - CocoaLumberjack
+    - HPGrowingTextView
+    - JitsiMeetSDK
+    - NSHash
+    - objective-zip
+    - SQLCipher
+
+EXTERNAL SOURCES:
+  JFBCrypt:
+    :path: "./PatchedPods/JFBCrypt"
+  MagicalRecord:
+    :path: "./PatchedPods/MagicalRecord"
+  Sentry:
+    :git: https://github.com/getsentry/sentry-cocoa.git
+    :tag: 5.2.2
+  ZXingObjC:
+    :git: https://github.com/zxingify/zxingify-objc.git
+    :tag: 3.6.7
+
+CHECKOUT OPTIONS:
+  Sentry:
+    :git: https://github.com/getsentry/sentry-cocoa.git
+    :tag: 5.2.2
+  ZXingObjC:
+    :git: https://github.com/zxingify/zxingify-objc.git
+    :tag: 3.6.7
+
+SPEC CHECKSUMS:
+  AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
+  CocoaLumberjack: bd155f2dd06c0e0b03f876f7a3ee55693122ec94
+  HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
+  JFBCrypt: b543f96232476049375be935fe667423c0c17823
+  JitsiMeetSDK: 9ba504480e831b3bfc85c34555f70a0a84626fa2
+  MagicalRecord: 33ba0c830eeb3ee5c285272625e17bd599d698c0
+  NSHash: 036c03781d372c288d332b512b203e7bb832e46e
+  objective-zip: f62f376fc96ac4d53f3d63fb95a19e4a2bca6f2b
+  Sentry: 8fa58a051237554f22507fb483b9a1de0171a2dc
+  SQLCipher: e434ed542b24f38ea7b36468a13f9765e1b5c072
+  ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
+
+PODFILE CHECKSUM: f23bd293cc181bd18e44c453e60b2348198b537c
+
+COCOAPODS: 1.10.1

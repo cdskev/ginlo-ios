@@ -1,0 +1,17 @@
+#include "01_application.xcconfig"
+
+VALIDATE_PRODUCT = YES
+
+OTHER_CFLAGS = $(inherited) -fstack-protector-all -fstack-protector -DNS_BLOCK_ASSERTIONS=1
+
+ENABLE_NS_ASSERTIONS = NO
+
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) BETA=1
+
+OTHER_SWIFT_FLAGS = $(inherited) -DBETA
+SWIFT_ACTIVE_COMPILATION_CONDITIONS = $(inherited) BETA
+
+SWIFT_OPTIMIZATION_LEVEL = -Onone
+
+BUILD_CONFIGURATION_MODE = BETA
+

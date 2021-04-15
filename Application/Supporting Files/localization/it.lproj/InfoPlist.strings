@@ -1,0 +1,15 @@
+﻿/* Localized versions of Info.plist keys */
+
+NSCameraUsageDescription = "È necessario solo per scattare foto e condividerle con i tuoi partner di chat. Saranno crittografate e rimarranno sempre private.";
+
+NSContactsUsageDescription = "È necessario solo per mostrarti altri utenti tra i tuoi contatti. Non accediamo mai ai loro dettagli in testo semplice.";
+
+NSLocationWhenInUseUsageDescription = "È necessario solo per condividerlo con i tuoi partner di chat. Sarà crittografato e rimarrà sempre privato.";
+
+NSLocationUsageDescription = "È necessario solo per condividerlo con i tuoi partner di chat. Sarà crittografato e rimarrà sempre privato.";
+
+NSMicrophoneUsageDescription = "È necessario solo per condividere video e messaggi vocali con i tuoi partner di chat. Saranno crittografati e rimarranno sempre privati.";
+
+NSPhotoLibraryUsageDescription = "È necessario solo per condividere foto con i tuoi partner di chat. Saranno crittografati e rimarranno sempre privati.";
+
+NSFaceIDUsageDescription = "È necessario per utilizzare Face ID invece di digitare la password del dispositivo.";

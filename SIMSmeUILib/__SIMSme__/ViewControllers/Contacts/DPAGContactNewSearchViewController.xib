@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.13.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.9"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DPAGContactNewSearchViewController" customModule="SIMSmeUILib" customModuleProvider="target">
+            <connections>
+                <outlet property="labelAccountData" destination="D1p-9C-u3r" id="Bo7-99-JIH"/>
+                <outlet property="labelDescription" destination="2eQ-QM-AfB" id="rqP-J8-5Ob"/>
+                <outlet property="labelHeader" destination="DFa-cV-zx8" id="gPL-11-UFk"/>
+                <outlet property="scrollView" destination="ghK-57-Hvj" id="IFg-JV-Jl2"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="viewButtonNext" destination="vHw-PP-bhw" id="hbL-vG-fcM"/>
+                <outlet property="viewDataSelection" destination="Rch-Q7-nTF" id="dnR-hj-LuG"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xnr-Az-fsL">
+                    <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="asr-6e-hci">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                            <subviews>
+                                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ghK-57-Hvj">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="591"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="T8V-0Z-oyj">
+                                            <rect key="frame" x="16" y="16" width="343" height="135.5"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DFa-cV-zx8">
+                                                    <rect key="frame" x="0.0" y="57" width="343" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2eQ-QM-AfB">
+                                                    <rect key="frame" x="0.0" y="57" width="343" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D1p-9C-u3r">
+                                                    <rect key="frame" x="0.0" y="57" width="343" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rch-Q7-nTF" customClass="DPAGAccountIDSelectorView" customModule="SIMSmeUILib"  customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="42" width="343" height="50"/>
+                                                </view>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="T8V-0Z-oyj" secondAttribute="bottom" constant="16" id="132-B3-uF2"/>
+                                        <constraint firstItem="T8V-0Z-oyj" firstAttribute="leading" secondItem="ghK-57-Hvj" secondAttribute="leading" constant="16" id="1ob-ih-NSx"/>
+                                        <constraint firstItem="T8V-0Z-oyj" firstAttribute="centerX" secondItem="ghK-57-Hvj" secondAttribute="centerX" id="3YZ-WS-fNs"/>
+                                        <constraint firstItem="T8V-0Z-oyj" firstAttribute="top" secondItem="ghK-57-Hvj" secondAttribute="top" constant="16" id="Ts6-0S-DQc"/>
+                                        <constraint firstAttribute="trailing" secondItem="T8V-0Z-oyj" secondAttribute="trailing" constant="16" id="Zhp-QH-pv3"/>
+                                    </constraints>
+                                </scrollView>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vHw-PP-bhw" customClass="DPAGButtonPrimaryView" customModule="SIMSmeUILib" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="591" width="375" height="56"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </view>
+                            </subviews>
+                        </stackView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="asr-6e-hci" firstAttribute="leading" secondItem="Xnr-Az-fsL" secondAttribute="leading" id="NJE-1C-LEH"/>
+                        <constraint firstAttribute="trailing" secondItem="asr-6e-hci" secondAttribute="trailing" id="XGT-hJ-vKf"/>
+                        <constraint firstItem="asr-6e-hci" firstAttribute="top" secondItem="Xnr-Az-fsL" secondAttribute="top" id="XJc-4P-VkJ"/>
+                        <constraint firstAttribute="bottom" secondItem="asr-6e-hci" secondAttribute="bottom" id="eRM-tm-Iaf"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="leading" secondItem="Xnr-Az-fsL" secondAttribute="leading" id="1op-q8-hN5"/>
+                <constraint firstAttribute="bottom" secondItem="Xnr-Az-fsL" secondAttribute="bottom" id="Vlt-Eb-sTa"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="top" secondItem="Xnr-Az-fsL" secondAttribute="top" id="ggU-Ty-Veg"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Xnr-Az-fsL" secondAttribute="trailing" id="nN5-X2-5zv"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+        </view>
+    </objects>
+</document>

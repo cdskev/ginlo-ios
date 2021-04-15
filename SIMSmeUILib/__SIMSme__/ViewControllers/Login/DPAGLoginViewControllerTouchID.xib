@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DPAGLoginViewControllerTouchID" customModule="SIMSmeUILib" customModuleProvider="target">
+            <connections>
+                <outlet property="passwordContainer" destination="euY-3x-bQg" id="fTO-6e-kdc"/>
+                <outlet property="view" destination="iN0-l3-epB" id="Ec2-5T-aMC"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" placeholderIntrinsicWidth="240" placeholderIntrinsicHeight="128" translatesAutoresizingMaskIntoConstraints="NO" id="Hfh-6C-LNr" customClass="LogoView" customModule="SIMSmeUILib" customModuleProvider="target">
+                    <rect key="frame" x="67.5" y="0.0" width="240" height="128"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="euY-3x-bQg">
+                    <rect key="frame" x="47.5" y="311.5" width="280" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="280" id="S9G-LL-9gy"/>
+                        <constraint firstAttribute="height" constant="44" id="lco-C0-6b8"/>
+                    </constraints>
+                </view>
+                <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="jxq-Um-nxF">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="0.0"/>
+                    <subviews>
+                        <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Launch_Logo_Ginlo" translatesAutoresizingMaskIntoConstraints="NO" id="u1X-lL-gRU">
+                            <rect key="frame" x="-42" y="0.0" width="260" height="146.5"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="u1X-lL-gRU" secondAttribute="height" multiplier="222:125" id="Y56-Xq-Yjg"/>
+                            </constraints>
+                        </imageView>
+                        <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kBH-Ox-W8e">
+                            <rect key="frame" x="0.0" y="0.0" width="176" height="72"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="72" id="2dl-ge-KkL"/>
+                                <constraint firstAttribute="width" constant="176" id="h0F-Cz-gCR"/>
+                            </constraints>
+                        </imageView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="u1X-lL-gRU" firstAttribute="width" secondItem="jxq-Um-nxF" secondAttribute="width" multiplier="0.694" id="i5T-Uh-aY5"/>
+                    </constraints>
+                </stackView>
+            </subviews>
+            <color key="backgroundColor" red="0.95068097114562988" green="0.94655972719192505" blue="0.92157828807830811" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="jxq-Um-nxF" firstAttribute="leading" secondItem="lNj-X8-01M" secondAttribute="leading" id="3MX-tN-Gay"/>
+                <constraint firstItem="euY-3x-bQg" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="8zq-BM-0DF"/>
+                <constraint firstItem="lNj-X8-01M" firstAttribute="trailing" secondItem="jxq-Um-nxF" secondAttribute="trailing" id="Gbz-gS-mak"/>
+                <constraint firstItem="euY-3x-bQg" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="OZt-5q-tQT"/>
+                <constraint firstItem="jxq-Um-nxF" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="OfI-b0-kR1" userLabel="LogoViewConstantTopConstraint - look at the class implementation!" customClass="LogoViewConstantTopConstraint" customModule="SIMSmeUILib"/>
+                <constraint firstItem="Hfh-6C-LNr" firstAttribute="centerX" secondItem="lNj-X8-01M" secondAttribute="centerX" id="gFj-or-xYZ"/>
+                <constraint firstItem="Hfh-6C-LNr" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="sHy-ZQ-nd5" userLabel="LogoViewConstantTopConstraint - look at the class!" customClass="LogoViewConstantTopConstraint" customModule="SIMSmeUILib"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="lNj-X8-01M"/>
+            <point key="canvasLocation" x="319.5" y="315"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="Launch_Logo_Ginlo" width="990" height="720"/>
+    </resources>
+</document>

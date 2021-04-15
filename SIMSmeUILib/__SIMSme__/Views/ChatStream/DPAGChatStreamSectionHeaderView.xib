@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view opaque="NO" contentMode="scaleToFill" id="iN0-l3-epB" customClass="DPAGChatStreamSectionHeaderView" customModule="SIMSmeUILib" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XpN-b7-ZT4">
+                    <rect key="frame" x="158.5" y="8" width="58" height="24"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Ud-sn-NSD">
+                            <rect key="frame" x="8" y="0.0" width="42" height="24"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="9Ud-sn-NSD" secondAttribute="bottom" id="Wuy-qv-sBF"/>
+                        <constraint firstItem="9Ud-sn-NSD" firstAttribute="top" secondItem="XpN-b7-ZT4" secondAttribute="top" id="kbT-Rm-H6y"/>
+                        <constraint firstAttribute="trailing" secondItem="9Ud-sn-NSD" secondAttribute="trailing" priority="999" constant="8" id="oSC-Eb-e47"/>
+                        <constraint firstItem="9Ud-sn-NSD" firstAttribute="leading" secondItem="XpN-b7-ZT4" secondAttribute="leading" priority="999" constant="8" id="qWT-Lo-BN3"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="XpN-b7-ZT4" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="OQk-BF-L7R"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="XpN-b7-ZT4" secondAttribute="trailing" priority="999" constant="16" id="d48-QX-akZ"/>
+                <constraint firstItem="XpN-b7-ZT4" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="vUN-kp-3ea" secondAttribute="leading" priority="999" constant="16" id="keg-xm-gUy"/>
+                <constraint firstAttribute="bottom" secondItem="XpN-b7-ZT4" secondAttribute="bottom" priority="999" constant="8" id="sg4-sq-Ucb"/>
+                <constraint firstItem="XpN-b7-ZT4" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="txY-GW-Saa"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="label" destination="9Ud-sn-NSD" id="QTI-9Z-v6F"/>
+                <outlet property="viewBackground" destination="XpN-b7-ZT4" id="gRp-Bc-dCs"/>
+            </connections>
+            <point key="canvasLocation" x="140" y="14"/>
+        </view>
+    </objects>
+</document>

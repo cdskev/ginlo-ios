@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina5_9" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DPAGDevicesTableViewController" customModule="SIMSmeUILib" customModuleProvider="target">
+            <connections>
+                <outlet property="tableView" destination="BaR-G0-E34" id="EkF-2X-cgx"/>
+                <outlet property="view" destination="iN0-l3-epB" id="WF5-HP-NtG"/>
+                <outlet property="viewButtonAddDevice" destination="swo-aW-G3i" id="7zw-td-mIb"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HFf-UE-L0Q">
+                    <rect key="frame" x="0.0" y="44" width="375" height="768"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="PQk-Rw-EiF">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="768"/>
+                            <subviews>
+                                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="BaR-G0-E34">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="678"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </tableView>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="swo-aW-G3i" customClass="DPAGButtonPrimaryView" customModule="SIMSmeUILib" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="678" width="375" height="90"/>
+                                </view>
+                            </subviews>
+                        </stackView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="PQk-Rw-EiF" firstAttribute="top" secondItem="HFf-UE-L0Q" secondAttribute="top" id="AMy-Zl-4nr"/>
+                        <constraint firstItem="PQk-Rw-EiF" firstAttribute="leading" secondItem="HFf-UE-L0Q" secondAttribute="leading" id="Cjo-uD-WhA"/>
+                        <constraint firstAttribute="bottom" secondItem="PQk-Rw-EiF" secondAttribute="bottom" id="pxl-xt-WOx"/>
+                        <constraint firstAttribute="trailing" secondItem="PQk-Rw-EiF" secondAttribute="trailing" id="rk2-VQ-THA"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="HFf-UE-L0Q" secondAttribute="bottom" id="AS1-pq-PCw"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="HFf-UE-L0Q" secondAttribute="trailing" id="Gnu-us-wRx"/>
+                <constraint firstItem="HFf-UE-L0Q" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="Iju-TV-Xjp"/>
+                <constraint firstItem="HFf-UE-L0Q" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="Wkk-Wz-u3p"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+        </view>
+    </objects>
+</document>

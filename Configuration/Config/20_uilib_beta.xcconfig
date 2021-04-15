@@ -1,0 +1,4 @@
+#include "20_uilib.xcconfig"
+#include "01_application_beta.xcconfig"
+
+// SWIFT_COMPILATION_MODE = wholemodule

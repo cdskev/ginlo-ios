@@ -1,0 +1,40 @@
+//
+//  Prefix header
+//
+//  The contents of this file are implicitly included at the beginning of every source file.
+//
+
+#import <Availability.h>
+
+#ifdef __OBJC__
+#import <Foundation/Foundation.h>
+#endif
+
+#define DPAGLocalizedString(__MSG__, __COMMENT__) [DPAGConstantsGlobal DPAGLocalizedString:__MSG__ comment:__COMMENT__]
+
+#ifndef __IPHONE_8_0
+#warning "This project uses features only available in iOS SDK 8.0 and later."
+#endif
+
+#if __clang__
+#define __PRAGMA_PUSH_NO_PERFORM_SELECTOR_WARNINGS _Pragma("clang diagnostic push") _Pragma("clang diagnostic ignored \"-Warc-performSelector-leaks\"")
+#define __PRAGMA_POP_NO_PERFORM_SELECTOR_WARNINGS _Pragma("clang diagnostic pop")
+#else
+#define __PRAGMA_PUSH_NO_PERFORM_SELECTOR_WARNINGS
+#define __PRAGMA_POP_NO_PERFORM_SELECTOR_WARNINGS
+#endif
+
+#define metamacro_concat(A, B) A ## B
+#define weakify(VAR) \
+autoreleasepool {;} \
+__weak __typeof__(VAR) metamacro_concat(_weak_, VAR) = (VAR)
+#define strongify(VAR) \
+autoreleasepool {;} \
+_Pragma("clang diagnostic push") \
+_Pragma("clang diagnostic ignored \"-Wshadow\"") \
+__strong __typeof__(VAR) VAR = metamacro_concat(_weak_, VAR) \
+_Pragma("clang diagnostic pop")
+
+#define LOG_TIME(__message) \
+for (CFAbsoluteTime startTime##__LINE__ = CFAbsoluteTimeGetCurrent(), endTime##__LINE__ = 0.0; endTime##__LINE__ == 0.0; \
+NSLog(@"'%@' completed in %.6fs", (__message), (endTime##__LINE__ = CFAbsoluteTimeGetCurrent()) - startTime##__LINE__))

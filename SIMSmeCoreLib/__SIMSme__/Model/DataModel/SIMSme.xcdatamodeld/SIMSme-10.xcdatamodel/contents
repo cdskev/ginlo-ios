@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6252" systemVersion="14B25" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="SIMSAccount" representedClassName="SIMSAccount" syncable="YES">
+        <attribute name="attribute" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="guid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="hasChanged" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="key_guid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="phone" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="publicKey" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="state" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="checksumRelationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSChecksum" inverseName="accountRelationship" inverseEntity="SIMSChecksum" syncable="YES"/>
+        <relationship name="keyRelationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSKey" inverseName="accountRelationship" inverseEntity="SIMSKey" syncable="YES"/>
+    </entity>
+    <entity name="SIMSChecksum" representedClassName="SIMSChecksum" syncable="YES">
+        <attribute name="guid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="local_checksum" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="accountRelationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSAccount" inverseName="checksumRelationship" inverseEntity="SIMSAccount" syncable="YES"/>
+        <relationship name="deviceRelationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSDevice" inverseName="checksumRelationship" inverseEntity="SIMSDevice" syncable="YES"/>
+        <relationship name="keyRelationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSKey" inverseName="checksumRelationship" inverseEntity="SIMSKey" syncable="YES"/>
+    </entity>
+    <entity name="SIMSContact" representedClassName="SIMSContact" syncable="YES">
+        <attribute name="accountGuid" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="attribute" attributeType="String" syncable="YES"/>
+        <attribute name="createdAt" attributeType="Date" syncable="YES"/>
+        <attribute name="deleted" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="displayName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="phone" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="publicKey" attributeType="String" syncable="YES"/>
+        <attribute name="recordRef" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="statusMessage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="statusMessageCreatedAt" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="updatedAt" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="invalidatedStreams" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SIMSStream" syncable="YES"/>
+        <relationship name="keyRelationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSKey" syncable="YES"/>
+        <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="SIMSPrivateMessage" inverseName="contact" inverseEntity="SIMSPrivateMessage" syncable="YES"/>
+        <relationship name="stream" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSStream" inverseName="contact" inverseEntity="SIMSStream" syncable="YES"/>
+    </entity>
+    <entity name="SIMSDevice" representedClassName="SIMSDevice" syncable="YES">
+        <attribute name="account_guid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="attribute" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="guid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="key_guid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ownDevice" optional="YES" attributeType="Boolean" defaultValueString="0" syncable="YES"/>
+        <attribute name="pass_token" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="public_key" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="checksumRelationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSChecksum" inverseName="deviceRelationship" inverseEntity="SIMSChecksum" syncable="YES"/>
+        <relationship name="keyRelationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSKey" inverseName="deviceRelationship" inverseEntity="SIMSKey" syncable="YES"/>
+    </entity>
+    <entity name="SIMSGroupMember" representedClassName="SIMSGroupMember" syncable="YES">
+        <attribute name="accountGuid" attributeType="String" syncable="YES"/>
+        <relationship name="contact" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSContact" syncable="YES"/>
+        <relationship name="groups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SIMSGroupStream" inverseName="members" inverseEntity="SIMSGroupStream" syncable="YES"/>
+    </entity>
+    <entity name="SIMSGroupMessage" representedClassName="SIMSGroupMessage" syncable="YES">
+        <attribute name="attachment" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="attachmentHash" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="data" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dataSignature" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dateSendLocal" attributeType="Date" indexed="YES" syncable="YES"/>
+        <attribute name="dateSendServer" attributeType="Date" indexed="YES" elementID="dateSendServerAttribute" syncable="YES"/>
+        <attribute name="errorType" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="fromAccountGuid" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="guid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="hashes" optional="YES" transient="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isSystemMessage" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="sendingState" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="toGroupGuid" attributeType="String" indexed="YES" syncable="YES"/>
+        <relationship name="stream" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSGroupStream" inverseName="messages" inverseEntity="SIMSGroupStream" syncable="YES"/>
+    </entity>
+    <entity name="SIMSGroupStream" representedClassName="SIMSGroupStream" syncable="YES">
+        <attribute name="attribute" attributeType="String" syncable="YES"/>
+        <attribute name="createdAt" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="draft" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="guid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isConfirmed" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="lastMessageDate" attributeType="Date" indexed="YES" syncable="YES"/>
+        <attribute name="newMessagesCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="ownerGuid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="wasDeleted" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <relationship name="keyRelationship" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSKey" syncable="YES"/>
+        <relationship name="members" toMany="YES" deletionRule="Nullify" destinationEntity="SIMSGroupMember" inverseName="groups" inverseEntity="SIMSGroupMember" syncable="YES"/>
+        <relationship name="messages" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="SIMSGroupMessage" inverseName="stream" inverseEntity="SIMSGroupMessage" syncable="YES"/>
+    </entity>
+    <entity name="SIMSKey" representedClassName="SIMSKey" syncable="YES">
+        <attribute name="aes_key" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="device_guid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="guid" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="accountRelationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSAccount" inverseName="keyRelationship" inverseEntity="SIMSAccount" syncable="YES"/>
+        <relationship name="checksumRelationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSChecksum" inverseName="keyRelationship" inverseEntity="SIMSChecksum" syncable="YES"/>
+        <relationship name="deviceRelationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSDevice" inverseName="keyRelationship" inverseEntity="SIMSDevice" syncable="YES"/>
+    </entity>
+    <entity name="SIMSPrivateInternalMessage" representedClassName="" syncable="YES">
+        <attribute name="data" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dataSignature" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dateSend" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="errorType" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="fromAccountGuid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="fromKey" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="guid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="hashesh" optional="YES" transient="YES" attributeType="String" syncable="YES"/>
+        <attribute name="toAccountGuid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="toKey" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="SIMSPrivateMessage" representedClassName="SIMSPrivateMessage" syncable="YES">
+        <attribute name="attachment" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="attachmentHash" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="data" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dataSignature" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dateDownloaded" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="dateRead" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="dateSendLocal" attributeType="Date" indexed="YES" syncable="YES"/>
+        <attribute name="dateSendServer" attributeType="Date" indexed="YES" elementID="dateSendServerAttribute" syncable="YES"/>
+        <attribute name="errorType" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="fromAccountGuid" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="fromKey" attributeType="String" syncable="YES"/>
+        <attribute name="guid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="hashes" optional="YES" transient="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sendingState" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="toAccountGuid" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="toKey" attributeType="String" syncable="YES"/>
+        <relationship name="contact" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSContact" inverseName="messages" inverseEntity="SIMSContact" syncable="YES"/>
+        <relationship name="stream" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSStream" inverseName="messages" inverseEntity="SIMSStream" syncable="YES"/>
+    </entity>
+    <entity name="SIMSStream" representedClassName="SIMSStream" syncable="YES">
+        <attribute name="contactName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="contactPhone" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="draft" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="guid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastMessageDate" attributeType="Date" indexed="YES" syncable="YES"/>
+        <attribute name="newMessagesCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="type" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <relationship name="contact" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSContact" inverseName="stream" inverseEntity="SIMSContact" syncable="YES"/>
+        <relationship name="keyRelationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SIMSKey" syncable="YES"/>
+        <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="SIMSPrivateMessage" inverseName="stream" inverseEntity="SIMSPrivateMessage" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="SIMSAccount" positionX="367" positionY="-144" width="128" height="180"/>
+        <element name="SIMSChecksum" positionX="-387" positionY="-144" width="128" height="120"/>
+        <element name="SIMSContact" positionX="45" positionY="123" width="128" height="268"/>
+        <element name="SIMSDevice" positionX="-117" positionY="279" width="128" height="180"/>
+        <element name="SIMSGroupMember" positionX="403" positionY="45" width="128" height="88"/>
+        <element name="SIMSGroupMessage" positionX="223" positionY="231" width="128" height="255"/>
+        <element name="SIMSGroupStream" positionX="-297" positionY="210" width="128" height="223"/>
+        <element name="SIMSKey" positionX="52" positionY="-117" width="128" height="133"/>
+        <element name="SIMSPrivateInternalMessage" positionX="106" positionY="-99" width="128" height="195"/>
+        <element name="SIMSPrivateMessage" positionX="-153" positionY="-162" width="128" height="315"/>
+        <element name="SIMSStream" positionX="-459" positionY="-9" width="128" height="195"/>
+    </elements>
+</model>

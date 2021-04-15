@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DPAGAboutSimsMeViewController">
+            <connections>
+                <outlet property="appLabel" destination="8l9-fu-eJH" id="jep-ed-Rjp"/>
+                <outlet property="appTextLabel" destination="49s-ih-GI4" id="C35-gS-pHa"/>
+                <outlet property="highLabel" destination="GYG-lH-Cyx" id="PjO-lY-6a8"/>
+                <outlet property="highTextLabel" destination="Jeh-J6-VnA" id="xcK-Sg-KB1"/>
+                <outlet property="lowLabel" destination="ZBw-Cj-Rmw" id="MJI-FU-7GO"/>
+                <outlet property="lowTextLabel" destination="nRZ-OF-GvG" id="mLJ-IR-z84"/>
+                <outlet property="middleLabel" destination="3dv-cf-99s" id="8Is-pm-KsG"/>
+                <outlet property="middleTextLabel" destination="oAF-De-HiU" id="uPd-Ph-BGD"/>
+                <outlet property="readImageView" destination="3Aw-le-A56" id="iZ2-uH-0xA"/>
+                <outlet property="readLabel" destination="63V-aq-qt6" id="CAQ-4j-HFw"/>
+                <outlet property="receivedImageView" destination="Fgw-Si-zt4" id="qRS-4t-jcL"/>
+                <outlet property="receivedLabel" destination="YX1-qC-qHK" id="nbH-lp-h2z"/>
+                <outlet property="scrollView" destination="idY-jO-QXo" id="vuP-7i-zlw"/>
+                <outlet property="secureLabel" destination="jap-v3-4Fz" id="EeV-z9-q6M"/>
+                <outlet property="secureTextLabel" destination="byq-kv-Ono" id="wFe-5A-rgR"/>
+                <outlet property="sentImageView" destination="EoJ-Uc-UFy" id="P8l-nL-AbB"/>
+                <outlet property="sentLabel" destination="qa4-70-GmX" id="TRe-hq-OXR"/>
+                <outlet property="statusLabel" destination="hWQ-ww-jtE" id="UMm-zb-EfK"/>
+                <outlet property="statusTextLabel" destination="EoG-lE-0Wl" id="4AX-K1-bFP"/>
+                <outlet property="view" destination="1" id="3"/>
+                <outlet property="viewConfidenceStateHigh" destination="ZEO-3H-Yph" id="exL-Og-vhx"/>
+                <outlet property="viewConfidenceStateLow" destination="4N2-vA-cYi" id="YYi-iI-BAs"/>
+                <outlet property="viewConfidenceStateMiddle" destination="IZx-kf-ifE" id="7jX-Ho-zKy"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="1">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="w5v-wN-rTb">
+                    <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                    <subviews>
+                        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="idY-jO-QXo">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                            <subviews>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Uoc-Li-oh8">
+                                    <rect key="frame" x="20" y="20" width="335" height="411"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="yy8-Qx-bwx">
+                                            <rect key="frame" x="0.0" y="0.0" width="335" height="45.5"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Text über die App" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8l9-fu-eJH" customClass="InfoLabel" customModule="SIMSmeUILib" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="0.0" width="335" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Apptext" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="49s-ih-GI4" customClass="InfoSubLabel" customModule="SIMSmeUILib" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="28.5" width="335" height="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </stackView>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="4XX-VT-Yy8">
+                                            <rect key="frame" x="0.0" y="65.5" width="335" height="219.5"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="KlQ-fT-tXI">
+                                                    <rect key="frame" x="0.0" y="0.0" width="335" height="45.5"/>
+                                                    <subviews>
+                                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="So sicher ist Deine Kommunikation" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jap-v3-4Fz" customClass="InfoLabel" customModule="SIMSmeUILib" customModuleProvider="target">
+                                                            <rect key="frame" x="0.0" y="0.0" width="335" height="20.5"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sichertext" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="byq-kv-Ono" customClass="InfoSubLabel" customModule="SIMSmeUILib" customModuleProvider="target">
+                                                            <rect key="frame" x="0.0" y="28.5" width="335" height="17"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
+                                                <stackView opaque="NO" contentMode="scaleToFill" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="wiU-qw-sbD">
+                                                    <rect key="frame" x="0.0" y="53.5" width="335" height="50"/>
+                                                    <subviews>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZEO-3H-Yph">
+                                                            <rect key="frame" x="0.0" y="0.0" width="3" height="50"/>
+                                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="3" id="Oey-WV-FMS"/>
+                                                            </constraints>
+                                                        </view>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="ohR-Kc-fbx">
+                                                            <rect key="frame" x="11" y="0.0" width="324" height="50"/>
+                                                            <subviews>
+                                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hoch" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GYG-lH-Cyx" customClass="InfoLabel" customModule="SIMSmeUILib" customModuleProvider="target">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="324" height="25"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hochtext" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jeh-J6-VnA" customClass="InfoSubLabel" customModule="SIMSmeUILib" customModuleProvider="target">
+                                                                    <rect key="frame" x="0.0" y="33" width="324" height="17"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                        </stackView>
+                                                    </subviews>
+                                                </stackView>
+                                                <stackView opaque="NO" contentMode="scaleToFill" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="wOO-8P-ubX">
+                                                    <rect key="frame" x="0.0" y="111.5" width="335" height="50"/>
+                                                    <subviews>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IZx-kf-ifE">
+                                                            <rect key="frame" x="0.0" y="0.0" width="3" height="50"/>
+                                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="3" id="Vd2-ei-Qzd"/>
+                                                            </constraints>
+                                                        </view>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="PA4-QS-NRy">
+                                                            <rect key="frame" x="11" y="0.0" width="324" height="50"/>
+                                                            <subviews>
+                                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mittel" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3dv-cf-99s" customClass="InfoLabel" customModule="SIMSmeUILib" customModuleProvider="target">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="324" height="25"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mitteltext" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oAF-De-HiU" customClass="InfoSubLabel" customModule="SIMSmeUILib" customModuleProvider="target">
+                                                                    <rect key="frame" x="0.0" y="33" width="324" height="17"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                        </stackView>
+                                                    </subviews>
+                                                </stackView>
+                                                <stackView opaque="NO" contentMode="scaleToFill" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="vE0-Ix-gaN">
+                                                    <rect key="frame" x="0.0" y="169.5" width="335" height="50"/>
+                                                    <subviews>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4N2-vA-cYi">
+                                                            <rect key="frame" x="0.0" y="0.0" width="3" height="50"/>
+                                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="3" id="ngv-Ub-1ns"/>
+                                                            </constraints>
+                                                        </view>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="7Ad-gF-Spm">
+                                                            <rect key="frame" x="11" y="0.0" width="324" height="50"/>
+                                                            <subviews>
+                                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Niedrig" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZBw-Cj-Rmw" customClass="InfoLabel" customModule="SIMSmeUILib" customModuleProvider="target">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="324" height="25"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Niedrigtext" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nRZ-OF-GvG" customClass="InfoSubLabel" customModule="SIMSmeUILib" customModuleProvider="target">
+                                                                    <rect key="frame" x="0.0" y="33" width="324" height="17"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                        </stackView>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                        </stackView>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="tUh-PA-7eP">
+                                            <rect key="frame" x="0.0" y="305" width="335" height="106"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sendestatus" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hWQ-ww-jtE" customClass="InfoLabel" customModule="SIMSmeUILib" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="0.0" width="335" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sendestatustext" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EoG-lE-0Wl" customClass="InfoSubLabel" customModule="SIMSmeUILib" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="28.5" width="335" height="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="zAg-lw-bME">
+                                                    <rect key="frame" x="0.0" y="53.5" width="335" height="14.5"/>
+                                                    <subviews>
+                                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="versendet" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qa4-70-GmX" customClass="InfoSubLabel" customModule="SIMSmeUILib" customModuleProvider="target">
+                                                            <rect key="frame" x="0.0" y="0.0" width="106.5" height="14.5"/>
+                                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="zugestellt" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YX1-qC-qHK" customClass="InfoSubLabel" customModule="SIMSmeUILib" customModuleProvider="target">
+                                                            <rect key="frame" x="114.5" y="0.0" width="106" height="14.5"/>
+                                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="gelesen" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="63V-aq-qt6" customClass="InfoSubLabel" customModule="SIMSmeUILib" customModuleProvider="target">
+                                                            <rect key="frame" x="228.5" y="0.0" width="106.5" height="14.5"/>
+                                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
+                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="7v6-DP-o2E">
+                                                    <rect key="frame" x="0.0" y="76" width="335" height="30"/>
+                                                    <subviews>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MessageStateSentAbout" translatesAutoresizingMaskIntoConstraints="NO" id="EoJ-Uc-UFy">
+                                                            <rect key="frame" x="0.0" y="0.0" width="106.5" height="30"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="30" id="j9a-Oz-2oB"/>
+                                                            </constraints>
+                                                        </imageView>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MessageStateReceivedAbout" translatesAutoresizingMaskIntoConstraints="NO" id="Fgw-Si-zt4">
+                                                            <rect key="frame" x="114.5" y="0.0" width="106" height="30"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="30" id="LrV-aj-YBC"/>
+                                                            </constraints>
+                                                        </imageView>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MessageStateReadAbout" translatesAutoresizingMaskIntoConstraints="NO" id="3Aw-le-A56">
+                                                            <rect key="frame" x="228.5" y="0.0" width="106.5" height="30"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="30" id="weH-r9-oaK"/>
+                                                            </constraints>
+                                                        </imageView>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
+                                </stackView>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="Uoc-Li-oh8" firstAttribute="centerX" secondItem="idY-jO-QXo" secondAttribute="centerX" id="9Qd-nT-EO8"/>
+                                <constraint firstAttribute="trailing" secondItem="Uoc-Li-oh8" secondAttribute="trailing" constant="20" symbolic="YES" id="G7l-NJ-DCJ"/>
+                                <constraint firstAttribute="bottom" secondItem="Uoc-Li-oh8" secondAttribute="bottom" constant="20" symbolic="YES" id="NBR-N0-sRk"/>
+                                <constraint firstItem="Uoc-Li-oh8" firstAttribute="leading" secondItem="idY-jO-QXo" secondAttribute="leading" constant="20" symbolic="YES" id="ON5-nU-zfJ"/>
+                                <constraint firstItem="Uoc-Li-oh8" firstAttribute="top" secondItem="idY-jO-QXo" secondAttribute="top" constant="20" symbolic="YES" id="uTl-ey-GFU"/>
+                            </constraints>
+                        </scrollView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="idY-jO-QXo" firstAttribute="top" secondItem="w5v-wN-rTb" secondAttribute="top" id="0lV-UM-7nn"/>
+                        <constraint firstAttribute="centerX" secondItem="idY-jO-QXo" secondAttribute="centerX" id="73Z-IA-gHd"/>
+                        <constraint firstAttribute="bottom" secondItem="idY-jO-QXo" secondAttribute="bottom" id="F8T-hv-xwf"/>
+                        <constraint firstItem="idY-jO-QXo" firstAttribute="leading" secondItem="w5v-wN-rTb" secondAttribute="leading" id="lfB-q1-qek"/>
+                        <constraint firstAttribute="trailing" secondItem="idY-jO-QXo" secondAttribute="trailing" id="wua-t1-2Kz"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <constraints>
+                <constraint firstItem="1bW-sg-c26" firstAttribute="bottom" secondItem="w5v-wN-rTb" secondAttribute="bottom" id="595-yX-ZIt"/>
+                <constraint firstItem="1bW-sg-c26" firstAttribute="leading" secondItem="w5v-wN-rTb" secondAttribute="leading" id="STY-Oc-vOK"/>
+                <constraint firstItem="1bW-sg-c26" firstAttribute="top" secondItem="w5v-wN-rTb" secondAttribute="top" id="Vie-Ru-zkn"/>
+                <constraint firstItem="1bW-sg-c26" firstAttribute="trailing" secondItem="w5v-wN-rTb" secondAttribute="trailing" id="eiU-iX-8Xd"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="1bW-sg-c26"/>
+            <point key="canvasLocation" x="328" y="309"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="MessageStateReadAbout" width="30" height="30"/>
+        <image name="MessageStateReceivedAbout" width="30" height="30"/>
+        <image name="MessageStateSentAbout" width="30" height="30"/>
+    </resources>
+</document>
