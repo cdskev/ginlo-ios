@@ -310,18 +310,37 @@ class DPAGShareExtSendingViewController: DPAGReceiverSelectionViewController {
         for inputItem in extensionContext.inputItems {
             guard let extensionItem = inputItem as? NSExtensionItem else { continue }
             guard let attachments = extensionItem.attachments, attachments.count > 0 else { continue }
+            // If we receive a mixed-type item (multi-attachment)
+            // and one of them is text, we ignore that one
+            // if any of the other attachments is a supported type
+            // otherwise, we send the text-attachment
+            var textItemProvider: NSItemProvider?
             for attachment in attachments {
                 let itemProvider = attachment
                 attachmentCountToLoad += 1
                 if itemProvider.hasItemConformingToTypeIdentifier(kUTTypeImage as String) {
+                    textItemProvider = nil
                     self.loadImage(itemProvider)
                 } else if itemProvider.hasItemConformingToTypeIdentifier(kUTTypeMovie as String) {
+                    textItemProvider = nil
                     self.loadVideo(itemProvider)
                 } else if itemProvider.hasItemConformingToTypeIdentifier(kUTTypeFileURL as String) {
+                    textItemProvider = nil
                     self.loadAttachment(itemProvider)
                 } else if itemProvider.hasItemConformingToTypeIdentifier("public.url") {
+                    textItemProvider = nil
                     self.loadURL(itemProvider)
+                } else if itemProvider.hasItemConformingToTypeIdentifier("public.text") {
+                    if (attachments.count == 1) {
+                        self.loadText(itemProvider)
+                    } else {
+                        // we remember this one here for later use (in case there was no other supported attachment in this share-item)
+                        textItemProvider = itemProvider
+                    }
                 }
+            }
+            if let textItemProvider = textItemProvider {
+                self.loadText(textItemProvider)
             }
         }
         self.attachmentCountToLoad = attachmentCountToLoad
@@ -379,6 +398,15 @@ class DPAGShareExtSendingViewController: DPAGReceiverSelectionViewController {
         itemProvider.loadItem(forTypeIdentifier: "public.url" as String, options: nil) { [weak self] item, error in
             if let browserUrl = item as? URL {
                 self?.textToSend = browserUrl.absoluteString
+                self?.checkSendMedia()
+            }
+        }
+    }
+    
+    private func loadText(_ itemProvider: NSItemProvider) { //
+        itemProvider.loadItem(forTypeIdentifier: "public.text" as String, options: nil) { [weak self] item, error in
+            if let text = item as? String {
+                self?.textToSend = text
                 self?.checkSendMedia()
             }
         }
