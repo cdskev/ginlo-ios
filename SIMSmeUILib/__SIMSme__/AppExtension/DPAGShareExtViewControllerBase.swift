@@ -321,6 +321,10 @@ class DPAGShareExtSendingViewController: DPAGReceiverSelectionViewController {
                     self.loadAttachment(itemProvider)
                 } else if itemProvider.hasItemConformingToTypeIdentifier("public.url") {
                     self.loadURL(itemProvider)
+                } else if itemProvider.hasItemConformingToTypeIdentifier("public.text") {
+                    if (attachments.count == 1) {
+                        self.loadText(itemProvider)
+                    }
                 }
             }
         }
@@ -379,6 +383,15 @@ class DPAGShareExtSendingViewController: DPAGReceiverSelectionViewController {
         itemProvider.loadItem(forTypeIdentifier: "public.url" as String, options: nil) { [weak self] item, error in
             if let browserUrl = item as? URL {
                 self?.textToSend = browserUrl.absoluteString
+                self?.checkSendMedia()
+            }
+        }
+    }
+    
+    private func loadText(_ itemProvider: NSItemProvider) { //
+        itemProvider.loadItem(forTypeIdentifier: "public.text" as String, options: nil) { [weak self] item, error in
+            if let text = item as? String {
+                self?.textToSend = text
                 self?.checkSendMedia()
             }
         }
