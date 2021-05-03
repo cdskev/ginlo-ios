@@ -846,7 +846,6 @@ Please create your first backup by tapping \"%@\". You can then set an interval,
 "settings.companyPhoneNumber.askvalidate" = "Request activation code";
 "settings.companydetails" = "Site notice";
 "settings.companydetails.URL" = "https://app-help.ginlo.net/en/imprint";
-"settings.companydetails.URL_dpag" = "https://app-help.ginlo.net/dp/en/imprint";
 "settings.companydetails.description" = "Company Name:
 
 ginlo.net Gesellschaft für Datenkommunikationsdienste mbH • Rupert-Mayer-Straße 44 • 81379 München
@@ -1150,10 +1149,8 @@ https://ginlo.net/join";
 "settings.companyprofile.contactsoverview.searchButton.title" = "Start search";
 "settings.termsandcondition" = "Terms and Conditions";
 "settings.termsandcondition.url" = "https://app-help.ginlo.net/consumer/en/terms";
-"settings.termsandcondition_dpag.url" = "https://app-help.ginlo.net/dp/consumer/en/terms";
 "settings.privacy" = "Privacy Policy";
 "settings.privacy.url" = "https://app-help.ginlo.net/consumer/en/privacy";
-"settings.privacy_dpag.url" = "https://app-help.ginlo.net/dp/consumer/en/privacy";
 "settings.faq" = "FAQs";
 "settings.faq.url" = "https://app-help.ginlo.net/consumer/en/support";
 "companyAdressbook.waitForCompanyIndexInfo" = "Waiting for company directory access";
