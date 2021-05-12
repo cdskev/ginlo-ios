@@ -87,7 +87,7 @@ extension DPAGInfoOverviewViewController: UITableViewDelegate {
             case .about:
                 controller = DPAGApplicationFacadeUISettings.aboutSimsMeVC()
             case .privacy:
-                let urlPrivacy = DPAGLocalizedString("settings.privacy_dpag.url")
+                let urlPrivacy = DPAGLocalizedString("settings.privacy.url")
                 AppConfig.openURL(URL(string: urlPrivacy))
             case .terms:
                 let urlTermsAndConditions = DPAGLocalizedString("settings.termsandcondition.url")
