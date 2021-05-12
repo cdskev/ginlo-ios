@@ -819,9 +819,7 @@
 "settings.companyPhoneNumber.askvalidate" = "Bestätigungsscode anfordern";
 "settings.companydetails" = "Impressum";
 "settings.companydetails.URL" = "https://app-help.ginlo.net/de/imprint";
-"settings.companydetails.URL_dpag" = "https://app-help.ginlo.net/dp/de/imprint";
 "settings.companydetails.description" = "Firmenname:\n\ginlo.net Gesellschaft für Datenkommunikationsdienste mbH\n\Geschäftsführer: Karsten Schramm\n\nHandelsregister:\n\nAmtsgericht München HRB 254209\n\nUSt-IdNr.:\n\nDE327921953 \n\nAddresse:\n\nRupert-Mayer-Str. 44\nD-81379 Munich\nE-Mail: contact@ginlo.net\nTel.: \n+49 89 74037946";
-"settings.companydetails.description_dpag" = "Firmenname:\n\nDeutsche Post AG\n\nVertreten durch den Vorstand:\n\nDr. Frank Appel, Vorsitz\nKen Allen\nJohn Gilbert\nMelanie Kreis\nDr. Tobias Meyer\nDr. Thomas Ogilvie\nJohn Pearson\nTim Scharwath\n\nAufsichtsratsvorsitzender:\n\nDr. Nikolaus von Bomhard\n\nHandelsregister-Nr.:\n\nRegistergericht Bonn HRB 6792\n\nUSt-IdNr.:\n\nDE 169838187\n\nAdresse:\n\nCharles-de-Gaulle-Str. 20\n53113 Bonn\nTelefon: +49 (0)228 182-0\nE-Mail: impressum.brief[at]deutschepost.de";
 "settings.companydetails.title" = "Impressum";
 "settings.companyemail.askafterinstall" = "E-Mail-Adresse verknüpfen & Kollegen finden";
 "settings.companyemail.askafterinstall.hint" = "Fügen Sie Ihre E-Mail-Adresse zum Verzeichnis Ihres Unternehmens hinzu, um Kollegen mit E-Mail-Adressen desselben Unternehmens zu finden. Die Daten liegen uns zu keinem Zeitpunkt im Klartext vor.";
@@ -1115,10 +1113,8 @@
 "settings.companyprofile.contactsoverview.searchButton.title" = "Suche starten";
 "settings.termsandcondition" = "Nutzungsbedingungen";
 "settings.termsandcondition.url" = "https://app-help.ginlo.net/consumer/de/terms";
-"settings.termsandcondition_dpag.url" = "https://app-help.ginlo.net/dp/consumer/de/terms";
 "settings.privacy" = "Datenschutzhinweise";
 "settings.privacy.url" = "https://app-help.ginlo.net/consumer/de/privacy";
-"settings.privacy_dpag.url" = "https://app-help.ginlo.net/dp/consumer/de/privacy";
 "settings.faq" = "FAQs";
 "settings.faq.url" = "https://app-help.ginlo.net/consumer/de/support";
 "companyAdressbook.waitForCompanyIndexInfo" = "Warte auf Firmenverzeichniszugang";

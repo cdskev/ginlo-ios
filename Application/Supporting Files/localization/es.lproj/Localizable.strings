@@ -819,9 +819,7 @@
 "settings.companyPhoneNumber.askvalidate" = "Request confirmation code";
 "settings.companydetails" = "Aviso legal";
 "settings.companydetails.URL" = "https://app-help.ginlo.net/en/imprint";
-"settings.companydetails.URL_dpag" = "https://app-help.ginlo.net/dp/en/imprint";
 "settings.companydetails.description" = "Company Name:\n\ginlo.net Gesellschaft für Datenkommunikationsdienste mbH\n\nManaging Director: Karsten Schramm\n\nCommercial register:\n\nRegistration Court Munich: HRB 254209\n\nVAT ID:\n\nDE327921953 \n\nAddress:\n\nRupert-Mayer-Str. 44\nD-81379 Munich\nE-mail: contact@ginlo.net\nPhone: \n+49 89 74037946";
-"settings.companydetails.description_dpag" = "Company name:\n\nDeutsche Post AG\n\nRepresented by the Board of Management:\n\nDr. Frank Appel, Chairman\nKen Allen\nJohn Gilbert\nMelanie Kreis\nDr. Tobias Meyer\nDr. Thomas Ogilvie\nJohn Pearson\nTim Scharwath\n\nChairman of the Supervisory Board:\n\nDr. Nikolaus von Bomhard\n\nCommercial register:\nRegistry Court Bonn HRB 6792\n\nVAT identification number:\n\nDE 169838187\n\nAddress:\n\nCharles-de-Gaulle-Str. 20\n53113 Bonn Germany\nPhone: +49 228 182-0\nE-mail: impressum.brief[at]deutschepost.de";
 "settings.companydetails.title" = "Aviso legal";
 "settings.companyemail.askafterinstall" = "Link E-Mail Address & Find Colleagues";
 "settings.companyemail.askafterinstall.hint" = "Add your e-mail address to your company's e-mail directory to find colleagues with e-mail addresses from the same company. We never access your details in plain text.";
@@ -1115,10 +1113,8 @@
 "settings.companyprofile.contactsoverview.searchButton.title" = "Iniciar búsqueda";
 "settings.termsandcondition" = "Terms of Use";
 "settings.termsandcondition.url" = "https://app-help.ginlo.net/consumer/en/terms";
-"settings.termsandcondition_dpag.url" = "https://app-help.ginlo.net/dp/consumer/en/terms";
 "settings.privacy" = "Privacy Policy";
 "settings.privacy.url" = "https://app-help.ginlo.net/consumer/en/privacy";
-"settings.privacy_dpag.url" = "https://app-help.ginlo.net/dp/consumer/en/privacy";
 "settings.faq" = "FAQs";
 "settings.faq.url" = "https://app-help.ginlo.net/consumer/en/support";
 "companyAdressbook.waitForCompanyIndexInfo" = "Waiting for company directory access";
