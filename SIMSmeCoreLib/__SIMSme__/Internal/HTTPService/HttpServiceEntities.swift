@@ -37,6 +37,10 @@ class DPAGHttpServiceRequestBase {
     var authenticate: DPAGServerAuthentication = .standard
     var responseBlock: DPAGServiceResponseBlock?
     var timeout: TimeInterval?
+    
+    func clearParameters() {
+        self.parametersInternal.removeAll()
+    }
 }
 
 class DPAGHttpServiceRequest: DPAGHttpServiceRequestBase {

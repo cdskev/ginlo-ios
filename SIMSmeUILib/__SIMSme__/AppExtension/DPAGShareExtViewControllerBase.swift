@@ -312,8 +312,8 @@ class DPAGShareExtSendingViewController: DPAGReceiverSelectionViewController {
             guard let attachments = extensionItem.attachments, attachments.count > 0 else { continue }
             // If we receive a mixed-type item (multi-attachment)
             // and one of them is text, we ignore that one
-            // if any of the other attachments is a supported type
-            // otherwise, we send the text-attachment
+            // if any of the other attachments is a supported type.
+            // Otherwise we send the text-attachment
             var textItemProvider: NSItemProvider?
             for attachment in attachments {
                 let itemProvider = attachment
@@ -331,7 +331,7 @@ class DPAGShareExtSendingViewController: DPAGReceiverSelectionViewController {
                     textItemProvider = nil
                     self.loadURL(itemProvider)
                 } else if itemProvider.hasItemConformingToTypeIdentifier("public.text") {
-                    if (attachments.count == 1) {
+                    if attachments.count == 1 {
                         self.loadText(itemProvider)
                     } else {
                         // we remember this one here for later use (in case there was no other supported attachment in this share-item)

@@ -507,6 +507,7 @@ class DPAGSendMessageWorker: NSObject, DPAGSendMessageWorkerProtocol {
         }
     }
 
+    // IMDAT: SENDMESSAGE
     private func sendMessage(_ contents: [Any], recipients: [DPAGSendMessageRecipient], sendMessageOptions sendOptions: DPAGSendMessageSendOptions?, featureSet: String?, sendMessageInfoBlock: (_ contentObject: Any, _ recipient: String) -> (sendMessageInfo: DPAGSendMessageInfo?, errorMessage: String?), response serviceResponseBlock: DPAGServiceResponseBlock?) {
         do {
             var msgInstances = [DPAGSendMessageWorkerInstance]()

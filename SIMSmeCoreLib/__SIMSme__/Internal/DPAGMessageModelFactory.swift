@@ -241,7 +241,9 @@ class DPAGMessageModelFactory: DPAGMessageModelFactoryProtocol {
         guard let encMessageData = try CryptoHelperEncrypter.encrypt(string: jsonString, withAesKey: config.aesKeyXML) else { return nil }
         var encAttachment: String?
         if let attachment = info.attachment {
+            NSLog("IMDAT::Working on Encryption")
             encAttachment = try CryptoHelperEncrypter.encrypt(data: attachment, withAesKey: config.aesKeyXML)
+            NSLog("IMDAT::Working on Encryption::CONTINUING")
         }
         if let outgoingMessageToSend = info.outgoingMessage as? SIMSMessageToSendPrivate {
             self.configureOutgoingMessageToSend(outgoingMessageToSend, recipient: info.recipient, config: config, encMessageData: encMessageData, encAttachment: encAttachment, attachmentIsInternalCopy: info.sendOptions?.attachmentIsInternalCopy ?? false, featureSet: info.featureSet, in: info.localContext)

@@ -414,6 +414,7 @@ public struct CryptoHelperEncrypter {
         return DPAGEncryptionGCM(key: randomKey, iv: iv, aad: aad, authTag: authTag, encryptedString: encryptedString)
     }
 
+    // TODO: Fix it here ATT-SIZE
     static func encrypt(data: Data, withAesKeyDict dict: [AnyHashable: Any]) throws -> String {
         guard dict.isEmpty == false, data.isEmpty == false else {
             throw DPAGErrorCrypto.errEncryption("dict.isEmpty || data.isEmpty")

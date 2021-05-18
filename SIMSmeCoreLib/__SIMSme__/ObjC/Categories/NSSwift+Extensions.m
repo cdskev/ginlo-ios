@@ -9,7 +9,11 @@
 #import "NSSwift+Extensions.h"
 
 #import <zlib.h>
+#import <stdlib.h>
 #import <MobileCoreServices/MobileCoreServices.h>
+
+// https://zlib.net/zlib_how.html
+#define CHUNK 256 * 1024
 
 @implementation DPAGHelper
 
@@ -179,6 +183,106 @@
     deflateEnd(&zlibStreamStruct);
     [compressedData setLength: zlibStreamStruct.total_out];
 
+    return compressedData;
+}
+
++ (int) deflateFileToFile:(FILE *)source dest:(FILE *)dest
+{
+    int ret, flush;
+    unsigned have;
+    z_stream strm;
+    unsigned char *inB = malloc(CHUNK);
+    unsigned char *outB = malloc(CHUNK);
+
+    /* allocate deflate state */
+    strm.zalloc = Z_NULL;
+    strm.zfree = Z_NULL;
+    strm.opaque = Z_NULL;
+    ret = deflateInit2(&strm, Z_DEFAULT_COMPRESSION, Z_DEFLATED, (15+16), 8, Z_DEFAULT_STRATEGY);
+    if (ret != Z_OK) {
+        free(inB);
+        free(outB);
+        return ret;
+    }
+
+    /* compress until end of file */
+    do {
+        strm.avail_in = fread(inB, 1, CHUNK, source);
+        if (ferror(source)) {
+            (void)deflateEnd(&strm);
+            free(inB);
+            free(outB);
+            return Z_ERRNO;
+        }
+        flush = feof(source) ? Z_FINISH : Z_NO_FLUSH;
+        strm.next_in = inB;
+
+        /* run deflate() on input until output buffer not full, finish
+           compression if all of source has been read in */
+        do {
+            strm.avail_out = CHUNK;
+            strm.next_out = outB;
+            ret = deflate(&strm, flush);    /* no bad return value */
+            assert(ret != Z_STREAM_ERROR);  /* state not clobbered */
+            have = CHUNK - strm.avail_out;
+            if (fwrite(outB, 1, have, dest) != have || ferror(dest)) {
+                (void)deflateEnd(&strm);
+                free(inB);
+                free(outB);
+                return Z_ERRNO;
+            }
+        } while (strm.avail_out == 0);
+        assert(strm.avail_in == 0);     /* all input will be used */
+
+        /* done when last data in file processed */
+    } while (flush != Z_FINISH);
+    assert(ret == Z_STREAM_END);        /* stream will be complete */
+
+    /* clean up and return */
+    (void)deflateEnd(&strm);
+    free(inB);
+    free(outB);
+    return Z_OK;
+}
+
++ (NSData*) gzipFile: (NSURL*)pFileUrl length:(long)length
+{
+    if (!pFileUrl || length == 0)
+    {
+        #if DEBUG
+        NSLog(@"%s: Error: Can't compress an empty or null NSData object.", __func__);
+        #endif
+        return nil;
+    }
+    
+    char *inFilename;
+    char *outFilename;
+    FILE *inFile;
+    FILE *outFile;
+    unsigned long fnl = [pFileUrl.path lengthOfBytesUsingEncoding:NSUTF8StringEncoding]  + 1;
+    int deflateResult = 0;
+    NSData *compressedData = nil;
+
+    inFilename = malloc(fnl);
+    outFilename = malloc(fnl + 32);
+    bzero(inFilename, fnl);
+    strcpy(inFilename, [pFileUrl.path cStringUsingEncoding:NSUTF8StringEncoding]);
+    bzero(outFilename, fnl+32);
+    strcpy(outFilename, inFilename);
+    strcat(outFilename, ".out");
+    
+    inFile = fopen(inFilename, "r");
+    outFile = fopen(outFilename, "wb");
+    deflateResult = [DPAGHelper deflateFileToFile:inFile dest:outFile];
+    fclose(outFile);
+    fclose(inFile);
+
+    if (deflateResult == Z_OK) {
+        compressedData = [NSData dataWithContentsOfFile:[NSString stringWithCString:outFilename encoding:NSUTF8StringEncoding]];
+        NSLog(@"CompressedData Length = %d", (unsigned long)[compressedData length]);
+    }
+    unlink(inFilename);
+    unlink(outFilename);
     return compressedData;
 }
 
