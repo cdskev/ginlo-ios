@@ -17,49 +17,99 @@ public class DPAGAttachmentWorker: NSObject {
     static var shareTempUrl: URL?
     static var openInController: UIDocumentInteractionController?
     
+    public class func getGroupEncData(attachment: DPAGDecryptedAttachment) -> Data? {
+        if let attachmentData = DPAGAttachmentWorker.encryptedAttachmentData(guid: attachment.attachmentGuid) {
+//            if attachment.isOwnMessage || attachment.messageType == .channel || (attachment.messageType == .group && attachment.attachmentHash == nil) {
+//                if attachment.isOwnMessage || attachment.messageType == .channel || (attachmentData.sha1() == attachment.attachmentHash || attachmentData.sha256() == attachment.attachmentHash) || (attachment.messageType == .group && attachment.attachmentHash == nil) {
+                return Data(base64Encoded: attachmentData, options: .ignoreUnknownCharacters)
+//            }
+        }
+        return nil
+    }
+    
+    public class func getGroupAttachmentData(attachment: DPAGDecryptedAttachment) -> Data? {
+        var encMessageData: Data? = DPAGAttachmentWorker.getGroupEncData(attachment: attachment)
+        var attachmentData: Data?
+
+        // swiftlint:disable force_unwrapping
+        if let decAesKey = attachment.encAesKey, encMessageData != nil, encMessageData!.count >= 16 {
+            // swiftlint:disable force_unwrapping
+            let iv = encMessageData!.subdata(in: 0 ..< 16).base64EncodedString()
+            var attachmentDataEncrypted: Data?
+            autoreleasepool {
+                // swiftlint:disable force_unwrapping
+                attachmentDataEncrypted = encMessageData!.subdata(in: 16 ..< encMessageData!.count)
+                encMessageData = nil
+            }
+            if attachmentDataEncrypted != nil {
+                let aesKeyDict = DPAGAesKeyDecrypted(aesKey: decAesKey, iv: iv)
+                autoreleasepool {
+                    // swiftlint:disable force_unwrapping
+                    attachmentData = DPAGApplicationFacade.messageCryptoWorker.decryptAttachment(attachmentDataEncrypted!.base64EncodedString(), decAesKeyDict: aesKeyDict)
+                    attachmentDataEncrypted = nil
+                }
+            }
+        }
+        return attachmentData
+    }
+    
+    public class func getPrivateAttachmentData(attachment: DPAGDecryptedAttachment) -> Data? {
+        if let attachmentString = DPAGAttachmentWorker.encryptedAttachment(guid: attachment.attachmentGuid) {
+            if attachment.isOwnMessage || attachment.messageType == .channel || (attachmentString.sha1() == attachment.attachmentHash || attachmentString.sha256() == attachment.attachmentHash) || (attachment.messageType == .group && attachment.attachmentHash == nil) {
+                return DPAGApplicationFacade.messageCryptoWorker.decryptAttachment(attachmentString as String, encAesKey: attachment.encAesKey)
+            }
+        }
+        return nil
+    }
+    
+    public class func getChannelAttachmentData(attachment: DPAGDecryptedAttachment) -> Data? {
+        if let attachmentString = DPAGAttachmentWorker.encryptedAttachment(guid: attachment.attachmentGuid), let iv = attachment.encIv, let decAesKey = attachment.encAesKey {
+            let aesKeyDict = DPAGAesKeyDecrypted(aesKey: decAesKey, iv: iv)
+            if attachment.isOwnMessage || attachment.messageType == .channel || (attachmentString.sha1() == attachment.attachmentHash || attachmentString.sha256() == attachment.attachmentHash) || (attachment.messageType == .group && attachment.attachmentHash == nil) {
+                return DPAGApplicationFacade.messageCryptoWorker.decryptAttachment(attachmentString as String, decAesKeyDict: aesKeyDict)
+            }
+        }
+        return nil
+    }
+    
     public class func decryptMessageAttachment(attachment: DPAGDecryptedAttachment, completion: (Data?, String?) -> Void) {
-        guard let attachmentString = DPAGAttachmentWorker.encryptedAttachment(guid: attachment.attachmentGuid) else {
+        let encodingVersion = attachment.additionalData?.encodingVersion
+        let encodingVersionNum = attachment.additionalData?.encodingVersionNum
+        var attachmentData: Data?
+
+        switch attachment.messageType {
+            case .private:
+                attachmentData = DPAGAttachmentWorker.getPrivateAttachmentData(attachment: attachment)
+            case .group:
+                attachmentData = DPAGAttachmentWorker.getGroupAttachmentData(attachment: attachment)
+            case .channel:
+                attachmentData = DPAGAttachmentWorker.getChannelAttachmentData(attachment: attachment)
+            case .unknown:
+                break
+        }
+        if attachmentData == nil {
             completion(nil, nil)
             return
         }
-
-        if attachment.isOwnMessage || attachment.messageType == .channel || (attachmentString.sha1() == attachment.attachmentHash || attachmentString.sha256() == attachment.attachmentHash) ||
-            (attachment.messageType == .group && attachment.attachmentHash == nil) {
-            let encodingVersion = attachment.additionalData?.encodingVersion
-            let encodingVersionNum = attachment.additionalData?.encodingVersionNum
-            var attachmentData: Data?
-
-            switch attachment.messageType {
-                case .private:
-                    attachmentData = DPAGApplicationFacade.messageCryptoWorker.decryptAttachment(attachmentString, encAesKey: attachment.encAesKey)
-                case .group:
-                    if let decAesKey = attachment.encAesKey, let encMessageData = Data(base64Encoded: attachmentString, options: .ignoreUnknownCharacters), encMessageData.count >= 16 {
-                        let iv = encMessageData.subdata(in: 0 ..< 16).base64EncodedString()
-                        let attachmentStringEncrypted = encMessageData.subdata(in: 16 ..< encMessageData.count).base64EncodedString()
-                        let aesKeyDict = DPAGAesKeyDecrypted(aesKey: decAesKey, iv: iv)
-                        attachmentData = DPAGApplicationFacade.messageCryptoWorker.decryptAttachment(attachmentStringEncrypted, decAesKeyDict: aesKeyDict)
-                    }
-                case .channel:
-                    if let iv = attachment.encIv, let decAesKey = attachment.encAesKey {
-                        let aesKeyDict = DPAGAesKeyDecrypted(aesKey: decAesKey, iv: iv)
-                        attachmentData = DPAGApplicationFacade.messageCryptoWorker.decryptAttachment(attachmentString, decAesKeyDict: aesKeyDict)
-                    }
-                case .unknown:
-                    break
+        if attachmentData?.count ?? 0 <= 0 {
+            completion(nil, nil)
+            return
+        }
+        if (encodingVersion ?? "0") == "1" || (encodingVersionNum ?? 0) == 1 {
+            completion(attachmentData, nil)
+            return
+        }
+        if attachmentData != nil {
+            var attachmentStringDecrypted: String?
+            autoreleasepool {
+                // swiftlint:disable force_unwrapping
+                attachmentStringDecrypted = String(data: attachmentData!, encoding: .utf8)
+                attachmentData = nil
             }
-            if attachmentData?.count ?? 0 <= 0 {
-                completion(nil, nil)
+            if attachmentStringDecrypted != nil  {
+                // swiftlint:disable force_unwrapping
+                completion(Data(base64Encoded: attachmentStringDecrypted!, options: .ignoreUnknownCharacters), nil)
                 return
-            }
-            if (encodingVersion ?? "0") == "1" || (encodingVersionNum ?? 0) == 1 {
-                completion(attachmentData, nil)
-                return
-            }
-            if let attachmentData = attachmentData {
-                if let attachmentStringDecrypted = String(data: attachmentData, encoding: .utf8) {
-                    completion(Data(base64Encoded: attachmentStringDecrypted, options: .ignoreUnknownCharacters), nil)
-                    return
-                }
             }
         }
         completion(nil, "chat.encryption.hashInvalid")
@@ -156,7 +206,6 @@ public class DPAGAttachmentWorker: NSObject {
     }
 
     @discardableResult
-    @objc
     public class func saveEncryptedAttachment(_ dataString: String, forGuid guid: String?) -> Bool {
         var success = false
         if let path = AttachmentHelper.attachmentFilePath(guid: guid) {
@@ -210,6 +259,20 @@ public class DPAGAttachmentWorker: NSObject {
         if let path = AttachmentHelper.attachmentFilePath(guid: guid)?.path {
             do {
                 attachment = try String(contentsOfFile: path, encoding: .utf8)
+            } catch let error as NSError {
+                DPAGLog(error)
+            } catch {
+                DPAGLog(error)
+            }
+        }
+        return attachment
+    }
+
+    class func encryptedAttachmentData(guid: String?) -> Data? {
+        var attachment: Data?
+        if let url = AttachmentHelper.attachmentFilePath(guid: guid) {
+            do {
+                attachment = try Data(contentsOf: url)
             } catch let error as NSError {
                 DPAGLog(error)
             } catch {

@@ -52,7 +52,7 @@ protocol DPAGMessageModelFactoryProtocol {
 }
 
 class DPAGMessageModelFactory: DPAGMessageModelFactoryProtocol {
-    struct MessageInfo {
+    class MessageInfo {
         let text: String
         let desc: String?
         let sendOptions: DPAGSendMessageSendOptions?
@@ -60,23 +60,61 @@ class DPAGMessageModelFactory: DPAGMessageModelFactoryProtocol {
         let recipientContact: SIMSContactIndexEntry?
         let outgoingMessage: SIMSManagedObjectMessage
         let contentType: String
-        let attachment: Data?
+        var attachment: Data?
         let featureSet: String?
         let additionalContentData: [AnyHashable: Any]?
         let localContext: NSManagedObjectContext
+
+        public init(text: String, desc: String?, sendOptions: DPAGSendMessageSendOptions?, recipient: DPAGSendMessageRecipient, recipientContact: SIMSContactIndexEntry?, outgoingMessage: SIMSManagedObjectMessage, contentType: String, attachment: Data?, featureSet: String?, additionalContentData: [AnyHashable: Any]?, localContext: NSManagedObjectContext) {
+            self.text = text
+            self.desc = desc
+            self.sendOptions = sendOptions
+            self.recipient = recipient
+            self.recipientContact = recipientContact
+            self.outgoingMessage = outgoingMessage
+            self.contentType = contentType
+            self.attachment = attachment
+            self.featureSet = featureSet
+            self.additionalContentData = additionalContentData
+            self.localContext = localContext
+        }
+
+        public func clearAttachment() {
+            self.attachment?.removeAll()
+            self.attachment = nil
+        }
+
     }
 
-    struct MessageGroupInfo {
+    class MessageGroupInfo {
         let text: String
         let desc: String?
         let sendOptions: DPAGSendMessageSendOptions?
         let stream: SIMSGroupStream
         let outgoingMessage: SIMSManagedObjectMessage
         let contentType: String
-        let attachment: Data?
+        var attachment: Data?
         let featureSet: String?
         let additionalContentData: [AnyHashable: Any]?
         let localContext: NSManagedObjectContext
+        
+        public init(text: String, desc: String?, sendOptions: DPAGSendMessageSendOptions?, stream: SIMSGroupStream, outgoingMessage: SIMSManagedObjectMessage, contentType: String, attachment: Data?, featureSet: String?, additionalContentData: [AnyHashable: Any]?, localContext: NSManagedObjectContext) {
+            self.text = text
+            self.desc = desc
+            self.sendOptions = sendOptions
+            self.stream = stream
+            self.outgoingMessage = outgoingMessage
+            self.contentType = contentType
+            self.attachment = attachment
+            self.featureSet = featureSet
+            self.additionalContentData = additionalContentData
+            self.localContext = localContext
+        }
+        
+        public func clearAttachment() {
+            self.attachment?.removeAll()
+            self.attachment = nil
+        }
     }
 
     var messageTypes = [
@@ -100,7 +138,9 @@ class DPAGMessageModelFactory: DPAGMessageModelFactoryProtocol {
         message.aesKey2IV = config.aesKeyIV
         if let encAttachment = encAttachment {
             let uuid = DPAGFunctionsGlobal.uuid(prefix: attachmentIsInternalCopy ? .temp : .none)
-            DPAGAttachmentWorker.saveEncryptedAttachment(encAttachment, forGuid: uuid)
+            _ = autoreleasepool {
+                DPAGAttachmentWorker.saveEncryptedAttachment(encAttachment, forGuid: uuid)
+            }
             message.attachment = uuid
         }
         if let recipient = recipient.contact, let recipientDB = SIMSContactIndexEntry.findFirst(byGuid: recipient.guid, in: localContext) {
@@ -126,7 +166,9 @@ class DPAGMessageModelFactory: DPAGMessageModelFactoryProtocol {
         }
         if let encAttachment = encAttachment {
             let uuid = DPAGFunctionsGlobal.uuid(prefix: attachmentIsInternalCopy ? .temp : .none)
-            DPAGAttachmentWorker.saveEncryptedAttachment(encAttachment, forGuid: uuid)
+            _ = autoreleasepool {
+                DPAGAttachmentWorker.saveEncryptedAttachment(encAttachment, forGuid: uuid)
+            }
             message.attachment = uuid
         }
     }
@@ -141,7 +183,9 @@ class DPAGMessageModelFactory: DPAGMessageModelFactoryProtocol {
         message.stream = groupStream
         if let encAttachment = encAttachment {
             let uuid = DPAGFunctionsGlobal.uuid(prefix: attachmentIsInternalCopy ? .temp : .none)
-            DPAGAttachmentWorker.saveEncryptedAttachment(encAttachment, forGuid: uuid)
+            _ = autoreleasepool {
+                DPAGAttachmentWorker.saveEncryptedAttachment(encAttachment, forGuid: uuid)
+            }
             message.attachment = uuid
         }
     }
@@ -154,7 +198,9 @@ class DPAGMessageModelFactory: DPAGMessageModelFactoryProtocol {
         message.streamGuid = groupStream.guid ?? "unknown"
         if let encAttachment = encAttachment {
             let uuid = DPAGFunctionsGlobal.uuid(prefix: attachmentIsInternalCopy ? .temp : .none)
-            DPAGAttachmentWorker.saveEncryptedAttachment(encAttachment, forGuid: uuid)
+            _ = autoreleasepool {
+                DPAGAttachmentWorker.saveEncryptedAttachment(encAttachment, forGuid: uuid)
+            }
             message.attachment = uuid
         }
     }
@@ -240,29 +286,43 @@ class DPAGMessageModelFactory: DPAGMessageModelFactoryProtocol {
         guard let cachedAesKeys = try info.recipientContact?.aesKey(accountPublicKey: accountPublicKey, createNew: true), let recipientPublicKey = info.recipient.contact?.publicKey, let config = try DPAGEncryptionConfigurationPrivate(forRecipient: info.recipient, cachedAesKeys: cachedAesKeys, recipientPublicKey: recipientPublicKey, withIV: nil) else { return nil }
         guard let encMessageData = try CryptoHelperEncrypter.encrypt(string: jsonString, withAesKey: config.aesKeyXML) else { return nil }
         var encAttachment: String?
-        if let attachment = info.attachment {
-            NSLog("IMDAT::Working on Encryption")
-            encAttachment = try CryptoHelperEncrypter.encrypt(data: attachment, withAesKey: config.aesKeyXML)
-            NSLog("IMDAT::Working on Encryption::CONTINUING")
+        var messageDict: [AnyHashable: Any]?
+        var jsonMetadata: String?
+        var signatures: DPAGMessageSignatures?
+        try autoreleasepool {
+            if let attachment = info.attachment {
+                NSLog("IMDAT::Working on Encryption")
+                encAttachment = try CryptoHelperEncrypter.encrypt(data: attachment, withAesKey: config.aesKeyXML)
+                NSLog("IMDAT::Working on Encryption::CONTINUING")
+            }
+            info.clearAttachment()
         }
-        if let outgoingMessageToSend = info.outgoingMessage as? SIMSMessageToSendPrivate {
-            self.configureOutgoingMessageToSend(outgoingMessageToSend, recipient: info.recipient, config: config, encMessageData: encMessageData, encAttachment: encAttachment, attachmentIsInternalCopy: info.sendOptions?.attachmentIsInternalCopy ?? false, featureSet: info.featureSet, in: info.localContext)
-        } else if let outgoingMessagePrivate = info.outgoingMessage as? SIMSPrivateMessage {
-            self.configureOutgoingMessage(outgoingMessagePrivate, recipient: info.recipient, config: config, encMessageData: encMessageData, encAttachment: encAttachment, attachmentIsInternalCopy: info.sendOptions?.attachmentIsInternalCopy ?? false, featureSet: info.featureSet, in: info.localContext)
+        try autoreleasepool {
+            if let outgoingMessageToSend = info.outgoingMessage as? SIMSMessageToSendPrivate {
+                self.configureOutgoingMessageToSend(outgoingMessageToSend, recipient: info.recipient, config: config, encMessageData: encMessageData, encAttachment: encAttachment, attachmentIsInternalCopy: info.sendOptions?.attachmentIsInternalCopy ?? false, featureSet: info.featureSet, in: info.localContext)
+            } else if let outgoingMessagePrivate = info.outgoingMessage as? SIMSPrivateMessage {
+                self.configureOutgoingMessage(outgoingMessagePrivate, recipient: info.recipient, config: config, encMessageData: encMessageData, encAttachment: encAttachment, attachmentIsInternalCopy: info.sendOptions?.attachmentIsInternalCopy ?? false, featureSet: info.featureSet, in: info.localContext)
+            }
+            guard let accountCrypto = DPAGCryptoHelper.newAccountCrypto(), let lSignatures = try DPAGEncryptionConfiguration.signatures(accountCrypto: accountCrypto, config: config, messageDataEncrypted: encMessageData, attachmentEncrypted: encAttachment) else {
+                throw DPAGErrorCreateMessage.err465
+            }
+            signatures = lSignatures
+            messageDict = config.messageDictionary(info: DPAGEncryptionConfigurationPrivate.MessageDictionaryInfoPrivate(encMessageData: encMessageData, encAttachment: encAttachment, signatures: signatures!, messageType: DPAGStrings.JSON.MessagePrivate.OBJECT_KEY, contentType: info.contentType, sendOptions: info.sendOptions, featureSet: info.featureSet, nickname: profileName, senderId: info.outgoingMessage.guid))
+            encAttachment = nil
         }
-        guard let accountCrypto = DPAGCryptoHelper.newAccountCrypto(), let signatures = try DPAGEncryptionConfiguration.signatures(accountCrypto: accountCrypto, config: config, messageDataEncrypted: encMessageData, attachmentEncrypted: encAttachment) else {
-            throw DPAGErrorCreateMessage.err465
+        try autoreleasepool {
+            if messageDict != nil {
+                jsonMetadata = messageDict!.JSONString
+            } else {
+                throw DPAGErrorCreateMessage.err465
+            }
+            messageDict = nil
         }
-        let messageDict = config.messageDictionary(info: DPAGEncryptionConfigurationPrivate.MessageDictionaryInfoPrivate(encMessageData: encMessageData, encAttachment: encAttachment, signatures: signatures, messageType: DPAGStrings.JSON.MessagePrivate.OBJECT_KEY, contentType: info.contentType, sendOptions: info.sendOptions, featureSet: info.featureSet, nickname: profileName, senderId: info.outgoingMessage.guid))
-
-        guard let jsonMetadata = messageDict.JSONString else {
-            throw DPAGErrorCreateMessage.err465
-        }
-        guard let rawSignature = signatures.signatureDict.JSONString else {
+        guard let rawSignature = signatures?.signatureDict.JSONString else {
             throw DPAGErrorCreateMessage.err465
         }
         info.outgoingMessage.rawSignature = rawSignature
-        guard let rawSignature256 = signatures.signatureDict256.JSONString else {
+        guard let rawSignature256 = signatures?.signatureDict256.JSONString else {
             throw DPAGErrorCreateMessage.err465
         }
         info.outgoingMessage.rawSignature256 = rawSignature256
@@ -277,6 +337,22 @@ class DPAGMessageModelFactory: DPAGMessageModelFactoryProtocol {
         try self.groupMessageInternal(info: info)
     }
 
+    func one() -> String? {
+//        autoreleasepool {
+//            if let encAttachmentDataBase64 = encAttachmentDataBase64 {
+//                encAttachmentData.append(encAttachmentDataBase64)
+//            }
+//            encAttachmentDataBase64?.removeAll()
+//            encAttachment = encAttachmentData.base64EncodedString()
+//            encAttachmentDataBase64 = nil
+//        }
+//
+        return nil
+    }
+    
+    func two() -> String? {
+        return nil
+    }
     private func groupMessageInternal(info: DPAGMessageModelFactory.MessageGroupInfo) throws -> String? {
         guard let account = DPAGApplicationFacade.cache.account, let contact = DPAGApplicationFacade.cache.contact(for: account.guid) else { return nil }
         guard let profileName = contact.nickName, let accountPhone = contact.accountID, let decAesKey = info.stream.group?.aesKey else { return nil }
@@ -330,36 +406,82 @@ class DPAGMessageModelFactory: DPAGMessageModelFactoryProtocol {
         encMessageData.append(messageDataEncrypted)
         let base64EncMessageData = encMessageData.base64EncodedString()
         var encAttachment: String?
-        if let attachment = info.attachment {
-            let attachmentIvData = DPAGHelperEx.iv128Bit()
-            let attachmentDecAesKeyDict = [
-                "key": aesKey,
-                "iv": attachmentIvData.base64EncodedString()
-            ]
-            let encAttachmentString = try CryptoHelperEncrypter.encrypt(data: attachment, withAesKeyDict: attachmentDecAesKeyDict)
+        var messageDict: [AnyHashable: Any]?
+        var jsonMetadata: String?
+        var signatures: DPAGMessageSignatures?
+        var encAttachmentString: String?
+        let attachmentIvData = DPAGHelperEx.iv128Bit()
+        let attachmentDecAesKeyDict = [
+            "key": aesKey,
+            "iv": attachmentIvData.base64EncodedString()
+        ]
+        try autoreleasepool {
+            if let attachment = info.attachment {
+                encAttachmentString = try CryptoHelperEncrypter.encrypt(data: attachment, withAesKeyDict: attachmentDecAesKeyDict)
+                if let encAttachmentString = encAttachmentString {
+                    NSLog("encAttachmentString \(encAttachmentString.count)")
+                }
+            }
+            info.clearAttachment()
+        }
+        var encAttachmentDataBase64: Data?
+        autoreleasepool {
+            if let encAttachmentString = encAttachmentString {
+                encAttachmentDataBase64 = Data(base64Encoded: encAttachmentString)
+                if let encAttachmentDataBase64 = encAttachmentDataBase64 {
+                    NSLog("encAttachmentDataBase64 \(encAttachmentDataBase64.count)")
+                }
+            }
+            encAttachmentString?.removeAll()
+            encAttachmentString = nil
+        }
+        if encAttachmentDataBase64 == nil {
+            return nil
+        }
+        autoreleasepool {
             var encAttachmentData = attachmentIvData
-            guard let encAttachmentDataBase64 = Data(base64Encoded: encAttachmentString) else { return nil }
-            encAttachmentData.append(encAttachmentDataBase64)
+            if let encAttachmentDataBase64 = encAttachmentDataBase64 {
+                encAttachmentData.append(encAttachmentDataBase64)
+            }
+            encAttachmentDataBase64?.removeAll()
+            encAttachmentDataBase64 = nil
             encAttachment = encAttachmentData.base64EncodedString()
-        }
-        if let outgoingMessageToSend = info.outgoingMessage as? SIMSMessageToSendGroup {
-            self.configureOutgoingGroupMessageToSend(outgoingMessageToSend, groupStream: info.stream, config: config, encMessageData: base64EncMessageData, encAttachment: encAttachment, attachmentIsInternalCopy: info.sendOptions?.attachmentIsInternalCopy ?? false, featureSet: info.featureSet)
-        } else if let outgoingMessageGroup = info.outgoingMessage as? SIMSGroupMessage {
-            self.configureOutgoingGroupMessage(outgoingMessageGroup, groupStream: info.stream, config: config, encMessageData: base64EncMessageData, encAttachment: encAttachment, attachmentIsInternalCopy: info.sendOptions?.attachmentIsInternalCopy ?? false, featureSet: info.featureSet)
-        }
-        guard let accountCrypto = DPAGCryptoHelper.newAccountCrypto(), let signatures = try DPAGEncryptionConfiguration.signatures(accountCrypto: accountCrypto, config: config, messageDataEncrypted: base64EncMessageData, attachmentEncrypted: encAttachment) else {
-            throw DPAGErrorCreateMessage.err465
-        }
 
-        let messageDict = config.messageDictionary(info: DPAGEncryptionConfigurationGroup.MessageDictionaryInfoGroup(encMessageData: base64EncMessageData, encAttachment: encAttachment, signatures: signatures, messageType: DPAGStrings.JSON.MessageGroup.OBJECT_KEY, contentType: info.contentType, sendOptions: info.sendOptions, featureSet: info.featureSet, nickname: contact.nickName, senderId: outgoingMessageGuid))
-        guard let jsonMetadata = messageDict.JSONString else {
-            throw DPAGErrorCreateMessage.err465
+            encAttachmentData.removeAll()
         }
-        guard let rawSignature = signatures.signatureDict.JSONString else {
+        autoreleasepool {
+            if let outgoingMessageToSend = info.outgoingMessage as? SIMSMessageToSendGroup {
+                self.configureOutgoingGroupMessageToSend(outgoingMessageToSend, groupStream: info.stream, config: config, encMessageData: base64EncMessageData, encAttachment: encAttachment, attachmentIsInternalCopy: info.sendOptions?.attachmentIsInternalCopy ?? false, featureSet: info.featureSet)
+            } else if let outgoingMessageGroup = info.outgoingMessage as? SIMSGroupMessage {
+                self.configureOutgoingGroupMessage(outgoingMessageGroup, groupStream: info.stream, config: config, encMessageData: base64EncMessageData, encAttachment: encAttachment, attachmentIsInternalCopy: info.sendOptions?.attachmentIsInternalCopy ?? false, featureSet: info.featureSet)
+            }
+        }
+        try autoreleasepool {
+            guard let accountCrypto = DPAGCryptoHelper.newAccountCrypto(), let lSignatures = try DPAGEncryptionConfiguration.signatures(accountCrypto: accountCrypto, config: config, messageDataEncrypted: base64EncMessageData, attachmentEncrypted: encAttachment) else {
+                throw DPAGErrorCreateMessage.err465
+            }
+            signatures = lSignatures
+        }
+        autoreleasepool {
+            if let signatures = signatures {
+                messageDict = config.messageDictionary(info: DPAGEncryptionConfigurationGroup.MessageDictionaryInfoGroup(encMessageData: base64EncMessageData, encAttachment: encAttachment, signatures: signatures, messageType: DPAGStrings.JSON.MessageGroup.OBJECT_KEY, contentType: info.contentType, sendOptions: info.sendOptions, featureSet: info.featureSet, nickname: contact.nickName, senderId: outgoingMessageGuid))
+            }
+            encAttachment = nil
+        }
+        try autoreleasepool {
+            if messageDict != nil {
+                // TODO: Save JSON to file and return filename *sigh*
+                jsonMetadata = messageDict?.JSONString
+            } else {
+                throw DPAGErrorCreateMessage.err465
+            }
+            messageDict = nil
+        }
+        guard let rawSignature = signatures?.signatureDict.JSONString else {
             throw DPAGErrorCreateMessage.err465
         }
         info.outgoingMessage.rawSignature = rawSignature
-        guard let rawSignature256 = signatures.signatureDict256.JSONString else {
+        guard let rawSignature256 = signatures?.signatureDict256.JSONString else {
             throw DPAGErrorCreateMessage.err465
         }
         info.outgoingMessage.rawSignature256 = rawSignature256

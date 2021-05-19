@@ -12,8 +12,8 @@ import Foundation
 protocol SendMessageDAOProtocol {
     func updateResendMessage(msgGuid: String, withMsgInstance msgInstance: DPAGSendMessageWorkerInstance, forInitialSending: Bool) throws
 
-    func createOutgoingPrivateMessage(msgInstance: DPAGSendMessageWorkerInstance, attachment: Data?) throws
-    func createOutgoingGroupMessage(msgInstance: DPAGSendMessageWorkerInstance, attachment: Data?) throws
+    func createOutgoingPrivateMessage(msgInstance: DPAGSendMessageWorkerInstance, sendMessageInfo: DPAGSendMessageInfo?) throws
+    func createOutgoingGroupMessage(msgInstance: DPAGSendMessageWorkerInstance, sendMessageInfo: DPAGSendMessageInfo?) throws
 
     func sendingMessageFailed(msgInstance: DPAGSendMessageWorkerInstance)
     func sendingMessageSucceeded(msgInstance: DPAGSendMessageWorkerInstance, messageConfirmSend: DPAGMessageReceivedInternal.ConfirmMessageSend.ConfirmMessageSendItem) -> Date?
@@ -284,7 +284,7 @@ class SendMessageDAO: SendMessageDAOProtocol {
         }
     }
 
-    func createOutgoingPrivateMessage(msgInstance: DPAGSendMessageWorkerInstance, attachment: Data?) throws {
+    func createOutgoingPrivateMessage(msgInstance: DPAGSendMessageWorkerInstance, sendMessageInfo: DPAGSendMessageInfo?) throws {
         try DPAGApplicationFacade.persistance.saveWithError { localContext in
             let guidRecipient = msgInstance.receiver.recipientGuid
             guard let recipient = SIMSContactIndexEntry.findFirst(byGuid: guidRecipient, in: localContext), let contact = DPAGApplicationFacade.cache.contact(for: guidRecipient) else {
@@ -299,7 +299,7 @@ class SendMessageDAO: SendMessageDAOProtocol {
                         return
                     } else {
                         do {
-                            try self?.createOutgoingPrivateMessage(msgInstance: msgInstance, attachment: attachment)
+                            try self?.createOutgoingPrivateMessage(msgInstance: msgInstance, sendMessageInfo: sendMessageInfo)
                         } catch {}
                     }
                 }
@@ -318,7 +318,10 @@ class SendMessageDAO: SendMessageDAOProtocol {
                 privateMessage.dateCreated = dateNow
                 privateMessage.dateToSend = dateToSend
                 privateMessage.optionsMessage = (msgInstance.sendMessageOptions?.messagePriorityHigh ?? false) ? [.priorityHigh] : []
-                msgInstance.messageJson = try DPAGApplicationFacade.messageFactory.messageToSend(info: DPAGMessageModelFactory.MessageInfo(text: msgInstance.messageText, desc: msgInstance.messageDesc, sendOptions: msgInstance.sendMessageOptions, recipient: msgInstance.receiver, recipientContact: recipient, outgoingMessage: privateMessage, contentType: msgInstance.contentType, attachment: attachment, featureSet: msgInstance.featureSet, additionalContentData: msgInstance.additionalContentData, localContext: localContext))
+                let attachmentCount = sendMessageInfo?.attachment?.count ?? 0
+                let messageInfo = DPAGMessageModelFactory.MessageInfo(text: msgInstance.messageText, desc: msgInstance.messageDesc, sendOptions: msgInstance.sendMessageOptions, recipient: msgInstance.receiver, recipientContact: recipient, outgoingMessage: privateMessage, contentType: msgInstance.contentType, attachment: sendMessageInfo?.attachment, featureSet: msgInstance.featureSet, additionalContentData: msgInstance.additionalContentData, localContext: localContext)
+                sendMessageInfo?.attachment = nil
+                msgInstance.messageJson = try DPAGApplicationFacade.messageFactory.messageToSend(info: messageInfo)
                 if msgInstance.messageJson == nil {
                     // The message was not properly configured, we risk trying to save an inconsistent context
                     msgInstance.guidOutgoingMessage = nil
@@ -326,7 +329,7 @@ class SendMessageDAO: SendMessageDAOProtocol {
                     return
                 }
                 privateMessage.streamToSend(in: localContext)?.lastMessageDate = privateMessage.dateCreated
-                msgInstance.sendConcurrent = (attachment?.count ?? 0) > 4_000
+                msgInstance.sendConcurrent = attachmentCount > 4_000
                 msgInstance.messageType = .private
                 msgInstance.guidOutgoingMessage = privateMessage.guid
                 // MessageType vor dem decrypten (cache !!) setzen
@@ -345,7 +348,10 @@ class SendMessageDAO: SendMessageDAOProtocol {
                 privateMessage.dateSendServer = dateNow
                 privateMessage.attributes = SIMSMessageAttributes.mr_createEntity(in: localContext)
                 privateMessage.optionsMessage = (msgInstance.sendMessageOptions?.messagePriorityHigh ?? false) ? [.priorityHigh] : []
-                msgInstance.messageJson = try DPAGApplicationFacade.messageFactory.message(info: DPAGMessageModelFactory.MessageInfo(text: msgInstance.messageText, desc: msgInstance.messageDesc, sendOptions: msgInstance.sendMessageOptions, recipient: msgInstance.receiver, recipientContact: recipient, outgoingMessage: privateMessage, contentType: msgInstance.contentType, attachment: attachment, featureSet: msgInstance.featureSet, additionalContentData: msgInstance.additionalContentData, localContext: localContext))
+                let attachmentCount = sendMessageInfo?.attachment?.count ?? 0
+                let messageInfo = DPAGMessageModelFactory.MessageInfo(text: msgInstance.messageText, desc: msgInstance.messageDesc, sendOptions: msgInstance.sendMessageOptions, recipient: msgInstance.receiver, recipientContact: recipient, outgoingMessage: privateMessage, contentType: msgInstance.contentType, attachment: sendMessageInfo?.attachment, featureSet: msgInstance.featureSet, additionalContentData: msgInstance.additionalContentData, localContext: localContext)
+                sendMessageInfo?.attachment = nil
+                msgInstance.messageJson = try DPAGApplicationFacade.messageFactory.message(info: messageInfo)
                 if msgInstance.messageJson == nil {
                     // The message was not properly configured, we risk trying to save an inconsistent context
                     msgInstance.guidOutgoingMessage = nil
@@ -353,7 +359,7 @@ class SendMessageDAO: SendMessageDAOProtocol {
                     return
                 }
                 privateMessage.stream?.lastMessageDate = privateMessage.dateSendServer
-                msgInstance.sendConcurrent = (attachment?.count ?? 0) > 4_000
+                msgInstance.sendConcurrent = attachmentCount > 4_000
                 msgInstance.messageType = .private
                 msgInstance.guidOutgoingMessage = privateMessage.guid
                 // MessageType vor dem decrypten (cache !!) setzen
@@ -364,7 +370,7 @@ class SendMessageDAO: SendMessageDAOProtocol {
         }
     }
 
-    func createOutgoingGroupMessage(msgInstance: DPAGSendMessageWorkerInstance, attachment: Data?) throws {
+    func createOutgoingGroupMessage(msgInstance: DPAGSendMessageWorkerInstance, sendMessageInfo: DPAGSendMessageInfo?) throws {
         try DPAGApplicationFacade.persistance.saveWithError { localContext in
             let guidGroupStream = msgInstance.receiver.recipientGuid
             guard let groupStream = SIMSMessageStream.findFirst(byGuid: guidGroupStream, in: localContext) as? SIMSGroupStream else {
@@ -382,14 +388,17 @@ class SendMessageDAO: SendMessageDAOProtocol {
                 groupMessage.dateCreated = dateNow
                 groupMessage.dateToSend = dateToSend
                 groupMessage.optionsMessage = (msgInstance.sendMessageOptions?.messagePriorityHigh ?? false) ? [.priorityHigh] : []
-                msgInstance.messageJson = try DPAGApplicationFacade.messageFactory.groupMessageToSend(info: DPAGMessageModelFactory.MessageGroupInfo(text: msgInstance.messageText, desc: msgInstance.messageDesc, sendOptions: msgInstance.sendMessageOptions, stream: groupStream, outgoingMessage: groupMessage, contentType: msgInstance.contentType, attachment: attachment, featureSet: msgInstance.featureSet, additionalContentData: msgInstance.additionalContentData, localContext: localContext))
+                let attachmentCount = sendMessageInfo?.attachment?.count ?? 0
+                let messageInfo = DPAGMessageModelFactory.MessageGroupInfo(text: msgInstance.messageText, desc: msgInstance.messageDesc, sendOptions: msgInstance.sendMessageOptions, stream: groupStream, outgoingMessage: groupMessage, contentType: msgInstance.contentType, attachment: sendMessageInfo?.attachment, featureSet: msgInstance.featureSet, additionalContentData: msgInstance.additionalContentData, localContext: localContext)
+                sendMessageInfo?.attachment = nil
+                msgInstance.messageJson = try DPAGApplicationFacade.messageFactory.groupMessageToSend(info: messageInfo)
                 if msgInstance.messageJson == nil {
                     msgInstance.guidOutgoingMessage = nil
                     groupMessage.mr_deleteEntity(in: localContext)
                     return
                 }
                 groupMessage.streamToSend(in: localContext)?.lastMessageDate = groupMessage.dateCreated
-                msgInstance.sendConcurrent = (attachment?.count ?? 0) > 4_000
+                msgInstance.sendConcurrent = attachmentCount > 4_000
                 msgInstance.messageType = .group
                 msgInstance.guidOutgoingMessage = groupMessage.guid
                 groupMessage.typeMessage = .group
@@ -406,14 +415,17 @@ class SendMessageDAO: SendMessageDAOProtocol {
                 groupMessage.dateSendServer = dateNow
                 groupMessage.attributes = SIMSMessageAttributes.mr_createEntity(in: localContext)
                 groupMessage.optionsMessage = (msgInstance.sendMessageOptions?.messagePriorityHigh ?? false) ? [.priorityHigh] : []
-                msgInstance.messageJson = try DPAGApplicationFacade.messageFactory.groupMessage(info: DPAGMessageModelFactory.MessageGroupInfo(text: msgInstance.messageText, desc: msgInstance.messageDesc, sendOptions: msgInstance.sendMessageOptions, stream: groupStream, outgoingMessage: groupMessage, contentType: msgInstance.contentType, attachment: attachment, featureSet: msgInstance.featureSet, additionalContentData: msgInstance.additionalContentData, localContext: localContext))
+                let attachmentCount = sendMessageInfo?.attachment?.count ?? 0
+                let messageInfo = DPAGMessageModelFactory.MessageGroupInfo(text: msgInstance.messageText, desc: msgInstance.messageDesc, sendOptions: msgInstance.sendMessageOptions, stream: groupStream, outgoingMessage: groupMessage, contentType: msgInstance.contentType, attachment: sendMessageInfo?.attachment, featureSet: msgInstance.featureSet, additionalContentData: msgInstance.additionalContentData, localContext: localContext)
+                sendMessageInfo?.attachment = nil
+                msgInstance.messageJson = try DPAGApplicationFacade.messageFactory.groupMessage(info: messageInfo)
                 if msgInstance.messageJson == nil {
                     msgInstance.guidOutgoingMessage = nil
                     groupMessage.mr_deleteEntity(in: localContext)
                     return
                 }
                 groupMessage.stream?.lastMessageDate = groupMessage.dateSendServer
-                msgInstance.sendConcurrent = (attachment?.count ?? 0) > 4_000
+                msgInstance.sendConcurrent = attachmentCount > 4_000
                 msgInstance.messageType = .group
                 msgInstance.guidOutgoingMessage = groupMessage.guid
                 groupMessage.typeMessage = .group

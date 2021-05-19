@@ -468,11 +468,12 @@ class DPAGSendMessageWorker: NSObject, DPAGSendMessageWorkerProtocol {
         return msgInstance
     }
 
-    private func createOutgoingMessage(msgInstance: DPAGSendMessageWorkerInstance, attachment: Data?, isGroup: Bool) throws {
+    // START HERE...
+    private func createOutgoingMessage(msgInstance: DPAGSendMessageWorkerInstance, sendMessageInfo: DPAGSendMessageInfo?, isGroup: Bool) throws {
         if isGroup {
-            try self.sendMessageDAO.createOutgoingGroupMessage(msgInstance: msgInstance, attachment: attachment)
+            try self.sendMessageDAO.createOutgoingGroupMessage(msgInstance: msgInstance, sendMessageInfo: sendMessageInfo)
         } else {
-            try self.sendMessageDAO.createOutgoingPrivateMessage(msgInstance: msgInstance, attachment: attachment)
+            try self.sendMessageDAO.createOutgoingPrivateMessage(msgInstance: msgInstance, sendMessageInfo: sendMessageInfo)
         }
     }
 
@@ -515,40 +516,41 @@ class DPAGSendMessageWorker: NSObject, DPAGSendMessageWorkerProtocol {
             for contentObject in contents {
                 let sendOptionsRecipients = sendOptions?.copy() as? DPAGSendMessageSendOptions
                 for recipient in recipients {
+                    var sendMessageInfo: DPAGSendMessageInfo?
+                    let errorBlock = {
+                        let messagesDAO: MessagesDAOProtocol = MessagesDAO()
+                        messagesDAO.deleteMessageInstances(msgInstancesGuids: msgInstancesGuids)
+                    }
+                    let isGroup = recipient.isGroup
                     autoreleasepool {
-                        let isGroup = recipient.isGroup
                         let sendMessageInfoResult = sendMessageInfoBlock(contentObject, recipient.recipientGuid)
-                        let errorBlock = {
-                            let messagesDAO: MessagesDAOProtocol = MessagesDAO()
-                            messagesDAO.deleteMessageInstances(msgInstancesGuids: msgInstancesGuids)
-                        }
                         if let errorMessage = sendMessageInfoResult.errorMessage {
                             errorBlock()
                             serviceResponseBlock?(nil, errorMessage, errorMessage)
                             return
                         }
-                        guard let sendMessageInfo = sendMessageInfoResult.sendMessageInfo else { return }
-                        let msgInstance = self.createMessageInstance(sendMessageInfo: sendMessageInfo, isGroup: isGroup, recipient: recipient, sendOptionsRecipients: sendOptionsRecipients, featureSet: featureSet, serviceResponseBlock: serviceResponseBlock)
-                        do {
-                            try self.createOutgoingMessage(msgInstance: msgInstance, attachment: sendMessageInfo.attachment, isGroup: isGroup)
-                        } catch DPAGErrorCreateMessage.err465 {
-                            errorBlock()
-                            serviceResponseBlock?(nil, "internal.error.465", "internal.error.465")
-                            return
-                        } catch {
-                            DPAGLog(error)
-                        }
-                        if msgInstance.guidOutgoingMessage == nil {
-                            errorBlock()
-                            serviceResponseBlock?(nil, "service.tryAgainLater", "service.tryAgainLater")
-                            return
-                        }
-                        if recipients.count <= 4 {
-                            msgInstances.append(msgInstance)
-                        }
-                        if let guidOutgoingMessage = msgInstance.guidOutgoingMessage {
-                            msgInstancesGuids.append(guidOutgoingMessage)
-                        }
+                        sendMessageInfo = sendMessageInfoResult.sendMessageInfo
+                    }
+                    let msgInstance = self.createMessageInstance(sendMessageInfo: sendMessageInfo!, isGroup: isGroup, recipient: recipient, sendOptionsRecipients: sendOptionsRecipients, featureSet: featureSet, serviceResponseBlock: serviceResponseBlock)
+                    do {
+                        try self.createOutgoingMessage(msgInstance: msgInstance, sendMessageInfo: sendMessageInfo, isGroup: isGroup)
+                    } catch DPAGErrorCreateMessage.err465 {
+                        errorBlock()
+                        serviceResponseBlock?(nil, "internal.error.465", "internal.error.465")
+                        return
+                    } catch {
+                        DPAGLog(error)
+                    }
+                    if msgInstance.guidOutgoingMessage == nil {
+                        errorBlock()
+                        serviceResponseBlock?(nil, "service.tryAgainLater", "service.tryAgainLater")
+                        return
+                    }
+                    if recipients.count <= 4 {
+                        msgInstances.append(msgInstance)
+                    }
+                    if let guidOutgoingMessage = msgInstance.guidOutgoingMessage {
+                        msgInstancesGuids.append(guidOutgoingMessage)
                     }
                     sendOptionsRecipients?.attachmentIsInternalCopy = true
                 }

@@ -45,8 +45,10 @@ class RequestSerializer: RequestSerializerProtocol {
                 apiRequest = self.mapHttpServiceRequestToApiRequest(request: request)
                 request.clearParameters()
             }
+            // swiftlint:disable force_unwrapping
             result = try self.serializeApiRequest(apiRequest: apiRequest!, manager: manager)
         }
+        // swiftlint:disable force_unwrapping
         return result!
     }
 
