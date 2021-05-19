@@ -38,6 +38,201 @@ public enum DPAGConstantsGlobal {
 
 public struct DPAGFunctionsGlobal {
     private init() {}
+    
+    static func JSONStringFileBased(_ object: Any, saveToFile: Bool = true) -> String? {
+        var json = ""
+        var fileHandle: FileHandle?
+        let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(DPAGFunctionsGlobal.uuid())
+        NSLog("JSONStringFileBased::saveToFile \(saveToFile)")
+        if saveToFile {
+            do {
+                try "".write(to: url, atomically: true, encoding: .utf8)
+                fileHandle = try FileHandle(forWritingTo: url)
+            } catch {
+                NSLog("Can't create a file \(error)")
+                return nil
+            }
+        }
+        if !(object is [Any]) {
+            json += "{"
+        }
+        let mirror = Mirror(reflecting: object)
+        
+        var children = [(label: String?, value: Any)]()
+        
+        if let mirrorChildrenCollection = AnyRandomAccessCollection(mirror.children) {
+            children += mirrorChildrenCollection
+        } else {
+            let mirrorIndexCollection = AnyCollection(mirror.children)
+            children += mirrorIndexCollection
+        }
+        
+        var currentMirror = mirror
+        while let superclassChildren = currentMirror.superclassMirror?.children {
+            let randomCollection = AnyRandomAccessCollection(superclassChildren)!
+            children += randomCollection
+            currentMirror = currentMirror.superclassMirror!
+        }
+        
+        var filteredChildren = [(label: String?, value: Any)]()
+        
+        for (optionalPropertyName, value) in children {
+            if let optionalPropertyName = optionalPropertyName {
+                if !optionalPropertyName.contains("notMapped_") {
+                    filteredChildren.append((optionalPropertyName, value))
+                }
+            } else {
+                filteredChildren.append((nil, value))
+            }
+        }
+        
+        var skip = false
+        let size = filteredChildren.count
+        var index = 0
+        
+        var first = true
+        
+        for (optionalPropertyName, value) in filteredChildren {
+            skip = false
+            NSLog("Property \(optionalPropertyName)")
+            let propertyName = optionalPropertyName
+            let property = Mirror(reflecting: value)
+            var handledValue = String()
+            if propertyName != nil && propertyName == "some" && property.displayStyle == Mirror.DisplayStyle.struct {
+                if let hv = DPAGFunctionsGlobal.JSONStringFileBased(value, saveToFile: false) {
+                    handledValue = hv
+                }
+                skip = true
+            } else if (value is Int || value is Int32 || value is Int64 || value is Double || value is Float || value is Bool) && property.displayStyle != Mirror.DisplayStyle.optional {
+                handledValue = String(describing: value)
+            } else if let array = value as? [Int?] {
+                handledValue += "["
+                for (index, value) in array.enumerated() {
+                    NSLog("Index1 \(index)")
+                    handledValue += value != nil ? String(value!):"null"
+                    handledValue += (index < array.count - 1 ? ", ":"")
+                }
+                handledValue += "]"
+            } else if let array = value as? [Double?] {
+                handledValue += "["
+                for (index, value) in array.enumerated() {
+                    NSLog("Index2 \(index)")
+                    handledValue += value != nil ? String(value!) : "null"
+                    handledValue += (index < array.count - 1 ? ", " : "")
+                }
+                handledValue += "]"
+            } else if let array = value as? [Float?] {
+                handledValue += "["
+                for (index, value) in array.enumerated() {
+                    NSLog("Index3 \(index)")
+                    handledValue += value != nil ? String(value!) : "null"
+                    handledValue += (index < array.count - 1 ? ", " : "")
+                }
+                handledValue += "]"
+            } else if let array = value as? [Bool?] {
+                handledValue += "["
+                for (index, value) in array.enumerated() {
+                    NSLog("Index4 \(index)")
+                    handledValue += value != nil ? String(value!) : "null"
+                    handledValue += (index < array.count - 1 ? ", " : "")
+                }
+                handledValue += "]"
+            } else if let array = value as? [String?] {
+                handledValue += "["
+                for (index, value) in array.enumerated() {
+                    NSLog("Index5 \(index)")
+                    handledValue += value != nil ? "\"\(value!)\"" : "null"
+                    handledValue += (index < array.count - 1 ? ", " : "")
+                }
+                handledValue += "]"
+            } else if let array = value as? [String] {
+                handledValue += "["
+                for (index, value) in array.enumerated() {
+                    NSLog("Index6 \(index)")
+                    handledValue += "\"\(value)\""
+                    handledValue += (index < array.count - 1 ? ", " : "")
+                }
+                handledValue += "]"
+            } else if let array = value as? NSArray {
+                handledValue += "["
+                for (index, value) in array.enumerated() {
+                    NSLog("Index7 \(index)")
+                    if !(value is Int) && !(value is Int32) && !(value is Int64) && !(value is Double) && !(value is Float) && !(value is Bool) && !(value is String) {
+                        if let hv = DPAGFunctionsGlobal.JSONStringFileBased(value, saveToFile: false) {
+                            handledValue += hv
+                        }
+                    } else {
+                        handledValue += "\(value)"
+                    }
+                    handledValue += (index < array.count - 1 ? ", " : "")
+                }
+                handledValue += "]"
+            } else if property.displayStyle == Mirror.DisplayStyle.class || property.displayStyle == Mirror.DisplayStyle.struct || String(describing: value).contains("#") {
+                if let hv = DPAGFunctionsGlobal.JSONStringFileBased(value, saveToFile: false) {
+                    handledValue = hv
+                }
+            } else if property.displayStyle == Mirror.DisplayStyle.optional {
+                let str = String(describing: value)
+                if str != "nil" {
+                    // Some optional values cannot be unpacked if type is "Any"
+                    // We remove the "Optional(" and last ")" from the value by string manipulation
+                    var d = String(str).dropFirst(9)
+                    d = d.dropLast(1)
+                    handledValue = String(d)
+                } else {
+                    handledValue = "null"
+                }
+            } else {
+                handledValue = String(describing: value) != "nil" ? "\"\(value)\"" : "null"
+            }
+            if !skip {
+                // if optional propertyName is populated we'll use it
+                if let propertyName = propertyName {
+                    json += "\"\(propertyName)\": \(handledValue)" + (index < size - 1 ? ", " : "")
+                } else {
+                    // if it's the first member we need to prepend ]
+                    if first {
+                        json += "["
+                        first = false
+                    }
+                    // if it's not the last we need a comma. if it is the last we need to close ]
+                    json += "\(handledValue)" + (index < size - 1 ? ", " : "]")
+                }
+            } else {
+                json = "\(handledValue)" + (index < size - 1 ? ", " : "")
+            }
+            index += 1
+            if saveToFile, json.count > 1_000_000 {
+                fileHandle?.write(Data(json.utf8))
+                json = ""
+            }
+        }
+        if !skip {
+            if !(object is [Any]) {
+                json += "}"
+            }
+        }
+        if saveToFile, json != "" {
+            fileHandle?.write(Data(json.utf8))
+            json = ""
+        }
+        if saveToFile {
+            fileHandle?.closeFile()
+            do {
+                let string = try String(contentsOf: url, encoding: .utf8)
+                json = string
+            } catch {
+            }
+            do {
+                try FileManager.default.removeItem(at: url)
+            } catch {
+            }
+        }
+        if json != "" {
+            return json
+        }
+        return nil
+    }
 
     public static func uuid() -> String {
         UUID().uuidString

@@ -350,9 +350,16 @@ class DPAGMessageModelFactory: DPAGMessageModelFactoryProtocol {
         return nil
     }
     
-    func two() -> String? {
-        return nil
+    func two(messageDict: [AnyHashable: Any], blanks: String? = "") {
+        for (key, value) in messageDict {
+            let vType = type(of: value)
+            NSLog("\(blanks) messageDict->key => \(key); valueType = \(vType)")
+            if let value = value as? [AnyHashable: Any] {
+                two(messageDict: value, blanks: blanks! + "   ")
+            }
+        }
     }
+    
     private func groupMessageInternal(info: DPAGMessageModelFactory.MessageGroupInfo) throws -> String? {
         guard let account = DPAGApplicationFacade.cache.account, let contact = DPAGApplicationFacade.cache.contact(for: account.guid) else { return nil }
         guard let profileName = contact.nickName, let accountPhone = contact.accountID, let decAesKey = info.stream.group?.aesKey else { return nil }
@@ -468,10 +475,11 @@ class DPAGMessageModelFactory: DPAGMessageModelFactoryProtocol {
             }
             encAttachment = nil
         }
+        two(messageDict: messageDict!, blanks: "")
         try autoreleasepool {
             if messageDict != nil {
-                // TODO: Save JSON to file and return filename *sigh*
-                jsonMetadata = messageDict?.JSONString
+                // TODO: Save JSON to file and return filename *sigh*       
+                jsonMetadata = DPAGFunctionsGlobal.JSONStringFileBased(messageDict as Any)
             } else {
                 throw DPAGErrorCreateMessage.err465
             }

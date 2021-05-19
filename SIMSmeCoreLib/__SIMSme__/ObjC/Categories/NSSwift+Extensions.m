@@ -245,7 +245,7 @@
     return Z_OK;
 }
 
-+ (NSData*) gzipFile: (NSURL*)pFileUrl length:(long)length
++ (NSData*) w: (NSURL*)pFileUrl length:(long)length
 {
     if (!pFileUrl || length == 0)
     {
