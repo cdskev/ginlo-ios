@@ -38,7 +38,7 @@ internal struct GNJSONParser {
                 whitespace += 1
                 continue
             default:
-                throw JSONError.unexpectedCharacter(ascii: next, characterIndex: reader.readerIndex + whitespace)
+                throw GNJSONError.unexpectedCharacter(ascii: next, characterIndex: reader.readerIndex + whitespace)
             }
         }
         
@@ -78,11 +78,11 @@ internal struct GNJSONParser {
                 whitespace += 1
                 continue
             default:
-                throw JSONError.unexpectedCharacter(ascii: byte, characterIndex: self.reader.readerIndex)
+                throw GNJSONError.unexpectedCharacter(ascii: byte, characterIndex: self.reader.readerIndex)
             }
         }
 
-        throw JSONError.unexpectedEndOfFile
+        throw GNJSONError.unexpectedEndOfFile
     }
 
 
@@ -91,7 +91,7 @@ internal struct GNJSONParser {
     mutating func parseArray() throws -> [GNJSONValue] {
         precondition(self.reader.read() == ._openbracket)
         guard self.depth < 512 else {
-            throw JSONError.tooManyNestedArraysOrDictionaries(characterIndex: self.reader.readerIndex - 1)
+            throw GNJSONError.tooManyNestedArraysOrDictionaries(characterIndex: self.reader.readerIndex - 1)
         }
         self.depth += 1
         defer { depth -= 1 }
@@ -135,7 +135,7 @@ internal struct GNJSONParser {
                 }
                 continue
             default:
-                throw JSONError.unexpectedCharacter(ascii: ascii, characterIndex: reader.readerIndex)
+                throw GNJSONError.unexpectedCharacter(ascii: ascii, characterIndex: reader.readerIndex)
             }
         }
     }
@@ -145,7 +145,7 @@ internal struct GNJSONParser {
     mutating func parseObject() throws -> [String: GNJSONValue] {
         precondition(self.reader.read() == ._openbrace)
         guard self.depth < 512 else {
-            throw JSONError.tooManyNestedArraysOrDictionaries(characterIndex: self.reader.readerIndex - 1)
+            throw GNJSONError.tooManyNestedArraysOrDictionaries(characterIndex: self.reader.readerIndex - 1)
         }
         self.depth += 1
         defer { depth -= 1 }
@@ -169,7 +169,7 @@ internal struct GNJSONParser {
             let key = try reader.readString()
             let colon = try reader.consumeWhitespace()
             guard colon == ._colon else {
-                throw JSONError.unexpectedCharacter(ascii: colon, characterIndex: reader.readerIndex)
+                throw GNJSONError.unexpectedCharacter(ascii: colon, characterIndex: reader.readerIndex)
             }
             reader.moveReaderIndex(forwardBy: 1)
             try reader.consumeWhitespace()
@@ -189,7 +189,7 @@ internal struct GNJSONParser {
                 }
                 continue
             default:
-                throw JSONError.unexpectedCharacter(ascii: commaOrBrace, characterIndex: reader.readerIndex)
+                throw GNJSONError.unexpectedCharacter(ascii: commaOrBrace, characterIndex: reader.readerIndex)
             }
         }
     }
@@ -256,7 +256,7 @@ extension GNJSONParser {
                 }
             }
             
-            throw JSONError.unexpectedEndOfFile
+            throw GNJSONError.unexpectedEndOfFile
         }
         
         mutating func readString() throws -> String {
@@ -275,10 +275,10 @@ extension GNJSONParser {
                       self.read() == UInt8(ascii: "e")
                 else {
                     guard !self.isEOF else {
-                        throw JSONError.unexpectedEndOfFile
+                        throw GNJSONError.unexpectedEndOfFile
                     }
 
-                    throw JSONError.unexpectedCharacter(ascii: self.peek(offset: -1)!, characterIndex: self.readerIndex - 1)
+                    throw GNJSONError.unexpectedCharacter(ascii: self.peek(offset: -1)!, characterIndex: self.readerIndex - 1)
                 }
 
                 return true
@@ -289,10 +289,10 @@ extension GNJSONParser {
                       self.read() == UInt8(ascii: "e")
                 else {
                     guard !self.isEOF else {
-                        throw JSONError.unexpectedEndOfFile
+                        throw GNJSONError.unexpectedEndOfFile
                     }
 
-                    throw JSONError.unexpectedCharacter(ascii: self.peek(offset: -1)!, characterIndex: self.readerIndex - 1)
+                    throw GNJSONError.unexpectedCharacter(ascii: self.peek(offset: -1)!, characterIndex: self.readerIndex - 1)
                 }
 
                 return false
@@ -308,10 +308,10 @@ extension GNJSONParser {
                   self.read() == UInt8(ascii: "l")
             else {
                 guard !self.isEOF else {
-                    throw JSONError.unexpectedEndOfFile
+                    throw GNJSONError.unexpectedEndOfFile
                 }
 
-                throw JSONError.unexpectedCharacter(ascii: self.peek(offset: -1)!, characterIndex: self.readerIndex - 1)
+                throw GNJSONError.unexpectedCharacter(ascii: self.peek(offset: -1)!, characterIndex: self.readerIndex - 1)
             }
         }
         
@@ -327,7 +327,7 @@ extension GNJSONParser {
 
         private mutating func readUTF8StringTillNextUnescapedQuote() throws -> String {
             guard self.read() == ._quote else {
-                throw JSONError.unexpectedCharacter(ascii: self.peek(offset: -1)!, characterIndex: self.readerIndex - 1)
+                throw GNJSONError.unexpectedCharacter(ascii: self.peek(offset: -1)!, characterIndex: self.readerIndex - 1)
             }
             var stringStartIndex = self.readerIndex
             var copy = 0
@@ -353,7 +353,7 @@ extension GNJSONParser {
                     var string = output ?? ""
                     let errorIndex = self.readerIndex + copy
                     string += self.makeStringFast(self.array[stringStartIndex ... errorIndex])
-                    throw JSONError.unescapedControlCharacterInString(ascii: byte, in: string, index: errorIndex)
+                    throw GNJSONError.unescapedControlCharacterInString(ascii: byte, in: string, index: errorIndex)
 
                 case UInt8(ascii: "\\"):
                     self.moveReaderIndex(forwardBy: copy)
@@ -372,13 +372,13 @@ extension GNJSONParser {
                         copy = 0
                     } catch EscapedSequenceError.unexpectedEscapedCharacter(let ascii, let failureIndex) {
                         output! += makeStringFast(array[escapedStartIndex ..< self.readerIndex])
-                        throw JSONError.unexpectedEscapedCharacter(ascii: ascii, in: output!, index: failureIndex)
+                        throw GNJSONError.unexpectedEscapedCharacter(ascii: ascii, in: output!, index: failureIndex)
                     } catch EscapedSequenceError.expectedLowSurrogateUTF8SequenceAfterHighSurrogate(let failureIndex) {
                         output! += makeStringFast(array[escapedStartIndex ..< self.readerIndex])
-                        throw JSONError.expectedLowSurrogateUTF8SequenceAfterHighSurrogate(in: output!, index: failureIndex)
+                        throw GNJSONError.expectedLowSurrogateUTF8SequenceAfterHighSurrogate(in: output!, index: failureIndex)
                     } catch EscapedSequenceError.couldNotCreateUnicodeScalarFromUInt32(let failureIndex, let unicodeScalarValue) {
                         output! += makeStringFast(array[escapedStartIndex ..< self.readerIndex])
-                        throw JSONError.couldNotCreateUnicodeScalarFromUInt32(
+                        throw GNJSONError.couldNotCreateUnicodeScalarFromUInt32(
                             in: output!, index: failureIndex, unicodeScalarValue: unicodeScalarValue
                         )
                     }
@@ -389,7 +389,7 @@ extension GNJSONParser {
                 }
             }
 
-            throw JSONError.unexpectedEndOfFile
+            throw GNJSONError.unexpectedEndOfFile
         }
 
         // can be removed as soon https://bugs.swift.org/browse/SR-12126 and
@@ -406,7 +406,7 @@ extension GNJSONParser {
         private mutating func parseEscapeSequence() throws -> String {
             precondition(self.read() == ._backslash, "Expected to have an backslash first")
             guard let ascii = self.read() else {
-                throw JSONError.unexpectedEndOfFile
+                throw GNJSONError.unexpectedEndOfFile
             }
 
             switch ascii {
@@ -438,7 +438,7 @@ extension GNJSONParser {
                 guard let (escapeChar) = self.read(),
                       let (uChar) = self.read()
                 else {
-                    throw JSONError.unexpectedEndOfFile
+                    throw GNJSONError.unexpectedEndOfFile
                 }
 
                 guard escapeChar == UInt8(ascii: #"\"#), uChar == UInt8(ascii: "u") else {
@@ -481,7 +481,7 @@ extension GNJSONParser {
                   let thirdHex = self.read(),
                   let forthHex = self.read()
             else {
-                throw JSONError.unexpectedEndOfFile
+                throw GNJSONError.unexpectedEndOfFile
             }
 
             guard let first = DocumentReader.hexAsciiTo4Bits(firstHex),
@@ -490,7 +490,7 @@ extension GNJSONParser {
                   let forth = DocumentReader.hexAsciiTo4Bits(forthHex)
             else {
                 let hexString = String(decoding: [firstHex, secondHex, thirdHex, forthHex], as: Unicode.UTF8.self)
-                throw JSONError.invalidHexDigitSequence(hexString, index: startIndex)
+                throw GNJSONError.invalidHexDigitSequence(hexString, index: startIndex)
             }
             let firstByte = UInt16(first) << 4 | UInt16(second)
             let secondByte = UInt16(third) << 4 | UInt16(forth)
@@ -556,7 +556,7 @@ extension GNJSONParser {
                 switch byte {
                 case UInt8(ascii: "0"):
                     if hasLeadingZero {
-                        throw JSONError.numberWithLeadingZero(index: readerIndex + numberchars)
+                        throw GNJSONError.numberWithLeadingZero(index: readerIndex + numberchars)
                     }
                     if numbersSinceControlChar == 0, pastControlChar == .operand {
                         // the number started with a minus. this is the leading zero.
@@ -566,13 +566,13 @@ extension GNJSONParser {
                     numbersSinceControlChar += 1
                 case UInt8(ascii: "1") ... UInt8(ascii: "9"):
                     if hasLeadingZero {
-                        throw JSONError.numberWithLeadingZero(index: readerIndex + numberchars)
+                        throw GNJSONError.numberWithLeadingZero(index: readerIndex + numberchars)
                     }
                     numberchars += 1
                     numbersSinceControlChar += 1
                 case UInt8(ascii: "."):
                     guard numbersSinceControlChar > 0, pastControlChar == .operand else {
-                        throw JSONError.unexpectedCharacter(ascii: byte, characterIndex: readerIndex + numberchars)
+                        throw GNJSONError.unexpectedCharacter(ascii: byte, characterIndex: readerIndex + numberchars)
                     }
 
                     numberchars += 1
@@ -584,7 +584,7 @@ extension GNJSONParser {
                     guard numbersSinceControlChar > 0,
                           pastControlChar == .operand || pastControlChar == .decimalPoint
                     else {
-                        throw JSONError.unexpectedCharacter(ascii: byte, characterIndex: readerIndex + numberchars)
+                        throw GNJSONError.unexpectedCharacter(ascii: byte, characterIndex: readerIndex + numberchars)
                     }
 
                     numberchars += 1
@@ -593,7 +593,7 @@ extension GNJSONParser {
                     numbersSinceControlChar = 0
                 case UInt8(ascii: "+"), UInt8(ascii: "-"):
                     guard numbersSinceControlChar == 0, pastControlChar == .exp else {
-                        throw JSONError.unexpectedCharacter(ascii: byte, characterIndex: readerIndex + numberchars)
+                        throw GNJSONError.unexpectedCharacter(ascii: byte, characterIndex: readerIndex + numberchars)
                     }
 
                     numberchars += 1
@@ -601,19 +601,19 @@ extension GNJSONParser {
                     numbersSinceControlChar = 0
                 case ._space, ._return, ._newline, ._tab, ._comma, ._closebracket, ._closebrace:
                     guard numbersSinceControlChar > 0 else {
-                        throw JSONError.unexpectedCharacter(ascii: byte, characterIndex: readerIndex + numberchars)
+                        throw GNJSONError.unexpectedCharacter(ascii: byte, characterIndex: readerIndex + numberchars)
                     }
                     let numberStartIndex = self.readerIndex
                     self.moveReaderIndex(forwardBy: numberchars)
 
                     return self.makeStringFast(self[numberStartIndex ..< self.readerIndex])
                 default:
-                    throw JSONError.unexpectedCharacter(ascii: byte, characterIndex: readerIndex + numberchars)
+                    throw GNJSONError.unexpectedCharacter(ascii: byte, characterIndex: readerIndex + numberchars)
                 }
             }
 
             guard numbersSinceControlChar > 0 else {
-                throw JSONError.unexpectedEndOfFile
+                throw GNJSONError.unexpectedEndOfFile
             }
 
             defer { self.readerIndex = self.array.endIndex }
@@ -651,7 +651,7 @@ extension Array where Element == UInt8 {
     
 }
 
-enum JSONError: Swift.Error, Equatable {
+enum GNJSONError: Swift.Error, Equatable {
     case cannotConvertInputDataToUTF8
     case unexpectedCharacter(ascii: UInt8, characterIndex: Int)
     case unexpectedEndOfFile
