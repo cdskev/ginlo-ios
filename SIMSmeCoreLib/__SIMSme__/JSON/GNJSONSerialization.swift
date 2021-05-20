@@ -204,7 +204,7 @@ open class GNJSONSerialization: NSObject {
                 }
                 
                 guard let utf8String = String(bytes: ptr[advanceBy..<ptr.count], encoding: encoding) else {
-                    throw JSONError.cannotConvertInputDataToUTF8
+                    throw GNJSONError.cannotConvertInputDataToUTF8
                 }
                 
                 var parser = GNJSONParser(bytes: Array(utf8String.utf8))
@@ -212,11 +212,11 @@ open class GNJSONSerialization: NSObject {
             }
             
             if jsonValue.isValue, !opt.contains(.fragmentsAllowed) {
-                throw JSONError.singleFragmentFoundButNotAllowed
+                throw GNJSONError.singleFragmentFoundButNotAllowed
             }
             
             return try jsonValue.toObjcRepresentation(options: opt)
-        } catch let error as JSONError {
+        } catch let error as GNJSONError {
             switch error {
             case .cannotConvertInputDataToUTF8:
                 throw NSError(domain: NSCocoaErrorDomain, code: CocoaError.propertyListReadCorrupt.rawValue, userInfo: [
@@ -664,7 +664,7 @@ private extension GNJSONValue {
             return NSNumber(value: bool)
         case .number(let string):
             guard let number = NSNumber.fromJSONNumber(string) else {
-                throw JSONError.numberIsNotRepresentableInSwift(parsed: string)
+                throw GNJSONError.numberIsNotRepresentableInSwift(parsed: string)
             }
             return number
         case .null:
