@@ -1,4 +1,3 @@
-//===----------------------------------------------------------------------===//
 //
 // This source file is part of the Swift.org open source project
 //
@@ -8,8 +7,10 @@
 // See https://swift.org/LICENSE.txt for license information
 // See https://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
 //
-//===----------------------------------------------------------------------===//
-
+// Modified and adapted to ginlo needs
+// WARNING: This is NOT a generic JSON-Serializer, it is specifically built for Ginlo
+// Modified by:
+//    Imdat Solak (imdat@solak.de) on May 20, 2021 ("The Month of Hell")
 // File Based JSON Serialization
 
 import Foundation
@@ -23,6 +24,7 @@ extension GNJSONSerialization {
         public static let mutableLeaves = ReadingOptions(rawValue: 1 << 1)
         
         public static let fragmentsAllowed = ReadingOptions(rawValue: 1 << 2)
+        // swiftlint:disable number_separator
         @available(swift, deprecated: 100000, renamed: "JSONSerialization.ReadingOptions.fragmentsAllowed")
         public static let allowFragments = ReadingOptions(rawValue: 1 << 2)
     }
@@ -302,9 +304,11 @@ open class GNJSONSerialization: NSObject {
         }
         repeat {
             let buffer = try [UInt8](unsafeUninitializedCapacity: 1_024) { buf, initializedCount in
+                // swiftlint:disable force_unwrapping
                 let bytesRead = stream.read(buf.baseAddress!, maxLength: buf.count)
                 initializedCount = bytesRead
                 guard bytesRead >= 0 else {
+                    // swiftlint:disable force_unwrapping
                     throw stream.streamError!
                 }
             }
@@ -385,6 +389,10 @@ private extension GNJSONSerialization {
     private static let utf16LittleEndianBOM: [UInt8] = [0xFE, 0xFF]
 }
 
+extension Encodable {
+    func toJSONData() -> Data? { try? JSONEncoder().encode(self) }
+}
+
 // MARK: - GNJSONSerializer
 private struct GNJSONWriter {
 
@@ -444,9 +452,28 @@ private struct GNJSONWriter {
                 writer(num.description)
             case let num as NSDecimalNumber:
                 writer(num.description)
+            case let url as URL:
+                try serializeString(url.absoluteString)
             case is NSNull:
                 try serializeNull()
+            case let spm as DPAGServerFunction.SendPrivateMessage:
+                try serializeSendPrivateMessage(spm)
+            case let sgm as DPAGServerFunction.SendGroupMessage:
+                try serializeSendGroupMessage(sgm)
+            case let spim as DPAGServerFunction.SendPrivateInternalMessage:
+                try serializeSendPrivateInternalMessage(spim)
+            case let stpm as DPAGServerFunction.SendTimedPrivateMessage:
+                try serializeSendTimedPrivateMessage(stpm)
+            case let stgm as DPAGServerFunction.SendTimedGroupMessage:
+                try serializeSendTimedGroupMessage(stgm)
+            case let spims as DPAGServerFunction.SendPrivateInternalMessages:
+                try serializeSendPrivateInternalMessages(spims)
+            case let enc as Encodable:
+                if let data = enc.toJSONData(), let str = String(data: data, encoding: .utf8) {
+                    try serializeString(str)
+                }
             default:
+                NSLog("Error on serialization: \(obj), \(type(of: obj))")
                 throw NSError(domain: NSCocoaErrorDomain, code: CocoaError.propertyListReadCorrupt.rawValue, userInfo: [NSDebugDescriptionErrorKey: "Invalid object cannot be serialized"])
         }
     }
@@ -495,7 +522,6 @@ private struct GNJSONWriter {
     }
 
     mutating func serializeArray(_ array: [Any?]) throws {
-        NSLog("GNJSONSerialization:: Array")
         writer("[")
         if pretty {
             writer("\n")
@@ -523,8 +549,74 @@ private struct GNJSONWriter {
         writer("]")
     }
 
+    mutating func serializeOnelement(first: Bool, key: AnyHashable, value: Any?) throws {
+        if !first {
+            writer(",")
+        }
+        if let key = key as? String {
+            try serializeString(key)
+        } else {
+            throw NSError(domain: NSCocoaErrorDomain, code: CocoaError.propertyListReadCorrupt.rawValue, userInfo: [NSDebugDescriptionErrorKey: "NSDictionary key must be NSString"])
+        }
+        writer(":")
+        try serializeJSON(value)
+    }
+
+    mutating func serializeSendPrivateMessage(_ stuff: DPAGServerFunction.SendPrivateMessage) throws {
+        writer("{")
+        try serializeOnelement(first: true, key: "cmd", value: stuff.cmd)
+        try serializeOnelement(first: false, key: "message", value: stuff.message)
+        try serializeOnelement(first: false, key: "message-checksum", value: stuff.messageChecksum)
+        try serializeOnelement(first: false, key: "returnConfirmMessage", value: stuff.returnConfirmMessage)
+        writer("}")
+    }
+
+    mutating func serializeSendGroupMessage(_ stuff: DPAGServerFunction.SendGroupMessage) throws {
+        writer("{")
+        try serializeOnelement(first: true, key: "cmd", value: stuff.cmd)
+        try serializeOnelement(first: false, key: "message", value: stuff.message)
+        try serializeOnelement(first: false, key: "message-checksum", value: stuff.messageChecksum)
+        try serializeOnelement(first: false, key: "returnConfirmMessage", value: stuff.returnConfirmMessage)
+        writer("}")
+    }
+
+    mutating func serializeSendPrivateInternalMessage(_ stuff: DPAGServerFunction.SendPrivateInternalMessage) throws {
+        writer("{")
+        try serializeOnelement(first: true, key: "cmd", value: stuff.cmd)
+        try serializeOnelement(first: false, key: "message", value: stuff.message)
+        try serializeOnelement(first: false, key: "message-checksum", value: stuff.messageChecksum)
+        try serializeOnelement(first: false, key: "returnConfirmMessage", value: stuff.returnConfirmMessage)
+        writer("}")
+    }
+
+    mutating func serializeSendTimedPrivateMessage(_ stuff: DPAGServerFunction.SendTimedPrivateMessage) throws {
+        writer("{")
+        try serializeOnelement(first: true, key: "cmd", value: stuff.cmd)
+        try serializeOnelement(first: false, key: "message", value: stuff.message)
+        try serializeOnelement(first: false, key: "message-checksum", value: stuff.messageChecksum)
+        try serializeOnelement(first: false, key: "dateToSend", value: stuff.dateToSend)
+        writer("}")
+    }
+
+    mutating func serializeSendTimedGroupMessage(_ stuff: DPAGServerFunction.SendTimedGroupMessage) throws {
+        writer("{")
+        try serializeOnelement(first: true, key: "cmd", value: stuff.cmd)
+        try serializeOnelement(first: false, key: "message", value: stuff.message)
+        try serializeOnelement(first: false, key: "message-checksum", value: stuff.messageChecksum)
+        try serializeOnelement(first: false, key: "dateToSend", value: stuff.dateToSend)
+        writer("}")
+    }
+
+    mutating func serializeSendPrivateInternalMessages(_ stuff: DPAGServerFunction.SendPrivateInternalMessages) throws {
+        writer("{")
+        try serializeOnelement(first: true, key: "cmd", value: stuff.cmd)
+        try serializeOnelement(first: false, key: "message", value: stuff.message)
+        try serializeOnelement(first: false, key: "message-checksum", value: stuff.messageChecksum)
+        try serializeOnelement(first: false, key: "returnConfirmMessage", value: stuff.returnConfirmMessage)
+        writer("}")
+    }
+
     mutating func serializeDictionary(_ dict: [AnyHashable: Any?]) throws {
-        NSLog("GNJSONSerialization:: Dictionary")
         writer("{")
         if pretty {
             writer("\n")

@@ -18,7 +18,6 @@ disabled_rules: # rule identifiers to exclude from running
 opt_in_rules:
 - array_init
 - attributes
-- closure_end_indention
 - closure_spacing
 ##  - conditional_returns_on_newline
 - contains_over_first_not_nil

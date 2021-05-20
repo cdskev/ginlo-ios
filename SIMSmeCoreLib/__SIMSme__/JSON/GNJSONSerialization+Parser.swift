@@ -1,4 +1,3 @@
-//===----------------------------------------------------------------------===//
 //
 // This source file is part of the Swift.org open source project
 //
@@ -8,8 +7,9 @@
 // See https://swift.org/LICENSE.txt for license information
 // See https://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
 //
-//===----------------------------------------------------------------------===//
-
+// Modified and adjusted to Ginlo Needs (this is not a generic JSON-Parser)
+// Imdat Solak, May 20th, 2021 ("The Month of Hell")
+//
 
 internal struct GNJSONParser {
     var reader: DocumentReader
@@ -84,7 +84,6 @@ internal struct GNJSONParser {
 
         throw GNJSONError.unexpectedEndOfFile
     }
-
 
     // MARK: - Parse Array -
 
@@ -210,7 +209,6 @@ extension GNJSONParser {
             self.readerIndex >= self.array.endIndex
         }
         
-
         init(array: [UInt8]) {
             self.array = array
         }
@@ -278,6 +276,7 @@ extension GNJSONParser {
                         throw GNJSONError.unexpectedEndOfFile
                     }
 
+                    // swiftlint:disable force_unwrapping
                     throw GNJSONError.unexpectedCharacter(ascii: self.peek(offset: -1)!, characterIndex: self.readerIndex - 1)
                 }
 
@@ -292,6 +291,7 @@ extension GNJSONParser {
                         throw GNJSONError.unexpectedEndOfFile
                     }
 
+                    // swiftlint:disable force_unwrapping
                     throw GNJSONError.unexpectedCharacter(ascii: self.peek(offset: -1)!, characterIndex: self.readerIndex - 1)
                 }
 
@@ -311,6 +311,7 @@ extension GNJSONParser {
                     throw GNJSONError.unexpectedEndOfFile
                 }
 
+                // swiftlint:disable force_unwrapping
                 throw GNJSONError.unexpectedCharacter(ascii: self.peek(offset: -1)!, characterIndex: self.readerIndex - 1)
             }
         }
@@ -327,6 +328,7 @@ extension GNJSONParser {
 
         private mutating func readUTF8StringTillNextUnescapedQuote() throws -> String {
             guard self.read() == ._quote else {
+                // swiftlint:disable force_unwrapping
                 throw GNJSONError.unexpectedCharacter(ascii: self.peek(offset: -1)!, characterIndex: self.readerIndex - 1)
             }
             var stringStartIndex = self.readerIndex
@@ -358,6 +360,7 @@ extension GNJSONParser {
                 case UInt8(ascii: "\\"):
                     self.moveReaderIndex(forwardBy: copy)
                     if output != nil {
+                        // swiftlint:disable force_unwrapping
                         output! += self.makeStringFast(self.array[stringStartIndex ..< stringStartIndex + copy])
                     } else {
                         output = self.makeStringFast(self.array[stringStartIndex ..< stringStartIndex + copy])
@@ -367,18 +370,24 @@ extension GNJSONParser {
 
                     do {
                         let escaped = try parseEscapeSequence()
+                        // swiftlint:disable force_unwrapping
                         output! += escaped
                         stringStartIndex = self.readerIndex
                         copy = 0
+                        // swiftlint:disable force_unwrapping
                     } catch EscapedSequenceError.unexpectedEscapedCharacter(let ascii, let failureIndex) {
                         output! += makeStringFast(array[escapedStartIndex ..< self.readerIndex])
                         throw GNJSONError.unexpectedEscapedCharacter(ascii: ascii, in: output!, index: failureIndex)
                     } catch EscapedSequenceError.expectedLowSurrogateUTF8SequenceAfterHighSurrogate(let failureIndex) {
+                        // swiftlint:disable force_unwrapping
                         output! += makeStringFast(array[escapedStartIndex ..< self.readerIndex])
+                        // swiftlint:disable force_unwrapping
                         throw GNJSONError.expectedLowSurrogateUTF8SequenceAfterHighSurrogate(in: output!, index: failureIndex)
                     } catch EscapedSequenceError.couldNotCreateUnicodeScalarFromUInt32(let failureIndex, let unicodeScalarValue) {
+                        // swiftlint:disable force_unwrapping
                         output! += makeStringFast(array[escapedStartIndex ..< self.readerIndex])
                         throw GNJSONError.couldNotCreateUnicodeScalarFromUInt32(
+                            // swiftlint:disable force_unwrapping
                             in: output!, index: failureIndex, unicodeScalarValue: unicodeScalarValue
                         )
                     }
@@ -410,19 +419,27 @@ extension GNJSONParser {
             }
 
             switch ascii {
-            case 0x22: return "\""
-            case 0x5C: return "\\"
-            case 0x2F: return "/"
-            case 0x62: return "\u{08}" // \b
-            case 0x66: return "\u{0C}" // \f
-            case 0x6E: return "\u{0A}" // \n
-            case 0x72: return "\u{0D}" // \r
-            case 0x74: return "\u{09}" // \t
-            case 0x75:
-                let character = try parseUnicodeSequence()
-                return String(character)
-            default:
-                throw EscapedSequenceError.unexpectedEscapedCharacter(ascii: ascii, index: self.readerIndex - 1)
+                case 0x22:
+                    return "\""
+                case 0x5C:
+                    return "\\"
+                case 0x2F:
+                    return "/"
+                case 0x62:
+                    return "\u{08}" // \b
+                case 0x66:
+                    return "\u{0C}" // \f
+                case 0x6E:
+                    return "\u{0A}" // \n
+                case 0x72:
+                    return "\u{0D}" // \r
+                case 0x74:
+                    return "\u{09}" // \t
+                case 0x75:
+                    let character = try parseUnicodeSequence()
+                    return String(character)
+                default:
+                    throw EscapedSequenceError.unexpectedEscapedCharacter(ascii: ascii, index: self.readerIndex - 1)
             }
         }
 

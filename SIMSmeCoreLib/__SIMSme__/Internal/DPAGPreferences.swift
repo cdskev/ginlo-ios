@@ -647,7 +647,6 @@ public class DPAGPreferences: NSObject {
         self.shouldShowSyncContactsReminder()
     }
 
-
     public func updateLastDateReminderShown() {
         self[.kLastDateReminderSyncContactsShown] = Date()
     }

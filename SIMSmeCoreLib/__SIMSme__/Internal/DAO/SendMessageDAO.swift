@@ -141,55 +141,67 @@ class SendMessageDAO: SendMessageDAOProtocol {
             msgInstance.messageText = decryptedMessage.content ?? ""
             msgInstance.contentType = decryptedMessage.contentType.stringRepresentation
             // msgInstance.attachment = nil
-            let encodedAttachment = DPAGAttachmentWorker.encryptedAttachment(guid: message.attachment)
-            let messageDict: [AnyHashable: Any]
-            let signatures: DPAGMessageSignatures
+            var messageDict: [AnyHashable: Any]?
+            var signatures: DPAGMessageSignatures?
             if let messagePrivate = message as? SIMSMessageToSendPrivate, let messageData = messagePrivate.data, let toAccountGuid = messagePrivate.toAccountGuid, let recipient = SIMSContactIndexEntry.findFirst(byGuid: toAccountGuid, in: localContext), let fromKey = messagePrivate.fromKey {
-                // TODO: TempDevice ...
-                msgInstance.receiver = DPAGSendMessageRecipient(recipientGuid: toAccountGuid)
-                guard let accountCrypto = DPAGCryptoHelper.newAccountCrypto() else {
-                    throw DPAGErrorSendMessage.err463
+                try autoreleasepool {
+                    var encodedAttachment: String? = DPAGAttachmentWorker.encryptedAttachment(guid: message.attachment)
+                    msgInstance.receiver = DPAGSendMessageRecipient(recipientGuid: toAccountGuid)
+                    guard let accountCrypto = DPAGCryptoHelper.newAccountCrypto() else {
+                        throw DPAGErrorSendMessage.err463
+                    }
+                    guard let decAesKey = try accountCrypto.decryptAesKey(encryptedAeskey: fromKey) else {
+                        throw DPAGErrorSendMessage.err463
+                    }
+                    let decAesKeyDict: [AnyHashable: Any]?
+                    do { decAesKeyDict = try XMLReader.dictionary(forXMLString: decAesKey) } catch { return }
+                    guard let iv = decAesKeyDict?["iv"] as? String else {
+                        throw DPAGErrorSendMessage.err463
+                    }
+                    guard let cachedAesKeys = try recipient.aesKey(accountPublicKey: accountPublicKey, createNew: true), let recipientPublicKey = msgInstance.receiver.contact?.publicKey, let config = try DPAGEncryptionConfigurationPrivate(forRecipient: msgInstance.receiver, cachedAesKeys: cachedAesKeys, recipientPublicKey: recipientPublicKey, withIV: iv) else {
+                        throw DPAGErrorSendMessage.err463
+                    }
+                    guard let signaturesMsg = try DPAGEncryptionConfiguration.signatures(accountCrypto: accountCrypto, config: config, messageDataEncrypted: messageData, attachmentEncrypted: encodedAttachment) else {
+                        throw DPAGErrorSendMessage.err463
+                    }
+                    signatures = signaturesMsg
+                    messageDict = config.messageDictionary(info: DPAGEncryptionConfigurationPrivate.MessageDictionaryInfoPrivate(encMessageData: messageData, encAttachment: encodedAttachment, signatures: signaturesMsg, messageType: DPAGStrings.JSON.MessagePrivate.OBJECT_KEY, contentType: msgInstance.contentType, sendOptions: msgInstance.sendMessageOptions, featureSet: msgInstance.featureSet, nickname: contact.nickName ?? "", senderId: msgInstance.guidOutgoingMessage))
+                    encodedAttachment = nil
                 }
-                guard let decAesKey = try accountCrypto.decryptAesKey(encryptedAeskey: fromKey) else {
-                    throw DPAGErrorSendMessage.err463
-                }
-                let decAesKeyDict: [AnyHashable: Any]?
-                do { decAesKeyDict = try XMLReader.dictionary(forXMLString: decAesKey) } catch { return }
-                guard let iv = decAesKeyDict?["iv"] as? String else {
-                    throw DPAGErrorSendMessage.err463
-                }
-                guard let cachedAesKeys = try recipient.aesKey(accountPublicKey: accountPublicKey, createNew: true), let recipientPublicKey = msgInstance.receiver.contact?.publicKey, let config = try DPAGEncryptionConfigurationPrivate(forRecipient: msgInstance.receiver, cachedAesKeys: cachedAesKeys, recipientPublicKey: recipientPublicKey, withIV: iv) else {
-                    throw DPAGErrorSendMessage.err463
-                }
-                guard let signaturesMsg = try DPAGEncryptionConfiguration.signatures(accountCrypto: accountCrypto, config: config, messageDataEncrypted: messageData, attachmentEncrypted: encodedAttachment) else {
-                    throw DPAGErrorSendMessage.err463
-                }
-                signatures = signaturesMsg
-                messageDict = config.messageDictionary(info: DPAGEncryptionConfigurationPrivate.MessageDictionaryInfoPrivate(encMessageData: messageData, encAttachment: encodedAttachment, signatures: signatures, messageType: DPAGStrings.JSON.MessagePrivate.OBJECT_KEY, contentType: msgInstance.contentType, sendOptions: msgInstance.sendMessageOptions, featureSet: msgInstance.featureSet, nickname: contact.nickName ?? "", senderId: msgInstance.guidOutgoingMessage))
             } else if let messageGroup = message as? SIMSMessageToSendGroup, let recipient = messageGroup.streamToSend(in: localContext), let messageData = messageGroup.data, let groupGuid = recipient.guid {
-                msgInstance.receiver = DPAGSendMessageRecipient(recipientGuid: groupGuid)
-                guard let decAesKey = recipient.groupAesKey, let config = try DPAGEncryptionConfigurationGroup(aesKeyXML: decAesKey, forGroup: groupGuid) else {
-                    throw DPAGErrorSendMessage.err463
+                try autoreleasepool {
+                    var encodedAttachment: String? = DPAGAttachmentWorker.encryptedAttachment(guid: message.attachment)
+                    msgInstance.receiver = DPAGSendMessageRecipient(recipientGuid: groupGuid)
+                    guard let decAesKey = recipient.groupAesKey, let config = try DPAGEncryptionConfigurationGroup(aesKeyXML: decAesKey, forGroup: groupGuid) else {
+                        throw DPAGErrorSendMessage.err463
+                    }
+                    guard let accountCrypto = DPAGCryptoHelper.newAccountCrypto(), let signaturesMsg = try DPAGEncryptionConfiguration.signatures(accountCrypto: accountCrypto, config: config, messageDataEncrypted: messageData, attachmentEncrypted: encodedAttachment) else {
+                        throw DPAGErrorSendMessage.err463
+                    }
+                    signatures = signaturesMsg
+                    messageDict = config.messageDictionary(info: DPAGEncryptionConfigurationGroup.MessageDictionaryInfoGroup(encMessageData: messageData, encAttachment: encodedAttachment, signatures: signaturesMsg, messageType: DPAGStrings.JSON.MessageGroup.OBJECT_KEY, contentType: msgInstance.contentType, sendOptions: msgInstance.sendMessageOptions, featureSet: msgInstance.featureSet, nickname: contact.nickName ?? "", senderId: msgInstance.guidOutgoingMessage))
+                    encodedAttachment = nil
                 }
-                guard let accountCrypto = DPAGCryptoHelper.newAccountCrypto(), let signaturesMsg = try DPAGEncryptionConfiguration.signatures(accountCrypto: accountCrypto, config: config, messageDataEncrypted: messageData, attachmentEncrypted: encodedAttachment) else {
-                    throw DPAGErrorSendMessage.err463
-                }
-                signatures = signaturesMsg
-                messageDict = config.messageDictionary(info: DPAGEncryptionConfigurationGroup.MessageDictionaryInfoGroup(encMessageData: messageData, encAttachment: encodedAttachment, signatures: signatures, messageType: DPAGStrings.JSON.MessageGroup.OBJECT_KEY, contentType: msgInstance.contentType, sendOptions: msgInstance.sendMessageOptions, featureSet: msgInstance.featureSet, nickname: contact.nickName ?? "", senderId: msgInstance.guidOutgoingMessage))
             } else {
                 return
             }
-            guard let messageJson = messageDict.JSONString else {
-                throw DPAGErrorSendMessage.err463
-                // return
+            var messageJson: String?
+            try autoreleasepool {
+                if let messageDict = messageDict {
+                    messageJson = try GNJSONSerialization.string(withJSONObject: messageDict)
+                } else {
+                    messageDict = nil
+                    throw DPAGErrorSendMessage.err463
+                }
+                messageDict = nil
             }
             // Signature sichern
-            guard let rawSignature = signatures.signatureDict.JSONString else {
+            guard let rawSignature = signatures?.signatureDict.JSONString else {
                 throw DPAGErrorSendMessage.err463
                 // return nil
             }
             message.rawSignature = rawSignature
-            guard let rawSignature256 = signatures.signatureDict256.JSONString else {
+            guard let rawSignature256 = signatures?.signatureDict256.JSONString else {
                 throw DPAGErrorSendMessage.err463
                 // return nil
             }
@@ -224,54 +236,68 @@ class SendMessageDAO: SendMessageDAOProtocol {
             msgInstance.messageText = decryptedMessage.content ?? ""
             msgInstance.contentType = decryptedMessage.contentType.stringRepresentation
             // msgInstance.attachment = nil
-            let encodedAttachment = DPAGAttachmentWorker.encryptedAttachment(guid: message.attachment)
-            let messageDict: [AnyHashable: Any]
-            let signatures: DPAGMessageSignatures
+            var messageDict: [AnyHashable: Any]?
+            var signatures: DPAGMessageSignatures?
             if let messagePrivate = message as? SIMSPrivateMessage, let recipient = SIMSContactIndexEntry.findFirst(byGuid: messagePrivate.toAccountGuid, in: localContext), let messageData = messagePrivate.data, let receiverGuid = recipient.guid, let fromKey = messagePrivate.fromKey {
-                msgInstance.receiver = DPAGSendMessageRecipient(recipientGuid: receiverGuid)
-                guard let accountCrypto = DPAGCryptoHelper.newAccountCrypto() else {
-                    throw DPAGErrorSendMessage.err463
+                try autoreleasepool {
+                    var encodedAttachment: String? = DPAGAttachmentWorker.encryptedAttachment(guid: message.attachment)
+                    msgInstance.receiver = DPAGSendMessageRecipient(recipientGuid: receiverGuid)
+                    guard let accountCrypto = DPAGCryptoHelper.newAccountCrypto() else {
+                        throw DPAGErrorSendMessage.err463
+                    }
+                    guard let decAesKey = try accountCrypto.decryptAesKey(encryptedAeskey: fromKey) else {
+                        throw DPAGErrorSendMessage.err463
+                    }
+                    let decAesKeyDict: [AnyHashable: Any]?
+                    do { decAesKeyDict = try XMLReader.dictionary(forXMLString: decAesKey) } catch { return }
+                    guard let iv = decAesKeyDict?["iv"] as? String else {
+                        throw DPAGErrorSendMessage.err463
+                    }
+                    guard let cachedAesKeys = try recipient.aesKey(accountPublicKey: accountPublicKey, createNew: true), let recipientPublicKey = msgInstance.receiver.contact?.publicKey, let config = try DPAGEncryptionConfigurationPrivate(forRecipient: msgInstance.receiver, cachedAesKeys: cachedAesKeys, recipientPublicKey: recipientPublicKey, withIV: iv) else {
+                        throw DPAGErrorSendMessage.err463
+                    }
+                    guard let signaturesMsg = try DPAGEncryptionConfiguration.signatures(accountCrypto: accountCrypto, config: config, messageDataEncrypted: messageData, attachmentEncrypted: encodedAttachment) else {
+                        throw DPAGErrorSendMessage.err463
+                    }
+                    signatures = signaturesMsg
+                    messageDict = config.messageDictionary(info: DPAGEncryptionConfigurationPrivate.MessageDictionaryInfoPrivate(encMessageData: messageData, encAttachment: encodedAttachment, signatures: signaturesMsg, messageType: DPAGStrings.JSON.MessagePrivate.OBJECT_KEY, contentType: msgInstance.contentType, sendOptions: msgInstance.sendMessageOptions, featureSet: msgInstance.featureSet, nickname: contact.nickName ?? "", senderId: msgInstance.guidOutgoingMessage))
+                    encodedAttachment = nil
                 }
-                guard let decAesKey = try accountCrypto.decryptAesKey(encryptedAeskey: fromKey) else {
-                    throw DPAGErrorSendMessage.err463
-                }
-                let decAesKeyDict: [AnyHashable: Any]?
-                do { decAesKeyDict = try XMLReader.dictionary(forXMLString: decAesKey) } catch { return }
-                guard let iv = decAesKeyDict?["iv"] as? String else {
-                    throw DPAGErrorSendMessage.err463
-                }
-                guard let cachedAesKeys = try recipient.aesKey(accountPublicKey: accountPublicKey, createNew: true), let recipientPublicKey = msgInstance.receiver.contact?.publicKey, let config = try DPAGEncryptionConfigurationPrivate(forRecipient: msgInstance.receiver, cachedAesKeys: cachedAesKeys, recipientPublicKey: recipientPublicKey, withIV: iv) else {
-                    throw DPAGErrorSendMessage.err463
-                }
-                guard let signaturesMsg = try DPAGEncryptionConfiguration.signatures(accountCrypto: accountCrypto, config: config, messageDataEncrypted: messageData, attachmentEncrypted: encodedAttachment) else {
-                    throw DPAGErrorSendMessage.err463
-                }
-                signatures = signaturesMsg
-                messageDict = config.messageDictionary(info: DPAGEncryptionConfigurationPrivate.MessageDictionaryInfoPrivate(encMessageData: messageData, encAttachment: encodedAttachment, signatures: signatures, messageType: DPAGStrings.JSON.MessagePrivate.OBJECT_KEY, contentType: msgInstance.contentType, sendOptions: msgInstance.sendMessageOptions, featureSet: msgInstance.featureSet, nickname: contact.nickName ?? "", senderId: msgInstance.guidOutgoingMessage))
             } else if let messageGroup = message as? SIMSGroupMessage, let recipient = messageGroup.stream as? SIMSGroupStream, let messageData = messageGroup.data, let receiverGuid = recipient.guid {
-                msgInstance.receiver = DPAGSendMessageRecipient(recipientGuid: receiverGuid)
-                guard let decAesKey = recipient.groupAesKey, let config = try DPAGEncryptionConfigurationGroup(aesKeyXML: decAesKey, forGroup: receiverGuid) else {
-                    throw DPAGErrorSendMessage.err463
+                try autoreleasepool {
+                    var encodedAttachment: String? = DPAGAttachmentWorker.encryptedAttachment(guid: message.attachment)
+                    msgInstance.receiver = DPAGSendMessageRecipient(recipientGuid: receiverGuid)
+                    guard let decAesKey = recipient.groupAesKey, let config = try DPAGEncryptionConfigurationGroup(aesKeyXML: decAesKey, forGroup: receiverGuid) else {
+                        throw DPAGErrorSendMessage.err463
+                    }
+                    guard let accountCrypto = DPAGCryptoHelper.newAccountCrypto(), let signaturesMsg = try DPAGEncryptionConfiguration.signatures(accountCrypto: accountCrypto, config: config, messageDataEncrypted: messageData, attachmentEncrypted: encodedAttachment) else {
+                        throw DPAGErrorSendMessage.err463
+                    }
+                    signatures = signaturesMsg
+                    messageDict = config.messageDictionary(info: DPAGEncryptionConfigurationGroup.MessageDictionaryInfoGroup(encMessageData: messageData, encAttachment: encodedAttachment, signatures: signaturesMsg, messageType: DPAGStrings.JSON.MessageGroup.OBJECT_KEY, contentType: msgInstance.contentType, sendOptions: msgInstance.sendMessageOptions, featureSet: msgInstance.featureSet, nickname: contact.nickName ?? "", senderId: msgInstance.guidOutgoingMessage))
+                    encodedAttachment = nil
                 }
-                guard let accountCrypto = DPAGCryptoHelper.newAccountCrypto(), let signaturesMsg = try DPAGEncryptionConfiguration.signatures(accountCrypto: accountCrypto, config: config, messageDataEncrypted: messageData, attachmentEncrypted: encodedAttachment) else {
-                    throw DPAGErrorSendMessage.err463
-                }
-                signatures = signaturesMsg
-                messageDict = config.messageDictionary(info: DPAGEncryptionConfigurationGroup.MessageDictionaryInfoGroup(encMessageData: messageData, encAttachment: encodedAttachment, signatures: signatures, messageType: DPAGStrings.JSON.MessageGroup.OBJECT_KEY, contentType: msgInstance.contentType, sendOptions: msgInstance.sendMessageOptions, featureSet: msgInstance.featureSet, nickname: contact.nickName ?? "", senderId: msgInstance.guidOutgoingMessage))
             } else {
                 return
             }
-            guard let messageJson = messageDict.JSONString else {
-                throw DPAGErrorSendMessage.err463
-                // return
+            
+            var messageJson: String?
+            try autoreleasepool {
+                if let messageDict = messageDict {
+                    messageJson = try GNJSONSerialization.string(withJSONObject: messageDict)
+                } else {
+                    messageDict = nil
+                    throw DPAGErrorSendMessage.err463
+                }
+                messageDict = nil
             }
             // Signature sichern
-            guard let rawSignature = signatures.signatureDict.JSONString else {
+            guard let rawSignature = signatures?.signatureDict.JSONString else {
                 throw DPAGErrorSendMessage.err463
                 // return nil
             }
             message.rawSignature = rawSignature
-            guard let rawSignature256 = signatures.signatureDict256.JSONString else {
+            guard let rawSignature256 = signatures?.signatureDict256.JSONString else {
                 throw DPAGErrorSendMessage.err463
                 // return nil
             }

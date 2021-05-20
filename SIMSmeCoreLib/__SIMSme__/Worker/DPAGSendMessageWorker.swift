@@ -531,28 +531,30 @@ class DPAGSendMessageWorker: NSObject, DPAGSendMessageWorkerProtocol {
                         }
                         sendMessageInfo = sendMessageInfoResult.sendMessageInfo
                     }
-                    let msgInstance = self.createMessageInstance(sendMessageInfo: sendMessageInfo!, isGroup: isGroup, recipient: recipient, sendOptionsRecipients: sendOptionsRecipients, featureSet: featureSet, serviceResponseBlock: serviceResponseBlock)
-                    do {
-                        try self.createOutgoingMessage(msgInstance: msgInstance, sendMessageInfo: sendMessageInfo, isGroup: isGroup)
-                    } catch DPAGErrorCreateMessage.err465 {
-                        errorBlock()
-                        serviceResponseBlock?(nil, "internal.error.465", "internal.error.465")
-                        return
-                    } catch {
-                        DPAGLog(error)
+                    if let sendMessageInfo = sendMessageInfo {
+                        let msgInstance = self.createMessageInstance(sendMessageInfo: sendMessageInfo, isGroup: isGroup, recipient: recipient, sendOptionsRecipients: sendOptionsRecipients, featureSet: featureSet, serviceResponseBlock: serviceResponseBlock)
+                        do {
+                            try self.createOutgoingMessage(msgInstance: msgInstance, sendMessageInfo: sendMessageInfo, isGroup: isGroup)
+                        } catch DPAGErrorCreateMessage.err465 {
+                            errorBlock()
+                            serviceResponseBlock?(nil, "internal.error.465", "internal.error.465")
+                            return
+                        } catch {
+                            DPAGLog(error)
+                        }
+                        if msgInstance.guidOutgoingMessage == nil {
+                            errorBlock()
+                            serviceResponseBlock?(nil, "service.tryAgainLater", "service.tryAgainLater")
+                            return
+                        }
+                        if recipients.count <= 4 {
+                            msgInstances.append(msgInstance)
+                        }
+                        if let guidOutgoingMessage = msgInstance.guidOutgoingMessage {
+                            msgInstancesGuids.append(guidOutgoingMessage)
+                        }
+                        sendOptionsRecipients?.attachmentIsInternalCopy = true
                     }
-                    if msgInstance.guidOutgoingMessage == nil {
-                        errorBlock()
-                        serviceResponseBlock?(nil, "service.tryAgainLater", "service.tryAgainLater")
-                        return
-                    }
-                    if recipients.count <= 4 {
-                        msgInstances.append(msgInstance)
-                    }
-                    if let guidOutgoingMessage = msgInstance.guidOutgoingMessage {
-                        msgInstancesGuids.append(guidOutgoingMessage)
-                    }
-                    sendOptionsRecipients?.attachmentIsInternalCopy = true
                 }
             }
             for msgInstance in msgInstances {
