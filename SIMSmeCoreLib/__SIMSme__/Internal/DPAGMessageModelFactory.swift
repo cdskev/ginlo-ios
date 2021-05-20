@@ -464,9 +464,6 @@ class DPAGMessageModelFactory: DPAGMessageModelFactoryProtocol {
             }
             encAttachment = nil
         }
-        if let messageDict = messageDict {
-            dumpJSON(messageDict: messageDict, blanks: "")
-        }
         try autoreleasepool {
             if messageDict != nil {
                 jsonMetadata = try GNJSONSerialization.string(withJSONObject: messageDict!)

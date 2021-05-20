@@ -138,7 +138,7 @@ open class GNJSONSerialization: NSObject {
     
     /* Generate JSON data from a Foundation object. If the object will not produce valid JSON then an exception will be thrown. Setting the NSJSONWritingPrettyPrinted option will generate JSON with whitespace designed to make the output more readable. If that option is not set, the most compact possible JSON will be generated. If an error occurs, the error parameter will be set and the return value will be nil. The resulting data is a encoded in UTF-8.
      */
-    internal class func _data(withJSONObject value: Any, options opt: WritingOptions, stream: Bool) throws -> String {
+    internal class func _data(withJSONObject value: Any, options opt: WritingOptions, stream: Bool) throws -> URL {
         let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(DPAGFunctionsGlobal.uuid())
         var string = ""
         try "".write(to: url, atomically: true, encoding: .utf8)
@@ -176,19 +176,34 @@ open class GNJSONSerialization: NSObject {
             stringLength = 0
         }
         fileHandle.closeFile()
-        string = try String(contentsOf: url, encoding: .utf8)
+
+        return url
+    }
+
+    open class func string(withJSONObject value: Any, options opt: WritingOptions = []) throws -> String {
+        let url = try _data(withJSONObject: value, options: opt, stream: false)
+        let string = try String(contentsOf: url, encoding: .utf8)
         do {
             try FileManager.default.removeItem(at: url)
         } catch {
         }
-
         return string
     }
-
-    open class func string(withJSONObject value: Any, options opt: WritingOptions = []) throws -> String {
-        try _data(withJSONObject: value, options: opt, stream: false)
+    
+    open class func data(withJSONObject value: Any, options opt: WritingOptions = []) throws -> Data {
+        let url = try _data(withJSONObject: value, options: opt, stream: false)
+        let data = try Data(contentsOf: url)
+        do {
+            try FileManager.default.removeItem(at: url)
+        } catch {
+        }
+        return data
     }
     
+    open class func url(withJSONObject value: Any, options opt: WritingOptions = []) throws -> URL {
+        try _data(withJSONObject: value, options: opt, stream: false)
+    }
+
     /* Create a Foundation object from JSON data. Set the NSJSONReadingAllowFragments option if the parser should allow top-level objects that are not an NSArray or NSDictionary. Setting the NSJSONReadingMutableContainers option will make the parser generate mutable NSArrays and NSDictionaries. Setting the NSJSONReadingMutableLeaves option will make the parser generate mutable NSString objects. If an error occurs during the parse, then the error parameter will be set and the result will be nil.
        The data must be in one of the 5 supported encodings listed in the JSON specification: UTF-8, UTF-16LE, UTF-16BE, UTF-32LE, UTF-32BE. The data may or may not have a BOM. The most efficient encoding to use for parsing is UTF-8, so if you have a choice in encoding the data passed to this method, use UTF-8.
      */

@@ -32,6 +32,29 @@ class DictionaryEncoder {
         set { encoder.keyEncodingStrategy = newValue }
     }
 
+//    func encode<T>(_ value: T) throws -> [String: Any] where T: Encodable {
+//        let url = try GNJSONSerialization.url(withJSONObject: value, options: [.fragmentsAllowed])
+//        if let stream = InputStream(url: url) {
+//            stream.open()
+//            let jsonObject = try JSONSerialization.jsonObject(with: stream, options: .allowFragments)
+//            guard let jsonDict = jsonObject as? [String: Any] else {
+//                stream.close()
+//                do {
+//                    try FileManager.default.removeItem(at: url)
+//                } catch {
+//                }
+//                throw DictionaryEncoderError.errDictType
+//            }
+//            stream.close()
+//            do {
+//                try FileManager.default.removeItem(at: url)
+//            } catch {
+//            }
+//            return jsonDict
+//        }
+//        throw DictionaryEncoderError.errDictType
+//    }
+
     func encode<T>(_ value: T) throws -> [String: Any] where T: Encodable {
         let data = try encoder.encode(value)
 

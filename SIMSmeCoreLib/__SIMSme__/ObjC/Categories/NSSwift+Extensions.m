@@ -245,7 +245,7 @@
     return Z_OK;
 }
 
-+ (NSData*) w: (NSURL*)pFileUrl length:(long)length
++ (NSData*) gzipFile: (NSURL*)pFileUrl length:(long)length
 {
     if (!pFileUrl || length == 0)
     {
@@ -279,7 +279,6 @@
 
     if (deflateResult == Z_OK) {
         compressedData = [NSData dataWithContentsOfFile:[NSString stringWithCString:outFilename encoding:NSUTF8StringEncoding]];
-        NSLog(@"CompressedData Length = %d", (unsigned long)[compressedData length]);
     }
     unlink(inFilename);
     unlink(outFilename);
