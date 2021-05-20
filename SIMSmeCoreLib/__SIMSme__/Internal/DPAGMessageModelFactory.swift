@@ -337,25 +337,14 @@ class DPAGMessageModelFactory: DPAGMessageModelFactoryProtocol {
         try self.groupMessageInternal(info: info)
     }
 
-    func one() -> String? {
-//        autoreleasepool {
-//            if let encAttachmentDataBase64 = encAttachmentDataBase64 {
-//                encAttachmentData.append(encAttachmentDataBase64)
-//            }
-//            encAttachmentDataBase64?.removeAll()
-//            encAttachment = encAttachmentData.base64EncodedString()
-//            encAttachmentDataBase64 = nil
-//        }
-//
-        return nil
-    }
-    
-    func two(messageDict: [AnyHashable: Any], blanks: String? = "") {
+    func dumpJSON(messageDict: [AnyHashable: Any], blanks: String? = "") {
         for (key, value) in messageDict {
             let vType = type(of: value)
-            NSLog("\(blanks) messageDict->key => \(key); valueType = \(vType)")
-            if let value = value as? [AnyHashable: Any] {
-                two(messageDict: value, blanks: blanks! + "   ")
+            if let blanks = blanks {
+                NSLog("\(blanks) messageDict->key => \(key); valueType = \(vType)")
+                if let value = value as? [AnyHashable: Any] {
+                    dumpJSON(messageDict: value, blanks: blanks + "   ")
+                }
             }
         }
     }
@@ -475,12 +464,14 @@ class DPAGMessageModelFactory: DPAGMessageModelFactoryProtocol {
             }
             encAttachment = nil
         }
-        two(messageDict: messageDict!, blanks: "")
+        if let messageDict = messageDict {
+            dumpJSON(messageDict: messageDict, blanks: "")
+        }
         try autoreleasepool {
             if messageDict != nil {
-                // TODO: Save JSON to file and return filename *sigh*       
-                jsonMetadata = DPAGFunctionsGlobal.JSONStringFileBased(messageDict as Any)
+                jsonMetadata = try GNJSONSerialization.string(withJSONObject: messageDict!)
             } else {
+                NSLog("messageDict is nil")
                 throw DPAGErrorCreateMessage.err465
             }
             messageDict = nil
