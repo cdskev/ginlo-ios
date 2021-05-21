@@ -32,29 +32,6 @@ class DictionaryEncoder {
         set { encoder.keyEncodingStrategy = newValue }
     }
 
-//    func encode<T>(_ value: T) throws -> [String: Any] where T: Encodable {
-//        let url = try GNJSONSerialization.url(withJSONObject: value, options: [.fragmentsAllowed])
-//        if let stream = InputStream(url: url) {
-//            stream.open()
-//            let jsonObject = try JSONSerialization.jsonObject(with: stream, options: .allowFragments)
-//            guard let jsonDict = jsonObject as? [String: Any] else {
-//                stream.close()
-//                do {
-//                    try FileManager.default.removeItem(at: url)
-//                } catch {
-//                }
-//                throw DictionaryEncoderError.errDictType
-//            }
-//            stream.close()
-//            do {
-//                try FileManager.default.removeItem(at: url)
-//            } catch {
-//            }
-//            return jsonDict
-//        }
-//        throw DictionaryEncoderError.errDictType
-//    }
-
     func dumpJSON(json: [AnyHashable: Any], blanks: String? = "") {
         for (key, value) in json {
             let vType = type(of: value)
@@ -76,30 +53,37 @@ class DictionaryEncoder {
     }
 
     func encode<T>(_ value: T) throws -> [String: Any] where T: Encodable {
-        let data = try GNJSONSerialization.data(withJSONObject: value, options: [.fragmentsAllowed])
-        let jsonObject = try unwrappedJSONObject(with: data, options: .allowFragments)
-//        let data = try encoder.encode(value)
-//        var data2: Data?
-//        do {
-//            data2 = try GNJSONSerialization.data(withJSONObject: value, options: [.fragmentsAllowed])
-//            NSLog("Success")
-//        } catch {
-//            NSLog("Again Failed... \(error)")
-//        }
-//        let jsonObject = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
-//        if let data2 = data2 {
-//            let string = try JSONSerialization.jsonObject(with: data2, options: .allowFragments)
-//            let jsonObject2 = try JSONSerialization.jsonObject(with: Data((string as! String).utf8), options: .allowFragments)
-//            NSLog("jsonObject ======================================================================")
-//            dumpJSON(json: jsonObject as! [AnyHashable: Any])
-//            NSLog("jsonObject2 ======================================================================")
-//            dumpJSON(json: jsonObject2 as! [AnyHashable: Any])
-//        }
-
+        var valueSize = 0
+        switch value {
+            case let spm as DPAGServerFunction.SendPrivateMessage:
+                valueSize = spm.message.count
+            case let sgm as DPAGServerFunction.SendGroupMessage:
+                valueSize = sgm.message.count
+            case let spim as DPAGServerFunction.SendPrivateInternalMessage:
+                valueSize = spim.message.count
+            case let stpm as DPAGServerFunction.SendTimedPrivateMessage:
+                valueSize = stpm.message.count
+            case let stgm as DPAGServerFunction.SendTimedGroupMessage:
+                valueSize = stgm.message.count
+            case let spims as DPAGServerFunction.SendPrivateInternalMessages:
+                valueSize = spims.message.count
+            default:
+                valueSize = 0
+        }
+        NSLog("IMDAT:: valueSize in Encode = \(valueSize)")
+        var jsonObject: Any?
+        if DPAGHelper.canPerformRAMBasedJSON(ofSize: UInt(valueSize)) {
+            // use RAM-based encoding
+            let data = try encoder.encode(value)
+            jsonObject = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+        } else {
+            // use Disk-based encoding
+            let data = try GNJSONSerialization.data(withJSONObject: value, options: [.fragmentsAllowed])
+            jsonObject = try unwrappedJSONObject(with: data, options: .allowFragments)
+        }
         guard let jsonDict = jsonObject as? [String: Any] else {
             throw DictionaryEncoderError.errDictType
         }
-
         return jsonDict
     }
 }

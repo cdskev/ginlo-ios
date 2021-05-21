@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1240"
+   LastUpgradeVersion = "1250"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -17,7 +17,7 @@
                BlueprintIdentifier = "27DAEAE92099E6D400C64628"
                BuildableName = "SIMSmeUILib.framework"
                BlueprintName = "SIMSmeUILib"
-               ReferencedContainer = "container:SIMSmeUILib.xcodeproj">
+               ReferencedContainer = "container:../../SIMSmeUILib/SIMSmeUILib.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -46,7 +46,7 @@
             BlueprintIdentifier = "27DAEAE92099E6D400C64628"
             BuildableName = "SIMSmeUILib.framework"
             BlueprintName = "SIMSmeUILib"
-            ReferencedContainer = "container:SIMSmeUILib.xcodeproj">
+            ReferencedContainer = "container:../../SIMSmeUILib/SIMSmeUILib.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </LaunchAction>
@@ -62,7 +62,7 @@
             BlueprintIdentifier = "27DAEAE92099E6D400C64628"
             BuildableName = "SIMSmeUILib.framework"
             BlueprintName = "SIMSmeUILib"
-            ReferencedContainer = "container:SIMSmeUILib.xcodeproj">
+            ReferencedContainer = "container:../../SIMSmeUILib/SIMSmeUILib.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

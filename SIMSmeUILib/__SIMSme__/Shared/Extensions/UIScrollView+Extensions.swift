@@ -38,7 +38,7 @@ public extension UIScrollView {
         if scaleHeight < minScale {
             minScale = scaleHeight
         }
-        if minScale != CGFloat.nan, minScale > 0.01 {
+        if !minScale.isNaN, minScale > 0.01 {
             self.minimumZoomScale = minScale
             self.zoomScale = minScale
         }

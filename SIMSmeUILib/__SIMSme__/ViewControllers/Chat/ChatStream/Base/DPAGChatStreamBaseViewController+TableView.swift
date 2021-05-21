@@ -22,7 +22,6 @@ extension DPAGChatCellBaseViewController {
 
     @objc(tableView:cellForRowAtIndexPath:)
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        DPAGLog("cellForRowAt: \(indexPath)")
         let cell = self.cellForMessageAtIndexPath(indexPath)
         cell?.setNeedsUpdateConstraints()
         cell?.updateConstraintsIfNeeded()
@@ -188,7 +187,7 @@ extension DPAGChatCellBaseViewController {
         guard self.tableView.frame.size.width > 0 else { return retVal }
         var cellHeight: CGFloat = 50
         var isNormalGroupOrIAmAdmin: Bool = true
-        DPAGLog("Loading tableView:%@", decMessage.messageGuid)
+//        DPAGLog("Loading tableView:%@", decMessage.messageGuid)
         
         if let ownAccountGuid = DPAGApplicationFacade.cache.account?.guid, let group = DPAGApplicationFacade.cache.group(for: self.streamGuid) {
             if group.groupType == .announcement && !group.adminGuids.contains(ownAccountGuid) {

@@ -207,7 +207,7 @@
 
     /* compress until end of file */
     do {
-        strm.avail_in = fread(inB, 1, CHUNK, source);
+        strm.avail_in = (unsigned int)fread(inB, 1, CHUNK, source);
         if (ferror(source)) {
             (void)deflateEnd(&strm);
             free(inB);
@@ -283,6 +283,48 @@
     unlink(inFilename);
     unlink(outFilename);
     return compressedData;
+}
+
++ (unsigned long long) deviceMemory {
+    return [[NSProcessInfo processInfo] physicalMemory];
+}
+
++ (bool) canPerformRAMBasedJSONOfSize:(unsigned long)jsonSize
+{
+    NSString *deviceType = [UIDevice currentDevice].model;
+    unsigned long long installedRAM = [DPAGHelper deviceMemory];
+    unsigned long long hundredMB = 104857600;
+    unsigned long long oneGB = 1000000000 + hundredMB;
+    unsigned long long twoGB = 2147483648 + hundredMB;
+    unsigned long long fourGB = 4294967296 + hundredMB;
+    unsigned long long fiveGB = 5368709120 + hundredMB;
+    unsigned long long sixGB = 6442450944 + hundredMB;
+    unsigned long long eightGB = 8589934592 + hundredMB;
+
+    if ([deviceType containsString:@"iPhone"]) {
+        if (installedRAM > twoGB && jsonSize <= 100 * 1024 * 1024) {
+            return true;
+        } else if (installedRAM > oneGB && jsonSize <= 70 * 1024 * 1024) {
+            return true;
+        } else if (jsonSize <= 50 * 1024 * 1024) {
+            return true;
+        }
+    } else if ([deviceType containsString:@"iPad"]) {
+        if (installedRAM > eightGB && jsonSize <= 150 * 1024 * 1024) {
+            return true;
+        } else if (installedRAM > sixGB && jsonSize <= 125 * 1024 * 1024) {
+            return true;
+        } else if (installedRAM > fiveGB && jsonSize <= 100 * 1024 * 1024) {
+            return true;
+        } else if (installedRAM > fourGB && jsonSize <= 70 * 1024 * 1024) {
+            return true;
+        } else if (installedRAM > twoGB && jsonSize <= 50 * 1024 * 1024) {
+            return true;
+        } else if (jsonSize <= 30 * 1024 * 1024) {
+            return true;
+        }
+    }
+    return false;
 }
 
 @end

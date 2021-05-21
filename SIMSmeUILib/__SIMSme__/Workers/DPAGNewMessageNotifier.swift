@@ -146,26 +146,21 @@ class DPAGNewMessageNotifier: NSObject, DPAGNewMessageNotifierProtocol {
     }
 
     private func checkForNewMessagesInternalWithNotifications(_ showNotifications: Bool) {
-        DPAGLog("DPAGNewMessages Start checkForNewMessagesInternalWithNotifications \(self.queueGetNewMessages.operationCount)")
         if self.queueGetNewMessages.operationCount > 2 {
-            DPAGLog("DPAGNewMessages Throtteling")
             return
         }
         if self.isInBackground {
-            DPAGLog("DPAGNewMessages Dont Start ReceiveNewMessages in Background")
             return
         }
         let operation = BlockOperation()
         operation.addExecutionBlock { [weak self, weak operation] in
             guard let strongOperation = operation, let strongSelf = self else { return }
             if strongOperation.isCancelled {
-                DPAGLog("DPAGNewMessages OPeration was Cancelled before")
                 return
             }
             let isActive = AppConfig.applicationState() != .background
             if isActive, CryptoHelper.sharedInstance?.isPrivateKeyDecrypted() ?? false {
                 if strongSelf.isReceivingInitialMessagesProcessRunning {
-                    DPAGLog("DPAGNewMessages checkForNewMessagesInternalWithNotifications: started")
                     NotificationCenter.default.post(name: DPAGStrings.Notification.ReceivingNewMessages.STARTED, object: nil)
                 }
                 let dateStart = Date()
@@ -173,7 +168,6 @@ class DPAGNewMessageNotifier: NSObject, DPAGNewMessageNotifierProtocol {
                 let completion: (ReceivedMessagesResponse) -> Void = { response in
                     guard let strongOperation = operation, let strongSelf = self else { return }
                     if strongOperation.isCancelled {
-                        DPAGLog("DPAGNewMessages OPeration was Cancelled before (received data)")
                         return
                     }
                     strongSelf.lastRun = Date()
@@ -182,9 +176,7 @@ class DPAGNewMessageNotifier: NSObject, DPAGNewMessageNotifierProtocol {
                         DPAGLog("RunOnMain")
                     }
                     if strongSelf.isInBackground {
-                        DPAGLog("DPAGNewMessages Release Lock (in Background)")
                         sema.signal()
-                        DPAGLog("DPAGNewMessages checkForNewMessagesInternalWithNotifications: finished")
                         NotificationCenter.default.post(name: DPAGStrings.Notification.ReceivingNewMessages.FINISHED, object: nil)
                         return
                     }
@@ -211,7 +203,6 @@ class DPAGNewMessageNotifier: NSObject, DPAGNewMessageNotifierProtocol {
                         if response.errorMessage == "service.ERR-0119" {
                             DPAGSimsMeController.sharedInstance.showPurchaseIfPossible()
                         }
-                        DPAGLog("DPAGNewMessages checkForNewMessagesInternalWithNotifications: failed")
                         NotificationCenter.default.post(name: DPAGStrings.Notification.ReceivingNewMessages.FAILED, object: nil)
                     } else {
                         let messages = response.messagesWithNotification
@@ -244,7 +235,6 @@ class DPAGNewMessageNotifier: NSObject, DPAGNewMessageNotifierProtocol {
                         strongSelf.performBlockOnMainThread {
                             self?.perform(#selector(DPAGNewMessageNotifier.checkForNewMessagesInternal), with: nil, afterDelay: DPAGApplicationFacade.preferences.lazyMsgServiceEnabled ? TimeInterval(0.01) : TimeInterval(DPAGApplicationFacade.preferences.listRefreshRate))
                         }
-                        DPAGLog("DPAGNewMessages checkForNewMessagesInternalWithNotifications: finished")
                         NotificationCenter.default.post(name: DPAGStrings.Notification.ReceivingNewMessages.FINISHED, object: nil)
                     }
                 }
@@ -252,7 +242,6 @@ class DPAGNewMessageNotifier: NSObject, DPAGNewMessageNotifierProtocol {
                 strongSelf.requestGetNewMessages = DPAGApplicationFacade.receiveMessagesWorker.getNewMessages(completion: completion, useLazy: !strongSelf.isReceivingInitialMessagesProcessRunning && showNotifications && !strongSelf.preventLazy && DPAGApplicationFacade.preferences.lazyMsgServiceEnabled)
                 strongSelf.preventLazy = false
                 let requestGetNewMessages = strongSelf.requestGetNewMessages
-                DPAGLog("DPAGNewMessages Start Lock")
                 if Thread.isMainThread {
                     assert(false, "Should not run on Mainthread")
                     DPAGLog("RunOnMain")
@@ -273,20 +262,15 @@ class DPAGNewMessageNotifier: NSObject, DPAGNewMessageNotifierProtocol {
                     }
                 }
                 if !bSuccess, sema.wait(timeout: timeUp) != DispatchTimeoutResult.success {
-                    DPAGLog("DPAGNewMessages Timed Out Lock")
                     requestGetNewMessages?.cancel()
-
                     strongSelf.checkForNewMessages()
                 }
-                // dispatch_release(sema)
-                DPAGLog("DPAGNewMessages Finish Lock")
             } else {
                 DPAGLog("Application not active or no decrypted key present")
             }
         }
 
         if self.queueGetNewMessages.operationCount > 0 {
-            DPAGLog("DPAGNewMessages Force Only One Job")
             self.requestGetNewMessages?.cancel()
             self.requestGetNewMessages = nil
             self.queueGetNewMessages.cancelAllOperations()

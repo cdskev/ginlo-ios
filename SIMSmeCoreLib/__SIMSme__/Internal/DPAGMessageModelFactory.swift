@@ -289,11 +289,13 @@ class DPAGMessageModelFactory: DPAGMessageModelFactoryProtocol {
         var messageDict: [AnyHashable: Any]?
         var jsonMetadata: String?
         var signatures: DPAGMessageSignatures?
+        var encAttachmentSize: Int = 0
         try autoreleasepool {
             if let attachment = info.attachment {
                 encAttachment = try CryptoHelperEncrypter.encrypt(data: attachment, withAesKey: config.aesKeyXML)
             }
             info.clearAttachment()
+            encAttachmentSize = encAttachment?.count ?? 0
         }
         autoreleasepool {
             if let outgoingMessageToSend = info.outgoingMessage as? SIMSMessageToSendPrivate {
@@ -316,7 +318,14 @@ class DPAGMessageModelFactory: DPAGMessageModelFactoryProtocol {
         }
         try autoreleasepool {
             if let messageDict = messageDict {
-                jsonMetadata = try GNJSONSerialization.string(withJSONObject: messageDict)
+                NSLog("MessageModelFactory -> attachmentSize = \(encAttachmentSize)")
+                if DPAGHelper.canPerformRAMBasedJSON(ofSize: UInt(encAttachmentSize)) {
+                    // use RAM-based conversion
+                    jsonMetadata = messageDict.JSONString
+                } else {
+                    // use Disk-based conversion
+                    jsonMetadata = try GNJSONSerialization.string(withJSONObject: messageDict)
+                }
             } else {
                 throw DPAGErrorCreateMessage.err465
             }
@@ -399,6 +408,7 @@ class DPAGMessageModelFactory: DPAGMessageModelFactoryProtocol {
         var signatures: DPAGMessageSignatures?
         var encAttachmentString: String?
         var attachmentIvData: Data? = DPAGHelperEx.iv128Bit()
+        var encAttachmentSize: Int = 0
         let attachmentDecAesKeyDict = [
             "key": aesKey,
             "iv": attachmentIvData?.base64EncodedString()
@@ -426,6 +436,7 @@ class DPAGMessageModelFactory: DPAGMessageModelFactoryProtocol {
             }
             encAttachmentDataBase64 = nil
             encAttachment = encAttachmentData?.base64EncodedString()
+            encAttachmentSize = encAttachment?.count ?? 0
             encAttachmentData = nil
             attachmentIvData = nil
         }
@@ -450,7 +461,14 @@ class DPAGMessageModelFactory: DPAGMessageModelFactoryProtocol {
         }
         try autoreleasepool {
             if let messageDict = messageDict {
-                jsonMetadata = try GNJSONSerialization.string(withJSONObject: messageDict)
+                NSLog("MessageModelFactory -> attachmentSize = \(encAttachmentSize)")
+                if DPAGHelper.canPerformRAMBasedJSON(ofSize: UInt(encAttachmentSize)) {
+                    // use RAM-based conversion
+                    jsonMetadata = messageDict.JSONString
+                } else {
+                    // use Disk-based conversion
+                    jsonMetadata = try GNJSONSerialization.string(withJSONObject: messageDict)
+                }
             } else {
                 NSLog("messageDict is nil")
                 throw DPAGErrorCreateMessage.err465

@@ -143,6 +143,7 @@ class SendMessageDAO: SendMessageDAOProtocol {
             // msgInstance.attachment = nil
             var messageDict: [AnyHashable: Any]?
             var signatures: DPAGMessageSignatures?
+            var attachmentSize: Int = 0
             if let messagePrivate = message as? SIMSMessageToSendPrivate, let messageData = messagePrivate.data, let toAccountGuid = messagePrivate.toAccountGuid, let recipient = SIMSContactIndexEntry.findFirst(byGuid: toAccountGuid, in: localContext), let fromKey = messagePrivate.fromKey {
                 try autoreleasepool {
                     var encodedAttachment: String? = DPAGAttachmentWorker.encryptedAttachment(guid: message.attachment)
@@ -165,6 +166,7 @@ class SendMessageDAO: SendMessageDAOProtocol {
                         throw DPAGErrorSendMessage.err463
                     }
                     signatures = signaturesMsg
+                    attachmentSize = encodedAttachment?.count ?? 0
                     messageDict = config.messageDictionary(info: DPAGEncryptionConfigurationPrivate.MessageDictionaryInfoPrivate(encMessageData: messageData, encAttachment: encodedAttachment, signatures: signaturesMsg, messageType: DPAGStrings.JSON.MessagePrivate.OBJECT_KEY, contentType: msgInstance.contentType, sendOptions: msgInstance.sendMessageOptions, featureSet: msgInstance.featureSet, nickname: contact.nickName ?? "", senderId: msgInstance.guidOutgoingMessage))
                     encodedAttachment = nil
                 }
@@ -179,6 +181,7 @@ class SendMessageDAO: SendMessageDAOProtocol {
                         throw DPAGErrorSendMessage.err463
                     }
                     signatures = signaturesMsg
+                    attachmentSize = encodedAttachment?.count ?? 0
                     messageDict = config.messageDictionary(info: DPAGEncryptionConfigurationGroup.MessageDictionaryInfoGroup(encMessageData: messageData, encAttachment: encodedAttachment, signatures: signaturesMsg, messageType: DPAGStrings.JSON.MessageGroup.OBJECT_KEY, contentType: msgInstance.contentType, sendOptions: msgInstance.sendMessageOptions, featureSet: msgInstance.featureSet, nickname: contact.nickName ?? "", senderId: msgInstance.guidOutgoingMessage))
                     encodedAttachment = nil
                 }
@@ -188,7 +191,14 @@ class SendMessageDAO: SendMessageDAOProtocol {
             var messageJson: String?
             try autoreleasepool {
                 if let messageDict = messageDict {
-                    messageJson = try GNJSONSerialization.string(withJSONObject: messageDict)
+                    NSLog("SendMessageDAO -> attachmentSize = \(attachmentSize)")
+                    if DPAGHelper.canPerformRAMBasedJSON(ofSize: UInt(attachmentSize)) {
+                        // use RAM-based conversion
+                        messageJson = messageDict.JSONString
+                    } else {
+                        // use Disk-based conversion
+                        messageJson = try GNJSONSerialization.string(withJSONObject: messageDict)
+                    }
                 } else {
                     messageDict = nil
                     throw DPAGErrorSendMessage.err463
@@ -238,6 +248,7 @@ class SendMessageDAO: SendMessageDAOProtocol {
             // msgInstance.attachment = nil
             var messageDict: [AnyHashable: Any]?
             var signatures: DPAGMessageSignatures?
+            var attachmentSize: Int = 0
             if let messagePrivate = message as? SIMSPrivateMessage, let recipient = SIMSContactIndexEntry.findFirst(byGuid: messagePrivate.toAccountGuid, in: localContext), let messageData = messagePrivate.data, let receiverGuid = recipient.guid, let fromKey = messagePrivate.fromKey {
                 try autoreleasepool {
                     var encodedAttachment: String? = DPAGAttachmentWorker.encryptedAttachment(guid: message.attachment)
@@ -260,6 +271,7 @@ class SendMessageDAO: SendMessageDAOProtocol {
                         throw DPAGErrorSendMessage.err463
                     }
                     signatures = signaturesMsg
+                    attachmentSize = encodedAttachment?.count ?? 0
                     messageDict = config.messageDictionary(info: DPAGEncryptionConfigurationPrivate.MessageDictionaryInfoPrivate(encMessageData: messageData, encAttachment: encodedAttachment, signatures: signaturesMsg, messageType: DPAGStrings.JSON.MessagePrivate.OBJECT_KEY, contentType: msgInstance.contentType, sendOptions: msgInstance.sendMessageOptions, featureSet: msgInstance.featureSet, nickname: contact.nickName ?? "", senderId: msgInstance.guidOutgoingMessage))
                     encodedAttachment = nil
                 }
@@ -274,6 +286,7 @@ class SendMessageDAO: SendMessageDAOProtocol {
                         throw DPAGErrorSendMessage.err463
                     }
                     signatures = signaturesMsg
+                    attachmentSize = encodedAttachment?.count ?? 0
                     messageDict = config.messageDictionary(info: DPAGEncryptionConfigurationGroup.MessageDictionaryInfoGroup(encMessageData: messageData, encAttachment: encodedAttachment, signatures: signaturesMsg, messageType: DPAGStrings.JSON.MessageGroup.OBJECT_KEY, contentType: msgInstance.contentType, sendOptions: msgInstance.sendMessageOptions, featureSet: msgInstance.featureSet, nickname: contact.nickName ?? "", senderId: msgInstance.guidOutgoingMessage))
                     encodedAttachment = nil
                 }
@@ -284,7 +297,14 @@ class SendMessageDAO: SendMessageDAOProtocol {
             var messageJson: String?
             try autoreleasepool {
                 if let messageDict = messageDict {
-                    messageJson = try GNJSONSerialization.string(withJSONObject: messageDict)
+                    NSLog("SendMessageDAO -> attachmentSize = \(attachmentSize)")
+                    if DPAGHelper.canPerformRAMBasedJSON(ofSize: UInt(attachmentSize)) {
+                        // use RAM-based conversion
+                        messageJson = messageDict.JSONString
+                    } else {
+                        // use Disk-based conversion
+                        messageJson = try GNJSONSerialization.string(withJSONObject: messageDict)
+                    }
                 } else {
                     messageDict = nil
                     throw DPAGErrorSendMessage.err463

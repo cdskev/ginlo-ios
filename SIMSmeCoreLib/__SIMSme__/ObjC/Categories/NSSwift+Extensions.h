@@ -17,6 +17,8 @@
 
 + (NSData * _Nullable) gzipData: (NSData * _Nonnull)pUncompressedData;
 + (NSData * _Nullable) gzipFile: (NSURL * _Nonnull)pFileUrl length:(long)length;
++ (unsigned long long) deviceMemory;
++ (bool) canPerformRAMBasedJSONOfSize:(unsigned long)jsonSize;
 @end
 
 // Implement a custom appearance property via a UILabel category
