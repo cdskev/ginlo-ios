@@ -26,37 +26,28 @@ extension DPAGHttpService: HTTPServiceProtocol {
             DPAGLog("performRequest should be called in a background thread")
             DPAGFunctionsGlobal.printBacktrace()
         }
-
         if DPAGHelperEx.isNetworkReachable() == false {
             completion(nil, nil, APIError.noConnection)
             return
         }
-
         let cmd = apiRequest.parameters["cmd"] as? String
-
         let dateStart = Date()
-
         guard let manager = self.getSessionManager(configurationType: apiRequest.configurationType, serializationType: .passThrough),
             let urlRequest = try? self.requestSerializer.serializeApiRequest(apiRequest: apiRequest, manager: manager) else {
             completion(nil, nil, APIError.badRequest)
             return
         }
-
         let dataTask = self.getURLSessionTask(forURLRequest: urlRequest, configurationType: apiRequest.configurationType, manager: manager, progress: progress) { urlResponse, object, error in
-
             let timeElapsed = Date().timeIntervalSince(dateStart)
             if let cmd = cmd {
                 DPAGLog("received server command: %@ Elapsed: %.2f", cmd, timeElapsed)
             }
-
             let data = object as? Data
             completion(data, urlResponse, error)
         }
-
         if let cmd = cmd {
             DPAGLog("requested server command: %@", cmd)
         }
-
         dataTask.resume()
     }
 

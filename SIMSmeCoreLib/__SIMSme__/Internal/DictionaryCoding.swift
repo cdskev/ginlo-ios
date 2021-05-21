@@ -44,6 +44,37 @@ class DictionaryEncoder {
         }
     }
     
+    func sizeOfDictionary(dict: [AnyHashable: Any]) -> Int {
+        var size = 0
+        for (_, value) in dict {
+            switch value {
+                case let data as Data:
+                    size += data.count
+                case let string as String:
+                    size += string.count
+                case let dct as [AnyHashable: Any]:
+                    size += sizeOfDictionary(dict: dct)
+                case let spm as DPAGServerFunction.SendPrivateMessage:
+                    size += spm.message.count
+                case let sgm as DPAGServerFunction.SendGroupMessage:
+                    size += sgm.message.count
+                case let spim as DPAGServerFunction.SendPrivateInternalMessage:
+                    size += spim.message.count
+                case let stpm as DPAGServerFunction.SendTimedPrivateMessage:
+                    size += stpm.message.count
+                case let stgm as DPAGServerFunction.SendTimedGroupMessage:
+                    size += stgm.message.count
+                case let spims as DPAGServerFunction.SendPrivateInternalMessages:
+                    size += spims.message.count
+                case let dict as [AnyHashable: Any]:
+                    size += sizeOfDictionary(dict: dict)
+                default:
+                    size += 8
+            }
+        }
+        return size
+    }
+    
     func unwrappedJSONObject(with data: Data, options: JSONSerialization.ReadingOptions = []) throws -> Any {
         let maybeString = try JSONSerialization.jsonObject(with: data, options: options)
         if let actualString = maybeString as? String {
@@ -55,6 +86,10 @@ class DictionaryEncoder {
     func encode<T>(_ value: T) throws -> [String: Any] where T: Encodable {
         var valueSize = 0
         switch value {
+            case let data as Data:
+                valueSize = data.count
+            case let string as String:
+                valueSize = string.count
             case let spm as DPAGServerFunction.SendPrivateMessage:
                 valueSize = spm.message.count
             case let sgm as DPAGServerFunction.SendGroupMessage:
@@ -67,10 +102,15 @@ class DictionaryEncoder {
                 valueSize = stgm.message.count
             case let spims as DPAGServerFunction.SendPrivateInternalMessages:
                 valueSize = spims.message.count
+            case let dict as [AnyHashable: Any]:
+                valueSize = sizeOfDictionary(dict: dict)
             default:
                 valueSize = 0
         }
-        NSLog("IMDAT:: valueSize in Encode = \(valueSize)")
+        NSLog("IMDAT:: valueSize in Encode = \(type(of: value)) => \(valueSize)")
+        if let val = value as? [AnyHashable: Any] {
+            dumpJSON(json: val)
+        }
         var jsonObject: Any?
         if DPAGHelper.canPerformRAMBasedJSON(ofSize: UInt(valueSize)) {
             // use RAM-based encoding

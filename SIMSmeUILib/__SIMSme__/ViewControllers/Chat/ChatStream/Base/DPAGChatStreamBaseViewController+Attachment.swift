@@ -114,28 +114,6 @@ extension DPAGChatBaseViewController: UIDocumentPickerDelegate {
             }
         })
         url.stopAccessingSecurityScopedResource()
-//        let fileExtension = fileURLTemp.pathExtension
-//        if let contentMimeType = DPAGHelper.mimeType(forExtension: fileExtension) {
-//            if DPAGHelperEx.isVideoContentMimeType(contentMimeType) {
-//                let asset = AVURLAsset(url: fileURLTemp)
-//                if CMTimeGetSeconds(asset.duration) > DPAGApplicationFacade.preferences.maxLengthForSentVideos {
-//                    self.editVideo(mediaURL: fileURLTemp)
-//                } else if asset.isPlayable {
-//                    if DPAGApplicationFacade.preferences.alreadyAskedForMic == false {
-//                        DPAGApplicationFacade.preferences.alreadyAskedForMic = true
-//                    }
-//                    let mediaResource = DPAGMediaResource(type: .video)
-//                    mediaResource.mediaUrl = fileURLTemp
-//                    self.pushToSendVideoViewController(videoResource: mediaResource, mediaSourceType: .file, navigationController: self.navigationController, enableMultiSelection: false)
-//                    return
-//                }
-//            } else if DPAGHelperEx.isImageContentMimeType(contentMimeType) {
-//                let mediaResource = DPAGMediaResource(type: .image)
-//                mediaResource.mediaUrl = fileURLTemp
-//                self.pushToSendImageViewController(imageResource: mediaResource, mediaSourceType: .file, navigationController: self.navigationController, enableMultiSelection: false)
-//                return
-//            }
-//        }
         if let fileSize = DPAGSendAVViewController.checkFileSize(fileURLTemp, showAlertVC: self, cleanUpFile: true) {
             var message = DPAGLocalizedString("chat.message.fileOpen.willSendTo.message")
             let persons = self.nameForFileOpen()

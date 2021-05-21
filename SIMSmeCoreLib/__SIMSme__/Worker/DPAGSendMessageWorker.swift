@@ -48,6 +48,10 @@ class DPAGSendMessageWorkerInstance {
         self.receiver = receiver
         self.guidStream = streamGuid
     }
+    
+    public func clearMessageJson() {
+        messageJson = nil
+    }
 }
 
 class DPAGSendMessageInfo {
@@ -67,27 +71,21 @@ class DPAGSendMessageInfo {
 
     class func loadMedia(_ contentObject: Any) -> (sendMessageInfo: DPAGSendMessageInfo?, errorMessage: String?) {
         guard let media = contentObject as? DPAGMediaResource else { return (nil, nil) }
-
         switch media.mediaType {
         case .image:
             if let attachment = media.attachment {
                 if var mediaContent = media.mediaContent ?? DPAGAttachmentWorker.resourceFromAttachment(attachment).mediaResource?.mediaContent {
                     var previewImageData = media.preview?.previewImageDataEncoded()
-
                     if previewImageData == nil, let decryptedMessage = DPAGApplicationFacade.cache.decryptedMessageFast(messageGuid: attachment.messageGuid) {
                         previewImageData = decryptedMessage.content
                     }
-
                     mediaContent = mediaContent.resizedForSending()
-
                     if previewImageData == nil {
                         previewImageData = mediaContent.previewImageDataEncoded()
                     }
-
                     if let encodedPreview = previewImageData {
                         let dataLength: String = "\(mediaContent.count)"
                         let additionalContentData: [String: Any] = [DPAGStrings.JSON.Message.AdditionalData.FILE_SIZE: dataLength]
-
                         return (DPAGSendMessageInfo(content: encodedPreview, contentDesc: media.text, contentType: DPAGStrings.JSON.Message.ContentType.IMAGE, attachment: mediaContent, additionalContentData: additionalContentData), nil)
                     }
                 }
@@ -95,20 +93,15 @@ class DPAGSendMessageInfo {
                 let options = PHImageRequestOptions()
                 options.isSynchronous = true
                 options.resizeMode = .fast
-
                 var retVal: (DPAGSendMessageInfo?, String?)?
                 let imageOptionsForSending = DPAGApplicationFacade.preferences.imageOptionsForSending
-
                 PHImageManager.default().requestImage(for: imageAsset, targetSize: imageOptionsForSending.size, contentMode: .aspectFit, options: options) { image, _ in
-
                     if let image = image, let convertedImage = image.dataForSending(), let previewImageDataEncoded = image.previewImageDataEncoded() {
                         let dataLength: String = "\(convertedImage.count)"
                         let additionalContentData: [String: Any] = [DPAGStrings.JSON.Message.AdditionalData.FILE_SIZE: dataLength]
-
                         retVal = (DPAGSendMessageInfo(content: previewImageDataEncoded, contentDesc: media.text, contentType: DPAGStrings.JSON.Message.ContentType.IMAGE, attachment: convertedImage, additionalContentData: additionalContentData), nil)
                     }
                 }
-
                 if let retVal = retVal {
                     return retVal
                 }
@@ -116,80 +109,59 @@ class DPAGSendMessageInfo {
                 if let encodedPreview = media.preview?.previewImageDataEncoded() ?? UIImage(data: mediaContent)?.previewImageDataEncoded() {
                     let dataLength: String = "\(mediaContent.count)"
                     let additionalContentData: [String: Any] = [DPAGStrings.JSON.Message.AdditionalData.FILE_SIZE: dataLength]
-
                     return (DPAGSendMessageInfo(content: encodedPreview, contentDesc: media.text, contentType: DPAGStrings.JSON.Message.ContentType.IMAGE, attachment: mediaContent, additionalContentData: additionalContentData), nil)
                 }
             } else if let mediaUrl = media.mediaUrl, var data = try? Data(contentsOf: mediaUrl) {
-                // Image aus Dropbox ...
+                // Image from app's Inbox
                 data = data.resizedForSending()
-
                 let previewImage = data.previewImageDataEncoded()
-
                 let dataLength: String = "\(data.count)"
                 let additionalContentData: [String: Any] = [DPAGStrings.JSON.Message.AdditionalData.FILE_SIZE: dataLength]
-
                 return (DPAGSendMessageInfo(content: previewImage, contentDesc: media.text, contentType: DPAGStrings.JSON.Message.ContentType.IMAGE, attachment: data, additionalContentData: additionalContentData), nil)
             }
         case .video:
             if let image = media.preview {
                 let previewImage = image.previewImage()
-
-                guard let encodedPreview = previewImage.previewImageDataEncoded() else {
-                    break
-                }
-
+                guard let encodedPreview = previewImage.previewImageDataEncoded() else { break }
                 var mediaContent = media.mediaContent
-
                 if mediaContent == nil, let videoUrl = media.mediaUrl {
                     mediaContent = self.convertVideo(videoUrl)
-
-                    // Die Datei muss stehen bleiben, falls sie mit Verteiler (mehrfach) versendet wurde
                 }
-
                 if mediaContent == nil, let attachment = media.attachment, let resource = DPAGAttachmentWorker.resourceFromAttachment(attachment).mediaResource {
                     mediaContent = resource.mediaContent
                 }
-
                 if let mediaContent = mediaContent {
                     let dataLength: String = "\(mediaContent.count)"
                     let additionalContentData: [String: Any] = [DPAGStrings.JSON.Message.AdditionalData.FILE_SIZE: dataLength]
-
                     return (DPAGSendMessageInfo(content: encodedPreview, contentDesc: media.text, contentType: DPAGStrings.JSON.Message.ContentType.VIDEO, attachment: mediaContent, additionalContentData: additionalContentData), nil)
                 }
             }
         case .voiceRec:
             break
         case .file:
-
             if let data = media.mediaContent, let fileName = media.additionalData?.fileName {
                 let fileSize = media.additionalData?.fileSize ?? ""
                 let fileType = media.additionalData?.fileType ?? "application/octet-stream"
-
                 let additionalContentData = [
                     DPAGStrings.JSON.Message.AdditionalData.FILE_NAME: fileName,
                     DPAGStrings.JSON.Message.AdditionalData.FILE_SIZE: fileSize,
                     DPAGStrings.JSON.Message.AdditionalData.FILE_TYPE: fileType
                 ]
-
                 return (DPAGSendMessageInfo(content: fileName, contentDesc: media.text, contentType: DPAGStrings.JSON.Message.ContentType.FILE, attachment: data, additionalContentData: additionalContentData), nil)
             } else if let attachment = media.attachment, let fileName = media.attachment?.additionalData?.fileName {
                 let fileSize = media.attachment?.additionalData?.fileSize ?? ""
                 let fileType = media.attachment?.additionalData?.fileType ?? "application/octet-stream"
-
                 let additionalContentData = [
                     DPAGStrings.JSON.Message.AdditionalData.FILE_NAME: fileName,
                     DPAGStrings.JSON.Message.AdditionalData.FILE_SIZE: fileSize,
                     DPAGStrings.JSON.Message.AdditionalData.FILE_TYPE: fileType
                 ]
-
                 var attachmentData: Data?
                 var errorMessage: String?
-
                 DPAGAttachmentWorker.decryptMessageAttachment(attachment: attachment) { data, error in
                     errorMessage = error
                     attachmentData = data
                 }
-
                 if let errorMessage = errorMessage {
                     return (nil, errorMessage)
                 }
@@ -198,7 +170,6 @@ class DPAGSendMessageInfo {
         default:
             break
         }
-
         return (nil, nil)
     }
 
@@ -206,8 +177,6 @@ class DPAGSendMessageInfo {
         let asset = AVURLAsset(url: videoURL)
         let compatiblePresets = AVAssetExportSession.exportPresets(compatibleWith: asset)
         guard compatiblePresets.contains(AVAssetExportPresetLowQuality) else { return nil }
-
-        // IMDAT
         let exportSession = DPAGAVAssetExportSession(asset: asset)
         guard let outputUrl = DPAGFunctionsGlobal.pathForCustomTMPDirectory()?.appendingPathComponent("tempVideo", isDirectory: false).appendingPathExtension("mpeg4") else { return nil }
         if FileManager.default.fileExists(atPath: outputUrl.path) {
@@ -290,19 +259,16 @@ class DPAGSendMessageInfo {
 
     class func loadCallInvitation(_ contentObject: Any) -> (sendMessageInfo: DPAGSendMessageInfo?, errorMessage: String?) {
         guard let text = contentObject as? String else { return (nil, nil) }
-
         return (DPAGSendMessageInfo(content: text, contentDesc: nil, contentType: DPAGStrings.JSON.Message.ContentType.AV_CALL_INVITATION, attachment: nil, additionalContentData: nil), nil)
     }
 
     class func loadControlMsgNG(_ contentObject: Any) -> (sendMessageInfo: DPAGSendMessageInfo?, errorMessage: String?) {
         guard let text = contentObject as? String else { return (nil, nil) }
-
         return (DPAGSendMessageInfo(content: text, contentDesc: nil, contentType: DPAGStrings.JSON.Message.ContentType.CONTROL_MSG_NG, attachment: nil, additionalContentData: nil), nil)
     }
 
     class func loadLocation(_ contentObject: Any) -> (sendMessageInfo: DPAGSendMessageInfo?, errorMessage: String?) {
         guard let location = contentObject as? DPAGLocationResource else { return (nil, nil) }
-
         if let encodedPreview = location.preview.jpegData(compressionQuality: 0.8)?.base64EncodedString(options: .lineLength64Characters) {
             let locationDict: [String: Any] = [
                 DPAGStrings.JSON.Location.PREVIEW: encodedPreview,
@@ -310,62 +276,47 @@ class DPAGSendMessageInfo {
                 DPAGStrings.JSON.Location.LONGITUDE: NSNumber(value: location.location.coordinate.longitude),
                 DPAGStrings.JSON.Location.ADDRESS: location.address
             ]
-
             if let json = locationDict.JSONString {
                 return (DPAGSendMessageInfo(content: json, contentDesc: nil, contentType: DPAGStrings.JSON.Message.ContentType.LOCATION, attachment: nil, additionalContentData: nil), nil)
             } else {
                 return (nil, "internal.error.466")
             }
         }
-
         return (nil, nil)
     }
 
     class func loadVCard(_ contentObject: Any, accountGuid: String?, accountID: String?) -> (sendMessageInfo: DPAGSendMessageInfo?, errorMessage: String?) {
         guard let vCardData = contentObject as? Data else { return (nil, nil) }
-
         guard let text = String(data: vCardData, encoding: .utf8) else { return (nil, nil) }
-
         var additionalContentData: [String: Any]?
-
         if let accountGuid = accountGuid, let accountID = accountID {
             additionalContentData = ["accountGuid": accountGuid, "accountID": accountID]
         }
-
         return (DPAGSendMessageInfo(content: text, contentDesc: nil, contentType: DPAGStrings.JSON.Message.ContentType.CONTACT, attachment: nil, additionalContentData: additionalContentData), nil)
     }
 
     class func loadVoiceRec(_ contentObject: Any) -> (sendMessageInfo: DPAGSendMessageInfo?, errorMessage: String?) {
         guard let voiceRec = contentObject as? DPAGVoiceRecResource else { return (nil, nil) }
-
         let encodedPreview = "{\"duration\": \(voiceRec.duration), \"waveform\": []}"
-
         let dataLength: String = "\(voiceRec.voiceRecData.count)"
         let additionalContentData: [String: Any] = [DPAGStrings.JSON.Message.AdditionalData.FILE_SIZE: dataLength]
-
         return (DPAGSendMessageInfo(content: encodedPreview, contentDesc: nil, contentType: DPAGStrings.JSON.Message.ContentType.VOICEREC, attachment: voiceRec.voiceRecData, additionalContentData: additionalContentData), nil)
     }
 
     class func loadFile(_ contentObject: Any) -> (sendMessageInfo: DPAGSendMessageInfo?, errorMessage: String?) {
         guard let fileURL = contentObject as? URL else { return (nil, nil) }
-
         let fileName = fileURL.lastPathComponent
-
         guard let fileData = try? Data(contentsOf: fileURL) else { return (nil, nil) }
-
-        if fileData.count <= 0 || UInt64(fileData.count) > DPAGApplicationFacade.preferences.maxFileSize {
+        if fileData.count <= 0 || UInt64(fileData.count) > DPAGApplicationFacade.preferences.maxFileSize || (AppConfig.isShareExtension && !DPAGHelper.canPerformRAMBasedJSON(ofSize: UInt(fileData.count))) {
             return (nil, "chat.message.fileOpen.error.fileSize.message")
         }
-
         let contentMimeType = DPAGHelper.mimeType(forExtension: fileURL.pathExtension)
-
         let dataLength: String = "\(fileData.count)"
         let additionalContentData: [String: Any] = [
             DPAGStrings.JSON.Message.AdditionalData.FILE_NAME: fileURL.lastPathComponent,
             DPAGStrings.JSON.Message.AdditionalData.FILE_SIZE: dataLength,
             DPAGStrings.JSON.Message.AdditionalData.FILE_TYPE: contentMimeType ?? "application/octet-stream"
         ]
-
         return (DPAGSendMessageInfo(content: fileName, contentDesc: nil, contentType: DPAGStrings.JSON.Message.ContentType.FILE, attachment: fileData, additionalContentData: additionalContentData), nil)
     }
 }
@@ -418,53 +369,43 @@ class DPAGSendMessageWorker: NSObject, DPAGSendMessageWorkerProtocol {
 
     public func sendLocation(_ preview: UIImage, sendMessageOptions sendOptions: DPAGSendMessageSendOptions?, latitude location: CLLocation, address: String, toRecipients recipientGuids: [DPAGSendMessageRecipient], response: DPAGServiceResponseBlock?) {
         let resource = DPAGLocationResource(preview: preview, location: location, address: address)
-
         self.sendMessage([resource], recipients: recipientGuids, sendMessageOptions: sendOptions, featureSet: nil, sendMessageInfoBlock: { (contentObject, _) -> (sendMessageInfo: DPAGSendMessageInfo?, errorMessage: String?) in
-
             DPAGSendMessageInfo.loadLocation(contentObject)
         }, response: response)
     }
 
     public func sendVCard(_ data: Data, sendMessageOptions sendOptions: DPAGSendMessageSendOptions?, toRecipients recipientGuids: [DPAGSendMessageRecipient], response: DPAGServiceResponseBlock?, accountGuid: String?, accountID: String?) {
         self.sendMessage([data], recipients: recipientGuids, sendMessageOptions: sendOptions, featureSet: nil, sendMessageInfoBlock: { (contentObject, _) -> (sendMessageInfo: DPAGSendMessageInfo?, errorMessage: String?) in
-
             DPAGSendMessageInfo.loadVCard(contentObject, accountGuid: accountGuid, accountID: accountID)
         }, response: response)
     }
 
     public func sendVoiceRec(_ data: Data, duration: TimeInterval, sendMessageOptions sendOptions: DPAGSendMessageSendOptions?, toRecipients recipientGuids: [DPAGSendMessageRecipient], response: DPAGServiceResponseBlock?) {
         let resource = DPAGVoiceRecResource(voiceRecData: data, duration: duration)
-
         self.sendMessage([resource], recipients: recipientGuids, sendMessageOptions: sendOptions, featureSet: nil, sendMessageInfoBlock: { (contentObject, _) -> (sendMessageInfo: DPAGSendMessageInfo?, errorMessage: String?) in
-
             DPAGSendMessageInfo.loadVoiceRec(contentObject)
         }, response: response)
     }
 
     public func sendFile(_ fileURL: URL, sendMessageOptions sendOptions: DPAGSendMessageSendOptions?, toRecipients recipientGuids: [DPAGSendMessageRecipient], response: DPAGServiceResponseBlock?) {
         self.sendMessage([fileURL], recipients: recipientGuids, sendMessageOptions: sendOptions, featureSet: "\(DPAGMessageFeatureVersion.file.rawValue)", sendMessageInfoBlock: { (contentObject, _) -> (sendMessageInfo: DPAGSendMessageInfo?, errorMessage: String?) in
-
             DPAGSendMessageInfo.loadFile(contentObject)
         }, response: response)
     }
 
     public func sendMedias(_ medias: [DPAGMediaResource], sendMessageOptions sendOptions: DPAGSendMessageSendOptions?, toRecipients recipientGuids: [DPAGSendMessageRecipient], response: DPAGServiceResponseBlock?) {
         self.sendMessage(medias, recipients: recipientGuids, sendMessageOptions: sendOptions, featureSet: "\(DPAGMessageFeatureVersion.file.rawValue)", sendMessageInfoBlock: { (contentObject, _) -> (sendMessageInfo: DPAGSendMessageInfo?, errorMessage: String?) in
-
             DPAGSendMessageInfo.loadMedia(contentObject)
         }, response: response)
     }
 
     private func createMessageInstance(sendMessageInfo: DPAGSendMessageInfo, isGroup: Bool, recipient: DPAGSendMessageRecipient, sendOptionsRecipients: DPAGSendMessageSendOptions?, featureSet: String?, serviceResponseBlock: DPAGServiceResponseBlock?) -> DPAGSendMessageWorkerInstance {
         let msgInstance = DPAGSendMessageWorkerInstance(receiver: recipient, text: sendMessageInfo.content, contentType: sendMessageInfo.contentType, messageType: isGroup ? .group : .private, streamGuid: isGroup ? recipient.recipientGuid : recipient.contact?.streamGuid)
-
         msgInstance.messageDesc = sendMessageInfo.contentDesc
         msgInstance.sendMessageOptions = sendOptionsRecipients?.copy() as? DPAGSendMessageSendOptions
-
         msgInstance.responseBlock = serviceResponseBlock
         msgInstance.featureSet = featureSet
         msgInstance.additionalContentData = sendMessageInfo.additionalContentData
-
         return msgInstance
     }
 
@@ -479,28 +420,20 @@ class DPAGSendMessageWorker: NSObject, DPAGSendMessageWorkerProtocol {
 
     private func sendMessageInstance(msgInstance: DPAGSendMessageWorkerInstance, isGroup _: Bool, isMultiReceiverMessage: Bool) throws {
         let limit = DPAGSendMessageWorker.limitSendingSemaphore
-
         let block: DPAGServiceResponseBlock = { responseObject, errorCode, errorMessage in
-
             DPAGLog("Release Sending Lock")
-
             limit.signal()
-
             if let errorMessage = errorMessage {
                 self.sendingMessageFailed(msgInstance: msgInstance, errorCode: errorCode, errorMessage: errorMessage)
             } else {
                 self.sendingMessageSucceeded(msgInstance: msgInstance, response: responseObject, callResponseBlock: true, isMultiReceiverMessage: isMultiReceiverMessage)
             }
         }
-
         DPAGLog("Start Sending Lock")
-
         let timeUp = DispatchTime.now() + Double(Int64(60 * NSEC_PER_SEC)) / Double(NSEC_PER_SEC)
-
         if limit.wait(timeout: timeUp) == DispatchTimeoutResult.timedOut {
             DPAGLog("Timed Out Sending Lock")
         }
-
         if msgInstance.messageType == .private {
             try self.sendPrivateMessage(msgInstance: msgInstance, serviceResponseBlock: block)
         } else {
@@ -587,18 +520,16 @@ class DPAGSendMessageWorker: NSObject, DPAGSendMessageWorkerProtocol {
         let guidGroupStream = msgInstance.receiver.recipientGuid
         let recipientFound = self.sendMessageDAO.groupExists(groupGuid: guidGroupStream)
 
-        guard recipientFound, let messageJson = msgInstance.messageJson else {
-            // Something went wrong.. call the handler with an unknown error
+        if  !recipientFound || msgInstance.messageJson == nil {
             serviceResponseBlock(nil, nil, nil)
             return
         }
-
         let sendConcurrent = msgInstance.sendConcurrent
 
         if let sendDate = msgInstance.sendMessageOptions?.dateToBeSend {
-            try DPAGApplicationFacade.server.sendTimedGroupMessage(messageJson: messageJson, sendTime: sendDate, concurrent: sendConcurrent, requestInBackgroundId: msgInstance.guidOutgoingMessage, withResponse: serviceResponseBlock)
+            try DPAGApplicationFacade.server.sendTimedGroupMessage(msgInstance: msgInstance, sendTime: sendDate, concurrent: sendConcurrent, requestInBackgroundId: msgInstance.guidOutgoingMessage, withResponse: serviceResponseBlock)
         } else {
-            try DPAGApplicationFacade.server.sendGroupMessage(messageJson: messageJson, concurrent: sendConcurrent, requestInBackgroundId: msgInstance.guidOutgoingMessage, withResponse: serviceResponseBlock)
+            try DPAGApplicationFacade.server.sendGroupMessage(msgInstance: msgInstance, concurrent: sendConcurrent, requestInBackgroundId: msgInstance.guidOutgoingMessage, withResponse: serviceResponseBlock)
         }
     }
 
@@ -606,18 +537,15 @@ class DPAGSendMessageWorker: NSObject, DPAGSendMessageWorkerProtocol {
         let guidRecipient = msgInstance.receiver.recipientGuid
         let recipientFound = self.sendMessageDAO.recipientExists(recipientGuid: guidRecipient)
 
-        guard recipientFound, let messageJson = msgInstance.messageJson else {
-            // Something went wrong.. call the handler with an unknown error
+        if  !recipientFound || msgInstance.messageJson == nil {
             serviceResponseBlock(nil, nil, nil)
             return
         }
-
         let sendConcurrent = msgInstance.sendConcurrent
-
         if let sendDate = msgInstance.sendMessageOptions?.dateToBeSend {
-            try DPAGApplicationFacade.server.sendTimedMessage(messageJson: messageJson, sendTime: sendDate, concurrent: sendConcurrent, requestInBackgroundId: msgInstance.guidOutgoingMessage, withResponse: serviceResponseBlock)
+            try DPAGApplicationFacade.server.sendTimedMessage(msgInstance: msgInstance, sendTime: sendDate, concurrent: sendConcurrent, requestInBackgroundId: msgInstance.guidOutgoingMessage, withResponse: serviceResponseBlock)
         } else {
-            try DPAGApplicationFacade.server.sendMessage(messageJson: messageJson, concurrent: sendConcurrent, requestInBackgroundId: msgInstance.guidOutgoingMessage, withResponse: serviceResponseBlock)
+            try DPAGApplicationFacade.server.sendMessage(msgInstance: msgInstance, concurrent: sendConcurrent, requestInBackgroundId: msgInstance.guidOutgoingMessage, withResponse: serviceResponseBlock)
         }
     }
 
@@ -698,23 +626,19 @@ class DPAGSendMessageWorker: NSObject, DPAGSendMessageWorkerProtocol {
 
     public func resendMessage(msgGuid messageToResend: String, responseBlock: DPAGServiceResponseBlock?) {
         let msgInstance = DPAGSendMessageWorkerInstance(receiver: DPAGSendMessageRecipient.NULL_RECEIVER, text: "", contentType: "", messageType: .unknown, streamGuid: nil)
-
         msgInstance.responseBlock = responseBlock
         msgInstance.guidOutgoingMessage = messageToResend
-
+        
         if let decryptedMessage = DPAGApplicationFacade.cache.decryptedMessage(messageGuid: messageToResend, in: nil) {
             msgInstance.messageType = decryptedMessage.messageType
         }
-
         let block: DPAGServiceResponseBlock = { responseObject, errorCode, errorMessage in
-
             if let errorMessage = errorMessage {
                 self.sendingMessageFailed(msgInstance: msgInstance, errorCode: errorCode, errorMessage: errorMessage)
             } else {
                 self.sendingMessageSucceeded(msgInstance: msgInstance, response: responseObject, callResponseBlock: true, isMultiReceiverMessage: false)
             }
         }
-
         let blockSend = {
             do {
                 try self.sendMessageDAO.updateResendMessage(msgGuid: messageToResend, withMsgInstance: msgInstance, forInitialSending: false)
@@ -732,9 +656,7 @@ class DPAGSendMessageWorker: NSObject, DPAGSendMessageWorkerProtocol {
                 }
             }
         }
-
         let responseBlockCheckSent: DPAGServiceResponseBlock = { responseObject, errorCode, errorMessage in
-
             if errorMessage != nil {
                 responseBlock?(nil, errorCode, errorMessage)
             } else if let responseArray = responseObject as? [[String: Any]] {
@@ -755,7 +677,6 @@ class DPAGSendMessageWorker: NSObject, DPAGSendMessageWorkerProtocol {
                 }
             }
         }
-
         DPAGApplicationFacade.server.isMessageSent(messageGuid: messageToResend, withResponse: responseBlockCheckSent)
     }
 }
