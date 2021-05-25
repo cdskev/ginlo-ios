@@ -141,7 +141,7 @@ class DPAGChatOverviewBaseCell: UITableViewCell, DPAGChatOverviewBaseCellProtoco
             let cache = DPAGApplicationFacadeShareExt.cache
             if let decStreamPrivate = decStream as? DPAGDecryptedStreamPrivate, let contactGuid = decStreamPrivate.contactGuid, let contact = cache.contact(for: contactGuid) {
                 if let image = contact.image(for: .chatList) {
-                    self.viewProfileImage.image = image.circleImageUsingConfidenceColor(UIColor.confidenceStatusToColor(contact.confidence))
+                    self.viewProfileImage.image = image.circleImageUsingConfidenceColor(UIColor.confidenceStatusToColor(contact.confidence, isActive: true))
                 }
             } else if let decStreamGroup = decStream as? DPAGDecryptedStreamGroup, let group = cache.group(for: decStreamGroup.guid) {
                 let image: UIImage?
@@ -151,14 +151,14 @@ class DPAGChatOverviewBaseCell: UITableViewCell, DPAGChatOverviewBaseCellProtoco
                     image = DPAGUIImageHelper.image(forGroupGuid: group.guid, imageType: .chatList)
                 }
                 if let image = image {
-                    self.viewProfileImage.image = image.circleImageUsingConfidenceColor(UIColor.confidenceStatusToColor(group.confidenceState), thickness: 12)
+                    self.viewProfileImage.image = image.circleImageUsingConfidenceColor(UIColor.confidenceStatusToColor(group.confidenceState, isActive: true), thickness: 12)
                 }
             }
         } else {
             let cache = DPAGApplicationFacade.cache
             if let decStreamPrivate = decStream as? DPAGDecryptedStreamPrivate, let contactGuid = decStreamPrivate.contactGuid, let contact = cache.contact(for: contactGuid) {
                 if let image = contact.image(for: .chatList) {
-                    self.viewProfileImage.image = image.circleImageUsingConfidenceColor(UIColor.confidenceStatusToColor(contact.confidence))
+                    self.viewProfileImage.image = image.circleImageUsingConfidenceColor(UIColor.confidenceStatusToColor(contact.confidence, isActive: true))
                 }
             } else if let decStreamGroup = decStream as? DPAGDecryptedStreamGroup, let group = cache.group(for: decStreamGroup.guid) {
                 let image: UIImage?
@@ -168,7 +168,7 @@ class DPAGChatOverviewBaseCell: UITableViewCell, DPAGChatOverviewBaseCellProtoco
                     image = DPAGUIImageHelper.image(forGroupGuid: group.guid, imageType: .chatList)
                 }
                 if let image = image {
-                    self.viewProfileImage.image = image.circleImageUsingConfidenceColor(UIColor.confidenceStatusToColor(group.confidenceState), thickness: 12)
+                    self.viewProfileImage.image = image.circleImageUsingConfidenceColor(UIColor.confidenceStatusToColor(group.confidenceState, isActive: true), thickness: 12)
                 }
             }
         }

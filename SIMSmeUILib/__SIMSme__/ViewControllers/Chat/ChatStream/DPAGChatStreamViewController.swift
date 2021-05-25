@@ -67,7 +67,7 @@ class DPAGChatStreamViewController: DPAGChatStreamBaseViewController, DPAGChatSt
                 contactButton.frame = CGRect(origin: .zero, size: DPAGImageProvider.kSizeBarButton)
                 let imgContact = contact.image(for: .chat)
                 if contact.isDeleted == false, let imgContact = imgContact {
-                    contactButton.imageViewCentered.image = imgContact.circleImageUsingConfidenceColor(UIColor.confidenceStatusToColor(contact.confidence))
+                    contactButton.imageViewCentered.image = imgContact.circleImageUsingConfidenceColor(UIColor.confidenceStatusToColor(contact.confidence, isActive: true), thickness: 8)
                 } else {
                     contactButton.imageViewCentered.image = imgContact
                 }
