@@ -426,17 +426,17 @@ class DPAGMessageModelFactory: DPAGMessageModelFactoryProtocol {
             }
             encAttachmentString = nil
         }
-        if encAttachmentDataBase64 == nil {
-            return nil
-        }
+//        if encAttachmentDataBase64 == nil {
+//            return nil
+//        }
         autoreleasepool {
             var encAttachmentData = attachmentIvData
             if let encAttachmentDataBase64 = encAttachmentDataBase64 {
                 encAttachmentData?.append(encAttachmentDataBase64)
+                encAttachment = encAttachmentData?.base64EncodedString()
+                encAttachmentSize = encAttachment?.count ?? 0
             }
             encAttachmentDataBase64 = nil
-            encAttachment = encAttachmentData?.base64EncodedString()
-            encAttachmentSize = encAttachment?.count ?? 0
             encAttachmentData = nil
             attachmentIvData = nil
         }

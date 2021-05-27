@@ -68,7 +68,7 @@ open class DPAGRuntimeConfig {
     }
 
     open var maxFileSize: UInt64 {
-        0x140000000
+        0xC800000
     }
 
     open var isWhiteLabelBuild: Bool {
