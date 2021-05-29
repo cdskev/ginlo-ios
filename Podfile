@@ -26,7 +26,7 @@ JitsiMeetSDKVersion = '3.2.0'
 def podsApp
     pod 'SQLCipher', SQLCipherVersion, :inhibit_warnings => true
     pod 'JFBCrypt', :path => './PatchedPods/JFBCrypt', :inhibit_warnings => true
-    pod 'AFNetworking', AFNetworkingVersion, :subspecs => ['Reachability', 'Serialization', 'Security', 'NSURLSession']
+    pod 'AFNetworking', :path => './PatchedPods/AFNetworking', :subspecs => ['Reachability', 'Serialization', 'Security', 'NSURLSession']
     pod 'MagicalRecord', :path => './PatchedPods/MagicalRecord'
     pod 'NSHash', NSHashVersion
     pod 'objective-zip', ObjectiveZipVersion
@@ -38,7 +38,7 @@ def podsApp
 end
 
 def podsShareExtension
-    pod 'AFNetworking', AFNetworkingVersion, :subspecs => ['Reachability', 'Serialization', 'Security', 'NSURLSession']
+    pod 'AFNetworking', :path => './PatchedPods/AFNetworking', :subspecs => ['Reachability', 'Serialization', 'Security', 'NSURLSession']
     pod 'HPGrowingTextView', HPGrowingTextViewVersion, :inhibit_warnings => true
     pod 'NSHash', NSHashVersion
     pod 'SQLCipher', SQLCipherVersion, :inhibit_warnings => true
@@ -47,7 +47,7 @@ def podsShareExtension
 end
 
 def podsNotificationExtension
-    pod 'AFNetworking', AFNetworkingVersion, :subspecs => ['Reachability', 'Serialization', 'Security', 'NSURLSession']
+    pod 'AFNetworking', :path => './PatchedPods/AFNetworking', :subspecs => ['Reachability', 'Serialization', 'Security', 'NSURLSession']
     pod 'SQLCipher', SQLCipherVersion, :inhibit_warnings => true
     pod 'JFBCrypt', :path => './PatchedPods/JFBCrypt', :inhibit_warnings => true
     pod 'CocoaLumberjack/Swift', CocoaLumberjackVersion
@@ -55,7 +55,7 @@ end
 
 def podsCore
     pod 'JFBCrypt', :path => './PatchedPods/JFBCrypt', :inhibit_warnings => true
-    pod 'AFNetworking', AFNetworkingVersion, :subspecs => ['Reachability', 'Serialization', 'Security', 'NSURLSession']
+    pod 'AFNetworking', :path => './PatchedPods/AFNetworking', :subspecs => ['Reachability', 'Serialization', 'Security', 'NSURLSession']
     pod 'MagicalRecord', :path => './PatchedPods/MagicalRecord'
     pod 'NSHash', NSHashVersion
     pod 'objective-zip', ObjectiveZipVersion
