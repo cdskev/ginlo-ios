@@ -1655,11 +1655,11 @@ public class DPAGPreferences: NSObject {
             case .small:
                 return 0.7
             case .medium:
-                return 0.8
+                return 0.75
             case .large:
-                return 0.9
+                return 0.8
             case .extraLarge:
-                return 1.0
+                return 0.9
             }
     }
 
