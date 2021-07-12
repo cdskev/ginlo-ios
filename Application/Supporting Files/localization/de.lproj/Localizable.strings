@@ -947,11 +947,11 @@
 "settings.sentImageQuality.title" = "Qualität versendeter Bilder";
 "settings.sentImageQuality.title.imageQuality10" = "Hoch";
 "settings.sentImageQuality.title.imageQuality15" = "Extrahoch";
-"settings.sentImageQuality.title.imageQuality20" = "Original";
+"settings.sentImageQuality.title.imageQuality20" = "Maximum";
 "settings.sentImageQuality.title.imageQuality5" = "Normal";
 "settings.sentImageQuality.title.imageQualitySetting10" = "Hoch";
 "settings.sentImageQuality.title.imageQualitySetting15" = "Extrahoch";
-"settings.sentImageQuality.title.imageQualitySetting20" = "Original";
+"settings.sentImageQuality.title.imageQualitySetting20" = "Maximum";
 "settings.sentImageQuality.title.imageQualitySetting5" = "Normal";
 "settings.sentVideoQuality.title" = "Qualität versendeter Videos";
 "settings.sentVideoQuality.title.videoQuality10" = "Mittel";

@@ -1644,9 +1644,9 @@ public class DPAGPreferences: NSObject {
             case .medium:
                 return CGSize(width: 1_920, height: 1_920)
             case .large:
-                return CGSize(width: 3_072, height: 3_072)
+                return CGSize(width: 2_048, height: 2_048)
             case .extraLarge:
-                return CGSize(width: 16_384, height: 16_384)
+                return CGSize(width: 4_096, height: 4_096)
         }
     }
 
