@@ -55,9 +55,7 @@ public class DPAGAttachmentWorker: NSObject {
     
     public class func getPrivateAttachmentData(attachment: DPAGDecryptedAttachment) -> Data? {
         if let attachmentString = DPAGAttachmentWorker.encryptedAttachment(guid: attachment.attachmentGuid) {
-            if attachment.isOwnMessage || attachment.messageType == .channel || (attachmentString.sha1() == attachment.attachmentHash || attachmentString.sha256() == attachment.attachmentHash) || (attachment.messageType == .group && attachment.attachmentHash == nil) {
-                return DPAGApplicationFacade.messageCryptoWorker.decryptAttachment(attachmentString as String, encAesKey: attachment.encAesKey)
-            }
+            return DPAGApplicationFacade.messageCryptoWorker.decryptAttachment(attachmentString as String, encAesKey: attachment.encAesKey)
         }
         return nil
     }
@@ -65,9 +63,7 @@ public class DPAGAttachmentWorker: NSObject {
     public class func getChannelAttachmentData(attachment: DPAGDecryptedAttachment) -> Data? {
         if let attachmentString = DPAGAttachmentWorker.encryptedAttachment(guid: attachment.attachmentGuid), let iv = attachment.encIv, let decAesKey = attachment.encAesKey {
             let aesKeyDict = DPAGAesKeyDecrypted(aesKey: decAesKey, iv: iv)
-            if attachment.isOwnMessage || attachment.messageType == .channel || (attachmentString.sha1() == attachment.attachmentHash || attachmentString.sha256() == attachment.attachmentHash) || (attachment.messageType == .group && attachment.attachmentHash == nil) {
-                return DPAGApplicationFacade.messageCryptoWorker.decryptAttachment(attachmentString as String, decAesKeyDict: aesKeyDict)
-            }
+            return DPAGApplicationFacade.messageCryptoWorker.decryptAttachment(attachmentString as String, decAesKeyDict: aesKeyDict)
         }
         return nil
     }
