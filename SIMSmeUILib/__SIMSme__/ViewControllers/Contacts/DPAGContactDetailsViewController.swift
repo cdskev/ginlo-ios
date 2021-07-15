@@ -92,7 +92,7 @@ class DPAGContactDetailsViewController: DPAGContactDetailsViewControllerBase, DP
         self.textFieldFirstName.textColor = self.imageViewFirstNameLocked.isHidden ? DPAGColorProvider.shared[.textFieldText] : DPAGColorProvider.shared[.textFieldTextDisabled]
         self.textFieldLastName.textColor = self.imageViewLastNameLocked.isHidden ? DPAGColorProvider.shared[.textFieldText] : DPAGColorProvider.shared[.textFieldTextDisabled]
         self.textFieldDepartment.textColor = self.imageViewDepartmentLocked.isHidden ? DPAGColorProvider.shared[.textFieldText] : DPAGColorProvider.shared[.textFieldTextDisabled]
-        self.imageViewContact.image = self.contact.image(for: .profile)
+        self.imageViewContact.image = self.contact.image(for: .profile)?.circleImageUsingConfidenceColor(UIColor.confidenceStatusToColor(self.contact.confidence, isActive: true), thickness: 8)
         let isWhiteLabel = DPAGApplicationFacade.preferences.isWhiteLabelBuild
         if self.isEditing {
             self.stackViewFirstName.isHidden = false

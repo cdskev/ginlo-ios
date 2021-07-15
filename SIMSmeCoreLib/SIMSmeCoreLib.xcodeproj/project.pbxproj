@@ -181,6 +181,8 @@
 		728CD9182600C3F500F29572 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 728CD9152600C3F500F29572 /* Media.xcassets */; };
 		728CD9192600C3F500F29572 /* GIFs.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 728CD9162600C3F500F29572 /* GIFs.xcassets */; };
 		72C6519E2539ABD3000AF823 /* libchilkatIos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 72C6519C2539ABD2000AF823 /* libchilkatIos.a */; };
+		72EE3FED26564B4A008AA8A1 /* GNJSONSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72EE3FEC26564B49008AA8A1 /* GNJSONSerialization.swift */; };
+		72EE3FEF26564C7C008AA8A1 /* GNJSONSerialization+Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72EE3FEE26564C7C008AA8A1 /* GNJSONSerialization+Parser.swift */; };
 		73FB2B7B3B5DC50B667AE2B9 /* Pods_SIMSmeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 423CFBC5EF51ACD5DC34DB92 /* Pods_SIMSmeCore.framework */; };
 		84D7FED322C650D4009F73C2 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D7FED222C650D4009F73C2 /* Logger.swift */; };
 		84D7FED522C650E8009F73C2 /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D7FED422C650E7009F73C2 /* Logging.swift */; };
@@ -988,6 +990,8 @@
 		728CD9152600C3F500F29572 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Media.xcassets; path = ../../../Application/Ressources/Images/Media.xcassets; sourceTree = "<group>"; };
 		728CD9162600C3F500F29572 /* GIFs.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = GIFs.xcassets; sourceTree = "<group>"; };
 		72C6519C2539ABD2000AF823 /* libchilkatIos.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libchilkatIos.a; path = __SIMSme__/ObjC/Chilkat/libchilkatIos.a; sourceTree = "<group>"; };
+		72EE3FEC26564B49008AA8A1 /* GNJSONSerialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GNJSONSerialization.swift; sourceTree = "<group>"; };
+		72EE3FEE26564C7C008AA8A1 /* GNJSONSerialization+Parser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GNJSONSerialization+Parser.swift"; sourceTree = "<group>"; };
 		84D7FED222C650D4009F73C2 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		84D7FED422C650E7009F73C2 /* Logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
 		864927CDF2E7E58CE740427E /* Pods-SIMSmeCore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SIMSmeCore.release.xcconfig"; path = "../Pods/Target Support Files/Pods-SIMSmeCore/Pods-SIMSmeCore.release.xcconfig"; sourceTree = "<group>"; };
@@ -1616,6 +1620,7 @@
 		27C5A1EE1DD339B8004BCCD6 /* __SIMSme__ */ = {
 			isa = PBXGroup;
 			children = (
+				72EE3FEB26564B49008AA8A1 /* JSON */,
 				27F1E23D22C9E1AF0020CBFE /* AppExtension */,
 				27C5A1EF1DD33A05004BCCD6 /* Helper */,
 				27C5A2711DD33D10004BCCD6 /* Internal */,
@@ -1931,6 +1936,15 @@
 				359FAA2C22C505E300562C32 /* DPAGFetchedResultsControllerCounter.swift */,
 			);
 			path = FetchedResultsController;
+			sourceTree = "<group>";
+		};
+		72EE3FEB26564B49008AA8A1 /* JSON */ = {
+			isa = PBXGroup;
+			children = (
+				72EE3FEE26564C7C008AA8A1 /* GNJSONSerialization+Parser.swift */,
+				72EE3FEC26564B49008AA8A1 /* GNJSONSerialization.swift */,
+			);
+			path = JSON;
 			sourceTree = "<group>";
 		};
 		A30CBFD222DF2AFC002C02B9 /* Extensions */ = {
@@ -3463,6 +3477,7 @@
 				271CE4431DF95A0600CE7E20 /* Model13_16.xcmappingmodel in Sources */,
 				271CE42D1DF95A0600CE7E20 /* Model10_12.xcmappingmodel in Sources */,
 				2745204C2316ADB400AB174C /* AppExtensionDAO.swift in Sources */,
+				72EE3FEF26564C7C008AA8A1 /* GNJSONSerialization+Parser.swift in Sources */,
 				271CE4441DF95A0600CE7E20 /* Model13_17.xcmappingmodel in Sources */,
 				2782A94B22F86B1F00AEC1E0 /* ChatRoomDAO.swift in Sources */,
 				A32E54F022D73AEE0009BB49 /* HttpServiceEntities.swift in Sources */,
@@ -3479,6 +3494,7 @@
 				271CE4291DF959FF00CE7E20 /* SIMSSelfDestructMessage.swift in Sources */,
 				271CE3E51DF959F300CE7E20 /* DPAGHttpService.swift in Sources */,
 				A30CBFCF22DDCC53002C02B9 /* Group.swift in Sources */,
+				72EE3FED26564B4A008AA8A1 /* GNJSONSerialization.swift in Sources */,
 				271CE3FF1DF959FF00CE7E20 /* SIMSChannelToggle.swift in Sources */,
 				271CE4071DF959FF00CE7E20 /* SIMSDevice.swift in Sources */,
 				274520502317CBDF00AB174C /* CouplingDAO.swift in Sources */,

@@ -897,11 +897,12 @@ class DPAGChatsListViewController: DPAGTableViewControllerWithSearch, DPAGProgre
     }
 
     // MARK: - Actions
-
+    
     @objc
     private func buttonAddPressed() {
-        let alertOptions = self.startNewChatHelper.getAlertOptions()
         if let rightBarButton = self.navigationItem.rightBarButtonItem {
+            let alertOptions = self.startNewChatHelper.getAlertOptions()
+            self.startNewChatHelper.barButtonItem = rightBarButton
             let alertController = UIAlertController.controller(options: alertOptions, barButtonItem: rightBarButton)
             self.presentAlertController(alertController)
         }

@@ -315,6 +315,7 @@ public class DPAGHelperEx: NSObject {
         let ivCount = iv.count
 
         let result = iv.withUnsafeMutableBytes {
+            // swiftlint:disable force_unwrapping
             SecRandomCopyBytes(kSecRandomDefault, ivCount, $0.bindMemory(to: UInt8.self).baseAddress!)
         }
 

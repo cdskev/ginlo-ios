@@ -647,7 +647,6 @@ public class DPAGPreferences: NSObject {
         self.shouldShowSyncContactsReminder()
     }
 
-
     public func updateLastDateReminderShown() {
         self[.kLastDateReminderSyncContactsShown] = Date()
     }
@@ -1641,26 +1640,26 @@ public class DPAGPreferences: NSObject {
     public var sizeForSentImages: CGSize {
         switch self.sentImageQuality {
             case .small:
-                return CGSize(width: 640, height: 640)
-            case .medium:
                 return CGSize(width: 1_024, height: 1_024)
-            case .large:
+            case .medium:
                 return CGSize(width: 1_920, height: 1_920)
+            case .large:
+                return CGSize(width: 2_048, height: 2_048)
             case .extraLarge:
-                return CGSize(width: 2_592, height: 2_592)
+                return CGSize(width: 4_096, height: 4_096)
         }
     }
 
     public var qualityForSentImages: CGFloat {
         switch self.sentImageQuality {
             case .small:
-                return 0.6
+                return 0.7
             case .medium:
                 return 0.75
             case .large:
                 return 0.8
             case .extraLarge:
-                return 0.85
+                return 0.9
             }
     }
 

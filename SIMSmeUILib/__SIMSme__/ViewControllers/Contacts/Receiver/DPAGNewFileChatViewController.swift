@@ -68,12 +68,11 @@ class DPAGNewFileChatViewController: DPAGReceiverSelectionViewController, DPAGNe
                 if filename.hasSuffix("pages") || filename.hasSuffix("numbers") || filename.hasSuffix("keynote") || filename.hasSuffix("key") {
                     errorMessage = "chat.message.fileOpen.error.foldersNotImplemented.message.pages"
                 }
-
                 self.presentAlert(alertConfig: AlertConfig(titleIdentifier: "attention", messageIdentifier: errorMessage, otherButtonActions: [actionOK]))
             } else if let fileSize = fileAttributes[.size] as? NSNumber {
                 self.fileSize = fileSize.int64Value
 
-                if fileSize.uint64Value <= 0 || fileSize.uint64Value > DPAGApplicationFacade.preferences.maxFileSize {
+                if fileSize.uint64Value <= 0 || fileSize.uint64Value > DPAGApplicationFacade.preferences.maxFileSize || (AppConfig.isShareExtension && !DPAGHelper.canPerformRAMBasedJSON(ofSize: UInt(fileSize.uint64Value))) {
                     self.presentAlert(alertConfig: AlertConfig(titleIdentifier: "attention", messageIdentifier: "chat.message.fileOpen.error.fileSize.message", otherButtonActions: [actionOK]))
                 }
             } else {

@@ -101,6 +101,7 @@ extension UIImage {
             let rect = CGRect(origin: .zero, size: self.size)
             color.setStroke()
             let uibp = UIBezierPath(roundedRect: rect, cornerRadius: self.size.width / 2.0)
+            // swiftlint:disable force_unwrapping
             uibp.lineWidth = thickness!
             self.draw(in: rect)
             uibp.addClip()

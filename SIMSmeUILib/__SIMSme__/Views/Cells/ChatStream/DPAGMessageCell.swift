@@ -797,7 +797,7 @@ class DPAGMessageCell: UITableViewCell, DPAGMessageCellProtocol {
     
     @objc
     func handleDesignColorsUpdated() {
-        if (self.isChannelCell) {
+        if self.isChannelCell {
             self.viewBubbleFrame?.backgroundColor = DPAGColorProvider.shared[.chatDetailsBubbleChannel]
             self.viewBubbleImage?.backgroundColor = DPAGColorProvider.shared[.chatDetailsBubbleChannel]
             self.viewBubbleImageAvatar?.backgroundColor = DPAGColorProvider.shared[.chatDetailsBubbleChannel]

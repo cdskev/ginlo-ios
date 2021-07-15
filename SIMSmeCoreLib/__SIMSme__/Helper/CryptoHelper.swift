@@ -414,20 +414,29 @@ public struct CryptoHelperEncrypter {
         return DPAGEncryptionGCM(key: randomKey, iv: iv, aad: aad, authTag: authTag, encryptedString: encryptedString)
     }
 
+    // TODO: Fix it here ATT-SIZE
     static func encrypt(data: Data, withAesKeyDict dict: [AnyHashable: Any]) throws -> String {
-        guard dict.isEmpty == false, data.isEmpty == false else {
-            throw DPAGErrorCrypto.errEncryption("dict.isEmpty || data.isEmpty")
+        var returnString: String?
+        try autoreleasepool {
+            guard dict.isEmpty == false, data.isEmpty == false else {
+                throw DPAGErrorCrypto.errEncryption("dict.isEmpty || data.isEmpty")
+            }
+            guard let key = dict["key"] as? String, let iv = dict["iv"] as? String else {
+                throw DPAGErrorCrypto.errEncryption("dict content missing")
+            }
+            let encryptCrypt = try CkoCrypt2.cryptDefault()
+            encryptCrypt.setEncodedKey(key, encoding: "base64")
+            encryptCrypt.setEncodedIV(iv, encoding: "base64")
+            guard let encryptedString = encryptCrypt.encryptBytesENC(data), encryptedString.isEmpty == false else {
+                throw DPAGErrorCrypto.errEncryption("Fehler beim Entschlüsseln eines Strings. " + encryptCrypt.lastErrorText)
+            }
+            returnString = encryptedString
         }
-        guard let key = dict["key"] as? String, let iv = dict["iv"] as? String else {
-            throw DPAGErrorCrypto.errEncryption("dict content missing")
+        if let returnString = returnString {
+            return returnString
+        } else {
+            throw DPAGErrorCrypto.errEncryption("Fehler beim Entschlüsseln eines Strings. ")
         }
-        let encryptCrypt = try CkoCrypt2.cryptDefault()
-        encryptCrypt.setEncodedKey(key, encoding: "base64")
-        encryptCrypt.setEncodedIV(iv, encoding: "base64")
-        guard let encryptedString = encryptCrypt.encryptBytesENC(data), encryptedString.isEmpty == false else {
-            throw DPAGErrorCrypto.errEncryption("Fehler beim Entschlüsseln eines Strings. " + encryptCrypt.lastErrorText)
-        }
-        return encryptedString
     }
 
     static func encryptForBackup(data: Data, withAesKey aesKey: Data) throws -> Data {

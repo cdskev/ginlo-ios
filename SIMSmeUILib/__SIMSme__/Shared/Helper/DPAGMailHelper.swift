@@ -175,7 +175,7 @@ public class DPAGImagePickerController: UIImagePickerController, DPAGNavigationC
     }
 
     override public var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return UI_USER_INTERFACE_IDIOM() == .phone ? .allButUpsideDown : .all
+        UI_USER_INTERFACE_IDIOM() == .phone ? .allButUpsideDown : .all
     }
 }
 
