@@ -83,7 +83,7 @@ class DPAGPreferencesShareExt: DPAGPreferencesShareExtProtocol {
     var maximumNumberOfMediaAttachments: Int = 10
     var imageOptionsForSending: DPAGImageOptions { self.prefs?.imageOptionsForSending ?? DPAGImageOptions(size: CGSize(width: 1_024, height: 1_024), quality: 0.75, interpolationQuality: CGInterpolationQuality.default.rawValue) }
     var videoOptionsForSending: DPAGVideoOptions { self.prefs?.videoOptionsForSending ?? DPAGVideoOptions(size: CGSize(width: 854, height: 480), bitrate: 800_000, fps: 30, profileLevel: AVVideoProfileLevelH264Baseline41) }
-    var maxFileSize: UInt64 { self.prefs?.maxFileSize ?? 0x1400000 }
+    var maxFileSize: UInt64 { self.prefs?.maxFileSize ?? 0x1E00000 }
     var maxLengthForSentVideos: TimeInterval { self.prefs?.maxLengthForSentVideos ?? 0 }
     var mandantenDict: [String: DPAGMandant] = [:]
     var shareExtensionDevicePasstoken: String?

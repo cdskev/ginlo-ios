@@ -139,7 +139,6 @@ public class DPAGChatLabel: UILabel {
 
         layoutManager.addTextContainer(textContainer)
 
-        //textStorage to calculate the position
         if let attributedText = self.attributedText {
             let textStorage = NSTextStorage(attributedString: attributedText)
 

@@ -18,7 +18,7 @@ GCC_PREPROCESSOR_DEFINITIONS = $(inherited) DEBUG=1
 
 SWIFT_OPTIMIZATION_LEVEL = -Onone
 
-OTHER_SWIFT_FLAGS = $(inherited) -DDEBUG -Xfrontend -debug-time-compilation -Xfrontend -debug-time-function-bodies -Xfrontend -warn-long-function-bodies=500 -Xfrontend -warn-long-expression-type-checking=500
+OTHER_SWIFT_FLAGS = $(inherited) -DDEBUG -Xfrontend -warn-long-function-bodies=500 -Xfrontend -warn-long-expression-type-checking=500
 SWIFT_ACTIVE_COMPILATION_CONDITIONS = $(inherited) DEBUG
 
 BUILD_CONFIGURATION_MODE = DEBUG

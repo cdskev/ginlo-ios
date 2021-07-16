@@ -46,14 +46,14 @@ protocol DPAGServerWorkerProtocol {
     func deleteTimedMessage(messageGuid: String, withResponse responseBlock: @escaping DPAGServiceResponseBlock)
     func deleteTimedMessages(messageGuids: [String], withResponse responseBlock: @escaping DPAGServiceResponseBlock)
 
-    func sendMessage(messageJson: String, concurrent isRequestConcurrent: Bool, requestInBackgroundId: String?, withResponse responseBlock: @escaping DPAGServiceResponseBlock) throws
-    func sendTimedMessage(messageJson: String, sendTime: Date, concurrent isRequestConcurrent: Bool, requestInBackgroundId: String?, withResponse responseBlock: @escaping DPAGServiceResponseBlock) throws
+    func sendMessage(msgInstance: DPAGSendMessageWorkerInstance, concurrent isRequestConcurrent: Bool, requestInBackgroundId: String?, withResponse responseBlock: @escaping DPAGServiceResponseBlock) throws
+    func sendTimedMessage(msgInstance: DPAGSendMessageWorkerInstance, sendTime: Date, concurrent isRequestConcurrent: Bool, requestInBackgroundId: String?, withResponse responseBlock: @escaping DPAGServiceResponseBlock) throws
 
     func sendInternalMessage(messageJson: String, to: SIMSContactIndexEntry, withResponse responseBlock: @escaping DPAGServiceResponseBlock) throws
     func sendInternalMessages(messageJsonsString: String, withResponse responseBlock: @escaping DPAGServiceResponseBlock) throws
 
-    func sendGroupMessage(messageJson: String, concurrent isRequestConcurrent: Bool, requestInBackgroundId: String?, withResponse responseBlock: @escaping DPAGServiceResponseBlock) throws
-    func sendTimedGroupMessage(messageJson: String, sendTime: Date, concurrent isRequestConcurrent: Bool, requestInBackgroundId: String?, withResponse responseBlock: @escaping DPAGServiceResponseBlock) throws
+    func sendGroupMessage(msgInstance: DPAGSendMessageWorkerInstance, concurrent isRequestConcurrent: Bool, requestInBackgroundId: String?, withResponse responseBlock: @escaping DPAGServiceResponseBlock) throws
+    func sendTimedGroupMessage(msgInstance: DPAGSendMessageWorkerInstance, sendTime: Date, concurrent isRequestConcurrent: Bool, requestInBackgroundId: String?, withResponse responseBlock: @escaping DPAGServiceResponseBlock) throws
 
     func getNewMessages(withResponse responseBlock: DPAGServiceResponseBlock?, useLazy: Bool) -> URLSessionTask?
 
@@ -397,27 +397,31 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
         self.sendCommand(DPAGServerFunction.RemoveTimedMessages(guids: messageGuids.joined(separator: ",")), withResponse: responseBlock)
     }
 
-    func sendMessage(messageJson: String, concurrent _: Bool, requestInBackgroundId: String?, withResponse responseBlock: @escaping DPAGServiceResponseBlock) throws {
-        try autoreleasepool {
-            let checksum = try CryptoHelperCoding.shared.md5Hash(value: messageJson)
-
-            DPAGApplicationFacade.service.perform(request: {
-                let request = DPAGHttpServiceRequestSendMessages()
-                request.parametersCodable = DPAGServerFunction.SendPrivateMessage(message: messageJson, messageChecksum: checksum, returnConfirmMessage: 1)
-                request.responseBlock = responseBlock
-                request.requestInBackgroundId = requestInBackgroundId
-
-                return request
-            }())
-        }
-    }
-
-    func sendTimedMessage(messageJson: String, sendTime: Date, concurrent _: Bool, requestInBackgroundId: String?, withResponse responseBlock: @escaping DPAGServiceResponseBlock) throws {
-        let checksum = try CryptoHelperCoding.shared.md5Hash(value: messageJson)
+    func sendMessage(msgInstance: DPAGSendMessageWorkerInstance, concurrent _: Bool, requestInBackgroundId: String?, withResponse responseBlock: @escaping DPAGServiceResponseBlock) throws {
+        let checksum = try CryptoHelperCoding.shared.md5Hash(value: msgInstance.messageJson!)
 
         DPAGApplicationFacade.service.perform(request: {
             let request = DPAGHttpServiceRequestSendMessages()
-            request.parametersCodable = DPAGServerFunction.SendTimedPrivateMessage(message: messageJson, messageChecksum: checksum, dateToSend: DPAGFormatter.dateServer.string(from: sendTime))
+            autoreleasepool {
+                request.parametersCodable = DPAGServerFunction.SendPrivateMessage(message: msgInstance.messageJson!, messageChecksum: checksum, returnConfirmMessage: 1)
+                msgInstance.clearMessageJson()
+            }
+            request.responseBlock = responseBlock
+            request.requestInBackgroundId = requestInBackgroundId
+
+            return request
+        }())
+    }
+
+    func sendTimedMessage(msgInstance: DPAGSendMessageWorkerInstance, sendTime: Date, concurrent _: Bool, requestInBackgroundId: String?, withResponse responseBlock: @escaping DPAGServiceResponseBlock) throws {
+        let checksum = try CryptoHelperCoding.shared.md5Hash(value: msgInstance.messageJson!)
+
+        DPAGApplicationFacade.service.perform(request: {
+            let request = DPAGHttpServiceRequestSendMessages()
+            autoreleasepool {
+                request.parametersCodable = DPAGServerFunction.SendTimedPrivateMessage(message: msgInstance.messageJson!, messageChecksum: checksum, dateToSend: DPAGFormatter.dateServer.string(from: sendTime))
+                msgInstance.clearMessageJson()
+            }
             request.responseBlock = responseBlock
             request.requestInBackgroundId = requestInBackgroundId
 
@@ -437,12 +441,15 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
         self.sendCommand(DPAGServerFunction.SendPrivateInternalMessages(message: messageJsonsString, messageChecksum: checksum, returnConfirmMessage: 1), withResponse: responseBlock)
     }
 
-    func sendGroupMessage(messageJson: String, concurrent _: Bool, requestInBackgroundId: String?, withResponse responseBlock: @escaping DPAGServiceResponseBlock) throws {
-        let checksum = try CryptoHelperCoding.shared.md5Hash(value: messageJson)
+    func sendGroupMessage(msgInstance: DPAGSendMessageWorkerInstance, concurrent _: Bool, requestInBackgroundId: String?, withResponse responseBlock: @escaping DPAGServiceResponseBlock) throws {
+        let checksum = try CryptoHelperCoding.shared.md5Hash(value: msgInstance.messageJson!)
 
         DPAGApplicationFacade.service.perform(request: {
             let request = DPAGHttpServiceRequestSendMessages()
-            request.parametersCodable = DPAGServerFunction.SendGroupMessage(message: messageJson, messageChecksum: checksum, returnConfirmMessage: 1)
+            autoreleasepool {
+                request.parametersCodable = DPAGServerFunction.SendGroupMessage(message: msgInstance.messageJson!, messageChecksum: checksum, returnConfirmMessage: 1)
+                msgInstance.clearMessageJson()
+            }
             request.responseBlock = responseBlock
             request.requestInBackgroundId = requestInBackgroundId
 
@@ -450,12 +457,15 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
         }())
     }
 
-    func sendTimedGroupMessage(messageJson: String, sendTime: Date, concurrent _: Bool, requestInBackgroundId: String?, withResponse responseBlock: @escaping DPAGServiceResponseBlock) throws {
-        let checksum = try CryptoHelperCoding.shared.md5Hash(value: messageJson)
+    func sendTimedGroupMessage(msgInstance: DPAGSendMessageWorkerInstance, sendTime: Date, concurrent _: Bool, requestInBackgroundId: String?, withResponse responseBlock: @escaping DPAGServiceResponseBlock) throws {
+        let checksum = try CryptoHelperCoding.shared.md5Hash(value: msgInstance.messageJson!)
 
         DPAGApplicationFacade.service.perform(request: {
             let request = DPAGHttpServiceRequestSendMessages()
-            request.parametersCodable = DPAGServerFunction.SendTimedGroupMessage(message: messageJson, messageChecksum: checksum, dateToSend: DPAGFormatter.dateServer.string(from: sendTime))
+            autoreleasepool {
+                request.parametersCodable = DPAGServerFunction.SendTimedGroupMessage(message: msgInstance.messageJson!, messageChecksum: checksum, dateToSend: DPAGFormatter.dateServer.string(from: sendTime))
+                msgInstance.clearMessageJson()
+            }
             request.responseBlock = responseBlock
             request.requestInBackgroundId = requestInBackgroundId
 

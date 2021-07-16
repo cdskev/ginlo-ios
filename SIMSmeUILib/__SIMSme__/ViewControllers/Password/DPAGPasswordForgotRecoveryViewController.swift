@@ -143,7 +143,6 @@ class DPAGPasswordForgotRecoveryViewController: DPAGViewControllerWithKeyboard {
         textField.delegate = self
         textField.spellCheckingType = .no
         textField.autocorrectionType = .no
-        //textField.autocapitalizationType = .allCharacters
         textField.keyboardType = .default
         textField.textAlignment = .center
     }

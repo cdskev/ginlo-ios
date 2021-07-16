@@ -529,7 +529,7 @@ class DPAGContactDetailsViewControllerBase: DPAGViewControllerWithKeyboard {
         self.textFieldPhoneNumber.text = self.contactEdit.phoneNumber ?? self.contact.phoneNumber
         self.textFieldEmailAddress.text = self.contactEdit.eMailAddress ?? self.contact.eMailAddress
         self.textFieldDepartment.text = self.contactEdit.department ?? self.contact.department
-        self.imageViewContact.image = self.imageViewContactChanged.image ?? self.contact.image(for: DPAGContactImageType.profile)
+        self.imageViewContact.image = self.imageViewContactChanged.image ?? self.contact.image(for: .profile)?.circleImageUsingConfidenceColor(UIColor.confidenceStatusToColor(self.contact.confidence, isActive: true), thickness: 8)
         self.labelAccountIDValue.text = self.contact.accountID
         self.labelMandant.text = self.mandanten[self.contact.mandantIdent]?.label ?? self.contact.mandantIdent
         self.viewConfidence?.backgroundColor = UIColor.confidenceStatusToColor(self.contact.confidence, isActive: true)

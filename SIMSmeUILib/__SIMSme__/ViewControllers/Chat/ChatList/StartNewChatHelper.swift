@@ -13,6 +13,9 @@ class StartNewChatHelper {
     private let textAlignment = CATextLayerAlignmentMode.left
     weak var viewController: UIViewController?
     weak var delegateNewGroup: DPAGNewGroupDelegate?
+    weak var sourceView: UIView?
+    var sourceRect: CGRect?
+    weak var barButtonItem: UIBarButtonItem?
 
     // MARK: - Internal
 
@@ -88,6 +91,6 @@ class StartNewChatHelper {
     }
 
     private func showInviteFriends() {
-        SharingHelper().showSharingForInvitation(fromViewController: self.viewController)
+        SharingHelper().showSharingForInvitation(fromViewController: self.viewController, sourceView: self.sourceView, sourceRect: self.sourceRect, barButtonItem: self.barButtonItem)
     }
 }

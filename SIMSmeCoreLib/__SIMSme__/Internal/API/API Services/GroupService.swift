@@ -21,7 +21,7 @@ class GroupService: GroupServiceProtocol {
 
     func acceptInvitationToRoom(groupId: String, nickNameEncoded: String?, completion: @escaping AcceptInvitationToGroupCompletion) {
         let parameters = API.Request.AcceptGroupInvitationParam(guid: groupId, returnComplexResult: kReturnComplexResult, nickName: nickNameEncoded)
-        var request = APIRequest()
+        let request = APIRequest()
         request.setEncodableParameters(object: parameters)
         self.apiService.performRequest(request: request, resultObjectType: API.Response.AcceptGroupInvitationResponse.self, completion: completion)
     }
