@@ -236,6 +236,7 @@ class DPAGShareExtSendingViewController: DPAGReceiverSelectionViewController {
     private var attachmentsLoaded = false
     private var mediaResources: [DPAGMediaResource] = []
     private var textToSend: String?
+    private var containsFileType = false
 
     private let queueSync: DispatchQueue = DispatchQueue(label: "de.dpag.simsme.DPAGShareExtSendingViewController.queueSync", qos: .default, attributes: .concurrent, autoreleaseFrequency: .inherit, target: nil)
 
@@ -326,9 +327,11 @@ class DPAGShareExtSendingViewController: DPAGReceiverSelectionViewController {
                     self.loadVideo(itemProvider)
                 } else if itemProvider.hasItemConformingToTypeIdentifier(kUTTypeFileURL as String) {
                     textItemProvider = nil
+                    containsFileType = true
                     self.loadAttachment(itemProvider)
                 } else if itemProvider.hasItemConformingToTypeIdentifier("public.url") {
                     textItemProvider = nil
+                    containsFileType = true
                     self.loadURL(itemProvider)
                 } else if itemProvider.hasItemConformingToTypeIdentifier("public.text") {
                     if attachments.count == 1 {
@@ -352,16 +355,38 @@ class DPAGShareExtSendingViewController: DPAGReceiverSelectionViewController {
     }
 
     private func sendMedia(streamName: String?) {
-        if textToSend == nil {
+        if textToSend == nil && containsFileType == false {
             let sendViewController = DPAGApplicationFacadeUI.imageOrVideoSendVC(mediaSourceType: .album, mediaResources: self.mediaResources, sendDelegate: self, enableMultiSelection: self.mediaResources.count > 0, enableAdd: false)
             sendViewController.title = streamName
             sendViewController.draft = nil
             self.navigationController?.pushViewController(sendViewController, animated: true)
+        } else if containsFileType {
+            self.sendAsFiles()
         } else {
             self.sendAsText()
         }
     }
 
+    private func sendAsFiles() {
+        guard let containerConfig = self.containerConfig, let configSending = self.configSending, let sendMessageOptionsShareExt = self.sendMessageOptionsShareExt else { return }
+        var urlList: [URL] = []
+        for resource in mediaResources {
+            if let url = resource.mediaUrl {
+                urlList.append(url)
+            }
+        }
+        if urlList.count > 0 {
+            DPAGChatHelper.sendMessageWithDelegate(self) { [weak self] recipients in
+                if let strongSelf = self {
+                    DPAGApplicationFacadeShareExt.sendMessageWorker.sendFiles(urlList, sendMessageOptionsShareExt: sendMessageOptionsShareExt, sendMessageOptions: nil, toRecipients: recipients, config: containerConfig, configSending: configSending)
+                    strongSelf.textToSend = nil
+                    strongSelf.containsFileType = false
+                }
+            }
+        }
+    }
+    
+    //
     private func sendAsText() {
         guard let containerConfig = self.containerConfig, let configSending = self.configSending, let sendMessageOptionsShareExt = self.sendMessageOptionsShareExt else { return }
         DPAGChatHelper.sendMessageWithDelegate(self) { [weak self] recipients in
