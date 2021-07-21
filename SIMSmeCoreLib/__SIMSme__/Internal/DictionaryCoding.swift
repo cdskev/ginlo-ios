@@ -107,7 +107,7 @@ class DictionaryEncoder {
             default:
                 valueSize = 0
         }
-        NSLog("IMDAT:: valueSize in Encode = \(type(of: value)) => \(valueSize)")
+//        NSLog("IMDAT:: valueSize in Encode = \(type(of: value)) => \(valueSize)")
         if let val = value as? [AnyHashable: Any] {
             dumpJSON(json: val)
         }
