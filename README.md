@@ -1,6 +1,6 @@
-# Ginlo Android Client
+# Ginlo iOS Client
 
-This is the source code for Ginlo Private for Android by ginlo.net GmbH.
+This is the source code for Ginlo Private for iOS by ginlo.net GmbH.
 
 We have created some documentation for you to peruse this code.
 
