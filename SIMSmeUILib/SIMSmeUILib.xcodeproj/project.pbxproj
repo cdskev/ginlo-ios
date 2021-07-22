@@ -2693,7 +2693,6 @@
 				MODULEMAP_FILE = "${SRCROOT}/SIMSmeUILib/SIMSmeUILib.modulemap";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = SIMSmeUILib;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;

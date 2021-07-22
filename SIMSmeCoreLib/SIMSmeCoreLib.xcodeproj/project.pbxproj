@@ -4434,7 +4434,6 @@
 				PODS_ROOT = "${SRCROOT}/../Pods";
 				PRODUCT_NAME = SIMSmeCore;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
