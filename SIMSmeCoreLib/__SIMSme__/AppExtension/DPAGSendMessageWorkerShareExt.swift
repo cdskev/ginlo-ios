@@ -47,6 +47,7 @@ public struct DPAGSendMessageOptionsShareExtSingle: DPAGSendMessageOptionsShareE
 public protocol DPAGSendMessageWorkerShareExtProtocol: AnyObject {
     func sendText(_ text: String, toRecipients recipients: [DPAGSendMessageRecipient], sendMessageOptionsShareExt: DPAGSendMessageOptionsShareExt, sendMessageOptions sendOptions: DPAGSendMessageSendOptions?, config: DPAGSharedContainerConfig, configSending: DPAGShareExtSendingConfig)
     func sendMedias(_ medias: [DPAGMediaResource], sendMessageOptionsShareExt: DPAGSendMessageOptionsShareExt, sendMessageOptions sendOptions: DPAGSendMessageSendOptions?, toRecipients recipients: [DPAGSendMessageRecipient], config: DPAGSharedContainerConfig, configSending: DPAGShareExtSendingConfig)
+    func sendFiles(_ filesUrls: [URL], sendMessageOptionsShareExt: DPAGSendMessageOptionsShareExt, sendMessageOptions sendOptions: DPAGSendMessageSendOptions?, toRecipients recipients: [DPAGSendMessageRecipient], config: DPAGSharedContainerConfig, configSending: DPAGShareExtSendingConfig)
 }
 
 class DPAGSendMessageWorkerShareExt: NSObject, DPAGSendMessageWorkerShareExtProtocol {
@@ -54,45 +55,40 @@ class DPAGSendMessageWorkerShareExt: NSObject, DPAGSendMessageWorkerShareExtProt
 
     public func sendText(_ text: String, toRecipients recipients: [DPAGSendMessageRecipient], sendMessageOptionsShareExt: DPAGSendMessageOptionsShareExt, sendMessageOptions sendOptions: DPAGSendMessageSendOptions?, config: DPAGSharedContainerConfig, configSending: DPAGShareExtSendingConfig) {
         self.sendMessage([text], recipients: recipients, sendMessageOptionsShareExt: sendMessageOptionsShareExt, sendMessageOptions: sendOptions, featureSet: nil, sendMessageInfoBlock: { (contentObject) -> (sendMessageInfo: DPAGSendMessageInfo?, errorMessage: String?) in
-
             DPAGSendMessageInfo.loadText(contentObject)
         }, config: config, configSending: configSending)
     }
 
     public func sendMedias(_ medias: [DPAGMediaResource], sendMessageOptionsShareExt: DPAGSendMessageOptionsShareExt, sendMessageOptions sendOptions: DPAGSendMessageSendOptions?, toRecipients recipients: [DPAGSendMessageRecipient], config: DPAGSharedContainerConfig, configSending: DPAGShareExtSendingConfig) {
         self.sendMessage(medias, recipients: recipients, sendMessageOptionsShareExt: sendMessageOptionsShareExt, sendMessageOptions: sendOptions, featureSet: "\(DPAGMessageFeatureVersion.file.rawValue)", sendMessageInfoBlock: { (contentObject) -> (sendMessageInfo: DPAGSendMessageInfo?, errorMessage: String?) in
-
             DPAGSendMessageInfo.loadMedia(contentObject)
+        }, config: config, configSending: configSending)
+    }
+    
+    func sendFiles(_ filesUrls: [URL], sendMessageOptionsShareExt: DPAGSendMessageOptionsShareExt, sendMessageOptions sendOptions: DPAGSendMessageSendOptions?, toRecipients recipients: [DPAGSendMessageRecipient], config: DPAGSharedContainerConfig, configSending: DPAGShareExtSendingConfig) {
+        self.sendMessage(filesUrls, recipients: recipients, sendMessageOptionsShareExt: sendMessageOptionsShareExt, sendMessageOptions: sendOptions, featureSet: "\(DPAGMessageFeatureVersion.file.rawValue)", sendMessageInfoBlock: { (contentObject) -> (sendMessageInfo: DPAGSendMessageInfo?, errorMessage: String?) in
+            DPAGSendMessageInfo.loadFile(contentObject)
         }, config: config, configSending: configSending)
     }
 
     private func sendMessage(_ contents: [Any], recipients: [DPAGSendMessageRecipient], sendMessageOptionsShareExt: DPAGSendMessageOptionsShareExt, sendMessageOptions sendOptions: DPAGSendMessageSendOptions?, featureSet: String?, sendMessageInfoBlock: (_ contentObject: Any) -> (sendMessageInfo: DPAGSendMessageInfo?, errorMessage: String?), config: DPAGSharedContainerConfig, configSending: DPAGShareExtSendingConfig) {
         for contentObject in contents {
             autoreleasepool { [weak self] in
-
                 let sendOptionsRecipients = sendOptions?.copy() as? DPAGSendMessageSendOptions
-
                 let sendMessageInfoResult = sendMessageInfoBlock(contentObject)
-
                 if let errorMessage = sendMessageInfoResult.errorMessage {
                     DPAGLog(errorMessage)
                     return
                 }
-
                 for recipient in recipients {
                     autoreleasepool {
                         let isGroup = recipient.isGroup
-
                         guard let sendMessageInfo = sendMessageInfoResult.sendMessageInfo else { return }
-
                         let msgInstance = DPAGSendMessageWorkerInstance(receiver: recipient, text: sendMessageInfo.content, contentType: sendMessageInfo.contentType, messageType: isGroup ? .group : .private, streamGuid: isGroup ? recipient.recipientGuid : recipient.contact?.streamGuid)
-
                         msgInstance.messageDesc = sendMessageInfo.contentDesc
                         msgInstance.sendMessageOptions = sendOptionsRecipients?.copy() as? DPAGSendMessageSendOptions
-
                         msgInstance.featureSet = featureSet
                         msgInstance.additionalContentData = sendMessageInfo.additionalContentData
-
                         do {
                             if isGroup, let shareSendOptions = sendMessageOptionsShareExt as? DPAGSendMessageOptionsShareExtGroup {
                                 try self?.createOutgoingGroupMessageWithInstance(msgInstance, groupGuid: recipient.recipientGuid, aesKey: shareSendOptions.aesKey, accountCrypto: shareSendOptions.accountCrypto, attachment: sendMessageInfo.attachment)
@@ -105,15 +101,11 @@ class DPAGSendMessageWorkerShareExt: NSObject, DPAGSendMessageWorkerShareExtProt
                         } catch {
                             DPAGLog(error)
                         }
-
                         if msgInstance.guidOutgoingMessage == nil {
                             DPAGLog("service.tryAgainLater")
-
                             return
                         }
-
                         sendOptionsRecipients?.attachmentIsInternalCopy = true
-
                         DPAGLog("sending")
                         if msgInstance.messageType == .private {
                             self?.sendPrivateMessage(msgInstance: msgInstance, config: config, configSending: configSending)
