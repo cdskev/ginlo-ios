@@ -301,7 +301,7 @@ class DPAGSendAVViewController: DPAGViewControllerBackground, UINavigationContro
             if let fileSize = fileAttributes[.size] as? NSNumber {
                 if AppConfig.isShareExtension {
                     let preferences = DPAGApplicationFacadeShareExt.preferences
-                    if fileSize.uint64Value <= 0 || fileSize.uint64Value > preferences.maxFileSize {
+                    if fileSize.uint64Value <= 0 || fileSize.uint64Value > preferences.maxFileSize || !DPAGHelper.canPerformRAMBasedJSON(ofSize: UInt(fileSize.uint64Value)) {
                         showAlertVC?.showErrorAlertCheck(alertConfig: AlertConfigError(messageIdentifier: "chat.message.fileOpen.error.fileSize.message"))
                         if cleanUpFile {
                             do {

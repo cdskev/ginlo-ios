@@ -1,6 +1,6 @@
-﻿/* Localized versions of Info.plist keys */
+/* Localized versions of Info.plist keys */
 
-NSCameraUsageDescription = "It's only needed to take pictures and share them with your chat partners. They'll be encrypted and always stay private.";
+NSCameraUsageDescription = "It's only needed to take pictures and share them with your chat partners or for video calls. They'll be encrypted and always stay private.";
 
 NSContactsUsageDescription = "It's only needed to show you fellow users among your contacts. We never access their details in plain text.";
 
@@ -8,7 +8,7 @@ NSLocationWhenInUseUsageDescription = "It's only needed to share it with your ch
 
 NSLocationUsageDescription = "It's only needed to share it with your chat partners. It will be encrypted and always stays private.";
 
-NSMicrophoneUsageDescription = "It's only needed to share videos and voice messages with your chat partners. They’ll be encrypted and always stay private.";
+NSMicrophoneUsageDescription = "It's only needed to share videos and voice messages with your chat partners or for audio/video calls. They’ll be encrypted and always stay private.";
 
 NSPhotoLibraryUsageDescription = "It's only needed to share photos with your chat partners. They’ll be encrypted and always stay private.";
 

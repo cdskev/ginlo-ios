@@ -32,15 +32,98 @@ class DictionaryEncoder {
         set { encoder.keyEncodingStrategy = newValue }
     }
 
+    func dumpJSON(json: [AnyHashable: Any], blanks: String? = "") {
+        for (key, value) in json {
+            let vType = type(of: value)
+            if let blanks = blanks {
+                NSLog("\(blanks) json->key => \(key); valueType = \(vType)")
+                if let value = value as? [AnyHashable: Any] {
+                    dumpJSON(json: value, blanks: blanks + "   ")
+                }
+            }
+        }
+    }
+    
+    func sizeOfDictionary(dict: [AnyHashable: Any]) -> Int {
+        var size = 0
+        for (_, value) in dict {
+            switch value {
+                case let data as Data:
+                    size += data.count
+                case let string as String:
+                    size += string.count
+                case let dct as [AnyHashable: Any]:
+                    size += sizeOfDictionary(dict: dct)
+                case let spm as DPAGServerFunction.SendPrivateMessage:
+                    size += spm.message.count
+                case let sgm as DPAGServerFunction.SendGroupMessage:
+                    size += sgm.message.count
+                case let spim as DPAGServerFunction.SendPrivateInternalMessage:
+                    size += spim.message.count
+                case let stpm as DPAGServerFunction.SendTimedPrivateMessage:
+                    size += stpm.message.count
+                case let stgm as DPAGServerFunction.SendTimedGroupMessage:
+                    size += stgm.message.count
+                case let spims as DPAGServerFunction.SendPrivateInternalMessages:
+                    size += spims.message.count
+                case let dict as [AnyHashable: Any]:
+                    size += sizeOfDictionary(dict: dict)
+                default:
+                    size += 8
+            }
+        }
+        return size
+    }
+    
+    func unwrappedJSONObject(with data: Data, options: JSONSerialization.ReadingOptions = []) throws -> Any {
+        let maybeString = try JSONSerialization.jsonObject(with: data, options: options)
+        if let actualString = maybeString as? String {
+            return try JSONSerialization.jsonObject(with: Data(actualString.utf8), options: options)
+        }
+        return maybeString
+    }
+
     func encode<T>(_ value: T) throws -> [String: Any] where T: Encodable {
-        let data = try encoder.encode(value)
-
-        let jsonObject = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
-
+        var valueSize = 0
+        switch value {
+            case let data as Data:
+                valueSize = data.count
+            case let string as String:
+                valueSize = string.count
+            case let spm as DPAGServerFunction.SendPrivateMessage:
+                valueSize = spm.message.count
+            case let sgm as DPAGServerFunction.SendGroupMessage:
+                valueSize = sgm.message.count
+            case let spim as DPAGServerFunction.SendPrivateInternalMessage:
+                valueSize = spim.message.count
+            case let stpm as DPAGServerFunction.SendTimedPrivateMessage:
+                valueSize = stpm.message.count
+            case let stgm as DPAGServerFunction.SendTimedGroupMessage:
+                valueSize = stgm.message.count
+            case let spims as DPAGServerFunction.SendPrivateInternalMessages:
+                valueSize = spims.message.count
+            case let dict as [AnyHashable: Any]:
+                valueSize = sizeOfDictionary(dict: dict)
+            default:
+                valueSize = 0
+        }
+        NSLog("IMDAT:: valueSize in Encode = \(type(of: value)) => \(valueSize)")
+        if let val = value as? [AnyHashable: Any] {
+            dumpJSON(json: val)
+        }
+        var jsonObject: Any?
+        if DPAGHelper.canPerformRAMBasedJSON(ofSize: UInt(valueSize)) {
+            // use RAM-based encoding
+            let data = try encoder.encode(value)
+            jsonObject = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+        } else {
+            // use Disk-based encoding
+            let data = try GNJSONSerialization.data(withJSONObject: value, options: [.fragmentsAllowed])
+            jsonObject = try unwrappedJSONObject(with: data, options: .allowFragments)
+        }
         guard let jsonDict = jsonObject as? [String: Any] else {
             throw DictionaryEncoderError.errDictType
         }
-
         return jsonDict
     }
 }

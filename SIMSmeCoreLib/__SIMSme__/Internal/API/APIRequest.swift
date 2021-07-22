@@ -22,7 +22,7 @@ extension Encodable {
     }
 }
 
-struct APIRequest {
+class APIRequest {
     var host: String
     var parameters = [String: Any]()
     var path: String?
@@ -52,13 +52,17 @@ struct APIRequest {
         self.timeout = timeout
     }
 
-    mutating func setEncodableParameters<P>(object: P) where P: Encodable {
+    func setEncodableParameters<P>(object: P) where P: Encodable {
         if let parametersDict = try? object.asDictionary() {
             self.setDictParameters(parametersDict: parametersDict)
         }
     }
 
-    mutating func setDictParameters(parametersDict: [String: Any]) {
+    func setDictParameters(parametersDict: [String: Any]) {
         self.parameters.merge(parametersDict, uniquingKeysWith: { $1 })
+    }
+    
+    func clearParameters() {
+        parameters = [:]
     }
 }

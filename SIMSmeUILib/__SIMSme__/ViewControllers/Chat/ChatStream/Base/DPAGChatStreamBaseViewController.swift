@@ -665,14 +665,11 @@ class DPAGChatStreamBaseViewController: DPAGChatCellBaseViewController, NSFetche
             return decMessage
         }
         guard decMessage.messageGuid.isEmpty == false else {
-            DPAGLog("returning unknown decMessage because guid is empty", level: .error)
             return decMessage
         }
         guard let messageNew = DPAGApplicationFacade.cache.refreshDecryptedMessage(messageGuid: decMessage.messageGuid) else {
-            DPAGLog("returning unknown decMessage because message could not be decrypted", level: .error)
             return decMessage
         }
-        DPAGLog("returning refreshDecryptedMessage for unknown decMessage")
         sectionContent[indexPath.row] = messageNew
         self.messages[indexPath.section] = sectionContent
         return messageNew

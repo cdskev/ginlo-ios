@@ -17,9 +17,7 @@ extension DPAGChatBaseViewController: DPAGSendAVViewControllerDelegate, DPAGSend
 
     func sendLocationWithWorker(_ location: CLLocation, mapSnapshot image: UIImage, address: String, sendMessageOptions sendOptions: DPAGSendMessageSendOptions?) {
         let responseBlock = self.sendingDelegate?.sendMessageResponseBlock()
-
         DPAGChatHelper.sendMessageWithDelegate(self.sendingDelegate) { recipients in
-
             DPAGApplicationFacade.sendMessageWorker.sendLocation(image, sendMessageOptions: sendOptions, latitude: location, address: address, toRecipients: recipients, response: responseBlock)
         }
     }
@@ -29,16 +27,13 @@ extension DPAGChatBaseViewController: DPAGSendAVViewControllerDelegate, DPAGSend
             self.showErrorAlertCheck(alertConfig: AlertConfigError(messageIdentifier: "send.voicerec.export.failed"))
             return
         }
-
         self.sendVoiceDataWithWorker(recData, sendMessageOptions: sendOptions)
     }
 
     func sendVoiceDataWithWorker(_ recData: Data, sendMessageOptions sendOptions: DPAGSendMessageSendOptions?) {
         let responseBlock = self.sendingDelegate?.sendMessageResponseBlock()
         let duration = self.inputVoiceController?.audioDuration ?? 0
-
         DPAGChatHelper.sendMessageWithDelegate(self.sendingDelegate) { recipients in
-
             DPAGApplicationFacade.sendMessageWorker.sendVoiceRec(recData, duration: duration, sendMessageOptions: sendOptions, toRecipients: recipients, response: responseBlock)
             DPAGHelperEx.clearTempFolderFiles(withExtension: "m4a")
         }
@@ -56,18 +51,14 @@ extension DPAGChatBaseViewController: DPAGSendAVViewControllerDelegate, DPAGSend
 
     func sendFileWithWorker(_ fileURL: URL, sendMessageOptions sendOptions: DPAGSendMessageSendOptions?) {
         let responseBlock = self.sendingDelegate?.sendMessageResponseBlock()
-
         DPAGChatHelper.sendMessageWithDelegate(self.sendingDelegate) { recipients in
-
             DPAGApplicationFacade.sendMessageWorker.sendFile(fileURL, sendMessageOptions: sendOptions, toRecipients: recipients, response: responseBlock)
         }
     }
 
     func sendMediaWithWorker(_ media: DPAGMediaResource, sendMessageOptions sendOptions: DPAGSendMessageSendOptions?) {
         let responseBlock = self.sendingDelegate?.sendMessageResponseBlock()
-
         DPAGChatHelper.sendMessageWithDelegate(self.sendingDelegate) { recipients in
-
             DPAGApplicationFacade.sendMessageWorker.sendMedias([media], sendMessageOptions: sendOptions, toRecipients: recipients, response: responseBlock)
         }
     }
@@ -78,9 +69,7 @@ extension DPAGChatBaseViewController: DPAGSendAVViewControllerDelegate, DPAGSend
 
     func sendVCardDataWithWorker(_ data: Data, sendMessageOptions sendOptions: DPAGSendMessageSendOptions?, accountGuid: String?, accountID: String?) {
         let responseBlock = self.sendingDelegate?.sendMessageResponseBlock()
-
         DPAGChatHelper.sendMessageWithDelegate(self.sendingDelegate) { recipients in
-
             DPAGApplicationFacade.sendMessageWorker.sendVCard(data, sendMessageOptions: sendOptions, toRecipients: recipients, response: responseBlock, accountGuid: accountGuid, accountID: accountID)
         }
     }

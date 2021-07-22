@@ -21,11 +21,9 @@
 "intro.screen1.buttonCreateDeviceTitle" = "Ich habe schon einen Account.";
 "settings.termsandcondition" = "AGB";
 "settings.termsandcondition.url" = "https://app-help.ginlo.net/business/de/terms";
-"settings.termsandcondition_dpag.url" = "https://app-help.ginlo.net/dp/business/de/terms";
 "settings.faq.url" = "https://app-help.ginlo.net/business/de/support";
 "settings.privacy" = "Datenschutzhinweise";
 "settings.privacy.url" = "https://app-help.ginlo.net/business/de/privacy";
-"settings.privacy_dpag.url" = "https://app-help.ginlo.net/dp/business/de/privacy";
 "settings.support.customerCare.hint.email" = "b2b-support@ginlo.net";
 "rate.title" = "Pssst, wie finden Sie ginlo Business denn so?";
 "noContactsView.title.titleTextView" = "ginlo Business braucht Berechtigungen, um auf Ihre Kontakte zuzugreifen. Sie können diese Berechtigung in den App-Einstellungen Ihres Geräts ändern.";
