@@ -331,7 +331,7 @@ class DPAGShareExtSendingViewController: DPAGReceiverSelectionViewController {
                     self.loadAttachment(itemProvider)
                 } else if itemProvider.hasItemConformingToTypeIdentifier("public.url") {
                     textItemProvider = nil
-                    containsFileType = true
+                    containsFileType = false
                     self.loadURL(itemProvider)
                 } else if itemProvider.hasItemConformingToTypeIdentifier("public.text") {
                     if attachments.count == 1 {
