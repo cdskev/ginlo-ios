@@ -27,47 +27,30 @@ open class DPAGShareExtViewControllerBase: UIViewController, DPAGShareExtSending
 
     override open func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-
         self.view.backgroundColor = DPAGColorProvider.ShareExtension.backgroundLoad
-
-        // Start monitoring the internet connection
         AFNetworkReachabilityManager.shared().startMonitoring()
     }
 
     override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
         UIView.animate(withDuration: TimeInterval(UINavigationController.hideShowBarDuration * 2), animations: { [weak self] in
             self?.view.backgroundColor = DPAGColorProvider.ShareExtension.backgroundAppear
         }, completion: { [weak self] _ in
 
             do {
-                DPAGLog("ShareExt::init Step 1")
                 guard let strongSelf = self, let config = strongSelf.containerConfig else { return }
-
-                DPAGLog("ShareExt::init Step 2")
-                // Lesen des PrivatKey aus der KeyChain
                 guard let privateKey = DPAGSharedContainerExtensionSending().getShareExtKey(config: config) else {
                     DPAGLog("no privateKey")
                     self?.showError(text: DPAGLocalizedString("share.extension.enable.setting"))
                     return
                 }
-
-                DPAGLog("ShareExt::init Step 3")
-                // Lesen der Infos
                 guard let sharedContainer = try DPAGSharedContainerExtensionSending().readfile(config: config) else {
                     DPAGLog("no sharedContainer")
                     self?.showError(text: DPAGLocalizedString("share.extension.enable.setting"))
                     return
                 }
-
-                DPAGLog("ShareExt::init Step 4")
                 DPAGApplicationFacadeShareExt.preferences.configure(container: sharedContainer)
                 DPAGApplicationFacadeShareExt.cache.configure(container: sharedContainer)
-
-                DPAGLog("ShareExt::init Step 5")
                 guard let deviceGuid = DPAGApplicationFacadeShareExt.preferences.shareExtensionDeviceGuid else {
                     DPAGLog("no deviceGuid")
                     self?.showError(text: DPAGLocalizedString("share.extension.enable.setting"))
@@ -78,8 +61,6 @@ open class DPAGShareExtViewControllerBase: UIViewController, DPAGShareExtSending
                     self?.showError(text: DPAGLocalizedString("share.extension.enable.setting"))
                     return
                 }
-
-                DPAGLog("ShareExt::init Step 6")
                 guard let account = DPAGApplicationFacadeShareExt.cache.account else {
                     DPAGLog("no account")
                     self?.showError(text: DPAGLocalizedString("share.extension.enable.setting"))
@@ -90,31 +71,19 @@ open class DPAGShareExtViewControllerBase: UIViewController, DPAGShareExtSending
                     self?.showError(text: DPAGLocalizedString("share.extension.enable.setting"))
                     return
                 }
-
-                DPAGLog("ShareExt::init Step 7")
-
                 if DPAGApplicationFacadeShareExt.preferences.isBaMandant {
                     DPAGColorProvider.shared.updateProviderBA()
                     DPAGImageProvider.shared.updateProviderBA()
                 }
-
-                DPAGLog("ShareExt::init Step 8")
-                NSLog("Sharing start")
                 let httpUsername = String(format: "%@@%@", strongSelf.stripGuid(deviceGuid), strongSelf.stripGuid(account.guid))
                 let httpPassword = devicePasstoken
-
                 let sendingVC = DPAGShareExtSendingViewController()
                 let navVC = DPAGApplicationFacadeUIBase.navVC(rootViewController: sendingVC)
-
-                DPAGLog("ShareExt::init Step 9")
                 let accountCrypto = try CryptoHelperSimple(publicKey: publicKey, privateKey: privateKey)
-
-                DPAGLog("ShareExt::init Step 10")
                 sendingVC.extensionDelegate = self
                 sendingVC.accountCrypto = accountCrypto
                 sendingVC.containerConfig = config
                 sendingVC.configSending = DPAGShareExtSendingConfig(httpUsername: httpUsername, httpPassword: httpPassword)
-
                 DPAGLog("ShareExt::init Step 11")
                 self?.present(navVC, animated: true, completion: nil)
             } catch {
@@ -132,36 +101,25 @@ open class DPAGShareExtViewControllerBase: UIViewController, DPAGShareExtSending
     }
 
     func dismiss() {
-        // This is called after the user selects Post. Do the upload of contentText and/or NSExtensionContext attachments.
-
-        // Inform the host that we're done, so it un-blocks its UI. Note: Alternatively you could call super's -didSelectPost, which will similarly complete the extension context.
-
         guard let extensionContext = self.extensionContext else { return }
-
         var items: [Any] = []
-
         for item in extensionContext.inputItems {
             if let itemCopyable = item as? NSCopying {
                 items.append(itemCopyable.copy())
             }
         }
-
         self.extensionContext?.completeRequest(returningItems: items, completionHandler: nil)
     }
 
     func showError(text: String) {
         self.performBlockOnMainThread { [weak self] in
-
             let sendingErrorVC = DPAGShareExtSendingErrorViewController()
-
             sendingErrorVC.text = text
             sendingErrorVC.extensionDelegate = self
-
             if let navVC = self?.presentedViewController as? DPAGNavigationController {
                 navVC.setViewControllers([sendingErrorVC], animated: true)
             } else {
                 let navVC = DPAGApplicationFacadeUIBase.navVC(rootViewController: sendingErrorVC)
-
                 self?.present(navVC, animated: true, completion: nil)
             }
         }
@@ -173,12 +131,10 @@ class DPAGShareExtSendingViewController: DPAGReceiverSelectionViewController {
     fileprivate var containerConfig: DPAGSharedContainerConfig?
     fileprivate var configSending: DPAGShareExtSendingConfig?
     private var sendMessageOptionsShareExt: DPAGSendMessageOptionsShareExt?
-
     fileprivate weak var extensionDelegate: DPAGShareExtSendingViewControllerDelegate?
 
     override func willMove(toParent parent: UIViewController?) {
         super.willMove(toParent: parent)
-
         if parent == nil {
             self.extensionDelegate = nil
         }
@@ -186,15 +142,9 @@ class DPAGShareExtSendingViewController: DPAGReceiverSelectionViewController {
 
     override func viewDidLoad() {
         DPAGLog("ShareExt::viewDidLoad")
-
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-
         self.title = DPAGLocalizedString("chats.title.newFileChat")
-
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismissVC))
-
         UINavigationBar.appearance().barTintColor = DPAGColorProvider.shared[.navigationBar]
         UINavigationBar.appearance().tintColor = DPAGColorProvider.shared[.navigationBarTint]
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: DPAGColorProvider.shared[.navigationBarTint]]
@@ -227,9 +177,7 @@ class DPAGShareExtSendingViewController: DPAGReceiverSelectionViewController {
     }
 
     private var recipients: [DPAGSendMessageRecipient] = []
-
     private var attachmentCountToLoad = 0
-
     private var willSend = false
     private var hasError = false
     private var hasMaxLengthError = false
@@ -237,7 +185,6 @@ class DPAGShareExtSendingViewController: DPAGReceiverSelectionViewController {
     private var mediaResources: [DPAGMediaResource] = []
     private var textToSend: String?
     private var containsFileType = false
-
     private let queueSync: DispatchQueue = DispatchQueue(label: "de.dpag.simsme.DPAGShareExtSendingViewController.queueSync", qos: .default, attributes: .concurrent, autoreleaseFrequency: .inherit, target: nil)
 
     override func didSelectReceiver(_ receiver: DPAGObject) {
@@ -587,7 +534,6 @@ extension DPAGShareExtSendingViewController: DPAGSendingDelegate {
     func updateViewBeforeMessageWillSend() {
         if let window = self.view.window {
             let progress: DPAGProgressHUDWithLabelProtocol? = DPAGProgressHUDWithLabel.sharedInstanceLabel.showForBackgroundProcess(true, in: window, completion: { _ in
-
             }) as? DPAGProgressHUDWithLabelProtocol
             progress?.labelTitle.text = DPAGLocalizedString("share.extension.sendMessage")
         }
@@ -615,40 +561,31 @@ extension DPAGShareExtSendingViewController: DPAGSendingDelegate {
 
 class DPAGShareExtSendingErrorViewController: DPAGViewControllerBackground {
     fileprivate weak var extensionDelegate: DPAGShareExtSendingViewControllerDelegate?
-
     fileprivate var text: String?
-
     private let label = UILabel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismissVC))
-
         UINavigationBar.appearance().barTintColor = DPAGColorProvider.shared[.navigationBar]
         UINavigationBar.appearance().tintColor = DPAGColorProvider.shared[.navigationBarTint]
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: DPAGColorProvider.shared[.navigationBarTint]]
         UINavigationBar.appearance().shadowImage = UIImage()
         UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: DPAGColorProvider.shared[.navigationBarTint]]
-
         let scrollView = UIScrollView()
-
         self.view.addSubview(scrollView)
         scrollView.addSubview(self.label)
-
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         self.label.translatesAutoresizingMaskIntoConstraints = false
         self.label.font = UIFont.kFontBody
         self.label.textColor = DPAGColorProvider.shared[.labelText]
         self.label.numberOfLines = 0
         self.label.textAlignment = .center
-
         NSLayoutConstraint.activate(scrollView.constraintsFillSafeArea(subview: self.label, padding: 16) + self.view.constraintsFill(subview: scrollView))
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
         self.setNeedsStatusBarAppearanceUpdate()
         self.label.text = self.text
     }
