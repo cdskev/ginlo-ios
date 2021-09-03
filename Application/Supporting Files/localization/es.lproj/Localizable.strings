@@ -1077,7 +1077,7 @@
 "settings.notification.serviceChat.notifications" = "Servicios: Notificaciones";
 "settings.notification.serviceChatSection" = "Notificaciones de servicios";
 "settings.password.setPassword" = "Establecer contraseña";
-"settings.profile.qr_code_desc" = "Have your QR code scanned (or scan your contacts’ codes) to confirm each other’s identities.";
+"settings.profile.qr_code_desc" = "Have your QR code scanned (or scan your contacts’ codes) to add someone as contact, confirm identity or invite someone to ginlo.";
 "registration.automaticRegistration.createAccount.label" = "Se está registrando la cuenta";
 "registration.automaticRegistration.createDomainIndexEntry.label" = "Conexión con servicio de directorio";
 "registration.automaticRegistration.waitCompanyKey.label" = "Connection to ginlo Management Cockpit established";

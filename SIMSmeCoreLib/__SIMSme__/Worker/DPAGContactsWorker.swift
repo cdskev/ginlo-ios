@@ -86,16 +86,12 @@ class DPAGContactsWorker: NSObject, DPAGContactsWorkerProtocol {
 
     func searchContacts(groupId: String, searchText: String, orderByFirstName: Bool) -> [DPAGContact.EntryTypeServer: [DPAGContact]] {
         let contactsFound = DPAGDBFullTextHelper.searchContacts(withGroupId: groupId, searchText: searchText, orderByFirstName: orderByFirstName)
-
         var contactsPrivate: [DPAGContact] = []
         var contactsCompany: [DPAGContact] = []
         var contactsDomain: [DPAGContact] = []
 
         for contactFound in contactsFound {
-            guard let contact = DPAGContact(contactSearchFTS: contactFound) else {
-                continue
-            }
-
+            guard let contact = DPAGContact(contactSearchFTS: contactFound) else { continue }
             switch contact.entryTypeServer {
                 case .privat:
                     contactsPrivate.append(contact)
@@ -107,21 +103,17 @@ class DPAGContactsWorker: NSObject, DPAGContactsWorkerProtocol {
                     break
             }
         }
-
         if AppConfig.isShareExtension {
             let cache = DPAGApplicationFacadeShareExt.cache
-
             if cache.account?.isCompanyUserRestricted ?? false {
                 return [.privat: [], .company: contactsCompany, .email: []]
             }
         } else {
             let cache = DPAGApplicationFacade.cache
-
             if cache.account?.isCompanyUserRestricted ?? false {
                 return [.privat: [], .company: contactsCompany, .email: []]
             }
         }
-
         return [.privat: contactsPrivate, .company: contactsCompany, .email: contactsDomain]
     }
 
@@ -143,11 +135,9 @@ class DPAGContactsWorker: NSObject, DPAGContactsWorkerProtocol {
 
     func isChannelFeedbackContactExisting(phoneNumber: String) -> Bool {
         var phoneNumberNormalized = ""
-
         if let account = DPAGApplicationFacade.cache.account, let contact = DPAGApplicationFacade.cache.contact(for: account.guid) {
             phoneNumberNormalized = DPAGCountryCodes.sharedInstance.normalizePhoneNumber(phoneNumber, countryCodeAccount: DPAGCountryCodes.sharedInstance.countryCodeByPhone(contact.phoneNumber))
         }
-
         return contactDAO.isContactValid(phoneNumberNormalized: phoneNumberNormalized)
     }
 
@@ -158,7 +148,6 @@ class DPAGContactsWorker: NSObject, DPAGContactsWorkerProtocol {
     func loadAccountImage(accountGuid: String) {
         if Thread.isMainThread {
             self.performBlockInBackground { [weak self] in
-
                 self?.loadAccountImageInBackground(accountGuid: accountGuid)
             }
         } else {
@@ -168,32 +157,19 @@ class DPAGContactsWorker: NSObject, DPAGContactsWorkerProtocol {
 
     private func loadAccountImageInBackground(accountGuid: String) {
         DPAGApplicationFacade.server.getAccountImage(guid: accountGuid) { responseObject, _, errorMessage in
-
             if errorMessage == nil, let responseArray = responseObject as? [String], let imageEncrypted = responseArray.first {
                 _ = self.contactDAO.saveEncryptedImageDataString(imageEncrypted, forContactGuid: accountGuid)
-
                 NotificationCenter.default.post(name: DPAGStrings.Notification.Contact.CHANGED, object: nil, userInfo: [DPAGStrings.Notification.Contact.CHANGED__USERINFO_KEY__CONTACT_GUID: accountGuid])
             }
         }
     }
 
     func findContactStream(forPhoneNumbers phoneNumbers: [String]) -> String? {
-        guard let account = DPAGApplicationFacade.cache.account, let contact = DPAGApplicationFacade.cache.contact(for: account.guid) else {
-            return nil
-        }
+        guard let account = DPAGApplicationFacade.cache.account, let contact = DPAGApplicationFacade.cache.contact(for: account.guid) else { return nil }
 
         let countryCodeAccount = DPAGCountryCodes.sharedInstance.countryCodeByPhone(contact.phoneNumber)
-
         for phoneNum in phoneNumbers {
             let phoneNumber = DPAGCountryCodes.sharedInstance.normalizePhoneNumber(phoneNum, countryCodeAccount: countryCodeAccount, useCountryCode: nil)
-
-//            let contacts = DPAGApplicationFacade.cache.allContacts()
-//
-//            for contact in contacts where contact.phoneNumber == phone && contact.isDeleted == false
-//            {
-//                return contact
-//            }
-
             if let streamGuid = contactDAO.findContactStreamGuid(phoneNumber: phoneNumber) {
                 return streamGuid
             }
@@ -222,30 +198,26 @@ class DPAGContactsWorker: NSObject, DPAGContactsWorkerProtocol {
     }
 
     func setChatDeleted(streamGuid: String, withResponse responseBlock: @escaping DPAGServiceResponseBlock) {
-        guard let existingStreamGuid = self.messagesDAO.getExistingStreamGuid(withStreamGuid: streamGuid) else {
-            return
-        }
-
+        guard let existingStreamGuid = self.messagesDAO.getExistingStreamGuid(withStreamGuid: streamGuid) else { return }
         DPAGApplicationFacade.server.setChatDeleted(streamGuid: existingStreamGuid, withResponse: responseBlock)
     }
 
     func qrCodeContent(account: DPAGAccount, version: DPAGQRCodeVersion) -> String? {
-        guard let accountPrivateKey = account.privateKey, let contact = DPAGApplicationFacade.cache.contact(for: account.guid), let accountPublicKey = contact.publicKey else {
-            return nil
-        }
+        guard account.privateKey != nil, let contact = DPAGApplicationFacade.cache.contact(for: account.guid), let accountPublicKey = contact.publicKey else { return nil }
 
         if version == .v2, let accountID = contact.accountID, accountID.isEmpty == false {
             return "V2\r" + accountID + "\r" + accountPublicKey.sha256Data().base64EncodedString()
-        } else {
-            do {
-                let accountCrypto = try CryptoHelperSimple(publicKey: accountPublicKey, privateKey: accountPrivateKey)
-
-                return try accountCrypto.signData(data: account.guid)
-            } catch {
-                DPAGLog(error)
-                return nil
+        } else if let accountID = contact.accountID, accountID.isEmpty == false {
+            let pkSig = accountPublicKey.sha256Data().base64EncodedString()
+            let params = "p=1&c=0&i=\(accountID)&s=\(pkSig)"
+            let p = params.data(using: .utf8)?.base64EncodedString()
+            if let p = p {
+                let q = (params + AppConfig.qrCodeSalt).sha1()
+                return "https://" + AppConfig.ginloNowInvitationUrl + "?p=\(p)&q=\(q)"
             }
+            return nil
         }
+        return nil
     }
 
     func validateScanResult(text: String, contactAccountGuid: String, publicKey: String) -> Bool {
@@ -253,11 +225,9 @@ class DPAGContactsWorker: NSObject, DPAGContactsWorkerProtocol {
 
         if text.hasPrefix("V2") {
             let components = text.components(separatedBy: .newlines)
-
             if components.count == 3 {
                 if let publicKeyData = components[2].data(using: .utf8), let publicKeyDataDecoded = Data(base64Encoded: publicKeyData, options: .ignoreUnknownCharacters) {
                     let sha256 = publicKey.sha256Data()
-
                     isValid = (sha256 == publicKeyDataDecoded)
                 }
             }
@@ -268,22 +238,18 @@ class DPAGContactsWorker: NSObject, DPAGContactsWorkerProtocol {
                 DPAGLog(error)
             }
         }
-
         return isValid
     }
 
     func allAddressBookPersons() -> Set<DPAGPerson> {
         var persons: Set<DPAGPerson> = Set()
-
         let fetchRequest = CNContactFetchRequest(keysToFetch: [CNContactGivenNameKey as CNKeyDescriptor, CNContactFamilyNameKey as CNKeyDescriptor, CNContactPhoneNumbersKey as CNKeyDescriptor, CNContactEmailAddressesKey as CNKeyDescriptor, CNContactImageDataKey as CNKeyDescriptor, CNContactImageDataAvailableKey as CNKeyDescriptor])
 
         try? CNContactStore().enumerateContacts(with: fetchRequest) { contact, _ in
-
             if let person = DPAGPerson(contact: contact) {
                 persons.insert(person)
             }
         }
-
         return persons
     }
 
@@ -293,31 +259,11 @@ class DPAGContactsWorker: NSObject, DPAGContactsWorkerProtocol {
                 return contacts.first
             }
         }
-
         return nil
     }
 
     func unblockedContacts(withReadOnly: Bool) -> Set<DPAGContact> {
-//        var filtered: Set<DPAGContact> = Set()
         let ownGuid = DPAGApplicationFacade.cache.account?.guid
-
-//        let contacts = DPAGApplicationFacade.cache.allContactsLocal(entryType: .privat) { (contact) -> Bool in
-//
-//            contact.isBlocked == false && contact.guid != ownGuid && contact.guid.isSystemChatGuid == false && (withReadOnly || contact.isReadOnly == false)
-//        }
-//
-//        for contact in contacts
-//        {
-//            if contact.isDeleted == false && contact.isBlocked == false && contact.guid != ownGuid && contact.guid.isSystemChatGuid == false
-//            {
-//                if withReadOnly == false && contact.isReadOnly
-//                {
-//                    continue
-//                }
-//                filtered.insert(contact)
-//            }
-//        }
-
         return contactDAO.fetchUnblockedContacts(ownGuid: ownGuid, withReadOnly: withReadOnly)
     }
 
@@ -325,9 +271,7 @@ class DPAGContactsWorker: NSObject, DPAGContactsWorkerProtocol {
         do {
             let contacts = try DPAGApplicationFacade.backupWorker.loadBlockedContacts()
             let blocked = Set(self.contactDAO.getContacts(withIds: contacts))
-
             DPAGLog("blocked contacts: %@", blocked)
-
             return blocked
         } catch {
             return nil
@@ -344,13 +288,11 @@ class DPAGContactsWorker: NSObject, DPAGContactsWorkerProtocol {
 
     private func setBlockedContactState(blocked: Bool, contactAccountGuid: String, responseBlock: @escaping DPAGServiceResponseBlock) {
         DPAGApplicationFacade.server.setContact(contactAccountGuid: contactAccountGuid, blocked: blocked) { responseObject, errorCode, errorMessage in
-
             if errorMessage != nil {
                 responseBlock(nil, errorCode, errorMessage)
             } else if let guid = (responseObject as? [AnyObject])?.first as? String {
                 if contactAccountGuid == guid {
                     self.contactDAO.setIsBlocked(contactAccountGuid: contactAccountGuid, isBlocked: blocked)
-
                     responseBlock(responseObject, errorCode, errorMessage)
                 } else {
                     responseBlock(nil, "service.tryAgainLater", "service.tryAgainLater")
@@ -363,18 +305,14 @@ class DPAGContactsWorker: NSObject, DPAGContactsWorkerProtocol {
 
     func blockContactStream(streamGuid: String, responseBlock: @escaping DPAGServiceResponseBlock) {
         let contactAccountGuidBlock = self.contactDAO.getContactIndexEntryGuid(forStreamGuid: streamGuid)
-
         guard let contactAccountGuid = contactAccountGuidBlock else {
             responseBlock(nil, "ERR-0057", "service.ERR-0057")
             return
         }
-
         DPAGApplicationFacade.server.setContact(contactAccountGuid: contactAccountGuid, blocked: true) { responseObject, errorCode, errorMessage in
-
             if errorMessage != nil {
                 if errorMessage == "service.ERR-0007" {
                     self.removeStreamForBlockedContact(contactAccountGuid: contactAccountGuid, stream: streamGuid)
-
                     responseBlock(nil, nil, nil)
                 } else {
                     responseBlock(nil, errorCode, errorMessage)
@@ -382,7 +320,6 @@ class DPAGContactsWorker: NSObject, DPAGContactsWorkerProtocol {
             } else if let guid = (responseObject as? [AnyObject])?.first as? String {
                 if contactAccountGuid == guid {
                     self.removeStreamForBlockedContact(contactAccountGuid: contactAccountGuid, stream: streamGuid)
-
                     responseBlock(responseObject, nil, nil)
                 } else {
                     responseBlock(nil, "service.tryAgainLater", "service.tryAgainLater")
@@ -401,19 +338,15 @@ class DPAGContactsWorker: NSObject, DPAGContactsWorkerProtocol {
             responseBlock(nil, nil, nil)
             return
         }
-
         if let contactGuid = self.contactDAO.getContactGuid(forStreamGuid: streamGuid) {
             DPAGApplicationFacade.server.setChatDeleted(streamGuid: contactGuid) { _, _, _ in }
         }
-
         let timedMessageGuids = self.messagesDAO.getTimeMessagesGuids(streamGuid: streamGuid)
-
         if timedMessageGuids.count == 0 {
             self.messagesDAO.deleteNormalMessages(forStreamGuid: streamGuid)
             responseBlock(nil, nil, nil)
             return
         }
-
         DPAGApplicationFacade.server.deleteTimedMessages(messageGuids: timedMessageGuids) { responseObject, errorCode, errorMessage in
             if errorMessage == nil {
                 self.messagesDAO.deleteNormalAndTimedMessages(forStreamGuid: streamGuid)
@@ -503,30 +436,21 @@ class DPAGContactsWorker: NSObject, DPAGContactsWorkerProtocol {
     }
 
     func saveImage(_ image: UIImage, forContact contactGuid: String) -> String? {
-        guard let imageDataStr = image.pngData()?.base64EncodedString(options: Data.Base64EncodingOptions.lineLength64Characters) else {
-            return nil
-        }
-
+        guard let imageDataStr = image.pngData()?.base64EncodedString(options: Data.Base64EncodingOptions.lineLength64Characters) else { return nil }
         let success = self.contactDAO.saveImageDataString(imageDataStr, forContactGuid: contactGuid)
-
         DPAGApplicationFacade.cache.contact(for: contactGuid)?.removeCachedImages()
-
         return success ? imageDataStr : nil
     }
 
     func updateOnlineStateKnownContacts(responseBlock: @escaping DPAGServiceResponseBlock) {
         let contactsUpdate = contactDAO.fetchAllConfirmedContacts()
-
         DPAGApplicationFacade.server.getOnlineStateBatch(guids: Array(contactsUpdate.keys)) { responseObject, errorCode, errorMessage in
-
             if errorMessage != nil {
                 responseBlock(nil, errorCode, errorMessage)
             } else if let result = (responseObject as? [AnyObject]) {
                 var hasUpdate = false
                 result.forEach({ state in
-                    guard let stateObject = state as? [String: Any?], let guid = stateObject["accountGuid"] as? String else {
-                        return
-                    }
+                    guard let stateObject = state as? [String: Any?], let guid = stateObject["accountGuid"] as? String else { return }
                     let lastOnline = stateObject["lastOnline"] as? String
                     let oooState = (stateObject["oooStatus"] as? [String: Any])?["statusState"] as? String
                     if let streamGuid = contactsUpdate[guid], let decStream = DPAGApplicationFacade.cache.decryptedStream(streamGuid: streamGuid) as? DPAGDecryptedStreamPrivate {
@@ -577,35 +501,28 @@ class DPAGContactsWorker: NSObject, DPAGContactsWorkerProtocol {
 
     func searchAccount(searchData: String, searchMode: DPAGContactSearchMode, responseBlock: @escaping DPAGServiceResponseBlock) {
         var contacts: [String] = []
-
         var searchDataServer: [String] = []
 
         switch searchMode {
-        case .phone:
-
-            let phoneNumberNormalized: String
-
-            if let account = DPAGApplicationFacade.cache.account, let contact = DPAGApplicationFacade.cache.contact(for: account.guid) {
-                phoneNumberNormalized = DPAGCountryCodes.sharedInstance.normalizePhoneNumber(searchData, countryCodeAccount: DPAGCountryCodes.sharedInstance.countryCodeByPhone(contact.phoneNumber))
-            } else {
-                phoneNumberNormalized = DPAGCountryCodes.sharedInstance.normalizePhoneNumber(searchData, countryCodeAccount: nil, useCountryCode: nil)
-            }
-
-            for mandant in DPAGApplicationFacade.preferences.mandanten {
-                searchDataServer.append(DPAGApplicationFacade.cache.hash(accountSearchAttribute: phoneNumberNormalized, withSalt: mandant.salt))
-            }
-        case .mail:
-            // EMails gibt es nur bei dem ba Mandanten
-            for mandant in DPAGApplicationFacade.preferences.mandanten where mandant.ident == "ba" {
-                searchDataServer.append(JFBCrypt.hashPassword(searchData.lowercased(), withSalt: mandant.salt))
-                break
-            }
-        case .accountID:
-            searchDataServer.append(searchData)
+            case .phone:
+                let phoneNumberNormalized: String
+                if let account = DPAGApplicationFacade.cache.account, let contact = DPAGApplicationFacade.cache.contact(for: account.guid) {
+                    phoneNumberNormalized = DPAGCountryCodes.sharedInstance.normalizePhoneNumber(searchData, countryCodeAccount: DPAGCountryCodes.sharedInstance.countryCodeByPhone(contact.phoneNumber))
+                } else {
+                    phoneNumberNormalized = DPAGCountryCodes.sharedInstance.normalizePhoneNumber(searchData, countryCodeAccount: nil, useCountryCode: nil)
+                }
+                for mandant in DPAGApplicationFacade.preferences.mandanten {
+                    searchDataServer.append(DPAGApplicationFacade.cache.hash(accountSearchAttribute: phoneNumberNormalized, withSalt: mandant.salt))
+                }
+            case .mail:
+                for mandant in DPAGApplicationFacade.preferences.mandanten where mandant.ident == "ba" {
+                    searchDataServer.append(JFBCrypt.hashPassword(searchData.lowercased(), withSalt: mandant.salt))
+                    break
+                }
+            case .accountID:
+                searchDataServer.append(searchData)
         }
-
         DPAGApplicationFacade.server.getKnownAccounts(hashedAccountSearchAttributes: searchDataServer, searchMode: searchMode.rawValue) { [weak self] responseObject, errorCode, errorMessage in
-
             if errorMessage != nil {
                 responseBlock(contacts, errorCode, errorMessage)
                 return
@@ -615,7 +532,6 @@ class DPAGContactsWorker: NSObject, DPAGContactsWorkerProtocol {
                 responseBlock(contacts, errorCode, errorMessage)
                 return
             }
-
             responseBlock(contacts, errorCode, errorMessage)
         }
     }

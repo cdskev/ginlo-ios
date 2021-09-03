@@ -1113,7 +1113,7 @@ https://ginlo.net/join";
 "settings.notification.serviceChat.notifications" = "Show notifications";
 "settings.notification.serviceChatSection" = "Notifications for services";
 "settings.password.setPassword" = "Set password";
-"settings.profile.qr_code_desc" = "Increase your trust status with your friends and have your profile code scanned";
+"settings.profile.qr_code_desc" = "Have your QR code scanned (or scan your contacts’ codes) to add someone as contact, confirm identity or invite someone to ginlo.";
 "registration.automaticRegistration.createAccount.label" = "Registering account";
 "registration.automaticRegistration.createDomainIndexEntry.label" = "Connection to directory service";
 "registration.automaticRegistration.waitCompanyKey.label" = "Connection to management cockpit established";

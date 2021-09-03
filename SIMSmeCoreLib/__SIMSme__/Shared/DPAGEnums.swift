@@ -328,8 +328,8 @@ struct DPAGMessageOptions: OptionSet {
 }
 
 public enum DPAGQRCodeVersion: Int {
-    case v1,
-        v2
+    case v2,
+        v3
 }
 
 public enum DPAGGuidPrefix: String {

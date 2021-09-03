@@ -4,7 +4,7 @@
 "contacts.options.invite" = "Invite colleagues";
 "contacts.search.empty.search" = "Search for contacts with %@";
 "contacts.search.empty.invite" = "Invite contacts";
-"settings.profile.qr_code_desc" = "Have your QR code scanned (or scan your contacts’ codes) to confirm each other’s identities.";
+"settings.profile.qr_code_desc" = "Have your QR code scanned (or scan your contacts’ codes) to add someone as contact, confirm identity or invite someone to ginlo.";
 "contacts.invitationActionSheetTitle" = "Invite a Contact";
 "invite.friends.after.chatcreation.message" = "You can invite contacts to ginlo Business if some are still missing.";
 "settings.companyemail.askafterinstall.hint" = "Add your e-mail address to your company's e-mail directory to find colleagues with e-mail addresses from the same company. We never access your details in plain text.";

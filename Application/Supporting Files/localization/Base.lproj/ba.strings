@@ -12,7 +12,7 @@ Kind regards";
 "contacts.options.invite" = "Invite colleagues";
 "contacts.search.empty.search" = "Search for colleagues with %@";
 "contacts.search.empty.invite" = "Invite colleagues";
-"settings.profile.qr_code_desc" = "Increase your trust status among your colleagues and let your profile code be scanned";
+"settings.profile.qr_code_desc" = "Have your QR code scanned (or scan your contacts’ codes) to add someone as contact, confirm identity or invite someone to ginlo.";
 "contacts.invitationActionSheetTitle" = "Invite colleagues to SIMSme";
 "invite.friends.after.chatcreation.message" = "You seem to enjoy using SIMSme. Do you want to invite more colleagues?";
 "settings.companyemail.askafterinstall.hint" = "When you specify your email address, SIMSme can find your colleagues with the same email domain automatically. Would you like to link a professional email to your account?";
