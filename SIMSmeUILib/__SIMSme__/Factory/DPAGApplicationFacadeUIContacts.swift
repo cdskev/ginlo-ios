@@ -8,6 +8,7 @@
 
 import Contacts
 import SIMSmeCore
+import AVFoundation
 import UIKit
 
 protocol DPAGContactsOptionsViewControllerProtocol: DPAGTableViewControllerWithReloadProtocol {
@@ -25,6 +26,12 @@ extension DPAGContactsOptionsProtocol {
         let optionInvite = AlertOption(title: DPAGLocalizedString("contacts.options.invite"), style: .default, image: DPAGImageProvider.shared[.kImageMenuNewInviteFriends], accesibilityIdentifier: "contacts.options.invite", handler: { [weak presentingVC] in
             SharingHelper().showSharingForInvitation(fromViewController: presentingVC, sourceView: nil, sourceRect: nil, barButtonItem: barButtonItem)
         })
+        let optionScanContact = AlertOption(title: DPAGLocalizedString("chat.list.action.scanContact"), style: .default, image: DPAGImageProvider.shared[.kScan], accesibilityIdentifier: "chat.list.action.scanContact", handler: { [weak self, weak presentingVC, weak modelVC] in
+            modelVC?.reloadOnAppear = true
+            if let presentingVC = presentingVC, let modelVC = modelVC {
+                self?.scanContact(presentingVC: presentingVC, modelVC: modelVC)
+            }
+        })
         let optionAddContact = AlertOption(title: DPAGLocalizedString("contacts.options.addContact"), style: .default, image: DPAGImageProvider.shared[.kMagnifyingGlassCircle], accesibilityIdentifier: "contacts.options.addContact", handler: { [weak presentingVC, weak modelVC] in
             let nextVC = DPAGApplicationFacadeUIContacts.contactNewSearchVC()
             presentingVC?.navigationController?.pushViewController(nextVC, animated: true)
@@ -36,7 +43,7 @@ extension DPAGContactsOptionsProtocol {
             }
         })
         let optionCancel = AlertOption(title: DPAGLocalizedString("res.cancel"), style: .cancel)
-        let options = [optionInvite, optionAddContact, optionUpdateWithAddressBook, optionCancel]
+        let options = [optionInvite, optionScanContact, optionAddContact, optionUpdateWithAddressBook, optionCancel]
         let alertController: UIAlertController
         if let barButtonItem = barButtonItem {
             alertController = UIAlertController.controller(options: options, titleString: nil, withStyle: .actionSheet, accessibilityIdentifier: "contacts.options", sourceView: nil, sourceRect: nil, barButtonItem: barButtonItem)
@@ -76,6 +83,83 @@ extension DPAGContactsOptionsProtocol {
                 })
             @unknown default:
                 DPAGLog("Switch with unknown value: \(CNContactStore.authorizationStatus(for: .contacts).rawValue)", level: .warning)
+        }
+    }
+    
+    private func scanContact(presentingVC: UIViewController?, modelVC: DPAGContactsOptionsViewControllerProtocol?) {
+        let authStatus = AVCaptureDevice.authorizationStatus(for: .video)
+        switch authStatus {
+            case .notDetermined:
+                AVCaptureDevice.requestAccess(for: .video, completionHandler: { [weak self] _ in
+                    DispatchQueue.main.async { [weak self] in
+                        self?.scanContact(presentingVC: presentingVC, modelVC: modelVC)
+                    }
+                })
+            case .authorized:
+                let nextVC = DPAGApplicationFacadeUIRegistration.scanInvitationVC(blockSuccess: { [weak presentingVC, weak self] (text: String) in
+                    if let strongVC = presentingVC, let strongSelf = self {
+                        if let invitationData = DPAGApplicationFacade.contactsWorker.parseInvitationQRCode(invitationContent: text), let accountID = invitationData["i"] as? String, let signature = invitationData["s"] as? Data {
+                            strongSelf.searchAccount(accountID: accountID, signature: signature, presentingVC: strongVC)
+                        }
+                    }
+                }, blockFailed: { [weak presentingVC] in
+                    presentingVC?.presentErrorAlert(alertConfig: UIViewController.AlertConfigError(messageIdentifier: "registration.createDeviceConfirm.verifyingQRCodeFailed", okActionHandler: { [weak presentingVC] _ in
+                        if let strongVC = presentingVC {
+                            strongVC.navigationController?.popToViewController(strongVC, animated: true)
+                        }
+                    }))
+                }, blockCancelled: { [weak presentingVC] in
+                    if let strongVC = presentingVC {
+                        strongVC.navigationController?.popToViewController(strongVC, animated: true)
+                    }
+                })
+                presentingVC?.navigationController?.pushViewController(nextVC, animated: true)
+            default:
+                break
+        }
+    }
+    
+    private func searchAccount(accountID: String, signature: Data?, presentingVC: UIViewController) {
+        DPAGProgressHUD.sharedInstance.showForBackgroundProcess(true) { _ in
+            DPAGApplicationFacade.contactsWorker.searchAccount(searchData: accountID, searchMode: .accountID) { responseObject, _, errorMessage in
+                DPAGProgressHUD.sharedInstance.hide(true) { [weak presentingVC] in
+                    if let errorMessage = errorMessage {
+                        presentingVC?.presentErrorAlert(alertConfig: UIViewController.AlertConfigError(titleIdentifier: "attention", messageIdentifier: errorMessage))
+                    } else if let guids = responseObject as? [String] {
+                        if let account = DPAGApplicationFacade.cache.account, let contactSelf = DPAGApplicationFacade.cache.contact(for: account.guid) {
+                           if let guid = guids.first, let contactCache = DPAGApplicationFacade.cache.contact(for: guid) {
+                                switch contactCache.entryTypeServer {
+                                    case .company:
+                                        let nextVC = DPAGApplicationFacadeUIContacts.contactDetailsVC(contact: contactCache)
+                                        presentingVC?.navigationController?.pushViewController(nextVC, animated: true)
+                                    case .email:
+                                        if contactCache.eMailDomain == contactSelf.eMailDomain {
+                                            let nextVC = DPAGApplicationFacadeUIContacts.contactDetailsVC(contact: contactCache)
+                                            presentingVC?.navigationController?.pushViewController(nextVC, animated: true)
+                                        } else {
+                                            let nextVC = DPAGApplicationFacadeUIContacts.contactNewCreateVC(contact: contactCache)
+                                            presentingVC?.navigationController?.pushViewController(nextVC, animated: true)
+                                        }
+                                    case .meMyselfAndI:
+                                        break
+                                    case .privat:
+                                        let nextVC = DPAGApplicationFacadeUIContacts.contactNewCreateVC(contact: contactCache)
+                                        if let signature = signature, let publicKey = contactCache.publicKey, DPAGApplicationFacade.contactsWorker.validateSignature(signature: signature, publicKey: publicKey) {
+                                            nextVC.confirmConfidence = true
+                                        }
+                                        presentingVC?.navigationController?.pushViewController(nextVC, animated: true)
+                                }
+                            } else {
+                                let nextVC = DPAGApplicationFacadeUIContacts.contactNotFoundVC(searchData: accountID, searchMode: .accountID)
+                                presentingVC?.navigationController?.pushViewController(nextVC, animated: true)
+                            }
+                        } else {
+                            let nextVC = DPAGApplicationFacadeUIContacts.contactNotFoundVC(searchData: accountID, searchMode: .accountID)
+                            presentingVC?.navigationController?.pushViewController(nextVC, animated: true)
+                        }
+                    }
+                }
+            }
         }
     }
 

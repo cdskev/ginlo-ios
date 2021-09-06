@@ -58,7 +58,10 @@ public protocol DPAGContactsWorkerProtocol: AnyObject {
 
     func saveContact(contact: DPAGContactEdit)
 
-    func validateScanResult(text: String, contactAccountGuid: String, publicKey: String) -> Bool
+    func parseInvitationQRCode(invitationContent: String) -> [String: Any]?
+    func validateScanResult(text: String, publicKey: String) -> Bool
+    func validateScanResult(text: String) -> Bool
+    func validateSignature(signature: Data, publicKey: String) -> Bool
     func qrCodeContent(account: DPAGAccount, version: DPAGQRCodeVersion) -> String?
 
     func setChatDeleted(streamGuid: String, withResponse responseBlock: @escaping DPAGServiceResponseBlock)
@@ -219,28 +222,119 @@ class DPAGContactsWorker: NSObject, DPAGContactsWorkerProtocol {
         }
         return nil
     }
+    
+    private func queryValueFromParam(param: String) -> String? {
+        let components = param.components(separatedBy: "=")
+        if components.count >= 2 {
+            if param.hasSuffix("=") {
+                if param.hasSuffix("==") {
+                    return components[1] + "=="
+                }
+                return components[1] + "="
+            }
+            return components[1]
+        }
+        return nil
+    }
 
-    func validateScanResult(text: String, contactAccountGuid: String, publicKey: String) -> Bool {
-        var isValid = false
+    private func splitInvitationPParam(_ param: String) -> [String: Any]? {
+        let components = param.components(separatedBy: "&")
+        var retval: [String: Any] = [:]
 
+        DPAGLog("splitInvitationPParam:: param = \(param)")
+        for s in components {
+            let kv = s.components(separatedBy: "=")
+            if kv.count >= 2 {
+                let key = kv[0]
+                var value = kv[1]
+                if s.hasSuffix("=") {
+                    if s.hasSuffix("==") {
+                        value += "=="
+                    } else {
+                        value += "="
+                    }
+                }
+                if key == "s" {
+                    DPAGLog("splitInvigationPParam:: key= \(key), value = \(value)")
+                    if let data = Data(base64Encoded: value) {
+                        retval[key] = data
+                    } else {
+                        retval[key] = "ERROR"
+                    }
+                } else {
+                    retval[key] = value
+                }
+            }
+        }
+        if retval.count > 0 {
+            return retval
+        }
+        return nil
+    }
+    
+    private func pParamFromInvitationComponent(param: String, fingerprint: String) -> String? {
+        if let pParamValue = queryValueFromParam(param: param) {
+            if let data = Data(base64Encoded: pParamValue), let pParams = String(data: data, encoding: .utf8) {
+                let sha1 = (pParams + AppConfig.qrCodeSalt).sha1()
+                if sha1 == fingerprint {
+                    return pParams
+                }
+            }
+        }
+        return nil
+    }
+    
+    private func qParamFromInvitationComponent(param: String) -> String? {
+        queryValueFromParam(param: param)
+    }
+    
+    func parseInvitationQRCode(invitationContent: String) -> [String: Any]? {
+        let components = invitationContent.components(separatedBy: "?")
+        if components.count == 2, components[0].starts(with: "https://" + AppConfig.ginloNowInvitationUrl) {
+            let invitationData = components[1].components(separatedBy: "&")
+            if invitationData.count == 2, let q = qParamFromInvitationComponent(param: invitationData[1]), let p = pParamFromInvitationComponent(param: invitationData[0], fingerprint: q) {
+                return splitInvitationPParam(p)
+            }
+        }
+        return nil
+    }
+    
+    func validateInvitationQRCode(text: String) -> Bool {
+        parseInvitationQRCode(invitationContent: text) != nil
+    }
+    
+    private func validateOldQRCode(text: String, publicKey: String) -> Bool {
         if text.hasPrefix("V2") {
             let components = text.components(separatedBy: .newlines)
             if components.count == 3 {
                 if let publicKeyData = components[2].data(using: .utf8), let publicKeyDataDecoded = Data(base64Encoded: publicKeyData, options: .ignoreUnknownCharacters) {
                     let sha256 = publicKey.sha256Data()
-                    isValid = (sha256 == publicKeyDataDecoded)
+                    return (sha256 == publicKeyDataDecoded)
                 }
             }
-        } else {
-            do {
-                isValid = try CryptoHelperVerifier.verifyData(data: contactAccountGuid, withSignature: text, forPublicKey: publicKey)
-            } catch {
-                DPAGLog(error)
-            }
         }
-        return isValid
+        return false
+    }
+    
+    func validateScanResult(text: String, publicKey: String) -> Bool {
+        if validateOldQRCode(text: text, publicKey: publicKey) {
+            return true
+        } else if let invitationData = parseInvitationQRCode(invitationContent: text), let signature = invitationData["s"], let sigData = signature as? Data {
+            return validateSignature(signature: sigData, publicKey: publicKey)
+        }
+        return false
     }
 
+    func validateScanResult(text: String) -> Bool {
+        validateInvitationQRCode(text: text)
+    }
+
+    func validateSignature(signature: Data, publicKey: String) -> Bool {
+        let pks = publicKey.sha256Data()
+        DPAGLog("validateSignature:: signature = \(signature), publicKey.sha256 = \(pks)")
+        return signature == pks
+    }
+    
     func allAddressBookPersons() -> Set<DPAGPerson> {
         var persons: Set<DPAGPerson> = Set()
         let fetchRequest = CNContactFetchRequest(keysToFetch: [CNContactGivenNameKey as CNKeyDescriptor, CNContactFamilyNameKey as CNKeyDescriptor, CNContactPhoneNumbersKey as CNKeyDescriptor, CNContactEmailAddressesKey as CNKeyDescriptor, CNContactImageDataKey as CNKeyDescriptor, CNContactImageDataAvailableKey as CNKeyDescriptor])

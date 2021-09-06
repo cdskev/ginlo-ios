@@ -445,7 +445,9 @@ public protocol DPAGContactDetailsViewControllerProtocol: DPAGContactDetailsView
     var enableRemove: Bool { get set }
 }
 
-public protocol DPAGContactNewCreateViewControllerProtocol: DPAGContactDetailsViewControllerBaseProtocol {}
+public protocol DPAGContactNewCreateViewControllerProtocol: DPAGContactDetailsViewControllerBaseProtocol {
+    var confirmConfidence: Bool { get set }
+}
 
 public protocol DPAGContactNewSearchViewControllerProtocol: AnyObject {
     var phoneNumInit: String? { get set }

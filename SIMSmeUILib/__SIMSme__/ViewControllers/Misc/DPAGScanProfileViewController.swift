@@ -164,7 +164,7 @@ private class DPAGScanProfileWorker: NSObject {
 
     func validateResult(_ text: String) {
         guard let contactAccountGuid = self.contactAccountGuid, let publicKey = self.publicKey else { return }
-        let isValid = DPAGApplicationFacade.contactsWorker.validateScanResult(text: text, contactAccountGuid: contactAccountGuid, publicKey: publicKey)
+        let isValid = DPAGApplicationFacade.contactsWorker.validateScanResult(text: text, publicKey: publicKey)
         DPAGLog("verified QR code data: %@", NSNumber(value: isValid))
         if isValid {
             DPAGApplicationFacade.contactsWorker.contactConfidenceHigh(contactAccountGuid: contactAccountGuid)
