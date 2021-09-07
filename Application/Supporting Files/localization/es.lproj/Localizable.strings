@@ -1055,7 +1055,7 @@
 "chats.sendContact.notFeasible" = "This contact can't be stored in your personal address book.";
 "contacts.invitationActionSheetTitle" = "Invite a Friend to ginlo";
 "contacts.search.labelPhone" = "Country Code and Mobile Number";
-"contacts.smsMessageBody" = "Join me on ginlo, the secure messenger for private and confidential communication - made in Germany.\n\nYou can just scan the QR-Code below to download and join.\n\nDownload at: %@\n";
+"contacts.smsMessageBody" = "Join me on ginlo, the secure messenger for private and confidential communication - made in Germany.\n\nJust scan the QR-Code below or click on the link to download and join.\n\n%@\n\n";
 "invite.friends.after.chatcreation.message" = "You can invite friends to ginlo if some are still missing. :-)";
 "registration.addDevice.labelCodeDescription" = "Scan the activation code with your new device or enter it manually when logging in.";
 "registration.addDevice.labelCodeExpired" = "El periodo de validez del código de desbloqueo ha caudado.";

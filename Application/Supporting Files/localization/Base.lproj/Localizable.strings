@@ -1090,7 +1090,7 @@ You have %i attempts remaining.";
 "chats.sendContact.notFeasible" = "This contact may not be stored in your personal address book.";
 "contacts.invitationActionSheetTitle" = "Invite friends to SIMSme";
 "contacts.search.labelPhone" = "Country code and phone number";
-"contacts.smsMessageBody" = "Join me on ginlo, the secure messenger for private and confidential communication - made in Germany.\n\nYou can just scan the QR-Code below to download and join.\n\nDownload at: %@\n";
+"contacts.smsMessageBody" = "Join me on ginlo, the secure messenger for private and confidential communication - made in Germany.\n\nJust scan the QR-Code below or click on the link to download and join.\n\n%@\n\n";
 "invite.friends.after.chatcreation.message" = "You seem to enjoy using SIMSme. Would you like to invite other friends?";
 "registration.addDevice.labelCodeDescription" = "Scan the QR code with your new device or enter the activation code manually when logging in.";
 "registration.addDevice.labelCodeExpired" = "The activation code has expired.";

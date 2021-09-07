@@ -1055,7 +1055,7 @@
 "chats.sendContact.notFeasible" = "Dieser Kontakt kann nicht in Ihrem privaten Adressbuch gespeichert werden.";
 "contacts.invitationActionSheetTitle" = "Freunde zu ginlo einladen";
 "contacts.search.labelPhone" = "Ländervorwahl und Handynummer";
-"contacts.smsMessageBody" = "Komm mit mir zu ginlo, dem Messenger für private und vertrauliche Kommunikation - made in Germany.\n\nDu kannst einfach den QR-Code mit deinem Smartphone scannen, um ginlo zu installieren.\n\nHier kannst du ginlo direkt downloaden: %@\n";
+"contacts.smsMessageBody" = "Komm mit mir zu ginlo, dem Messenger für private und vertrauliche Kommunikation - made in Germany.\n\nDu kannst einfach den QR-Code mit deinem Smartphone scannen, um ginlo zu installieren.\n\nHier kannst du ginlo direkt downloaden: %@\n\n";
 "invite.friends.after.chatcreation.message" = "Jetzt gleich Freunde einladen, falls noch welche fehlen. :-)";
 "registration.addDevice.labelCodeDescription" = "Scannen Sie den Aktivierungscode bei der Anmeldung in Ihrem neuen Gerät, oder geben Sie ihn ein.";
 "registration.addDevice.labelCodeExpired" = "Der Aktivierungscode ist abgelaufen.";
