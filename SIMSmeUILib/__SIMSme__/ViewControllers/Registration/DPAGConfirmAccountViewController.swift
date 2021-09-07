@@ -213,7 +213,7 @@ class DPAGConfirmAccountViewController: DPAGViewControllerWithKeyboard, DPAGConf
     private func popToPasswortInitialisation() {
         DPAGApplicationFacade.accountManager.resetDatabase()
 
-        let initialPasswordViewController = DPAGApplicationFacadeUIRegistration.initialPasswordVC(createDevice: false)
+        let initialPasswordViewController = DPAGApplicationFacadeUIRegistration.initialPasswordVC(initialPasswordJob: .createAccount)
 
         self.navigationController?.setViewControllers([DPAGApplicationFacadeUIRegistration.introVC(), initialPasswordViewController], animated: true)
     }

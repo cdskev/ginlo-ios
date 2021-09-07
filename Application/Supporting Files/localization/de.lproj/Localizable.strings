@@ -479,8 +479,9 @@
 "intro.screen0.description0" = "Made & hosted in Germany";
 "intro.screen0.description2" = "Einfach zu bedienen";
 "intro.screen0.nextButtonTitle" = "Los geht's";
-"intro.screen1.description" = "Willkommen!\nHaben Sie bereits ein Konto oder möchten Sie ein neues Konto anlegen?";
+"intro.screen1.description" = "Willkommen!\nBitte wählen Sie aus:";
 "intro.screen1.nextButtonTitle" = "Account erstellen";
+"intro.screen1.invitationButtonTitle" = "Ich habe eine Einladung";
 "invite.friends.after.chatcreation.cancel" = "Später";
 "invite.friends.after.chatcreation.invite" = "Einladen";
 "invite.friends.after.chatcreation.title" = "Pssst, bevor wir's vergessen...";
@@ -1127,7 +1128,7 @@
 "settings.companyprofile.contactsoverview.empty.text2" = "Leider haben wir keine Kontakte gefunden, die eine geschäftliche E-Mail-Adresse mit der Domäne %@ mit dem Account verknüpft haben.\nEmpfehlen Sie Kollegen, die bereits ginlo Business nutzen, eine E-Mail-Adresse zu verknüpfen.";
 "share.extension.sendMessage" = "Sende Nachricht";
 "share.extension.getAccountInfo" = "Prüfe Empfänger";
-"intro.screen1.buttonCreateDeviceTitle" = "Ich habe schon einen Account.";
+"intro.screen1.buttonCreateDeviceTitle" = "Ich habe schon einen Account";
 "settings.support" = "Support bekommen";
 "settings.support.customerCareSection" = "Kundenservice kontaktieren";
 "settings.support.customerCare.hint" = "Sie stecken fest? Unser Kundenservice ist gerne für Sie da:";

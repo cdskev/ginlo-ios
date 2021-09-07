@@ -177,7 +177,7 @@ class DPAGAutomaticRegistrationViewController: DPAGViewControllerBackground {
                 DPAGApplicationFacade.isResetingAccount = false
                 DPAGProgressHUD.sharedInstance.hide(true) {
                     guard let strongSelf = self else { return }
-                    let requestVC = DPAGApplicationFacadeUIRegistration.initialPasswordVC(createDevice: false)
+                    let requestVC = DPAGApplicationFacadeUIRegistration.initialPasswordVC(initialPasswordJob: .createAccount)
                     let vcs = Array(strongSelf.navigationController?.viewControllers.dropLast() ?? [])
                     strongSelf.navigationController?.setViewControllers(vcs + [requestVC], animated: true)
                 }

@@ -22,8 +22,8 @@ public struct DPAGApplicationFacadeUIRegistration {
     static func createDeviceRequestCodeVC(password: String, enabled: Bool) -> (UIViewController) { DPAGCreateDeviceRequestCodeViewController(password: password, enabled: enabled) }
     static func createDeviceWaitForConfirmationVC() -> (UIViewController) { DPAGCreateDeviceWaitForConfirmationViewController() }
     static func createDeviceWelcomeVC() -> (UIViewController) { DPAGCreateDeviceWelcomeViewController() }
-    static func initialPasswordRepeatVC(password: String, createDevice: Bool) -> (UIViewController) { DPAGInitialPasswordRepeatViewController(password: password, createDevice: createDevice) }
-    public static func initialPasswordVC(createDevice: Bool) -> (UIViewController) { DPAGInitialPasswordViewController(createDevice: createDevice) }
+    static func initialPasswordRepeatVC(password: String, initialPasswordJob: GNInitialPasswordJobType) -> (UIViewController) { DPAGInitialPasswordRepeatViewController(password: password, initialPasswordJob: initialPasswordJob) }
+    public static func initialPasswordVC(initialPasswordJob: GNInitialPasswordJobType) -> (UIViewController) { DPAGInitialPasswordViewController(initialPasswordJob: initialPasswordJob) }
     static func introPage0VC(delegatePages: DPAGPageViewControllerProtocol?) -> (UIViewController) { DPAGIntroPage0ViewController(delegatePages: delegatePages) }
     static func introPage1VC(delegatePages: DPAGPageViewControllerProtocol?) -> (UIViewController) { DPAGIntroPage1ViewController(delegatePages: delegatePages) }
     public static func introVC() -> (UIViewController) { DPAGIntroViewController() }

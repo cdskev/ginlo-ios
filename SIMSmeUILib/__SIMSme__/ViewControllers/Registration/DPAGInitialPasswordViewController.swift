@@ -9,6 +9,12 @@
 import SIMSmeCore
 import UIKit
 
+public enum GNInitialPasswordJobType {
+    case createDevice,
+         createAccount,
+         scanInvitation
+}
+
 class DPAGInitialPasswordViewController: DPAGInitialPasswordBaseViewController, DPAGNavigationViewControllerStyler {
     override var labelHeadline: UILabel? {
         didSet {
@@ -50,13 +56,12 @@ class DPAGInitialPasswordViewController: DPAGInitialPasswordBaseViewController, 
         }
     }
 
-    private let createDevice: Bool
+    private let initialPasswordJob: GNInitialPasswordJobType
 
-    init(createDevice: Bool) {
-        self.createDevice = createDevice
-
+    init(initialPasswordJob: GNInitialPasswordJobType) {
+        // self.createDevice = createDevice
+        self.initialPasswordJob = initialPasswordJob
         super.init(nibName: "DPAGInitialPasswordViewController", bundle: Bundle(for: type(of: self)))
-
         self.isNewPassword = true
     }
 
@@ -99,7 +104,6 @@ class DPAGInitialPasswordViewController: DPAGInitialPasswordBaseViewController, 
             }))
             return
         }
-
         if self.switchInputType?.isOn ?? false, passwordEntered.count < 4 {
             self.showErrorAlertCheck(alertConfig: AlertConfigError(messageIdentifier: "registration.validation.pinIsTooShort", okActionHandler: { [weak self] _ in
                 self?.passwordViewController?.becomeFirstResponder()
@@ -119,17 +123,15 @@ class DPAGInitialPasswordViewController: DPAGInitialPasswordBaseViewController, 
                     }
                 }
             }
-            let vc = DPAGApplicationFacadeUIRegistration.initialPasswordRepeatVC(password: passwordEntered, createDevice: self.createDevice)
+            let vc = DPAGApplicationFacadeUIRegistration.initialPasswordRepeatVC(password: passwordEntered, initialPasswordJob: self.initialPasswordJob)
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
 
     override func handleInputTypeSwitched(_: Any?) {
         self.setupInputTypeAnimated(true, secLevelView: true, withCompletion: { [weak self] in
-
             if let strongSelf = self {
                 DPAGApplicationFacade.preferences.passwordType = (strongSelf.switchInputType?.isOn ?? false) ? .pin : .complex
-
                 strongSelf.passwordViewController?.becomeFirstResponder()
             }
         })

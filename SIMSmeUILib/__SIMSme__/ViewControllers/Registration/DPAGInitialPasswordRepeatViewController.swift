@@ -40,12 +40,12 @@ class DPAGInitialPasswordRepeatViewController: DPAGInitialPasswordBaseViewContro
     @IBOutlet private var stackViewAll: UIStackView!
     @IBOutlet private var stackViewSwitchPasswordType: UIStackView!
 
-    private let createDevice: Bool
+    private let initialPasswordJob: GNInitialPasswordJobType
 
-    init(password: String, createDevice: Bool) {
-        self.createDevice = createDevice
+    init(password: String, initialPasswordJob: GNInitialPasswordJobType) {
+        // self.createDevice = createDevice
+        self.initialPasswordJob = initialPasswordJob
         self.passwordEntered = password
-
         super.init(nibName: "DPAGInitialPasswordRepeatViewController", bundle: Bundle(for: type(of: self)))
     }
 
@@ -56,15 +56,10 @@ class DPAGInitialPasswordRepeatViewController: DPAGInitialPasswordBaseViewContro
 
     override func configureView() {
         super.configureView()
-
         self.title = DPAGLocalizedString("settings.password")
-
         self.switchInputType?.isEnabled = false
         self.switchInputType?.isOn = DPAGApplicationFacade.preferences.passwordType == .pin
-        // self.switchInputType?.isHidden = true
-
         self.setupInputTypeAnimated(false, secLevelView: false, withCompletion: nil)
-
         if DPAGApplicationFacade.preferences.canDisablePasswordLogin {
             self.switchPasswordType.isOn = false
         } else {
@@ -72,13 +67,11 @@ class DPAGInitialPasswordRepeatViewController: DPAGInitialPasswordBaseViewContro
             self.switchPasswordType.isEnabled = false
             self.stackViewSwitchPasswordType.isHidden = true
         }
-
         self.labelInputType?.text = DPAGLocalizedString("settings.password.disablePassword")
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
         self.passwordViewController?.becomeFirstResponder()
     }
 
@@ -86,27 +79,22 @@ class DPAGInitialPasswordRepeatViewController: DPAGInitialPasswordBaseViewContro
     private func handleToggleDisablePassword(_: Any?) {
         if self.switchPasswordType.isOn == false {
             let actionNO = UIAlertAction(titleIdentifier: "registration.button.askForPassword.no", style: .cancel, handler: { [weak self] _ in
-
                 guard let strongSelf = self else { return }
-
                 strongSelf.switchPasswordType.setOn(true, animated: true)
             })
             let actionYES = UIAlertAction(titleIdentifier: "registration.button.askForPassword.yes", style: .destructive, handler: nil)
-
             self.presentAlert(alertConfig: AlertConfig(titleIdentifier: "registration.dontAskForPassword.alertTitle", messageIdentifier: "registration.dontAskForPassword.alert", cancelButtonAction: actionNO, otherButtonActions: [actionYES]))
         }
     }
 
     override func handleContinueTapped(_ sender: Any?) {
         self.dismissKeyboard(sender)
-
         guard let passwordCurrent = self.enteredPassword(), passwordCurrent.isEmpty == false else {
             self.showErrorAlertCheck(alertConfig: AlertConfigError(messageIdentifier: "registration.validation.passwordCannotBeEmpty", okActionHandler: { [weak self] _ in
                 self?.passwordViewController?.becomeFirstResponder()
             }))
             return
         }
-
         if self.passwordViewControllerPIN != nil, passwordCurrent.count < 4 {
             self.showErrorAlertCheck(alertConfig: AlertConfigError(messageIdentifier: "registration.validation.pinIsTooShort", okActionHandler: { [weak self] _ in
                 self?.passwordViewController?.becomeFirstResponder()
@@ -122,16 +110,23 @@ class DPAGInitialPasswordRepeatViewController: DPAGInitialPasswordBaseViewContro
 
     private func proceedToNextRegistrationStep() {
         self.dismissKeyboard(nil)
-
         if let password = self.enteredPassword() {
-            if self.createDevice {
-                let requestVC = DPAGApplicationFacadeUIRegistration.beforeCreateDeviceVC(password: password, enabled: self.switchPasswordType.isOn)
-
-                self.navigationController?.pushViewController(requestVC, animated: true)
-            } else {
-                let requestVC = DPAGApplicationFacadeUIRegistration.beforeRegistrationVC(password: password, enabled: self.switchPasswordType.isOn)
-
-                self.navigationController?.pushViewController(requestVC, animated: true)
+            switch self.initialPasswordJob {
+                case .createDevice:
+                    let requestVC = DPAGApplicationFacadeUIRegistration.beforeCreateDeviceVC(password: password, enabled: self.switchPasswordType.isOn)
+                    self.navigationController?.pushViewController(requestVC, animated: true)
+                case .createAccount:
+                    let requestVC = DPAGApplicationFacadeUIRegistration.beforeRegistrationVC(password: password, enabled: self.switchPasswordType.isOn)
+                    self.navigationController?.pushViewController(requestVC, animated: true)
+                case .scanInvitation:
+                    let requestVC = DPAGApplicationFacadeUIRegistration.scanInvitationVC(blockSuccess: {(text: String) in
+                        if let invitationData = DPAGApplicationFacade.contactsWorker.parseInvitationQRCode(invitationContent: text), let accountID = invitationData["i"] as? String, let signature = invitationData["s"] as? Data {
+                            DPAGLog("Received Invitation: \(invitationData)")
+                        }
+                    }, blockFailed: {
+                    }, blockCancelled: {
+                    })
+                    self.navigationController?.pushViewController(requestVC, animated: true)
             }
         }
     }

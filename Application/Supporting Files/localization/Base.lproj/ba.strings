@@ -26,7 +26,7 @@ Kind regards";
 "registration.createDevice.welcome.description" = "Would you like to backup this device or use the device with your existing account?";
 "registration.headline.phoneAndCountryCode" = "Please specify country code & telephone number or e-mail address";
 "intro.screen0.description2" = "GDPR-compliant";
-"intro.screen1.buttonCreateDeviceTitle" = "I already use SIMSme Business";
+"intro.screen1.buttonCreateDeviceTitle" = "I already have an account";
 "settings.termsandcondition" = "Terms and Conditions (Business)";
 "settings.termsandcondition.url" = "https://app-help.ginlo.net/business/en/terms";
 "settings.faq.url" = "https://app-help.ginlo.net/business/en/support";

@@ -19,8 +19,10 @@ class DPAGRuntimeConfigUI: DPAGRuntimeConfigUIBase {
                 if let automaticMdmRegistrationValues = DPAGApplicationFacade.preferences.automaticMdmRegistrationValues {
                     rc = DPAGApplicationFacadeUIRegistration.requestAutomaticRegistrationVC(registrationValues: automaticMdmRegistrationValues)
                 } else {
-                    rc = DPAGApplicationFacadeUIRegistration.initialPasswordVC(createDevice: false)
+                    rc = DPAGApplicationFacadeUIRegistration.initialPasswordVC(initialPasswordJob: .createAccount)
                 }
+            case .dpagIntroViewController_handleScanInvitationTapped:
+                rc = DPAGApplicationFacadeUIRegistration.initialPasswordVC(initialPasswordJob: .scanInvitation)
             case .dpagPasswordForgotViewController:
                 rc = DPAGApplicationFacadeUIBase.initialPasswordForgotVC()
             case .dpagTestLicenseViewController:

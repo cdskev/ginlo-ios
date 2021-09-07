@@ -18,7 +18,7 @@
 "registration.createDevice.welcome.description" = "Importieren Sie ein Backup, oder fügen Sie dieses Gerät als weiteres Gerät zu einem bestehenden hinzu.";
 "registration.headline.phoneAndCountryCode" = "Weiter geht's mit Ihrer Handynummer oder E-Mail-Adresse.";
 "intro.screen0.description2" = "DSGVO-konform";
-"intro.screen1.buttonCreateDeviceTitle" = "Ich habe schon einen Account.";
+"intro.screen1.buttonCreateDeviceTitle" = "Ich habe schon einen Account";
 "settings.termsandcondition" = "AGB";
 "settings.termsandcondition.url" = "https://app-help.ginlo.net/business/de/terms";
 "settings.faq.url" = "https://app-help.ginlo.net/business/de/support";

@@ -92,6 +92,7 @@ public enum DPAGGroupType: Int {
 
 public enum DPAGWhiteLabelNextView: Int {
     case dpagIntroViewController_handleFinishIntroTapped,
+         dpagIntroViewController_handleScanInvitationTapped,
         dpagSimsMeController_startViewController,
         dpagProfileViewController_startCompanyProfilInitEMailController,
         dpagProfileViewController_startCompanyProfilConfirmEMailController,
