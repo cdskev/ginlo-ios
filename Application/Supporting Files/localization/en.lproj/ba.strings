@@ -9,7 +9,7 @@
 "invite.friends.after.chatcreation.message" = "You can invite contacts to ginlo Business if some are still missing.";
 "settings.companyemail.askafterinstall.hint" = "Add your e-mail address to your company's e-mail directory to find colleagues with e-mail addresses from the same company. We never access your details in plain text.";
 "settings.profile.statusLabel" = "Availability";
-"contacts.smsMessageBody" = "Hello, I use the ginlo Business Messenger. Download the app here: ginlo.net/business-messenger";
+"contacts.smsMessageBody" = "Hello, I use the ginlo Business Messenger. Download the app here: %@\n";
 "settings.companyprofile.contactsoverview.empty.text2" = "Unfortunately, we couldn't find any colleagues that have linked a professional e-mail address with the domain %@.\n\nRecommend to your contacts that use ginlo Business to link an e-mail address.";
 "registration.agb.AGB" = "Terms & Conditions";
 "registration.backup.not_found.headline" = "We couldn't find a backup.";

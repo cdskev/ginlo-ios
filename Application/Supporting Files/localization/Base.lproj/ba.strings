@@ -17,7 +17,7 @@ Kind regards";
 "invite.friends.after.chatcreation.message" = "You seem to enjoy using SIMSme. Do you want to invite more colleagues?";
 "settings.companyemail.askafterinstall.hint" = "When you specify your email address, SIMSme can find your colleagues with the same email domain automatically. Would you like to link a professional email to your account?";
 "settings.profile.statusLabel" = "Availability";
-"contacts.smsMessageBody" = "Hello! I use the SIMSme Business Messenger. Download the app here: https://www.ginlo.net/join";
+"contacts.smsMessageBody" = "Hello! I use the ginlo Business Messenger. Download the app here: %@\n";
 "settings.companyprofile.contactsoverview.empty.text2" = "Unfortunately, we could not find any contacts that have linked a professional email address with the domain %@.\n\nRecommend to your colleagues that use SIMSme to link an email address.";
 "registration.agb.AGB" = "Terms & Conditions";
 "registration.backup.not_found.headline" = "We could not find a backup";

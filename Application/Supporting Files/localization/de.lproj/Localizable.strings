@@ -447,7 +447,7 @@
 "contacts.invitation.noContacts" = "Keine Kontakte vorhanden";
 "contacts.invitation.sms.info" = "Zwar kein Vermögen, aber erwähnen wollten wir's trotzdem. ;-)";
 "contacts.invitation.sms.info.title" = "Diese SMS kostet vielleicht was";
-"contacts.invitationUrlString" = "ginlo.net/join";
+"contacts.invitationUrlString" = "https://open.ginlo.net/join";
 "contacts.overViewViewControllerTitle" = "Kontakte";
 "contacts.search.buttonContinue" = "Nutzer suchen";
 "contacts.search.description" = "Suchen Sie nach einem %@ Nutzer anhand seiner Handynummer, E-Mail-Adresse oder ginlo ID.";
@@ -1055,7 +1055,7 @@
 "chats.sendContact.notFeasible" = "Dieser Kontakt kann nicht in Ihrem privaten Adressbuch gespeichert werden.";
 "contacts.invitationActionSheetTitle" = "Freunde zu ginlo einladen";
 "contacts.search.labelPhone" = "Ländervorwahl und Handynummer";
-"contacts.smsMessageBody" = "Komm mit mir zu ginlo, dem Messenger für private und vertrauliche Kommunikation - made in Germany. Einfach hier herunterladen: ginlo.net/join";
+"contacts.smsMessageBody" = "Komm mit mir zu ginlo, dem Messenger für private und vertrauliche Kommunikation - made in Germany.\n\nDu kannst einfach den QR-Code mit deinem Smartphone scannen, um ginlo zu installieren.\n\nHier kannst du ginlo direkt downloaden: %@\n";
 "invite.friends.after.chatcreation.message" = "Jetzt gleich Freunde einladen, falls noch welche fehlen. :-)";
 "registration.addDevice.labelCodeDescription" = "Scannen Sie den Aktivierungscode bei der Anmeldung in Ihrem neuen Gerät, oder geben Sie ihn ein.";
 "registration.addDevice.labelCodeExpired" = "Der Aktivierungscode ist abgelaufen.";

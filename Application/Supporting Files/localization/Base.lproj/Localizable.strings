@@ -468,7 +468,7 @@ Kind regards";
 "contacts.invitation.noContacts" = "No contacts available";
 "contacts.invitation.sms.info" = "Sending an SMS may incur costs from your mobile operator.";
 "contacts.invitation.sms.info.title" = "Note";
-"contacts.invitationUrlString" = "https://www.ginlo.net/join";
+"contacts.invitationUrlString" = "https://open.ginlo.net/join";
 "contacts.overViewViewControllerTitle" = "Contacts";
 "contacts.search.buttonContinue" = "Search";
 "contacts.search.description" = "%@ is a secure messenger. Search for SIMSme contact using phone number, email address or SIMSme ID.";
@@ -1090,8 +1090,7 @@ You have %i attempts remaining.";
 "chats.sendContact.notFeasible" = "This contact may not be stored in your personal address book.";
 "contacts.invitationActionSheetTitle" = "Invite friends to SIMSme";
 "contacts.search.labelPhone" = "Country code and phone number";
-"contacts.smsMessageBody" = "Hi, I'm now using SIMSme! Download it here to chat with me:
-https://ginlo.net/join";
+"contacts.smsMessageBody" = "Join me on ginlo, the secure messenger for private and confidential communication - made in Germany.\n\nYou can just scan the QR-Code below to download and join.\n\nDownload at: %@\n";
 "invite.friends.after.chatcreation.message" = "You seem to enjoy using SIMSme. Would you like to invite other friends?";
 "registration.addDevice.labelCodeDescription" = "Scan the QR code with your new device or enter the activation code manually when logging in.";
 "registration.addDevice.labelCodeExpired" = "The activation code has expired.";

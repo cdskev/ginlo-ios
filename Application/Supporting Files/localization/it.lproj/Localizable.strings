@@ -447,7 +447,7 @@
 "contacts.invitation.noContacts" = "Nessun contatto trovato";
 "contacts.invitation.sms.info" = "Abbiamo ritenuto giusto informarti. ;-)";
 "contacts.invitation.sms.info.title" = "Questo SMS potrebbe comportare dei costi";
-"contacts.invitationUrlString" = "ginlo.net/join";
+"contacts.invitationUrlString" = "https://open.ginlo.net/join";
 "contacts.overViewViewControllerTitle" = "Contatti";
 "contacts.search.buttonContinue" = "Trova un utente";
 "contacts.search.description" = "Cerca un utente %@ con numero di cellulare, indirizzo e-mail o ID ginlo.";
@@ -1055,7 +1055,7 @@
 "chats.sendContact.notFeasible" = "Impossibile memorizzare questo contatto nella tua rubrica personale.";
 "contacts.invitationActionSheetTitle" = "Invita un amico su ginlo";
 "contacts.search.labelPhone" = "Codice del paese e numero di cellulare";
-"contacts.smsMessageBody" = "Entra in ginlo, l'app di messaggistica sicura per una comunicazione privata e riservata – creata in Germania. Scaricala qui: ginlo.net/join";
+"contacts.smsMessageBody" = "Entra in ginlo, l'app di messaggistica sicura per una comunicazione privata e riservata – creata in Germania. Scaricala qui: %@\n";
 "invite.friends.after.chatcreation.message" = "Invita i tuoi amici che non sono ancora in ginlo. :-)";
 "registration.addDevice.labelCodeDescription" = "Scansiona il codice di attivazione con il tuo nuovo dispositivo o inseriscilo manualmente al momento dell'accesso.";
 "registration.addDevice.labelCodeExpired" = "Il codice di attivazione è scaduto.";

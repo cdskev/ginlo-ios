@@ -163,18 +163,6 @@ private class DPAGScanInvitationWorker: NSObject {
         self.scanWorkerDelegate = DPAGScanInvitationWorkerDelegate(scanWorker: self)
     }
 
-    class func createQrCode(_ tan: String, size: CGSize) throws -> UIImage? {
-        let writer: ZXMultiFormatWriter = ZXMultiFormatWriter()
-        let hints: ZXEncodeHints = ZXEncodeHints()
-        hints.margin = NSNumber(value: 0)
-        let result: ZXBitMatrix = try writer.encode(tan, format: kBarcodeFormatQRCode, width: Int32(size.width), height: Int32(size.height), hints: hints)
-        if let image = ZXImage(matrix: result).cgimage {
-            let retVal = UIImage(cgImage: image)
-            return retVal
-        }
-        return nil
-    }
-
     func verifyQRCode() {
         let capture = ZXCapture()
         capture.delegate = self.scanWorkerDelegate
