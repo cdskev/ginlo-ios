@@ -12,7 +12,8 @@ import UIKit
 public enum GNInitialPasswordJobType {
     case createDevice,
          createAccount,
-         scanInvitation
+         scanInvitation,
+         executeInvitation
 }
 
 class DPAGInitialPasswordViewController: DPAGInitialPasswordBaseViewController, DPAGNavigationViewControllerStyler {
@@ -57,6 +58,7 @@ class DPAGInitialPasswordViewController: DPAGInitialPasswordBaseViewController, 
     }
 
     private let initialPasswordJob: GNInitialPasswordJobType
+    var invitationData: [String: Any]?
 
     init(initialPasswordJob: GNInitialPasswordJobType) {
         // self.createDevice = createDevice

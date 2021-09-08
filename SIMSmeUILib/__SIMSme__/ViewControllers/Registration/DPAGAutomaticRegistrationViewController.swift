@@ -54,10 +54,8 @@ class DPAGAutomaticRegistrationViewController: DPAGViewControllerBackground {
 
     init(registrationValues: DPAGAutomaticRegistrationPreferences) {
         self.registrationValues = registrationValues
-
         self.password = (try? CryptoHelperGenerator.createTicketTan()) ?? "0123456789ABCDEF"
         self.enabledPassword = false
-
         super.init(nibName: "DPAGAutomaticRegistrationViewController", bundle: Bundle(for: type(of: self)))
     }
 
@@ -78,41 +76,33 @@ class DPAGAutomaticRegistrationViewController: DPAGViewControllerBackground {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         for i in DPAGAutomaticRegistrationStates.allCases {
-            guard let v = DPAGApplicationFacadeUIRegistration.viewDPAGAutomaticRegistrationStep() else {
-                return
-            }
+            guard let v = DPAGApplicationFacadeUIRegistration.viewDPAGAutomaticRegistrationStep() else { return }
             switch i {
-            case .createAccount:
-                v.setDescription(DPAGLocalizedString("registration.automaticRegistration.createAccount.label"))
-            case .createDomainIndexEntry:
-                v.setDescription(DPAGLocalizedString("registration.automaticRegistration.createDomainIndexEntry.label"))
-            case .waitCompanyKey:
-                v.setDescription(DPAGLocalizedString("registration.automaticRegistration.waitCompanyKey.label"))
-            case .loadMdmConfig:
-                v.setDescription(DPAGLocalizedString("registration.automaticRegistration.loadMdmConfig.label"))
-            case .loadCompanyIndex:
-                v.setDescription(DPAGLocalizedString("registration.automaticRegistration.loadCompanyIndex.label"))
-
-                self.viewCompanyIndexStep = v
-            case .loadDomainIndex:
-                v.setDescription(DPAGLocalizedString("registration.automaticRegistration.loadDomainIndex.label"))
-
-                self.viewDomainIndexStep = v
-            case .setProfile:
-                v.setDescription(DPAGLocalizedString("registration.automaticRegistration.setProfile.label"))
-            case .done:
-                // kann nicht passieren
-                fatalError("Invalid State")
+                case .createAccount:
+                    v.setDescription(DPAGLocalizedString("registration.automaticRegistration.createAccount.label"))
+                case .createDomainIndexEntry:
+                    v.setDescription(DPAGLocalizedString("registration.automaticRegistration.createDomainIndexEntry.label"))
+                case .waitCompanyKey:
+                    v.setDescription(DPAGLocalizedString("registration.automaticRegistration.waitCompanyKey.label"))
+                case .loadMdmConfig:
+                    v.setDescription(DPAGLocalizedString("registration.automaticRegistration.loadMdmConfig.label"))
+                case .loadCompanyIndex:
+                    v.setDescription(DPAGLocalizedString("registration.automaticRegistration.loadCompanyIndex.label"))
+                    self.viewCompanyIndexStep = v
+                case .loadDomainIndex:
+                    v.setDescription(DPAGLocalizedString("registration.automaticRegistration.loadDomainIndex.label"))
+                    self.viewDomainIndexStep = v
+                case .setProfile:
+                    v.setDescription(DPAGLocalizedString("registration.automaticRegistration.setProfile.label"))
+                case .done:
+                    // kann nicht passieren
+                    fatalError("Invalid State")
             }
             v.setState(.waiting)
-
             self.registrationSteps.append(v)
             self.stepStackView.addArrangedSubview(v)
         }
-
-        // Do any additional setup after loading the view.
         self.performBlockInBackground { [weak self] in
             self?.registerAccount(.createAccount)
         }

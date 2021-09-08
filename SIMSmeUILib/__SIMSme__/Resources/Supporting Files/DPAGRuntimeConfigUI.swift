@@ -23,6 +23,8 @@ class DPAGRuntimeConfigUI: DPAGRuntimeConfigUIBase {
                 }
             case .dpagIntroViewController_handleScanInvitationTapped:
                 rc = DPAGApplicationFacadeUIRegistration.initialPasswordVC(initialPasswordJob: .scanInvitation)
+            case .dpagIntroViewController_haveAutomaticInvitation:
+                rc = DPAGApplicationFacadeUIRegistration.initialPasswordVC(initialPasswordJob: .executeInvitation)
             case .dpagPasswordForgotViewController:
                 rc = DPAGApplicationFacadeUIBase.initialPasswordForgotVC()
             case .dpagTestLicenseViewController:

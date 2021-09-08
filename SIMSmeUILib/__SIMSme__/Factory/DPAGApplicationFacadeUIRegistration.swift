@@ -46,15 +46,28 @@ public struct DPAGApplicationFacadeUIRegistration {
 
     static func beforeCreateDeviceVC(password: String, enabled: Bool) -> (UIViewController) {
         if AppConfig.buildConfigurationMode == .DEBUG || AppConfig.buildConfigurationMode == .BETA {
-            return PageEndpointViewController(password: password, enabled: enabled)
+            return PageEndpointViewController(password: password, enabled: enabled, invitationData: nil)
         }
         return DPAGCreateDeviceRequestCodeViewController(password: password, enabled: enabled)
     }
 
     static func beforeRegistrationVC(password: String, enabled: Bool) -> (UIViewController) {
         if AppConfig.buildConfigurationMode == .DEBUG || AppConfig.buildConfigurationMode == .BETA {
-            return PageEndpointViewController(password: password, enabled: enabled, accountCreation: true)
+            return PageEndpointViewController(password: password, enabled: enabled, selectionJob: GNInitialPasswordJobType.createAccount, invitationData: nil)
         }
         return DPAGRequestAccountViewController(password: password, enabled: enabled, endpoint: nil)
+    }
+    
+    static func beforeInvitationRegistrationVC(password: String, enabled: Bool, invitationData: [String: Any]) -> (UIViewController) {
+        if AppConfig.buildConfigurationMode == .DEBUG || AppConfig.buildConfigurationMode == .BETA {
+            return PageEndpointViewController(password: password, enabled: enabled, selectionJob: GNInitialPasswordJobType.createAccount, invitationData: invitationData)
+        }
+        return DPAGRequestAccountViewController(password: password, enabled: enabled, endpoint: nil)
+        // return GNRegisterUsingInvitationViewController(password: password, enabled: enabled, endpoint: nil, invitationData: invitationData)
+    }
+    
+    static func invitationRegistrationVC(password: String, enabled: Bool, endpoint: String, invitationData: [String: Any]) -> (UIViewController) {
+        return DPAGRequestAccountViewController(password: password, enabled: enabled, endpoint: nil)
+        // return GNRegisterUsingInvitationViewController(password: password, enabled: enabled, endpoint: endpoint, invitationData: invitationData)
     }
 }

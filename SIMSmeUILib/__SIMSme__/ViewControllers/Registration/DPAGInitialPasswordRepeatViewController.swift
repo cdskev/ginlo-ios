@@ -41,6 +41,7 @@ class DPAGInitialPasswordRepeatViewController: DPAGInitialPasswordBaseViewContro
     @IBOutlet private var stackViewSwitchPasswordType: UIStackView!
 
     private let initialPasswordJob: GNInitialPasswordJobType
+    var invitationData: [String: Any]?
 
     init(password: String, initialPasswordJob: GNInitialPasswordJobType) {
         // self.createDevice = createDevice
@@ -119,15 +120,44 @@ class DPAGInitialPasswordRepeatViewController: DPAGInitialPasswordBaseViewContro
                     let requestVC = DPAGApplicationFacadeUIRegistration.beforeRegistrationVC(password: password, enabled: self.switchPasswordType.isOn)
                     self.navigationController?.pushViewController(requestVC, animated: true)
                 case .scanInvitation:
-                    let requestVC = DPAGApplicationFacadeUIRegistration.scanInvitationVC(blockSuccess: {(text: String) in
-                        if let invitationData = DPAGApplicationFacade.contactsWorker.parseInvitationQRCode(invitationContent: text), let accountID = invitationData["i"] as? String, let signature = invitationData["s"] as? Data {
-                            DPAGLog("Received Invitation: \(invitationData)")
+                    let requestVC = DPAGApplicationFacadeUIRegistration.scanInvitationVC(blockSuccess: { [weak self] (text: String) in
+                        if let strongSelf = self, let invitationData = DPAGApplicationFacade.contactsWorker.parseInvitationQRCode(invitationContent: text) {
+                            strongSelf.invitationData = invitationData
+                            strongSelf.executeInvitationBasedRegistration(password: password)
                         }
                     }, blockFailed: {
                     }, blockCancelled: {
                     })
                     self.navigationController?.pushViewController(requestVC, animated: true)
+                case .executeInvitation:
+                    if self.invitationData != nil {
+                        executeInvitationBasedRegistration(password: password)
+                    }
+                    break
             }
         }
+    }
+    
+    private func executeInvitationBasedRegistration(password: String) {
+        do {
+            _ = try DPAGApplicationFacade.backupWorker.isICloudEnabled()
+        } catch {
+            DPAGLog(error)
+        }
+        let accountGuid = DPAGApplicationFacade.accountManager.createAccount(password: password, phoneNumber: nil, emailAddress: nil, emailDomain: nil, endpoint: nil) { [weak self] responseObject, _, errorMessage in
+            if let errorMessage = errorMessage {
+                self?.handleServiceError(errorMessage)
+            } else if let responseArr = responseObject as? [Any] {
+                self?.handleServiceSuccess(responseArr)
+            } else {
+                self?.handleServiceError("service.ERR-0001")
+            }
+        }
+    }
+    
+    private func handleServiceSuccess(_ responseArr: [Any]) {
+    }
+    
+    private func handleServiceError(_ message: String) {
     }
 }
