@@ -25,6 +25,7 @@ Kind regards";
 "registration.backup.not_found.step1" = "Open your old %@ installation.";
 "registration.createDevice.welcome.description" = "Would you like to backup this device or use the device with your existing account?";
 "registration.headline.phoneAndCountryCode" = "Please specify country code & telephone number or e-mail address";
+"registration.headline.creatingInvitationAccount" = "Creating your account, please wait...";
 "intro.screen0.description2" = "GDPR-compliant";
 "intro.screen1.buttonCreateDeviceTitle" = "I already have an account";
 "settings.termsandcondition" = "Terms and Conditions (Business)";

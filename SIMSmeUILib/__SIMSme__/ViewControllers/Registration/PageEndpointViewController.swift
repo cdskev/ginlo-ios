@@ -58,7 +58,7 @@ class PageEndpointViewController: DPAGViewControllerWithKeyboard {
         guard let endpoint = selectedEndpoint() else { return }
         EndpointDAO.save(endpoint: endpoint)
         AppConfig.hostHttpService = endpoint
-        switch self.selectionJob {
+        switch self.creationJob {
             case .createAccount:
                 navigationController?.pushViewController(DPAGApplicationFacadeUIRegistration.requestAccountVC(password: password, enabled: enabled, endpoint: endpoint), animated: true)
             case .createDevice:
@@ -73,14 +73,14 @@ class PageEndpointViewController: DPAGViewControllerWithKeyboard {
     var viewModel = PageEndPointViewModel()
     let password: String
     let enabled: Bool
-    let selectionJob: GNInitialPasswordJobType
+    let creationJob: GNInitialCreationType
     let inivitationData: [String: Any]?
 
-    init(password: String, enabled: Bool, selectionJob: GNInitialPasswordJobType = .createAccount, invitationData: [String: Any]? = nil) {
+    init(password: String, enabled: Bool, creationJob: GNInitialCreationType = .createAccount, invitationData: [String: Any]? = nil) {
         self.password = password
         self.enabled = enabled
         self.inivitationData = invitationData
-        self.selectionJob = selectionJob
+        self.creationJob = creationJob
         super.init(nibName: "PageEndpointViewController", bundle: Bundle(for: type(of: self)))
     }
 

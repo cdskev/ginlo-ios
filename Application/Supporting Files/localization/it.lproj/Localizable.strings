@@ -676,6 +676,7 @@
 "registration.subline.phone_empty" = "Inserisci il tuo numero di telefono! Deve contenere almeno 6 caratteri.";
 "registration.textView.confirmationTextView" = "Inserisci il codice di conferma che abbiamo inviato a %@.";
 "registration.title.createAccount" = "Informazioni del tuo account";
+"registration.title.createInvitationAccount" = "Your New Account";
 "registration.title.forgotPassword" = "Password dimenticata?";
 "registration.title.repeatPassword" = "Conferma la password del tuo dispositivo.";
 "registration.title.setPassword" = "Iniziamo con la password del tuo dispositivo.";
@@ -1123,6 +1124,7 @@
 "companyAdressbook.syncDomainPre" = "Directory dominio";
 "registration.createDevice.welcome.description" = "Vuole eseguire un backup su questo dispositivo o utilizzare il dispositivo anche con il Suo account esistente?";
 "registration.headline.phoneAndCountryCode" = "Inserisci il tuo numero di cellulare.";
+"registration.headline.creatingInvitationAccount" = "Creating your account, please wait...";
 "settings.companyprofile.code.email.createSimsmeRecoveryBlobs" = "Invio in corso...";
 "settings.companyprofile.code.phoneNumber.createSimsmeRecoveryBlobs" = "Invio in corso...";
 "settings.companyprofile.contactsoverview.empty.text2" = "Spiacenti, impossibile trovare contatti con un indirizzo e-mail aziendale con il dominio %@ collegato all'account.\nConsiglia ai tuoi colleghi che utilizzano ginlo Business di collegare un indirizzo e-mail.";

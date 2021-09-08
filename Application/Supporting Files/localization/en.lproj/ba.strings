@@ -17,6 +17,7 @@
 "registration.backup.not_found.step1" = "Open %@ on your other smartphone.";
 "registration.createDevice.welcome.description" = "Import a backup to this device or add it as an additional device if you have another one in use.";
 "registration.headline.phoneAndCountryCode" = "Now please enter your mobile number or e-mail address.";
+"registration.headline.creatingInvitationAccount" = "Creating your account, please wait...";
 "intro.screen0.description2" = "GDPR-compliant";
 "intro.screen1.buttonCreateDeviceTitle" = "I already have an account";
 "settings.termsandcondition" = "Terms & Conditions";

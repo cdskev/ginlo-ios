@@ -150,6 +150,8 @@
 		35CDF7DE227758490024CA8C /* ConversationActionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDF7DD227758480024CA8C /* ConversationActionHelper.swift */; };
 		35EFD6442316B9C400484CB1 /* PageEndpointViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35EFD6432316B9C400484CB1 /* PageEndpointViewController.swift */; };
 		35EFD6462316BA7D00484CB1 /* PageEndpointViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 35EFD6452316BA7D00484CB1 /* PageEndpointViewController.xib */; };
+		720DB9C026E8D7C000DF0791 /* GNRegisterUsingInvitationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720DB9BF26E8D7C000DF0791 /* GNRegisterUsingInvitationViewController.swift */; };
+		720DB9C226E8D86700DF0791 /* GNRegisterUsingInvitationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 720DB9C126E8D86700DF0791 /* GNRegisterUsingInvitationViewController.xib */; };
 		7232E1E725CEDA330010B886 /* GNSplitContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7232E1E625CEDA320010B886 /* GNSplitContainerViewController.swift */; };
 		72C3145925B6D20C00B8D54E /* DPAGGroupViewController+UITableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C3145025B6D20B00B8D54E /* DPAGGroupViewController+UITableViewDataSource.swift */; };
 		72C3145A25B6D20C00B8D54E /* DPAGGroupViewController+UIImagePickerControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C3145125B6D20B00B8D54E /* DPAGGroupViewController+UIImagePickerControllerDelegate.swift */; };
@@ -626,6 +628,8 @@
 		35EFD6432316B9C400484CB1 /* PageEndpointViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageEndpointViewController.swift; sourceTree = "<group>"; };
 		35EFD6452316BA7D00484CB1 /* PageEndpointViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PageEndpointViewController.xib; sourceTree = "<group>"; };
 		442802D06184A774DF506079 /* Pods-SIMSmeUILib.test.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SIMSmeUILib.test.xcconfig"; path = "../Pods/Target Support Files/Pods-SIMSmeUILib/Pods-SIMSmeUILib.test.xcconfig"; sourceTree = "<group>"; };
+		720DB9BF26E8D7C000DF0791 /* GNRegisterUsingInvitationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GNRegisterUsingInvitationViewController.swift; sourceTree = "<group>"; };
+		720DB9C126E8D86700DF0791 /* GNRegisterUsingInvitationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GNRegisterUsingInvitationViewController.xib; sourceTree = "<group>"; };
 		7232E1E625CEDA320010B886 /* GNSplitContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GNSplitContainerViewController.swift; sourceTree = "<group>"; };
 		728CD72425FF5AD200F29572 /* 20_uilib_release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = 20_uilib_release.xcconfig; sourceTree = "<group>"; };
 		728CD72525FF5AD200F29572 /* 01_application_debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = 01_application_debug.xcconfig; sourceTree = "<group>"; };
@@ -1759,6 +1763,8 @@
 				A313F1B322B2906D004C2E49 /* DPAGWelcomeViewController.xib */,
 				35EFD6432316B9C400484CB1 /* PageEndpointViewController.swift */,
 				35EFD6452316BA7D00484CB1 /* PageEndpointViewController.xib */,
+				720DB9BF26E8D7C000DF0791 /* GNRegisterUsingInvitationViewController.swift */,
+				720DB9C126E8D86700DF0791 /* GNRegisterUsingInvitationViewController.xib */,
 			);
 			path = Registration;
 			sourceTree = "<group>";
@@ -2090,6 +2096,7 @@
 				A313F17F22B28F25004C2E49 /* DPAGConfirmAccountViewController.xib in Resources */,
 				A313F0DE22B252E9004C2E49 /* DPAGDeviceViewController.xib in Resources */,
 				359FAA7722C508E800562C32 /* DPAGChatGroupCell.xib in Resources */,
+				720DB9C226E8D86700DF0791 /* GNRegisterUsingInvitationViewController.xib in Resources */,
 				A313F16222B28E84004C2E49 /* DPAGAutomaticTestRegistrationViewController.xib in Resources */,
 				A313F09622B24ED3004C2E49 /* DPAGChangePasswordViewController.xib in Resources */,
 				A313F13122B27265004C2E49 /* DPAGSetSilentViewController.xib in Resources */,
@@ -2328,6 +2335,7 @@
 				A313F0AB22B24ED3004C2E49 /* DPAGCompanyProfilConfirmEMailController.swift in Sources */,
 				27DAEDCC2099ED4000C64628 /* DPAGChatStreamInputMediaOnlyViewController.xib in Sources */,
 				27DAEDCD2099ED4000C64628 /* DPAGChatStreamInputMediaViewController.swift in Sources */,
+				720DB9C026E8D7C000DF0791 /* GNRegisterUsingInvitationViewController.swift in Sources */,
 				A313F0AE22B24ED3004C2E49 /* DPAGCompanyProfilInitEMailController.swift in Sources */,
 				A313F09E22B24ED3004C2E49 /* DPAGSimsMeBackgroundsViewController.swift in Sources */,
 				B63AF4F222E8637600638369 /* NibFileOwnerLoadable.swift in Sources */,

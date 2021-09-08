@@ -9,7 +9,7 @@
 import SIMSmeCore
 import UIKit
 
-public enum GNInitialPasswordJobType {
+public enum GNInitialCreationType {
     case createDevice,
          createAccount,
          scanInvitation,
@@ -57,10 +57,10 @@ class DPAGInitialPasswordViewController: DPAGInitialPasswordBaseViewController, 
         }
     }
 
-    private let initialPasswordJob: GNInitialPasswordJobType
+    private let initialPasswordJob: GNInitialCreationType
     var invitationData: [String: Any]?
 
-    init(initialPasswordJob: GNInitialPasswordJobType) {
+    init(initialPasswordJob: GNInitialCreationType) {
         // self.createDevice = createDevice
         self.initialPasswordJob = initialPasswordJob
         super.init(nibName: "DPAGInitialPasswordViewController", bundle: Bundle(for: type(of: self)))
