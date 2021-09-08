@@ -457,6 +457,8 @@
 "contacts.search.title" = "Find a user.";
 "contacts.selection.sending.title" = "Send contact";
 "createDevice.scan.description" = "Please hold the camera in front of the QR code on your other device";
+"scanqrcode.scan.title" = "Scan QR Code";
+"scanqrcode.scan.message" = "Please hold the camera in front of the QR code you would like to scan.";
 "devices.list.message.confirm.delete.device" = "Delete Device";
 "err_cannot_edit_video" = "Unfortunately, the video can't be processed.";
 "forgotPassword.buttonRequestRecoveryCode" = "Send me the Code";

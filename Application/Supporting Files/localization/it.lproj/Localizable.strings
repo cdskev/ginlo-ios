@@ -457,6 +457,8 @@
 "contacts.search.title" = "Trova un utente.";
 "contacts.selection.sending.title" = "Invia contatto";
 "createDevice.scan.description" = "Mantieni la telecamera davanti al codice QR sull'altro dispositivo";
+"scanqrcode.scan.title" = "Scan QR Code";
+"scanqrcode.scan.message" = "Please hold the camera in front of the QR code you would like to scan.";
 "devices.list.message.confirm.delete.device" = "Elimina dispositivo";
 "err_cannot_edit_video" = "Spiacenti, impossibile elaborare il video.";
 "forgotPassword.buttonRequestRecoveryCode" = "Richiedi il codice";

@@ -17,7 +17,7 @@ class GNScanInvitationViewController: DPAGViewControllerBackground {
     @IBOutlet private var labelDescription: UILabel! {
         didSet {
             self.labelDescription.textColor = .white
-            self.labelDescription.text = DPAGLocalizedString("createDevice.scan.description")
+            self.labelDescription.text = DPAGLocalizedString("scanqrcode.scan.message")
         }
     }
 
@@ -68,7 +68,7 @@ class GNScanInvitationViewController: DPAGViewControllerBackground {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.title = DPAGLocalizedString("registration.device.scanTAN")
+        self.navigationItem.title = DPAGLocalizedString("scanqrcode.scan.title")
         let actInd = UIActivityIndicatorView(style: .gray)
         self.view.addSubview(actInd)
         self.activityIndicator = actInd

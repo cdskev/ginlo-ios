@@ -457,6 +457,8 @@
 "contacts.search.title" = "Find a user.";
 "contacts.selection.sending.title" = "Kişiyi gönder";
 "createDevice.scan.description" = "Lütfen kamerayı diğer cihazınızdaki QR kodunun önünde tutun";
+"scanqrcode.scan.title" = "QR kodu tara";
+"scanqrcode.scan.message" = "Lütfen kamerayi taramak istediğiniz QR kodun önünde tutun.";
 "devices.list.message.confirm.delete.device" = "Delete Device";
 "err_cannot_edit_video" = "Unfortunately, the video can't be processed.";
 "forgotPassword.buttonRequestRecoveryCode" = "Send me the Code";

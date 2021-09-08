@@ -457,6 +457,8 @@
 "contacts.search.title" = "Einen Nutzer suchen";
 "contacts.selection.sending.title" = "Kontakt senden";
 "createDevice.scan.description" = "Bitte halten Sie die Kamera vor den QR-Code auf Ihrem anderen Gerät";
+"scanqrcode.scan.title" = "QR-Code scannen";
+"scanqrcode.scan.message" = "Bitte halten Sie die Kamera von den QR-Code, den Sie scannen möchten.";
 "devices.list.message.confirm.delete.device" = "Gerät löschen";
 "err_cannot_edit_video" = "Das Video kann leider nicht verarbeitet werden.";
 "forgotPassword.buttonRequestRecoveryCode" = "Code anfordern";
