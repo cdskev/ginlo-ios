@@ -389,5 +389,3 @@ extension DPAGChannelStreamViewController {
         }
     }
 }
-
-class DPAGServiceStreamViewController: DPAGChannelStreamViewController {}

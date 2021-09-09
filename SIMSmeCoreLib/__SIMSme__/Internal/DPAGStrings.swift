@@ -1119,7 +1119,6 @@ public enum DPAGStrings {
             public static let KEY_GUID = "keyGuid"
             public static let DATA = "data"
             public static let FEATURES = "features"
-            public static let TRACKING_GUID = "trackingGuid"
             public static let DEVICE_NAME = "deviceName"
             public static let DEVICE_TYPE = "deviceTyp"
             public static let LAST_ONLINE = "lastOnline"
@@ -1502,6 +1501,7 @@ public enum DPAGStrings {
         public static let KEY_CONTACT_COUNTRY_CODE = "prefix"
         public static let KEY_CONTACT_EMAIL_ADDRESS = "email"
         public static let KEY_CONTACT_SIMSMEID = "simsmeid"
+        public static let KEY_CONTACT_GINLOID = "ginloid"
 
         public static let HOST_CHANNEL = "channel"
         public static let PATH_CHANNEL_ADD = "/add"
@@ -1510,6 +1510,8 @@ public enum DPAGStrings {
         public static let HOST_SERVICE = "service"
         public static let PATH_SERVICE_ADD = "/add"
         public static let KEY_SERVICE = "service"
+        
+        public static let HOST_INVITE = "invite"
     }
 
     public enum ErrorCode {

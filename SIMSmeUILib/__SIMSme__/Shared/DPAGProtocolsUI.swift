@@ -459,7 +459,7 @@ public protocol DPAGContactNewSearchViewControllerProtocol: AnyObject {
     var phoneNumInit: String? { get set }
     var countryCodeInit: String? { get set }
     var emailAddressInit: String? { get set }
-    var simsmeIDInit: String? { get set }
+    var ginloIDInit: String? { get set }
 }
 
 public protocol DPAGContactNewSelectViewControllerProtocol: AnyObject {}

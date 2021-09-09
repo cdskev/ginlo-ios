@@ -102,7 +102,6 @@ protocol DPAGServerWorkerProtocol {
 
     func resetBadge(withResponse response: @escaping DPAGServiceResponseBlock)
     func createBackgroundAccessToken(withResponse response: @escaping DPAGServiceResponseBlock)
-    func logEvents(events: [[AnyHashable: Any]])
 
     func getChannels(withResponse responseBlock: @escaping DPAGServiceResponseBlock)
     func getChannelChecksum(channelGuid: String, withResponse responseBlock: @escaping DPAGServiceResponseBlock)
@@ -891,20 +890,6 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
 
     func createBackgroundAccessToken(withResponse response: @escaping DPAGServiceResponseBlock) {
         self.sendCommand(DPAGServerFunction.CreateBackgroundAccessToken(), withResponse: response)
-    }
-
-    func logEvents(events: [[AnyHashable: Any]]) {
-        if let eventData = events.JSONString {
-            DPAGApplicationFacade.service.perform(request: {
-                let request = DPAGHttpServiceRequest()
-                request.parametersCodable = DPAGServerFunction.TrackEvents(guid: DPAGApplicationFacade.preferences.deviceTrackingGuid, data: eventData)
-                request.responseBlock = nil
-                request.path = kPathDiag
-                request.authenticate = .none
-
-                return request
-            }())
-        }
     }
 
     func getChannels(withResponse responseBlock: @escaping DPAGServiceResponseBlock) {

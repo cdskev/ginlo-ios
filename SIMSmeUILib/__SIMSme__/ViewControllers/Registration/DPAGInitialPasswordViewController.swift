@@ -16,7 +16,12 @@ public enum GNInitialCreationType {
          executeInvitation
 }
 
-class DPAGInitialPasswordViewController: DPAGInitialPasswordBaseViewController, DPAGNavigationViewControllerStyler {
+public protocol GNInvitationUIViewController {
+    var creationJob: GNInitialCreationType { get set }
+    var invitationData: [String: Any]? { get set }
+}
+
+class DPAGInitialPasswordViewController: DPAGInitialPasswordBaseViewController, DPAGNavigationViewControllerStyler, GNInvitationUIViewController {
     override var labelHeadline: UILabel? {
         didSet {
             self.labelHeadline?.text = DPAGLocalizedString("registration.title.setPassword")
@@ -57,12 +62,12 @@ class DPAGInitialPasswordViewController: DPAGInitialPasswordBaseViewController, 
         }
     }
 
-    private let initialPasswordJob: GNInitialCreationType
+    private let creationJob: GNInitialCreationType
     var invitationData: [String: Any]?
 
     init(initialPasswordJob: GNInitialCreationType) {
         // self.createDevice = createDevice
-        self.initialPasswordJob = initialPasswordJob
+        self.creationJob = initialPasswordJob
         super.init(nibName: "DPAGInitialPasswordViewController", bundle: Bundle(for: type(of: self)))
         self.isNewPassword = true
     }
@@ -125,7 +130,8 @@ class DPAGInitialPasswordViewController: DPAGInitialPasswordBaseViewController, 
                     }
                 }
             }
-            let vc = DPAGApplicationFacadeUIRegistration.initialPasswordRepeatVC(password: passwordEntered, initialPasswordJob: self.initialPasswordJob)
+            var vc = DPAGApplicationFacadeUIRegistration.initialPasswordRepeatVC(password: passwordEntered, initialPasswordJob: self.creationJob)
+            vc.invitationData = self.invitationData
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }

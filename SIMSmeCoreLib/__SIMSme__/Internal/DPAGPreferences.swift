@@ -479,7 +479,6 @@ public class DPAGPreferences: NSObject {
         self[.kNotificationRegistrationError] = ""
         self[.kNotificationRegistrationNeedsDefaults] = true
 
-        self.trackingEnabled = true
         self.deleteData = false
         self.passwordOnStartEnabled = true
         self.cameraBackgroundEnabled = false
@@ -773,17 +772,6 @@ public class DPAGPreferences: NSObject {
         }
     }
 
-    public var deviceTrackingGuid: String {
-        if let trackingGuid = self[.kTrackingGuid], trackingGuid.count > 30 {
-            return trackingGuid
-        } else {
-            let uuid = String(format: "9:{%@}", DPAGFunctionsGlobal.uuid())
-            let trackingGuid = String(format: "%@1%@", String(uuid[..<uuid.index(uuid.startIndex, offsetBy: 9)]), String(uuid[uuid.index(uuid.startIndex, offsetBy: 10)...]))
-            self[.kTrackingGuid] = trackingGuid
-            return trackingGuid
-        }
-    }
-
     public var deviceToken: String? {
         get {
             self[DPAGPreferences.PropString.kDeviceToken]
@@ -997,16 +985,6 @@ public class DPAGPreferences: NSObject {
         }
         set {
             self[.kPasswordTriesLeft] = newValue
-        }
-    }
-
-    public var trackingEnabled: Bool {
-        get {
-            // Das SIMSme Tracking gibts in allen Mandanten
-            return self[.kTrackingEnabled] ?? false
-        }
-        set {
-            self[.kTrackingEnabled] = newValue
         }
     }
 

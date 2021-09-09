@@ -9,7 +9,7 @@
 import SIMSmeCore
 import UIKit
 
-class DPAGInitialPasswordRepeatViewController: DPAGInitialPasswordBaseViewController {
+class DPAGInitialPasswordRepeatViewController: DPAGInitialPasswordBaseViewController, GNInvitationUIViewController {
     override var labelHeadline: UILabel? {
         didSet {
             self.labelHeadline?.text = DPAGLocalizedString("registration.title.repeatPassword")
@@ -40,12 +40,12 @@ class DPAGInitialPasswordRepeatViewController: DPAGInitialPasswordBaseViewContro
     @IBOutlet private var stackViewAll: UIStackView!
     @IBOutlet private var stackViewSwitchPasswordType: UIStackView!
 
-    private let initialPasswordJob: GNInitialCreationType
+    var creationJob: GNInitialCreationType
     var invitationData: [String: Any]?
 
     init(password: String, initialPasswordJob: GNInitialCreationType) {
         // self.createDevice = createDevice
-        self.initialPasswordJob = initialPasswordJob
+        self.creationJob = initialPasswordJob
         self.passwordEntered = password
         super.init(nibName: "DPAGInitialPasswordRepeatViewController", bundle: Bundle(for: type(of: self)))
     }
@@ -112,7 +112,7 @@ class DPAGInitialPasswordRepeatViewController: DPAGInitialPasswordBaseViewContro
     private func proceedToNextRegistrationStep() {
         self.dismissKeyboard(nil)
         if let password = self.enteredPassword() {
-            switch self.initialPasswordJob {
+            switch self.creationJob {
                 case .createDevice:
                     let requestVC = DPAGApplicationFacadeUIRegistration.beforeCreateDeviceVC(password: password, enabled: self.switchPasswordType.isOn)
                     self.navigationController?.pushViewController(requestVC, animated: true)

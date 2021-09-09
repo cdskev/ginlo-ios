@@ -159,6 +159,10 @@ public class DPAGMDMPreferences: DPAGPreferences {
         DPAGApplicationFacade.runtimeConfig.urlScheme
     }
 
+    public var urlSchemeOld: String? {
+        DPAGApplicationFacade.runtimeConfig.urlSchemeOld
+    }
+
     @objc public var saltClient: String? {
         DPAGApplicationFacade.runtimeConfig.saltClient
     }
@@ -181,18 +185,6 @@ public class DPAGMDMPreferences: DPAGPreferences {
 
     public var supportMultiDevice: Bool {
         self.isBaMandant || AppConfig.multiDeviceAllowed
-    }
-
-    public func trackingEventId(eventId: String) -> String {
-        DPAGApplicationFacade.runtimeConfig.trackingEventId(eventId: eventId)
-    }
-
-    public var trackingUrl: String {
-        DPAGApplicationFacade.runtimeConfig.trackingUrl
-    }
-
-    public var trackingAppToken: String? {
-        DPAGApplicationFacade.runtimeConfig.trackingAppToken
     }
 
     public func apnIdentifierWithBundleIdentifier(_ bundleIdentifier: String, deviceToken: String) -> String {

@@ -347,7 +347,9 @@ open class DPAGAppDelegate: UIResponder, UIApplicationDelegate {
         DPAGLog("Database ready")
         var canHandle = false
         self.urlToHandle = nil
-        if url.isFileURL || url.scheme == DPAGApplicationFacade.preferences.urlScheme {
+        let urlScheme: String = DPAGApplicationFacade.preferences.urlScheme ?? "ginlo"
+        let oldUrlScheme: String = DPAGApplicationFacade.preferences.urlSchemeOld ?? "simsme"
+        if url.isFileURL || url.scheme?.hasPrefix(urlScheme) ?? false || url.scheme?.hasPrefix(oldUrlScheme) ?? false {
             if DPAGSimsMeController.sharedInstance.isWaitingForLogin {
                 self.urlToHandle = url
             } else {
@@ -886,18 +888,35 @@ open class DPAGAppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-    public func application(_ application: UIApplication, handleActionWithIdentifier identifier: String?, forRemoteNotification userInfo: [AnyHashable: Any], completionHandler: @escaping DPAGCompletion) {
-        DPAGLog("handleActionWithIdentifier:\n%@,\nuserInfo:\n%@,\napplicationState: %@", identifier ?? "noIdent", LoggingHelper.stripNameFromPayload(userInfo), NSNumber(value: application.applicationState.rawValue as Int))
-        let applicationState = application.applicationState
-        DispatchQueue.main.async {
-            self.waitForDatabase()
-            DPAGSimsMeController.sharedInstance.handleUserInfo(userInfo, forApplication: application, wasInState: applicationState)
-            completionHandler()
-        }
-    }
+// deprecated since iOS 10.0
+//    public func application(_ application: UIApplication, handleActionWithIdentifier identifier: String?, forRemoteNotification userInfo: [AnyHashable: Any], completionHandler: @escaping DPAGCompletion) {
+//        DPAGLog("handleActionWithIdentifier:\n%@,\nuserInfo:\n%@,\napplicationState: %@", identifier ?? "noIdent", LoggingHelper.stripNameFromPayload(userInfo), NSNumber(value: application.applicationState.rawValue as Int))
+//        let applicationState = application.applicationState
+//        DispatchQueue.main.async {
+//            self.waitForDatabase()
+//            DPAGSimsMeController.sharedInstance.handleUserInfo(userInfo, forApplication: application, wasInState: applicationState)
+//            completionHandler()
+//        }
+//    }
 
     public func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-       JitsiMeet.sharedInstance().application(application, continue: userActivity, restorationHandler: restorationHandler)
+        // Get URL components from the incoming user activity.
+        guard userActivity.activityType == NSUserActivityTypeBrowsingWeb, let incomingURL = userActivity.webpageURL, let components = NSURLComponents(url: incomingURL, resolvingAgainstBaseURL: true) else { return false }
+
+        // Check for specific URL components that you need.
+        guard let path = components.path, let params = components.queryItems else { return false }
+        print("path = \(path)")
+        if let actualParams = params.first(where: { $0.name == "p" } )?.value, let signature = params.first(where: { $0.name == "q" })?.value {
+            print("actualParams = \(actualParams)")
+            print("signature = \(signature)")
+            JitsiMeet.sharedInstance().application(application, continue: userActivity, restorationHandler: restorationHandler)
+            return true
+
+        } else {
+            print("Either album name or photo index missing")
+            JitsiMeet.sharedInstance().application(application, continue: userActivity, restorationHandler: restorationHandler)
+            return false
+        }
     }
 }
 

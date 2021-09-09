@@ -20,11 +20,7 @@ class DPAGRuntimeConfigBA: DPAGRuntimeConfigWhiteLabel {
     }
 
     override var maxFileSize: UInt64 {
-        0x3200000
-    }
-
-    override var trackingAppToken: String? {
-        "xi8ccliinxmo"
+        0x6400000
     }
 
     override var isBaMandant: Bool {

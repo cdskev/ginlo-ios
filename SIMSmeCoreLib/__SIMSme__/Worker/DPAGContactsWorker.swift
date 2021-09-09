@@ -58,6 +58,7 @@ public protocol DPAGContactsWorkerProtocol: AnyObject {
 
     func saveContact(contact: DPAGContactEdit)
 
+    func parseInvitationParams(rawP: String, q: String) -> [String: Any]?
     func parseInvitationQRCode(invitationContent: String) -> [String: Any]?
     func validateScanResult(text: String, publicKey: String) -> Bool
     func validateScanResult(text: String) -> Bool
@@ -288,12 +289,19 @@ class DPAGContactsWorker: NSObject, DPAGContactsWorkerProtocol {
         queryValueFromParam(param: param)
     }
     
+    func parseInvitationParams(rawP: String, q: String) -> [String: Any]? {
+        if let p = pParamFromInvitationComponent(param: rawP, fingerprint: q) {
+            return splitInvitationPParam(p)
+        }
+        return nil
+    }
+    
     func parseInvitationQRCode(invitationContent: String) -> [String: Any]? {
         let components = invitationContent.components(separatedBy: "?")
         if components.count == 2, components[0].starts(with: "https://" + AppConfig.ginloNowInvitationUrl) {
             let invitationData = components[1].components(separatedBy: "&")
-            if invitationData.count == 2, let q = qParamFromInvitationComponent(param: invitationData[1]), let p = pParamFromInvitationComponent(param: invitationData[0], fingerprint: q) {
-                return splitInvitationPParam(p)
+            if invitationData.count == 2, let q = qParamFromInvitationComponent(param: invitationData[1]), let rawP = queryValueFromParam(param: invitationData[0]) {
+                return parseInvitationParams(rawP: rawP, q: q)
             }
         }
         return nil
