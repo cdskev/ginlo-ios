@@ -62,7 +62,7 @@ class DPAGInitialPasswordViewController: DPAGInitialPasswordBaseViewController, 
         }
     }
 
-    private let creationJob: GNInitialCreationType
+    var creationJob: GNInitialCreationType
     var invitationData: [String: Any]?
 
     init(initialPasswordJob: GNInitialCreationType) {
