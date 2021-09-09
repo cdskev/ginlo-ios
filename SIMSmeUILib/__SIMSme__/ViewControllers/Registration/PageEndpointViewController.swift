@@ -63,7 +63,7 @@ class PageEndpointViewController: DPAGViewControllerWithKeyboard {
                 navigationController?.pushViewController(DPAGApplicationFacadeUIRegistration.requestAccountVC(password: password, enabled: enabled, endpoint: endpoint), animated: true)
             case .createDevice:
                 navigationController?.pushViewController(DPAGApplicationFacadeUIRegistration.createDeviceRequestCodeVC(password: password, enabled: enabled), animated: true)
-            default:
+            case .scanInvitation, .executeInvitation:
                 if let invitationData = self.inivitationData {
                     navigationController?.pushViewController(DPAGApplicationFacadeUIRegistration.invitationRegistrationVC(password: password, enabled: enabled, endpoint: endpoint, invitationData: invitationData), animated: true)
                 }

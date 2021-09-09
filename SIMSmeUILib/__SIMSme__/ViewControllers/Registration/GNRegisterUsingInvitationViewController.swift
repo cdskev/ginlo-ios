@@ -122,6 +122,7 @@ class GNRegisterUsingInvitationViewController: DPAGViewControllerWithKeyboard {
                     }
                     guard let account = DPAGApplicationFacade.cache.account, let contact = DPAGApplicationFacade.cache.contact(for: account.guid), let accountID = contact.accountID else { return }
                     let vc = DPAGApplicationFacadeUIRegistration.welcomeVC(account: account.guid, accountID: accountID, phoneNumber: contact.phoneNumber, emailAddress: contact.eMailAddress, emailDomain: contact.eMailDomain, checkUsage: false)
+                    vc.invitationData = strongSelf.inivitationData
                     strongSelf.navigationController?.pushViewController(vc, animated: true)
                 }
             }

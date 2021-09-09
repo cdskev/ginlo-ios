@@ -121,14 +121,19 @@ class DPAGInitialPasswordRepeatViewController: DPAGInitialPasswordBaseViewContro
                     self.navigationController?.pushViewController(requestVC, animated: true)
                 case .scanInvitation:
                     let requestVC = DPAGApplicationFacadeUIRegistration.scanInvitationVC(blockSuccess: { [weak self] (text: String) in
-//                        self?.navigationController?.popViewController(animated: true)
                         if let strongSelf = self, let invitationData = DPAGApplicationFacade.contactsWorker.parseInvitationQRCode(invitationContent: text) {
                             strongSelf.invitationData = invitationData
                             let requestVC = DPAGApplicationFacadeUIRegistration.beforeInvitationRegistrationVC(password: password, enabled: strongSelf.switchPasswordType.isOn, invitationData: invitationData)
                             strongSelf.navigationController?.visibleViewController?.navigationController?.pushViewController(requestVC, animated: true)
                         }
-                    }, blockFailed: {
-                    }, blockCancelled: {
+                    }, blockFailed: { [weak self] in
+                        guard let strongSelf = self else { return }
+                        strongSelf.navigationController?.popViewController(animated: true)
+                        strongSelf.presentErrorAlert(alertConfig: AlertConfigError(messageIdentifier: "contacts.error.verifyingContactByQRCodeFailed") { _ in
+                        })
+                    }, blockCancelled: { [weak self] in
+                        guard let strongSelf = self else { return }
+                        strongSelf.navigationController?.popViewController(animated: true)
                     })
                     self.navigationController?.pushViewController(requestVC, animated: true)
                 case .executeInvitation:

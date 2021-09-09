@@ -223,8 +223,11 @@ private class DPAGScanInvitationWorker: NSObject {
                 }
             }
         } else {
-            self.isValidating = false
-            self.scanDelegate?.scanFinishedWithFail()
+            self.performBlockOnMainThread { [weak self] in
+                self?.cancelWithCompletion { [weak self] in
+                    self?.scanDelegate?.scanFinishedWithFail()
+                }
+            }
         }
     }
 }

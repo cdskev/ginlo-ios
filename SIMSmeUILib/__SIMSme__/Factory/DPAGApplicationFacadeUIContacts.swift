@@ -99,7 +99,8 @@ extension DPAGContactsOptionsProtocol {
                 let nextVC = DPAGApplicationFacadeUIRegistration.scanInvitationVC(blockSuccess: { [weak presentingVC, weak self] (text: String) in
                     if let strongVC = presentingVC, let strongSelf = self {
                         if let invitationData = DPAGApplicationFacade.contactsWorker.parseInvitationQRCode(invitationContent: text), let accountID = invitationData["i"] as? String, let signature = invitationData["s"] as? Data {
-                            strongSelf.searchAccount(accountID: accountID, signature: signature, presentingVC: strongVC)
+                            let createNewChat = (invitationData["c"] as? String) ?? "0" == "1"
+                            strongSelf.searchAccount(accountID: accountID, signature: signature, createNewChat: createNewChat, presentingVC: strongVC)
                         }
                     }
                 }, blockFailed: { [weak presentingVC] in
@@ -119,7 +120,7 @@ extension DPAGContactsOptionsProtocol {
         }
     }
     
-    private func searchAccount(accountID: String, signature: Data?, presentingVC: UIViewController) {
+    private func searchAccount(accountID: String, signature: Data?, createNewChat: Bool, presentingVC: UIViewController) {
         DPAGProgressHUD.sharedInstance.showForBackgroundProcess(true) { _ in
             DPAGApplicationFacade.contactsWorker.searchAccount(searchData: accountID, searchMode: .accountID) { responseObject, _, errorMessage in
                 DPAGProgressHUD.sharedInstance.hide(true) { [weak presentingVC] in
@@ -137,16 +138,21 @@ extension DPAGContactsOptionsProtocol {
                                             let nextVC = DPAGApplicationFacadeUIContacts.contactDetailsVC(contact: contactCache)
                                             presentingVC?.navigationController?.pushViewController(nextVC, animated: true)
                                         } else {
-                                            let nextVC = DPAGApplicationFacadeUIContacts.contactNewCreateVC(contact: contactCache)
+                                            let nextVC = DPAGApplicationFacadeUIContacts.contactScannedCreateVC(contact: contactCache)
+                                            if let signature = signature, let publicKey = contactCache.publicKey, DPAGApplicationFacade.contactsWorker.validateSignature(signature: signature, publicKey: publicKey) {
+                                                nextVC.confirmConfidence = true
+                                            }
+                                            nextVC.createNewChat = createNewChat
                                             presentingVC?.navigationController?.pushViewController(nextVC, animated: true)
                                         }
                                     case .meMyselfAndI:
                                         break
                                     case .privat:
-                                        let nextVC = DPAGApplicationFacadeUIContacts.contactNewCreateVC(contact: contactCache)
+                                        let nextVC = DPAGApplicationFacadeUIContacts.contactScannedCreateVC(contact: contactCache)
                                         if let signature = signature, let publicKey = contactCache.publicKey, DPAGApplicationFacade.contactsWorker.validateSignature(signature: signature, publicKey: publicKey) {
                                             nextVC.confirmConfidence = true
                                         }
+                                        nextVC.createNewChat = createNewChat
                                         presentingVC?.navigationController?.pushViewController(nextVC, animated: true)
                                 }
                             } else {
@@ -191,6 +197,7 @@ public struct DPAGApplicationFacadeUIContacts {
     public static func personToSendSelectVC(delegateSending: DPAGPersonSendingDelegate?) -> (UIViewController) { DPAGChoosePersonToSendViewController(delegateSending: delegateSending) }
     public static func contactDetailsVC(contact: DPAGContact, contactEdit: DPAGContactEdit? = nil) -> UIViewController & DPAGContactDetailsViewControllerProtocol { DPAGContactDetailsViewController(contact: contact, contactEdit: contactEdit) }
     public static func contactNewCreateVC(contact: DPAGContact, contactEdit: DPAGContactEdit? = nil) -> UIViewController & DPAGContactNewCreateViewControllerProtocol { DPAGContactNewCreateViewController(contact: contact, contactEdit: contactEdit) }
+    public static func contactScannedCreateVC(contact: DPAGContact, contactEdit: DPAGContactEdit? = nil) -> UIViewController & GNContactScannedCreateViewControllerProtocol { GNContactScannedCreateViewController(contact: contact, contactEdit: contactEdit) }
     public static func contactNewSearchVC() -> (UIViewController & DPAGContactNewSearchViewControllerProtocol) { DPAGContactNewSearchViewController() }
     static func contactNewSelectVC(contactGuids: [String]) -> UIViewController & DPAGContactNewSelectViewControllerProtocol { DPAGContactNewSelectViewController(contactGuids: contactGuids) }
     static func contactNotFoundVC(searchData: String, searchMode: DPAGContactSearchMode) -> (UIViewController & DPAGContactNotFoundViewControllerProtocol) { DPAGContactNotFoundViewController(searchData: searchData, searchMode: searchMode) }

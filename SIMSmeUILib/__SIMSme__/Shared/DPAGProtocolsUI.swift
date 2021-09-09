@@ -449,6 +449,12 @@ public protocol DPAGContactNewCreateViewControllerProtocol: DPAGContactDetailsVi
     var confirmConfidence: Bool { get set }
 }
 
+public protocol GNContactScannedCreateViewControllerProtocol: DPAGContactDetailsViewControllerBaseProtocol {
+    var confirmConfidence: Bool { get set }
+    var isLogin: Bool { get set }
+    var createNewChat: Bool { get set }
+}
+
 public protocol DPAGContactNewSearchViewControllerProtocol: AnyObject {
     var phoneNumInit: String? { get set }
     var countryCodeInit: String? { get set }
@@ -514,6 +520,7 @@ public protocol DPAGLicencesInitConsumer: AnyObject {
 
 public protocol DPAGWelcomeViewControllerProtocol: AnyObject {
     var accountGuid: String { get }
+    var invitationData: [String: Any]? { get set }
 }
 
 public protocol DPAGBackupRecoverPasswordViewControllerDelegate: AnyObject {

@@ -152,6 +152,7 @@
 		35EFD6462316BA7D00484CB1 /* PageEndpointViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 35EFD6452316BA7D00484CB1 /* PageEndpointViewController.xib */; };
 		720DB9C026E8D7C000DF0791 /* GNRegisterUsingInvitationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720DB9BF26E8D7C000DF0791 /* GNRegisterUsingInvitationViewController.swift */; };
 		720DB9C226E8D86700DF0791 /* GNRegisterUsingInvitationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 720DB9C126E8D86700DF0791 /* GNRegisterUsingInvitationViewController.xib */; };
+		720DB9C426E9FD8800DF0791 /* GNContactScannedCreateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720DB9C326E9FD8800DF0791 /* GNContactScannedCreateViewController.swift */; };
 		7232E1E725CEDA330010B886 /* GNSplitContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7232E1E625CEDA320010B886 /* GNSplitContainerViewController.swift */; };
 		72C3145925B6D20C00B8D54E /* DPAGGroupViewController+UITableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C3145025B6D20B00B8D54E /* DPAGGroupViewController+UITableViewDataSource.swift */; };
 		72C3145A25B6D20C00B8D54E /* DPAGGroupViewController+UIImagePickerControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C3145125B6D20B00B8D54E /* DPAGGroupViewController+UIImagePickerControllerDelegate.swift */; };
@@ -630,6 +631,7 @@
 		442802D06184A774DF506079 /* Pods-SIMSmeUILib.test.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SIMSmeUILib.test.xcconfig"; path = "../Pods/Target Support Files/Pods-SIMSmeUILib/Pods-SIMSmeUILib.test.xcconfig"; sourceTree = "<group>"; };
 		720DB9BF26E8D7C000DF0791 /* GNRegisterUsingInvitationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GNRegisterUsingInvitationViewController.swift; sourceTree = "<group>"; };
 		720DB9C126E8D86700DF0791 /* GNRegisterUsingInvitationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GNRegisterUsingInvitationViewController.xib; sourceTree = "<group>"; };
+		720DB9C326E9FD8800DF0791 /* GNContactScannedCreateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GNContactScannedCreateViewController.swift; sourceTree = "<group>"; };
 		7232E1E625CEDA320010B886 /* GNSplitContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GNSplitContainerViewController.swift; sourceTree = "<group>"; };
 		728CD72425FF5AD200F29572 /* 20_uilib_release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = 20_uilib_release.xcconfig; sourceTree = "<group>"; };
 		728CD72525FF5AD200F29572 /* 01_application_debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = 01_application_debug.xcconfig; sourceTree = "<group>"; };
@@ -1617,6 +1619,7 @@
 				A313F10022B271B4004C2E49 /* DPAGPersonsSearchViewController.swift */,
 				A313F0FE22B271B3004C2E49 /* DPAGPersonsSelectionBaseViewController.swift */,
 				A313F10722B271B6004C2E49 /* DPAGPersonsSelectionViewController.swift */,
+				720DB9C326E9FD8800DF0791 /* GNContactScannedCreateViewController.swift */,
 				A313F0F222B270CB004C2E49 /* Receiver */,
 			);
 			path = Contacts;
@@ -2301,6 +2304,7 @@
 				A39DF46422B3AD9D009ACDD6 /* DPAGMediaContentFileViewController.swift in Sources */,
 				359FAAA322C5091300562C32 /* DPAGFileMessageCell.swift in Sources */,
 				27DAEDC52099ED4000C64628 /* DPAGChatStreamBaseViewController+TableView.swift in Sources */,
+				720DB9C426E9FD8800DF0791 /* GNContactScannedCreateViewController.swift in Sources */,
 				72C3145A25B6D20C00B8D54E /* DPAGGroupViewController+UIImagePickerControllerDelegate.swift in Sources */,
 				27DAEDC62099ED4000C64628 /* DPAGChannelStreamViewController.swift in Sources */,
 				A313F0BB22B24ED3004C2E49 /* DPAGBackupPasswordViewController.swift in Sources */,

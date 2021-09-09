@@ -416,6 +416,7 @@
 "contacts.confidence.middle" = "araç";
 "contacts.confidence.none" = "belirsiz";
 "contacts.createNew.title" = "Save Contact";
+"contacts.createScanned.title" = "Save Scanned Contact";
 "contacts.detail.new.user" = "Find a User";
 "contacts.details.buttonBlock" = "blok";
 "contacts.details.buttonChat" = "Type a message";

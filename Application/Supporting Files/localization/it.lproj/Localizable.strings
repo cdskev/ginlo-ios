@@ -416,6 +416,7 @@
 "contacts.confidence.middle" = "Medio";
 "contacts.confidence.none" = "Non sicuro";
 "contacts.createNew.title" = "Salva contatto";
+"contacts.createScanned.title" = "Save Scanned Contact";
 "contacts.detail.new.user" = "Trova un utente";
 "contacts.details.buttonBlock" = "Blocca";
 "contacts.details.buttonChat" = "Scrivi un messaggio";
