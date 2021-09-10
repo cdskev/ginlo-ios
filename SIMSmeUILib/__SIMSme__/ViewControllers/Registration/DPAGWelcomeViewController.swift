@@ -486,10 +486,12 @@ class DPAGWelcomeViewController: DPAGViewControllerWithKeyboard, DPAGWelcomeView
                                 }
                             } else {
                                 let nextVC = DPAGApplicationFacadeUIContacts.contactNotFoundVC(searchData: accountID, searchMode: .accountID)
+                                nextVC.fromWelcomePage = true
                                 presentingVC?.navigationController?.pushViewController(nextVC, animated: true)
                             }
                         } else {
                             let nextVC = DPAGApplicationFacadeUIContacts.contactNotFoundVC(searchData: accountID, searchMode: .accountID)
+                            nextVC.fromWelcomePage = true
                             presentingVC?.navigationController?.pushViewController(nextVC, animated: true)
                         }
                     }

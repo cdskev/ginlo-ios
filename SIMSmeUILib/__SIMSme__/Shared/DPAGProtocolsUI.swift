@@ -464,7 +464,9 @@ public protocol DPAGContactNewSearchViewControllerProtocol: AnyObject {
 
 public protocol DPAGContactNewSelectViewControllerProtocol: AnyObject {}
 
-public protocol DPAGContactNotFoundViewControllerProtocol: AnyObject {}
+public protocol DPAGContactNotFoundViewControllerProtocol: AnyObject {
+    var fromWelcomePage: Bool { get set }
+}
 
 public protocol DPAGContactsSelectionGroupMembersDelegate: AnyObject {
     func addMembers(_ members: Set<DPAGContact>)

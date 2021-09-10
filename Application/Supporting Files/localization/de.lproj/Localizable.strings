@@ -6,6 +6,9 @@
 "alert.contactSearch.noneFound.message" = "Das ist leider kein ginlo Nutzer.";
 "alert.contactSearch.noneFound.messageDescription.accountID" = "Tippfehler in der ID \"%@\"? Dann einfach zurückgehen und nochmal eingeben. Oder wollen Sie Kontakte aus Ihrem Adressbuch zu %@ einladen?";
 "alert.contactSearch.noneFound.messageDescription.phoneNumber" = "Dann wird's Zeit das zu ändern. :-) Gleich eine Einladung an %@ für %@ schicken.";
+"alert.contactSearch.noneFound.messageDescription.accountID.fromWelcomePage" = "Es kann sein, dass der Kontakt die ginlo ID geändert hat. Die Einladung ist gültig, aber der Kontakt kann nicht zur Kontaktliste hinzugefügt werden.";
+"alert.contactSearch.noneFound.messageDescription.phoneNumber.fromWelcomePage" = "It may be that this user has changed their phone number. The invitation is still valid, but the user cannot be added to your contacts.";
+"alert.contactSearch.noneFound.messageDescription.emailAddress.fromWelcomePage" = "It may be that the user has changed their email-address. The invitation is still valid but the user cannot be added to your contacts.";
 "alert.welcome.updateLocalContacts.buttonCancel" = "Nein";
 "alert.welcome.updateLocalContacts.buttonOK" = "Ja";
 "alert.welcome.updateLocalContacts.message" = "Wollen Sie mal schauen, wer von Ihren Kontakten auch bei ginlo ist?";
@@ -408,6 +411,7 @@
 "contacts.remindSyncingPopup.title" = "Aktualisieren Sie Ihre Kontakte";
 "contacts.remindSyncingPopup.message" = "Zeit, mal wieder Ihr Adressbuch zu synchronisieren und rauszufinden, wer von Ihren Kontakten neu bei ginlo ist:\n Einfach oben rechts auf den Pfeil nach unten und dann auf \"Adressbuch synchronisieren\" tippen.";
 "contacts.button.inviteUserToSimsMe" = "Einladen";
+"contacts.button.ignore" = "OK";
 "contacts.button.inviteUserToSimsMeMail" = "Einladen via E-Mail";
 "contacts.button.inviteUserToSimsMeSMS" = "Einladen via SMS";
 "contacts.button.sendMessageToUser" = "Sichere Nachricht senden";
@@ -1008,6 +1012,7 @@
 "registration.subline.email_empty" = "Bitte geben Sie Ihre E-Mail-Adresse ein";
 "tutorial.registration.passwordCreate.label.passwordType" = "Einen 4-stelligen Zahlencode statt eines Passworts verwenden.";
 "contacts.options.addContact" = "Nutzer suchen";
+"contacts.options.addContact.notFound" = "Kontakt nicht gefunden";
 "contacts.options.updateContactsWithAddressBook" = "Adressbuch synchronisieren";
 "forgotPassword.labelEMail" = "Per E-Mail";
 "forgotPassword.labelSMS" = "Per SMS";

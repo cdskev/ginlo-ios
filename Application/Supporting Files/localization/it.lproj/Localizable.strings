@@ -6,6 +6,9 @@
 "alert.contactSearch.noneFound.message" = "Non è un utente ginlo.";
 "alert.contactSearch.noneFound.messageDescription.accountID" = "Controlla che non ci siano refusi in \"%@\". Torna indietro e riprova. O preferisci invitare i contatti nella tua rubrica a %@?";
 "alert.contactSearch.noneFound.messageDescription.phoneNumber" = "Cambiamolo. :-) Manda subito un invito a %@ per %@.";
+"alert.contactSearch.noneFound.messageDescription.accountID.fromWelcomePage" = "It may be that this user has changed their ginloID. The invitation is still valid, but the user cannot be added to your contacts.";
+"alert.contactSearch.noneFound.messageDescription.phoneNumber.fromWelcomePage" = "It may be that this user has changed their phone number. The invitation is still valid, but the user cannot be added to your contacts.";
+"alert.contactSearch.noneFound.messageDescription.emailAddress.fromWelcomePage" = "It may be that the user has changed their email-address. The invitation is still valid but the user cannot be added to your contacts.";
 "alert.welcome.updateLocalContacts.buttonCancel" = "No";
 "alert.welcome.updateLocalContacts.buttonOK" = "Sì";
 "alert.welcome.updateLocalContacts.message" = "Vuoi scoprire quali tuoi contatti sono su ginlo?";
@@ -407,6 +410,7 @@
 "contacts.alert.noContactInformationTitle" = "Non è possibile effettuare l'invito.";
 "contacts.remindSyncingPopup.title" = "Mantieni aggiornati i tuoi contatti";
 "contacts.remindSyncingPopup.message" = "E' ora di sincronizzare la rubrica per vedere chi dei tuoi contatti è nuovo su ginlo:\n  Tocca la freccia verso il basso in alto a destra, poi tocca \"Sincronizza la rubrica\".";
+"contacts.button.ignore" = "OK";
 "contacts.button.inviteUserToSimsMe" = "Invita";
 "contacts.button.inviteUserToSimsMeMail" = "Invita tramite E-Mail";
 "contacts.button.inviteUserToSimsMeSMS" = "Invita tramite SMS";
@@ -1008,6 +1012,7 @@
 "registration.subline.email_empty" = "Inserisci il tuo indirizzo e-mail";
 "tutorial.registration.passwordCreate.label.passwordType" = "Usa un codice a 4 cifre al posto della password.";
 "contacts.options.addContact" = "Trova un utente";
+"contacts.options.addContact.notFound" = "Contact not Found";
 "contacts.options.updateContactsWithAddressBook" = "Sincronizza la rubrica";
 "forgotPassword.labelEMail" = "Via e-mail";
 "forgotPassword.labelSMS" = "Via SMS";
