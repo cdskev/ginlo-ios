@@ -347,21 +347,34 @@ open class DPAGAppDelegate: UIResponder, UIApplicationDelegate {
         DPAGLog("Database ready")
         var canHandle = false
         self.urlToHandle = nil
-        let urlScheme: String = DPAGApplicationFacade.preferences.urlScheme ?? "ginlo"
-        let oldUrlScheme: String = DPAGApplicationFacade.preferences.urlSchemeOld ?? "simsme"
-        if url.isFileURL || url.scheme?.hasPrefix(urlScheme) ?? false || url.scheme?.hasPrefix(oldUrlScheme) ?? false {
+        if url.isFileURL || DPAGApplicationFacadeUI.urlHandler.hasMyUrlScheme(url) {
             if DPAGSimsMeController.sharedInstance.isWaitingForLogin {
                 self.urlToHandle = url
             } else {
-                let viewControllers = DPAGApplicationFacadeUI.urlHandler.handleUrl(url)
-                if viewControllers.count > 0 {
-                    canHandle = true
-                    if DPAGApplicationFacadeUIBase.containerVC.mainNavigationController.presentedViewController != nil {
-                        DispatchQueue.main.async {
-                            DPAGApplicationFacadeUIBase.containerVC.mainNavigationController.dismiss(animated: false, completion: nil)
+                let block = {
+                    let viewControllers = DPAGApplicationFacadeUI.urlHandler.handleUrl(url)
+                    if viewControllers.count > 0 {
+                        canHandle = true
+                        if DPAGApplicationFacadeUIBase.containerVC.mainNavigationController.presentedViewController != nil {
+                            DispatchQueue.main.async {
+                                DPAGApplicationFacadeUIBase.containerVC.mainNavigationController.dismiss(animated: false, completion: nil)
+                            }
                         }
+                        DPAGApplicationFacadeUIBase.containerVC.mainNavigationController.setViewControllers(viewControllers, animated: true)
                     }
-                    DPAGApplicationFacadeUIBase.containerVC.mainNavigationController.setViewControllers(viewControllers, animated: true)
+                }
+                if (DPAGApplicationFacadeUI.urlHandler.shouldCreateInvitationBasedAccount(url)) {
+                    self.performBlockOnMainThread {
+                        let actionCancel = UIAlertAction(titleIdentifier: "alert.welcome.invitationbased-creation.buttonCancel", style: .cancel, handler: { _ in
+                            canHandle = false
+                        })
+                        let actionOK = UIAlertAction(titleIdentifier: "alert.welcome.invitationbased-creation.buttonOk", style: .default, handler: { _ in
+                            block()
+                        })
+                        DPAGApplicationFacadeUIBase.containerVC.presentAlert(alertConfig: UIViewController.AlertConfig(messageIdentifier: "alert.welcome.invitationbased-creation.message", cancelButtonAction: actionCancel, otherButtonActions: [actionOK]))
+                    }
+                } else {
+                    block()
                 }
             }
         }

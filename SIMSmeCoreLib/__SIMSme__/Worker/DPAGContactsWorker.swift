@@ -224,20 +224,6 @@ class DPAGContactsWorker: NSObject, DPAGContactsWorkerProtocol {
         return nil
     }
     
-    private func queryValueFromParam(param: String) -> String? {
-        let components = param.components(separatedBy: "=")
-        if components.count >= 2 {
-            if param.hasSuffix("=") {
-                if param.hasSuffix("==") {
-                    return components[1] + "=="
-                }
-                return components[1] + "="
-            }
-            return components[1]
-        }
-        return nil
-    }
-
     private func splitInvitationPParam(_ param: String) -> [String: Any]? {
         let components = param.components(separatedBy: "&")
         var retval: [String: Any] = [:]
@@ -274,19 +260,14 @@ class DPAGContactsWorker: NSObject, DPAGContactsWorkerProtocol {
     }
     
     private func pParamFromInvitationComponent(param: String, fingerprint: String) -> String? {
-        if let pParamValue = queryValueFromParam(param: param) {
-            if let data = Data(base64Encoded: pParamValue), let pParams = String(data: data, encoding: .utf8) {
-                let sha1 = (pParams + AppConfig.qrCodeSalt).sha1()
-                if sha1 == fingerprint {
-                    return pParams
-                }
+        DPAGLog("pParamFromInvitationComponent: param = \(param), fingerprint = \(fingerprint)")
+        if let data = Data(base64Encoded: param), let pParams = String(data: data, encoding: .utf8) {
+            let sha1 = (pParams + AppConfig.qrCodeSalt).sha1()
+            if sha1 == fingerprint {
+                return pParams
             }
         }
         return nil
-    }
-    
-    private func qParamFromInvitationComponent(param: String) -> String? {
-        queryValueFromParam(param: param)
     }
     
     func parseInvitationParams(rawP: String, q: String) -> [String: Any]? {
@@ -297,12 +278,23 @@ class DPAGContactsWorker: NSObject, DPAGContactsWorkerProtocol {
     }
     
     func parseInvitationQRCode(invitationContent: String) -> [String: Any]? {
-        let components = invitationContent.components(separatedBy: "?")
-        if components.count == 2, components[0].starts(with: "https://" + AppConfig.ginloNowInvitationUrl) {
-            let invitationData = components[1].components(separatedBy: "&")
-            if invitationData.count == 2, let q = qParamFromInvitationComponent(param: invitationData[1]), let rawP = queryValueFromParam(param: invitationData[0]) {
-                return parseInvitationParams(rawP: rawP, q: q)
-            }
+        guard invitationContent.starts(with: "https://" + AppConfig.ginloNowInvitationUrl),
+              let incomingURL = URL(string: invitationContent),
+              let components = NSURLComponents(url: incomingURL, resolvingAgainstBaseURL: true),
+              let params = components.queryItems,
+              params.count == 2 else { return nil }
+        let rawP: String?
+        let q: String?
+        switch params[0].name {
+            case "p":
+                rawP = params[0].value
+                q = params[1].value
+            default:
+                rawP = params[1].value
+                q = params[0].value
+        }
+        if let rp = rawP, let qq = q {
+            return parseInvitationParams(rawP: rp, q: qq)
         }
         return nil
     }

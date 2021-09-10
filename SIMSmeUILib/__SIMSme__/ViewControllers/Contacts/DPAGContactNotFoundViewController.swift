@@ -9,6 +9,7 @@
 import MessageUI
 import SIMSmeCore
 import UIKit
+// Add an option to dismiss the view
 
 class DPAGContactNotFoundViewController: DPAGViewControllerBackground, DPAGContactNotFoundViewControllerProtocol {
     @IBOutlet private var imageView: UIImageView! {

@@ -11,6 +11,9 @@ import UIKit
 
 public protocol DPAGUrlHandlerProtocol {
     func handleUrl(_ url: URL) -> [UIViewController]
+    func isInvitationUrl(_ url: URL) -> Bool
+    func shouldCreateInvitationBasedAccount(_ url: URL) -> Bool
+    func hasMyUrlScheme(_ url: URL) -> Bool
     func handleCreateMessage(_ dict: [String: String]) -> [UIViewController]
 }
 
@@ -92,6 +95,20 @@ class DPAGUrlHandler {
         }
         return dict
     }
+    
+    private func parseURL(_ url: URL) -> [String: String] {
+        var ret: [String: String] = [:]
+        guard let components = NSURLComponents(url: url, resolvingAgainstBaseURL: true) else { return ret }
+        guard let params = components.queryItems else { return ret }
+        for param in params {
+            if let value = param.value {
+                ret[param.name] = value
+            } else {
+                ret[param.name] = ""
+            }
+        }
+        return ret
+    }
 }
 
 extension DPAGUrlHandler: DPAGUrlHandlerProtocol {
@@ -102,7 +119,7 @@ extension DPAGUrlHandler: DPAGUrlHandlerProtocol {
             DPAGLog("host: %@", host)
             DPAGLog("query string: %@", query)
 
-            let dict = self.parseQueryString(query)
+            let dict = self.parseURL(url)
 
             DPAGLog("url received: \(url)")
             DPAGLog("url path: \(url.path)")
@@ -112,8 +129,7 @@ extension DPAGUrlHandler: DPAGUrlHandlerProtocol {
             if host == DPAGStrings.URLHandler.HOST_ACCOUNT {
                 return self.handleAccountQuery(dict)
             } else if host == DPAGStrings.URLHandler.HOST_INVITE, DPAGApplicationFacade.cache.account == nil {
-                // we have received an invite but there is no account. This results in automatic account creation
-                //
+                return self.handleInvitationBasedAccountCreation(dict)
             } else if let account = DPAGApplicationFacade.cache.account, let contact = DPAGApplicationFacade.cache.contact(for: account.guid), let nickName = contact.nickName, !nickName.isEmpty {
                 switch host {
                     case DPAGStrings.URLHandler.HOST_MESSAGE:
@@ -125,7 +141,7 @@ extension DPAGUrlHandler: DPAGUrlHandlerProtocol {
                             return self.handleChannelAdd(dict)
                         }
                     case DPAGStrings.URLHandler.HOST_INVITE:
-                        return self.handleInvitationBasedAccountCreation(dict)
+                        return self.handleInvitationBasedContactSearch(dict)
                     default:
                         break
                 }
@@ -134,6 +150,23 @@ extension DPAGUrlHandler: DPAGUrlHandlerProtocol {
         return []
     }
 
+    func isInvitationUrl(_ url: URL) -> Bool {
+        if hasMyUrlScheme(url), url.query != nil, let host = url.host, host == DPAGStrings.URLHandler.HOST_INVITE {
+            return true
+        }
+        return false
+    }
+    
+    func shouldCreateInvitationBasedAccount(_ url: URL) -> Bool {
+        DPAGApplicationFacade.cache.account == nil && isInvitationUrl(url)
+    }
+    
+    func hasMyUrlScheme(_ url: URL) -> Bool {
+        let urlScheme: String = DPAGApplicationFacade.preferences.urlScheme ?? "ginlo"
+        let oldUrlScheme: String = DPAGApplicationFacade.preferences.urlSchemeOld ?? "simsme"
+        return url.scheme?.hasPrefix(urlScheme) ?? false || url.scheme?.hasPrefix(oldUrlScheme) ?? false
+    }
+    
     func handleInvitationBasedAccountCreation(_ dict: [String: String]) -> [UIViewController] {
         guard DPAGApplicationFacade.cache.account == nil else { return [] }
         if let rawP = dict["p"], let q = dict["q"], let invitationData = DPAGApplicationFacade.contactsWorker.parseInvitationParams(rawP: rawP, q: q) {
@@ -150,9 +183,18 @@ extension DPAGUrlHandler: DPAGUrlHandlerProtocol {
         return [DPAGSimsMeController.sharedInstance.chatsListViewController, nostreamVC]
     }
 
+    func handleInvitationBasedContactSearch(_ dict: [String: String]) -> [UIViewController] {
+        var searchDict: [String: String] = [:]
+        if let accountID = dict["i"] {
+            searchDict[DPAGStrings.URLHandler.KEY_CONTACT_GINLOID] = accountID
+            return handleSearchContact(searchDict)
+        }
+        return []
+    }
+    
     func handleSearchContact(_ dict: [String: String]) -> [UIViewController] {
         let contactSearchVC = DPAGApplicationFacadeUIContacts.contactNewSearchVC()
-        if let ginloID = dict[DPAGStrings.URLHandler.KEY_CONTACT_SIMSMEID] {
+        if let ginloID = dict[DPAGStrings.URLHandler.KEY_CONTACT_GINLOID] {
             contactSearchVC.ginloIDInit = ginloID
         } else if let simsmeID = dict[DPAGStrings.URLHandler.KEY_CONTACT_SIMSMEID] {
             contactSearchVC.ginloIDInit = simsmeID

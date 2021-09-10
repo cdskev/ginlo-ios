@@ -9,6 +9,9 @@
 "alert.welcome.updateLocalContacts.buttonCancel" = "No";
 "alert.welcome.updateLocalContacts.buttonOK" = "Yes";
 "alert.welcome.updateLocalContacts.message" = "Want to find out who among your contacts is on ginlo, too?";
+"alert.welcome.invitationbased-creation.message" = "Great! You have an invitation. Let's create your ginlo account.";
+"alert.welcome.invitationbased-creation.buttonCancel" = "Cancel";
+"alert.welcome.invitationbased-creation.buttonOk" = "Create";
 "android.serach.placeholder" = "Search";
 "attention" = "Error";
 "backendservice.internet.connectionFailed" = "No internet connection";
