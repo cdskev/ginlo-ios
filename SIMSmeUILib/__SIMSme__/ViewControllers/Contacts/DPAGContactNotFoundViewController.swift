@@ -44,9 +44,11 @@ class DPAGContactNotFoundViewController: DPAGViewControllerBackground, DPAGConta
                     if let strongSelf = self, let presentedViewController = strongSelf.presentedViewController {
                         presentedViewController.dismiss(animated: true) {
                             NotificationCenter.default.post(name: DPAGStrings.Notification.Application.DID_COMPLETE_LOGIN, object: nil)
+                            NotificationCenter.default.post(name: DPAGStrings.Notification.Menu.MENU_SHOW_CHATS, object: nil, userInfo: nil)
                         }
                     } else {
                         NotificationCenter.default.post(name: DPAGStrings.Notification.Application.DID_COMPLETE_LOGIN, object: nil)
+                        NotificationCenter.default.post(name: DPAGStrings.Notification.Menu.MENU_SHOW_CHATS, object: nil, userInfo: nil)
                     }
                 }
             } else {
