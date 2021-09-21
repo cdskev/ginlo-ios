@@ -357,7 +357,7 @@ class DPAGConfirmAccountViewController: DPAGViewControllerWithKeyboard, DPAGConf
 
     private var iCloudQuery: NSMetadataQuery?
 
-    private func  () {
+    private func handleServiceSuccessSearchBackup() {
         DPAGProgressHUD.sharedInstance.hide(true) { [weak self] in
             if ((try? DPAGApplicationFacade.backupWorker.isICloudEnabled()) ?? false) == false {
                 self?.didFinishGatheringMetadata()
