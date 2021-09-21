@@ -317,9 +317,6 @@ class DPAGReceiveMessagesWorker: NSObject, DPAGReceiveMessagesWorkerProtocol {
         channelCheckResult.channelsToUnsubscribe.forEach { channelGuid in
             DPAGApplicationFacade.feedWorker.unsubscribeFeed(feedGuid: channelGuid, feedType: .channel) { _, _, _ in }
         }
-        channelCheckResult.servicesToUnsubscribe.forEach { channelGuid in
-            DPAGApplicationFacade.feedWorker.unsubscribeFeed(feedGuid: channelGuid, feedType: .service) { _, _, _ in }
-        }
         for contactGuid in messageInfo.contactsUpdated {
             NotificationCenter.default.post(name: DPAGStrings.Notification.Contact.CHANGED, object: self, userInfo: [DPAGStrings.Notification.Contact.CHANGED__USERINFO_KEY__CONTACT_GUID: contactGuid])
         }

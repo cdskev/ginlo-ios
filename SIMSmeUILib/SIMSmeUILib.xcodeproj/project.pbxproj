@@ -72,7 +72,6 @@
 		27DAEDE02099ED4000C64628 /* DPAGShowVoiceRecViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DAEB3A2099E73700C64628 /* DPAGShowVoiceRecViewController.swift */; };
 		27DAEDE22099ED4000C64628 /* DPAGGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DAEB3E2099E73700C64628 /* DPAGGroupViewController.swift */; };
 		27DAEDE32099ED4000C64628 /* DPAGGroupViewController.xib in Sources */ = {isa = PBXBuildFile; fileRef = 27DAEB3F2099E73700C64628 /* DPAGGroupViewController.xib */; };
-		27DAEE792099ED4100C64628 /* DPAGSubscribeServiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DAEBE32099E73700C64628 /* DPAGSubscribeServiceViewController.swift */; };
 		27DF885920C114900050755D /* DPAGUIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DF885820C114900050755D /* DPAGUIHelper.swift */; };
 		27E987E220BF47C8004B607F /* SIMSmeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27E987E120BF47C8004B607F /* SIMSmeCore.framework */; };
 		358B03D0228DBC90000E5827 /* PListError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358B03CF228DBC90000E5827 /* PListError.swift */; };
@@ -543,7 +542,6 @@
 		27DAEB3A2099E73700C64628 /* DPAGShowVoiceRecViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DPAGShowVoiceRecViewController.swift; sourceTree = "<group>"; };
 		27DAEB3E2099E73700C64628 /* DPAGGroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DPAGGroupViewController.swift; sourceTree = "<group>"; };
 		27DAEB3F2099E73700C64628 /* DPAGGroupViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DPAGGroupViewController.xib; sourceTree = "<group>"; };
-		27DAEBE32099E73700C64628 /* DPAGSubscribeServiceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DPAGSubscribeServiceViewController.swift; sourceTree = "<group>"; };
 		27DAECD62099E77800C64628 /* sound_animation.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = sound_animation.gif; sourceTree = "<group>"; };
 		27DAECD72099E77800C64628 /* sound_animation@2x.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "sound_animation@2x.gif"; sourceTree = "<group>"; };
 		27DAECD82099E77800C64628 /* sound_animation@3x.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "sound_animation@3x.gif"; sourceTree = "<group>"; };
@@ -1209,14 +1207,6 @@
 			path = Group;
 			sourceTree = "<group>";
 		};
-		27DAEBE42099E73700C64628 /* Services */ = {
-			isa = PBXGroup;
-			children = (
-				27DAEBE32099E73700C64628 /* DPAGSubscribeServiceViewController.swift */,
-			);
-			path = Services;
-			sourceTree = "<group>";
-		};
 		27DAECDC2099E77800C64628 /* GIF */ = {
 			isa = PBXGroup;
 			children = (
@@ -1454,7 +1444,6 @@
 				A313F12B22B27265004C2E49 /* Misc */,
 				A3FF38A322B3E96100891E55 /* Password */,
 				A313F15322B28C0F004C2E49 /* Registration */,
-				27DAEBE42099E73700C64628 /* Services */,
 				A313F06122B24ED3004C2E49 /* Settings */,
 			);
 			path = ViewControllers;
@@ -2492,7 +2481,6 @@
 				A3FF389822B3E79000891E55 /* DPAGRootContainerViewController.swift in Sources */,
 				A313F1A822B29025004C2E49 /* DPAGIntroPage0ViewController.swift in Sources */,
 				A3056FEF22577F8F003A35FD /* AddAttachmentAlertHelper.swift in Sources */,
-				27DAEE792099ED4100C64628 /* DPAGSubscribeServiceViewController.swift in Sources */,
 				A3FF38C522B3EBDB00891E55 /* DPAGNavigationController.swift in Sources */,
 				A3FF387222B3E31300891E55 /* DPAGAudioHelper.swift in Sources */,
 				A3FF386B22B3E09C00891E55 /* DPAGApplicationFacadeUIBase.swift in Sources */,

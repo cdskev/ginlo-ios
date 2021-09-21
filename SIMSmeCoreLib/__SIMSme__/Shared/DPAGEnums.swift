@@ -205,8 +205,7 @@ public enum DPAGBannerType: Int {
 public enum DPAGNotificationChatType: UInt {
     case single = 0,
         group,
-        channel,
-        service
+        channel
 }
 
 public enum DPAGNotificationRegistrationState: Int {
@@ -277,8 +276,7 @@ public enum DPAGMessageType: Int {
 }
 
 public enum DPAGChannelType: Int {
-    case channel = 0,
-        service
+    case channel = 0
 }
 
 public enum DPAGInternalError: UInt {

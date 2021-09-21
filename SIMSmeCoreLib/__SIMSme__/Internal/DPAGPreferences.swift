@@ -1891,8 +1891,6 @@ public class DPAGPreferences: NSObject {
                 key = .kGroupChatRingtone
             case .channel:
                 key = .kChannelChatRingtone
-            case .service:
-                key = .kServiceChatRingtone
         }
 
         return self[key] != DPAGPreferences.kValueNotificationSoundNone
@@ -1908,8 +1906,6 @@ public class DPAGPreferences: NSObject {
                 key = .kNotificationGroupChatEnabled
             case .channel:
                 key = .kNotificationChannelChatEnabled
-            case .service:
-                key = .kNotificationServiceChatEnabled
         }
 
         return self[key] != DPAGPreferences.kValueNotificationDisabled
@@ -1921,8 +1917,6 @@ public class DPAGPreferences: NSObject {
         switch feedType {
             case .channel:
                 key = String(format: "%@-%@", feedGuid, PropString.kNotificationChannelChatEnabled.rawValue)
-            case .service:
-                key = String(format: "%@-%@", feedGuid, PropString.kNotificationServiceChatEnabled.rawValue)
         }
 
         return (UserDefaults.standard.object(forKey: key) as? String) != DPAGPreferences.kValueNotificationDisabled

@@ -363,7 +363,7 @@ open class DPAGAppDelegate: UIResponder, UIApplicationDelegate {
                         DPAGApplicationFacadeUIBase.containerVC.mainNavigationController.setViewControllers(viewControllers, animated: true)
                     }
                 }
-                if (DPAGApplicationFacadeUI.urlHandler.shouldCreateInvitationBasedAccount(url)) {
+                if DPAGApplicationFacadeUI.urlHandler.shouldCreateInvitationBasedAccount(url) {
                     self.performBlockOnMainThread {
                         let actionCancel = UIAlertAction(titleIdentifier: "alert.welcome.invitationbased-creation.buttonCancel", style: .cancel, handler: { _ in
                             canHandle = false
@@ -920,7 +920,7 @@ open class DPAGAppDelegate: UIResponder, UIApplicationDelegate {
         // Check for specific URL components that you need.
         guard let path = components.path, let params = components.queryItems else { return false }
         print("path = \(path)")
-        if let actualParams = params.first(where: { $0.name == "p" } )?.value, let signature = params.first(where: { $0.name == "q" })?.value {
+        if let actualParams = params.first(where: { $0.name == "p" })?.value, let signature = params.first(where: { $0.name == "q" })?.value {
             print("actualParams = \(actualParams)")
             print("signature = \(signature)")
             JitsiMeet.sharedInstance().application(application, continue: userActivity, restorationHandler: restorationHandler)

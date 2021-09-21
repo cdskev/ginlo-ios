@@ -153,7 +153,7 @@ extension DPAGUrlHandler: DPAGUrlHandlerProtocol {
     func isInvitationUrl(_ url: URL) -> Bool {
         if hasMyUrlScheme(url), url.query != nil, let host = url.host, host == DPAGStrings.URLHandler.HOST_INVITE {
             return true
-        }
+        }      
         return false
     }
     

@@ -280,7 +280,6 @@ class DPAGAccountManager: NSObject, DPAGAccountManagerProtocol {
             } else if let accountID = self?.validateResponseForAccountConfirmation(dictionary: responseObject as? [AnyHashable: Any]) {
                 self?.accountDAO.confirmAccount(accountID: accountID)
                 DPAGApplicationFacade.model.update(with: nil)
-                DPAGApplicationFacade.profileWorker.setBrabblerSwitchState()
                 responseBlock(responseObject, errorCode, errorMessage)
             } else {
                 responseBlock(nil, "service.tryAgainLater", "service.tryAgainLater")

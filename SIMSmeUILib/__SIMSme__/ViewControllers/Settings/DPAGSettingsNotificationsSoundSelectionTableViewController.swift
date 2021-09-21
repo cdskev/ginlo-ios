@@ -35,8 +35,6 @@ class DPAGSettingsNotificationsSoundSelectionTableViewController: DPAGSettingsTa
                 self.currentTune = DPAGApplicationFacade.preferences[DPAGPreferences.PropString.kGroupChatRingtone] ?? DPAGPreferences.kValueNotificationSoundDefault
             case .channel:
                 self.currentTune = DPAGApplicationFacade.preferences[DPAGPreferences.PropString.kChannelChatRingtone] ?? DPAGPreferences.kValueNotificationSoundDefault
-            case .service:
-                self.currentTune = DPAGApplicationFacade.preferences[DPAGPreferences.PropString.kServiceChatRingtone] ?? DPAGPreferences.kValueNotificationSoundDefault
         }
         super.init(style: .grouped)
     }
@@ -78,8 +76,6 @@ class DPAGSettingsNotificationsSoundSelectionTableViewController: DPAGSettingsTa
                         DPAGApplicationFacade.preferences[DPAGPreferences.PropString.kGroupChatRingtone] = newValue
                     case .channel:
                         DPAGApplicationFacade.preferences[DPAGPreferences.PropString.kChannelChatRingtone] = newValue
-                    case .service:
-                        DPAGApplicationFacade.preferences[DPAGPreferences.PropString.kServiceChatRingtone] = newValue
                 }
                 DPAGNotificationWorker.setNotificationSoundEnabled(true, forChatType: soundType) { [weak self] _, _, errorMessage in
                     if let errorMessage = errorMessage {
@@ -90,8 +86,6 @@ class DPAGSettingsNotificationsSoundSelectionTableViewController: DPAGSettingsTa
                                 DPAGApplicationFacade.preferences[DPAGPreferences.PropString.kGroupChatRingtone] = oldValue
                             case .channel:
                                 DPAGApplicationFacade.preferences[DPAGPreferences.PropString.kChannelChatRingtone] = oldValue
-                            case .service:
-                                DPAGApplicationFacade.preferences[DPAGPreferences.PropString.kServiceChatRingtone] = oldValue
                         }
                         DPAGProgressHUD.sharedInstance.hide(true) { [weak self] in
                             self?.tableView.reloadData()

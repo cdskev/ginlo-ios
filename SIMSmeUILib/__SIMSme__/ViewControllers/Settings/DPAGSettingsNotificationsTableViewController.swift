@@ -82,8 +82,6 @@ class DPAGSettingsNotificationsTableViewController: DPAGSettingsTableViewControl
                     self.tableView.reloadRows(at: [IndexPath(row: RowsGroups.selectNotificationSound.rawValue, section: Sections.groups.rawValue)], with: .automatic)
                 case .channel:
                     self.tableView.reloadRows(at: [IndexPath(row: RowsChannels.selectNotificationSound.rawValue, section: Sections.channels.rawValue)], with: .automatic)
-                default:
-                    self.tableView.reloadRows(at: [IndexPath(row: RowsChannels.selectNotificationSound.rawValue, section: Sections.channels.rawValue)], with: .automatic)
             }
         }
     }
@@ -155,11 +153,6 @@ class DPAGSettingsNotificationsTableViewController: DPAGSettingsTableViewControl
     }
 
     @objc
-    fileprivate func handleSwitchForServiceChatNotificationTapped(_ sender: Any?) {
-        self.handleSwitchForNotificationTapped(sender, preferencesTogglePushKey: .kNotificationServiceChatEnabled, chatType: .service)
-    }
-
-    @objc
     fileprivate func handleSwitchForChatNotificationSoundTapped(_ sender: Any?) {
         self.handleSwitchForSoundTapped(sender, preferencesToggleSoundKey: .kChatRingtone, chatType: .single)
     }
@@ -172,11 +165,6 @@ class DPAGSettingsNotificationsTableViewController: DPAGSettingsTableViewControl
     @objc
     fileprivate func handleSwitchForChannelChatNotificationSoundTapped(_ sender: Any?) {
         self.handleSwitchForSoundTapped(sender, preferencesToggleSoundKey: .kChannelChatRingtone, chatType: .channel)
-    }
-
-    @objc
-    fileprivate func handleSwitchForServiceChatNotificationSoundTapped(_ sender: Any?) {
-        self.handleSwitchForSoundTapped(sender, preferencesToggleSoundKey: .kServiceChatRingtone, chatType: .service)
     }
 
     @objc

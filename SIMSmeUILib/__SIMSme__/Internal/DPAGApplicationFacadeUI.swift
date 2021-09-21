@@ -54,7 +54,6 @@ public struct DPAGApplicationFacadeUI {
     static func channelCategoryVC() -> UIViewController & DPAGChannelCategoriesViewControllerProtocol { DPAGChannelCategoryViewController() }
     static func channelDetailsVC(channelGuid: String, category: DPAGChannelCategory?) -> UIViewController? { DPAGChannelDetailsViewController(channelGuid: channelGuid, category: category) }
     static func channelSubscribeVC() -> (UIViewController & DPAGSubscribeChannelViewControllerProtocol) { DPAGSubscribeChannelViewController() }
-    static func serviceSubscribeVC() -> (UIViewController & DPAGSubscribeServiceViewControllerProtocol) { DPAGSubscribeServiceViewController() }
     static func chatsListVC() -> UIViewController & DPAGChatsListViewControllerProtocol & DPAGNewChatDelegate { DPAGChatsListViewController() }
     static func channelStreamVC(stream streamGuid: String, streamState: DPAGChatStreamState) -> (UIViewController & DPAGChatStreamBaseViewControllerProtocol)? { DPAGChannelStreamViewController(stream: streamGuid, streamState: streamState) }
     static func chatStreamVC(stream streamGuid: String, streamState: DPAGChatStreamState, startChatWithUnconfirmedContact: Bool = true) -> (UIViewController & DPAGChatStreamBaseViewControllerProtocol) { DPAGChatStreamViewController(stream: streamGuid, streamState: streamState, startChatWithUnconfirmedContact: startChatWithUnconfirmedContact) }

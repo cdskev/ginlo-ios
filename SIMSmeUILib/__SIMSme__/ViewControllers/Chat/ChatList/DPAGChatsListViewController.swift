@@ -583,7 +583,6 @@ class DPAGChatsListViewController: DPAGTableViewControllerWithSearch, DPAGProgre
             self.checkSendNickname()
             self.checkNeedConfirmCompanyAdressBook()
         }
-        self.setBrabblerOptInState()
         self.performBlockOnMainThread { [weak self] in
             self?.askForInvitation()
         }
@@ -614,12 +613,6 @@ class DPAGChatsListViewController: DPAGTableViewControllerWithSearch, DPAGProgre
                 })
                 strongSelf.presentAlert(alertConfig: AlertConfig(titleIdentifier: title, messageIdentifier: message, cancelButtonAction: actionOK, otherButtonActions: [UIAlertAction(titleIdentifier: "res.cancel", style: .default, handler: nil)]))
             }
-        }
-    }
-
-    private func setBrabblerOptInState() {
-        self.performBlockInBackground {
-            DPAGApplicationFacade.profileWorker.setBrabblerSwitchState()
         }
     }
 

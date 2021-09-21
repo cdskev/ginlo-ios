@@ -114,7 +114,6 @@ class GNRegisterUsingInvitationViewController: DPAGViewControllerWithKeyboard {
         if let dictionary = responseArr[0] as? [AnyHashable: Any], let dictAccount = dictionary[DPAGStrings.JSON.Account.OBJECT_KEY] as? [AnyHashable: Any], let accountID = dictAccount[DPAGStrings.JSON.Account.ACCOUNT_ID] as? String {
             DPAGApplicationFacade.accountManager.autoConfirmAccount(accountID: accountID)
             DPAGApplicationFacade.model.update(with: nil)
-            DPAGApplicationFacade.profileWorker.setBrabblerSwitchState()
             DPAGProgressHUD.sharedInstance.hide(true) { [weak self] in
                 if let strongSelf = self {
                     if strongSelf.enabledPassword == false {

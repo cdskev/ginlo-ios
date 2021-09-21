@@ -66,11 +66,6 @@ enum DPAGServerFunction {
     struct RemoveConfirmedPhone: Codable, CodableDict { var cmd: String = "removeConfirmedPhone" }
     struct RequestEncryptionInfo: Codable, CodableDict { var cmd: String = "requestEncryptionInfo" }
 
-    struct SetBrabblerSwitchState: Codable, CodableDict {
-           var cmd: String = "setOptInState"
-           let state: String
-    }
-    
     struct SendPrivateMessage: Codable, CodableDict {
         let cmd: String = "sendPrivateMessage"
         let message: String

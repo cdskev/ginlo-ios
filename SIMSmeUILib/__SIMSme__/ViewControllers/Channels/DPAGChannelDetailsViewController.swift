@@ -136,7 +136,7 @@ class DPAGChannelDetailsViewController: DPAGViewControllerBackground {
             assetTypesMissing.append("\(channelGuid);\(DPAGChannel.AssetType.itemForeground.rawValue)")
         }
 
-        if self.imageViewChannelProviderBack.backgroundColor == nil || self.feedType == .service {
+        if self.imageViewChannelProviderBack.backgroundColor == nil {
             self.imageViewChannelProviderBack.image = assetsList[.itemBackground] as? UIImage
 
             if self.imageViewChannelProviderBack.image == nil, assetsList.keys.contains(.itemBackground) == false {
@@ -173,7 +173,7 @@ class DPAGChannelDetailsViewController: DPAGViewControllerBackground {
 
                             strongSelf.imageViewChannelProviderFront.image = assetsList[.itemForeground] as? UIImage
 
-                            if strongSelf.imageViewChannelProviderBack.backgroundColor == nil || feedType == .service {
+                            if strongSelf.imageViewChannelProviderBack.backgroundColor == nil {
                                 strongSelf.imageViewChannelProviderBack.image = assetsList[.itemBackground] as? UIImage
                             }
 

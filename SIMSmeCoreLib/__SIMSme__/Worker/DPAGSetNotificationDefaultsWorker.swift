@@ -24,11 +24,9 @@ public class DPAGSetNotificationDefaultsWorker {
             enableSingleChatNotificationSounds,
             enableGroupChatNotificationSounds,
             enableChannelChatNotificationSounds,
-            enableServiceChatNotificationSounds,
             enableSingleChatNotifications,
             enableGroupChatNotifications,
-            enableChannelChatNotifications,
-            enableServiceChatNotifications
+            enableChannelChatNotifications
         ]
     }
 
@@ -68,10 +66,6 @@ public class DPAGSetNotificationDefaultsWorker {
         DPAGApplicationFacade.server.setNotificationSound(enable: true, forChatType: .channel, withResponse: self.newResponseBlock())
     }
 
-    func enableServiceChatNotificationSounds() {
-        DPAGApplicationFacade.server.setNotificationSound(enable: true, forChatType: .service, withResponse: self.newResponseBlock())
-    }
-
     func enableSingleChatNotifications() {
         DPAGApplicationFacade.server.setNotification(enable: true, forChatType: .single, withResponse: self.newResponseBlock())
     }
@@ -82,10 +76,6 @@ public class DPAGSetNotificationDefaultsWorker {
 
     func enableChannelChatNotifications() {
         DPAGApplicationFacade.server.setNotification(enable: true, forChatType: .channel, withResponse: self.newResponseBlock())
-    }
-
-    func enableServiceChatNotifications() {
-        DPAGApplicationFacade.server.setNotification(enable: true, forChatType: .service, withResponse: self.newResponseBlock())
     }
 
     func newResponseBlock() -> DPAGServiceResponseBlock {
