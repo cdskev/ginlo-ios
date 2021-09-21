@@ -1116,11 +1116,11 @@ class DPAGBackupWorker: DPAGBackupWorkerProtocol, DPAGClassPerforming {
         guard let accountJson = try JSONSerialization.jsonObject(with: decryptedData, options: .allowFragments) as? [AnyHashable: Any], let accountInnerJson = accountJson["AccountBackup"] as? [AnyHashable: Any] else { throw DPAGErrorBackup.errFileInvalid }
 //        Because of ginloNow, we can't have this any more:
 //
-        let phoneNumber = accountInnerJson["phone"] as? String
-        let eMailAddress = accountInnerJson["email"] as? String
-        if phoneNumber == nil, eMailAddress == nil {
-            throw DPAGErrorBackup.errFileInvalid
-        }
+//        let phoneNumber = accountInnerJson["phone"] as? String
+//        let eMailAddress = accountInnerJson["email"] as? String
+//        if phoneNumber == nil, eMailAddress == nil {
+//            throw DPAGErrorBackup.errFileInvalid
+//        }
         backupFileInfo.aesKey = aesKey
     }
 
