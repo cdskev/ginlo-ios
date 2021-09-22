@@ -99,6 +99,7 @@ open class DPAGAppDelegate: UIResponder, UIApplicationDelegate {
     var crashReporter: CrashReporter?
     var preferencesLoaded: Bool = false
     var syncHelper: DPAGSynchronizationHelperAddressbook?
+    var canAcceptUrls: Bool = false
 
     // MARK: AppLicationDelegate
     // 1. APPLICATION LAUNCH LIFE-TIME
@@ -133,6 +134,10 @@ open class DPAGAppDelegate: UIResponder, UIApplicationDelegate {
         // If the database is not ready, we should wait for it, otherwise we screw up the
         // app state
         waitForDatabase()
+        if let urlToHandle = self.urlToHandle {
+            _ = self.application(application, open: urlToHandle, options: [:])
+        }
+        DPAGLog("didFinishLaunchingWithOptions: (EXIT-1) applicationState: \(UIApplication.shared.applicationState.rawValue)")
         guard let launchOptions = launchOptions else { return true }
         JitsiMeet.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         DPAGLog("didFinishLaunchingWithOptions: (EXIT-2) applicationState: \(UIApplication.shared.applicationState.rawValue)")
@@ -328,6 +333,7 @@ open class DPAGAppDelegate: UIResponder, UIApplicationDelegate {
 
     public func application(_ application: UIApplication, open url: URL, options _: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         DPAGApplicationFacadeUIBase.sharedApplication = application
+        DPAGLog("openUrl:: \(url)")
         var isActiveState = 0
         let block = { isActiveState = UIApplication.shared.applicationState.rawValue }
         if Thread.current == Thread.main {
@@ -337,8 +343,8 @@ open class DPAGAppDelegate: UIResponder, UIApplicationDelegate {
         }
         DPAGLog("application: openURL applicationState: \(isActiveState)")
         DPAGLog("Start with URL")
-        if self.databaseReady == false {
-            DPAGLog("Database  not ready ")
+        if self.databaseReady == false || canAcceptUrls == false {
+            DPAGLog("Database or Application not ready for acdcepting URLs")
             self.urlToHandle = url
             return false
         }
@@ -663,6 +669,11 @@ open class DPAGAppDelegate: UIResponder, UIApplicationDelegate {
                 })
             }
             strongSelf.syncAddressBook()
+            strongSelf.canAcceptUrls = true
+            if let urlToHandle = strongSelf.urlToHandle {
+                DPAGLog("Will try loading the url")
+                _ = strongSelf.application(application, open: urlToHandle, options: [:])
+            }
         }
         DPAGLog("launchApplication: (EXIT) applicationState: \(applicationState.rawValue)")
     }
@@ -886,25 +897,22 @@ open class DPAGAppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-    // TODO: Add support for universal links
     public func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-        // Get URL components from the incoming user activity.
-        guard userActivity.activityType == NSUserActivityTypeBrowsingWeb, let incomingURL = userActivity.webpageURL, let components = NSURLComponents(url: incomingURL, resolvingAgainstBaseURL: true) else { return false }
+        DPAGLog("ContinueUserActivity:: \(userActivity)")
+        guard userActivity.activityType == NSUserActivityTypeBrowsingWeb,
+              let incomingURL = userActivity.webpageURL,
+              DPAGApplicationFacade.contactsWorker.validateScanResult(text: incomingURL.absoluteString),
+              let components = NSURLComponents(url: incomingURL, resolvingAgainstBaseURL: true),
+              let params = components.queryItems,
+              let actualParams = params.first(where: { $0.name == "p" })?.value,
+              let signature = params.first(where: { $0.name == "q" })?.value else { return false }
 
-        // Check for specific URL components that you need.
-        guard let path = components.path, let params = components.queryItems else { return false }
-        print("path = \(path)")
-        if let actualParams = params.first(where: { $0.name == "p" })?.value, let signature = params.first(where: { $0.name == "q" })?.value {
-            print("actualParams = \(actualParams)")
-            print("signature = \(signature)")
+        if let url = URL(string: "ginlo://invite?p=\(actualParams)&q=\(signature)"), self.application(application, open: url, options: [:]) {
             JitsiMeet.sharedInstance().application(application, continue: userActivity, restorationHandler: restorationHandler)
             return true
-
-        } else {
-            print("Either album name or photo index missing")
-            JitsiMeet.sharedInstance().application(application, continue: userActivity, restorationHandler: restorationHandler)
-            return false
         }
+        JitsiMeet.sharedInstance().application(application, continue: userActivity, restorationHandler: restorationHandler)
+        return false
     }
 }
 
