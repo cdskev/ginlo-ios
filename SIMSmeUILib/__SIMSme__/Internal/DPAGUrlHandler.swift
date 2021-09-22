@@ -158,7 +158,7 @@ extension DPAGUrlHandler: DPAGUrlHandlerProtocol {
     }
     
     func shouldCreateInvitationBasedAccount(_ url: URL) -> Bool {
-        DPAGApplicationFacade.cache.account == nil && isInvitationUrl(url)
+        DPAGApplicationFacade.cache.account == nil && !DPAGApplicationFacade.preferences.isBaMandant && isInvitationUrl(url)
     }
     
     func hasMyUrlScheme(_ url: URL) -> Bool {

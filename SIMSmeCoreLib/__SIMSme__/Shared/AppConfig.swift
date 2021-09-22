@@ -62,7 +62,7 @@ public enum AppConfig {
     public static let createAnnouncementGroupAllowed: Bool = AppConfig.value(for: "CREATE_ANNOUNCEMENT_GROUP_ALLOWED", default: false)
     public static let chilkatLicense: String = AppConfig.value(for: "CHILKAT_LICENSE", default: "NONE")
     public static let qrCodeSalt: String = AppConfig.value(for: "QRCODE_SALT", default: "")
-    public static let ginloNowInvitationUrl: String = AppConfig.value(for: "GINLO_NOW_INVITATION_URL", default: "open.ginlo.net/invite")
+    public static let ginloNowInvitationUrl: String = AppConfig.value(for: "GINLO_NOW_INVITATION_URL", default: "join.ginlo.net/invite")
 
     #if targetEnvironment(simulator)
         public static let isSimulator = true
