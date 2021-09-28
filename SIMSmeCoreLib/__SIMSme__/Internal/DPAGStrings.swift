@@ -462,11 +462,6 @@ enum DPAGServerFunction {
         let nickName: String?
     }
 
-    struct SaveReport: Codable, CodableDict {
-        var cmd: String = "saveReport"
-        let data: String
-    }
-
     struct GetAttachment: Codable, CodableDict {
         var cmd: String = "getAttachment"
         let guid: String

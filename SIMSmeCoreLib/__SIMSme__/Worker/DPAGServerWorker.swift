@@ -81,7 +81,6 @@ protocol DPAGServerWorkerProtocol {
     func acceptInvitationForRoom(roomGuid: String, nickNameEncoded nickName: String?, withResponse responseBlock: @escaping DPAGServiceResponseBlock)
     func declineInvitationForRoom(roomGuid: String, nickNameEncoded nickName: String?, withResponse responseBlock: @escaping DPAGServiceResponseBlock)
 
-    func sendCrashReport(report: String, withResponse responseBlock: DPAGServiceResponseBlock?)
     func getAttachment(guid: String, progress downloadProgressBlock: DPAGProgressBlock?, destination: @escaping ((_ targetPath: URL?, _ response: URLResponse?) -> URL), withResponse responseBlock: @escaping DPAGServiceResponseBlock)
 
     func isTrackingDisabled(withResponse responseBlock: @escaping DPAGServiceResponseBlock)
@@ -708,20 +707,6 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
 
     func declineInvitationForRoom(roomGuid: String, nickNameEncoded nickName: String?, withResponse responseBlock: @escaping DPAGServiceResponseBlock) {
         self.sendCommand(DPAGServerFunction.DeclineRoomInvitation(guid: roomGuid, returnComplexResult: "1", nickName: nickName), withResponse: responseBlock)
-    }
-
-    func sendCrashReport(report: String, withResponse responseBlock: DPAGServiceResponseBlock?) {
-        if let reportData = report.data(using: .utf8) {
-            let report64 = reportData.base64EncodedString()
-            DPAGApplicationFacade.service.perform(request: {
-                let request = DPAGHttpServiceRequest()
-                request.parametersCodable = DPAGServerFunction.SaveReport(data: report64)
-                request.responseBlock = responseBlock
-                request.path = kPathDiag
-                request.authenticate = .none
-                return request
-            }())
-        }
     }
 
     func getAttachment(guid: String, progress downloadProgressBlock: DPAGProgressBlock?, destination: @escaping ((_ targetPath: URL?, _ response: URLResponse?) -> URL), withResponse responseBlock: @escaping DPAGServiceResponseBlock) {
