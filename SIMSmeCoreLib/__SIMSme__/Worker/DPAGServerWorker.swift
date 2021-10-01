@@ -121,9 +121,6 @@ protocol DPAGServerWorkerProtocol {
     func subscribeService(serviceGuid: String, filter: String, withResponse responseBlock: @escaping DPAGServiceResponseBlock)
     func unsubscribeService(serviceGuid: String, withResponse responseBlock: @escaping DPAGServiceResponseBlock)
 
-    func getInfoPages(withResponse responseBlock: @escaping DPAGServiceResponseBlock)
-    func getInfoPageData(pageGuid: String, withResponse responseBlock: @escaping DPAGServiceResponseBlock)
-
     func createBackupPasstoken(accountGuid: String, withResponse responseBlock: @escaping DPAGServiceResponseBlock)
     func setFollowedChannels(channelInfos: [[AnyHashable: Any]], withResponse responseBlock: @escaping DPAGServiceResponseBlock)
     func setFollowedServices(serviceInfos: [[AnyHashable: Any]], withResponse responseBlock: @escaping DPAGServiceResponseBlock)
@@ -859,16 +856,6 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
 
     func unsubscribeService(serviceGuid: String, withResponse responseBlock: @escaping DPAGServiceResponseBlock) {
         self.sendCommand(DPAGServerFunction.UnsubscribeService(guid: serviceGuid), withResponse: responseBlock)
-    }
-
-    func getInfoPages(withResponse responseBlock: @escaping DPAGServiceResponseBlock) {
-        let model = DPAGApplicationFacade.model
-
-        self.sendCommand(DPAGServerFunction.GetInfoPages(version: model.appVersion ?? "notSet", os: "iOS", language: Bundle.main.preferredLocalizations.first ?? "de"), withResponse: responseBlock)
-    }
-
-    func getInfoPageData(pageGuid: String, withResponse responseBlock: @escaping DPAGServiceResponseBlock) {
-        self.sendCommand(DPAGServerFunction.GetInfoPageData(guid: pageGuid), withResponse: responseBlock)
     }
 
     func createBackupPasstoken(accountGuid _: String, withResponse responseBlock: @escaping DPAGServiceResponseBlock) {

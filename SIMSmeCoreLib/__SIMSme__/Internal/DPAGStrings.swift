@@ -565,18 +565,6 @@ enum DPAGServerFunction {
         let guid: String
     }
 
-    struct GetInfoPages: Codable, CodableDict {
-        var cmd: String = "getInfoPages"
-        let version: String
-        let os: String
-        let language: String
-    }
-
-    struct GetInfoPageData: Codable, CodableDict {
-        var cmd: String = "getInfoPageData"
-        let guid: String
-    }
-
     struct SetFollowedChannels: Codable, CodableDict {
         var cmd: String = "setFollowedChannels"
         let data: String
