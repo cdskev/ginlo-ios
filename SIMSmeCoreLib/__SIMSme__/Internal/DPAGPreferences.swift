@@ -88,30 +88,28 @@ public class DPAGPreferences: NSObject {
         func serialize(from fileURL: URL) -> Bool {
             var success = false
             self.queueAccess.sync(flags: .barrier) {
-                if FileManager.default.fileExists(atPath: fileURL.absoluteString) {
-                    for _ in 0 ..< 20 {
-                        var dict: [String: Any]?
-                        DPAGLog("Trying to read the preferences")
-                        do {
-                            let data = try Data(contentsOf: fileURL)
-                            dict = try PropertyListSerialization.propertyList(from: data, format: nil) as? [String: Any]
-                        } catch {
-                            dict = nil
-                            if let nserror = error as NSError?, nserror.domain == "NSCocoaErrorDomain", nserror.code == 257 {
-                                DPAGLog(error, message: "I can not yet read the file in question because I don't have access - returning immediately to save time")
-                                break
-                            }
-                            DPAGLog(error, message: "error reading preferences file")
-                        }
-                        if let dict = dict {
-                            self.dict = dict
-                            success = true
-                            break
-                        } else {
-                            Thread.sleep(forTimeInterval: 0.1)
-                        }
-                    }
-                }
+                  for _ in 0 ..< 20 {
+                      var dict: [String: Any]?
+                      DPAGLog("Trying to read the preferences")
+                      do {
+                          let data = try Data(contentsOf: fileURL)
+                          dict = try PropertyListSerialization.propertyList(from: data, format: nil) as? [String: Any]
+                      } catch {
+                          dict = nil
+                          if let nserror = error as NSError?, nserror.domain == "NSCocoaErrorDomain", nserror.code == 257 {
+                              DPAGLog(error, message: "I can not yet read the file in question because I don't have access - returning immediately to save time")
+                              break
+                          }
+                          DPAGLog(error, message: "error reading preferences file")
+                      }
+                      if let dict = dict {
+                          self.dict = dict
+                          success = true
+                          break
+                      } else {
+                          Thread.sleep(forTimeInterval: 0.1)
+                      }
+                  }
             }
             return success
         }

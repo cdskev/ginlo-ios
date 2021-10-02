@@ -322,21 +322,17 @@ public class DPAGFetchedResultsControllerChatStream: DPAGFetchedResultsControlle
     }
 
     override public func load() -> [[DPAGDecryptedMessage]] {
-        DPAGLog("fetchedResultsController will load")
         self.fetchedResultsController?.managedObjectContext.performAndWait {
             var messages: [[DPAGDecryptedMessage]] = []
             let blockFetched = {
                 if let sections = self.fetchedResultsController?.sections?.reversed(), let managedObjectContext = self.fetchedResultsController?.managedObjectContext {
-                    DPAGLog("fetchedResultsController loading sections")
                     var msgLoadCount = 20
                     var msgIsNew = true
                     let accountGuid = DPAGApplicationFacade.cache.account?.guid
                     for sectionInfo in sections {
                         var sectionContent = [DPAGDecryptedMessage]()
                         let isPrivateKeyDecrypted = CryptoHelper.sharedInstance?.isPrivateKeyDecrypted() ?? false
-                        DPAGLog("fetchedResultsController loading section")
                         if let objects = sectionInfo.objects?.reversed() {
-                            DPAGLog("fetchedResultsController loading section objects reversed")
                             for msgObj in objects {
                                 if let message = msgObj as? SIMSMessage {
                                     msgIsNew = msgIsNew && (message.fromAccountGuid != accountGuid) && (message.dateReadLocal == nil && message.attributes?.dateReadLocal == nil)
@@ -359,18 +355,14 @@ public class DPAGFetchedResultsControllerChatStream: DPAGFetchedResultsControlle
                                     if msgIsNew || msgLoadCount > 0 {
                                         if isPrivateKeyDecrypted {
                                             if let decryptedMessage = DPAGApplicationFacade.cache.decryptedMessage(message, in: managedObjectContext) {
-//                                                DPAGLog("fetchedResultsController loading decrypted message")
                                                 sectionContent.append(decryptedMessage)
                                             } else {
-//                                                DPAGLog("fetchedResultsController loading unknown message because decryption failed", level: .error)
                                                 blockUnknown()
                                             }
                                         } else {
-//                                            DPAGLog("fetchedResultsController loading unknown message because private key was not decrypted", level: .error)
                                             blockUnknown()
                                         }
                                     } else {
-                                        // DPAGLog("fetchedResultsController loading unknown message because msgIsNew == \(msgIsNew) & msgLoadCount == \(msgLoadCount)")
                                         blockUnknown()
                                     }
                                 }
@@ -380,19 +372,15 @@ public class DPAGFetchedResultsControllerChatStream: DPAGFetchedResultsControlle
                         messages.append(sectionContent.reversed())
                     }
                 }
-//                DPAGLog("fetchedResultsController loaded sections: msgCount #\(messages.count)")
                 self.messages = messages.reversed()
                 self.fetchedResultsController?.delegate = self
-                DPAGLog("fetchedResultsController delegate set")
             }
             do {
                 try self.fetchedResultsController?.performFetch()
-                DPAGLog("fetchedResultsController fetched")
                 blockFetched()
             } catch {
                 let errorNS = error as NSError
                 if errorNS.code == 134_060, (errorNS.userInfo["reason"] as? String)?.range(of: "out of order") != nil {
-                    DPAGLog("fetchedResultsController fetched with out of order error \(error)", level: .error)
                     do {
                         try DPAGApplicationFacade.persistance.saveWithError { localContext in
                             let allMessages = try SIMSMessage.findAll(in: localContext, with: self.fetchRequest?.predicate)
@@ -414,9 +402,7 @@ public class DPAGFetchedResultsControllerChatStream: DPAGFetchedResultsControlle
                                 msg.messageOrderId = NSNumber(value: i)
                             }
                         }
-                        DPAGLog("fetchedResultsController try fetching reordered messages")
                         try self.fetchedResultsController?.performFetch()
-                        DPAGLog("fetchedResultsController fetched reordered messages")
                         blockFetched()
                     } catch {
                         DPAGLog("fetchedResultsController reorder messages failed with \(error)", level: .error)
@@ -426,7 +412,6 @@ public class DPAGFetchedResultsControllerChatStream: DPAGFetchedResultsControlle
                 }
             }
         }
-        DPAGLog("fetchedResultsController did load")
         return self.messages
     }
 

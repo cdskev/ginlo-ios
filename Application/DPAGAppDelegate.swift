@@ -125,9 +125,9 @@ open class DPAGAppDelegate: UIResponder, UIApplicationDelegate {
     public func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         DPAGLog("didFinishLaunchingWithOptions: (ENTER) applicationState: \(UIApplication.shared.applicationState.rawValue)")
         DPAGApplicationFacadeUIBase.sharedApplication = application
-        if !self.preferencesLoaded {
-            self.preferencesLoaded = DPAGApplicationFacade.preferences.setup()
-        }
+//        if !self.preferencesLoaded {
+//            self.preferencesLoaded = DPAGApplicationFacade.preferences.setup()
+//        }
         if self.window == nil {
             self.initWindow(application, inBackgroundWithOptions: launchOptions)
         }
@@ -148,9 +148,9 @@ open class DPAGAppDelegate: UIResponder, UIApplicationDelegate {
     public func applicationWillEnterForeground(_ application: UIApplication) {
         DPAGApplicationFacadeUIBase.sharedApplication = application
         DPAGLog("applicationWillEnterForeground: (ENTER) applicationState: \(UIApplication.shared.applicationState.rawValue)")
-        if !self.preferencesLoaded {
-            self.preferencesLoaded = DPAGApplicationFacade.preferences.setup()
-        }
+//        if !self.preferencesLoaded {
+//            self.preferencesLoaded = DPAGApplicationFacade.preferences.setup()
+//        }
         if self.window == nil {
             self.initWindow(application, inBackgroundWithOptions: nil)
         }

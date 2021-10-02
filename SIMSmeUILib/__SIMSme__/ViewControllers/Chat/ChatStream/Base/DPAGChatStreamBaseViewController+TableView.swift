@@ -1,5 +1,5 @@
 //
-//  DPAGChatStreamBaseViewController+FileView.swift
+//  DPAGChatCellBaseViewController.swift
 //  SIMSme
 //
 //  Created by RBU on 01/02/16.
