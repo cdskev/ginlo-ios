@@ -416,8 +416,6 @@ class DPAGNewMessageNotifier: NSObject, DPAGNewMessageNotifierProtocol {
                     switch feedType {
                         case .channel:
                             showMessage = DPAGApplicationFacade.preferences.isChatNotificationEnabled(chatType: .channel) && DPAGApplicationFacade.preferences.isChatNotificationEnabled(feedType: .channel, feedGuid: streamGuid)
-                        case .service:
-                            showMessage = DPAGApplicationFacade.preferences.isChatNotificationEnabled(chatType: .service) && DPAGApplicationFacade.preferences.isChatNotificationEnabled(feedType: .service, feedGuid: streamGuid)
                     }
                 } else if stream is DPAGDecryptedStreamGroup {
                     showMessage = DPAGApplicationFacade.preferences.isChatNotificationEnabled(chatType: .group)

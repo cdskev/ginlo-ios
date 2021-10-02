@@ -27,8 +27,6 @@ public protocol DPAGProfileWorkerProtocol: AnyObject {
     func setIsWriting(accountGuid: String, withResponse responseBlock: @escaping DPAGServiceResponseBlock)
     func resetIsWriting(accountGuid: String, withResponse responseBlock: @escaping DPAGServiceResponseBlock)
     func getOnlineState(accountGuid: String, lastKnownState: String, withResponse responseBlock: @escaping DPAGServiceResponseBlock)
-    func setBrabblerSwitchState()
-    
 }
 
 class DPAGProfileWorker: DPAGProfileWorkerProtocol {
@@ -139,9 +137,5 @@ class DPAGProfileWorker: DPAGProfileWorkerProtocol {
         let rc = DPAGApplicationFacade.accountManager.confirmCompanyEmailStatus()
 
         return rc
-    }
-
-    func setBrabblerSwitchState() {
-        DPAGApplicationFacade.server.setBrabblerSwitchState()
     }
 }

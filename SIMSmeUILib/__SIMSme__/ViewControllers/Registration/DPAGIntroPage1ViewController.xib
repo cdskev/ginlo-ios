@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -21,6 +21,7 @@
                 <outlet property="label1" destination="LoF-lC-0ze" id="eua-FD-BRL"/>
                 <outlet property="label2" destination="XDf-Bd-Uci" id="7bl-nt-fP0"/>
                 <outlet property="labelTitle" destination="lo4-d2-SLD" id="b4h-uU-1dF"/>
+                <outlet property="scanInvitationButton" destination="HeD-ke-xnr" id="wWQ-Yu-w0k"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="viewButtonNext" destination="2yv-3U-yQ1" id="iD2-a6-FNZ"/>
             </connections>
@@ -40,18 +41,18 @@
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="794"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="320" placeholderIntrinsicHeight="200" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="mXs-Q9-ODC">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="581"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="522"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="249" placeholderIntrinsicWidth="240" placeholderIntrinsicHeight="128" translatesAutoresizingMaskIntoConstraints="NO" id="ysH-HJ-c8h" customClass="LogoView" customModule="SIMSmeUILib" customModuleProvider="target">
-                                                    <rect key="frame" x="87" y="0.0" width="240" height="453"/>
+                                                    <rect key="frame" x="87" y="0.0" width="240" height="394"/>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qkU-nQ-nyu" userLabel="View Filler">
-                                                    <rect key="frame" x="87" y="453" width="240" height="128"/>
+                                                    <rect key="frame" x="87" y="394" width="240" height="128"/>
                                                 </view>
                                             </subviews>
                                         </stackView>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6kJ-39-z0C">
-                                            <rect key="frame" x="0.0" y="584" width="414" height="151"/>
+                                            <rect key="frame" x="0.0" y="525" width="414" height="151"/>
                                             <subviews>
                                                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KLQ-EF-q0k">
                                                     <rect key="frame" x="16" y="0.0" width="382" height="151"/>
@@ -125,7 +126,7 @@
                                             </constraints>
                                         </view>
                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="WRU-ej-mB1">
-                                            <rect key="frame" x="0.0" y="738" width="414" height="56"/>
+                                            <rect key="frame" x="0.0" y="679" width="414" height="56"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mo6-eg-vAw">
                                                     <rect key="frame" x="0.0" y="0.0" width="207" height="56"/>
@@ -147,7 +148,19 @@
                                                 </button>
                                             </subviews>
                                         </stackView>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HeD-ke-xnr">
+                                            <rect key="frame" x="0.0" y="738" width="414" height="56"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="56" id="xcD-46-kGM"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                            <state key="normal" title="Button"/>
+                                        </button>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstItem="HeD-ke-xnr" firstAttribute="leading" secondItem="3nM-WO-Qgg" secondAttribute="leading" id="NXv-03-vn0"/>
+                                        <constraint firstAttribute="trailing" secondItem="HeD-ke-xnr" secondAttribute="trailing" id="QmO-OB-qOE"/>
+                                    </constraints>
                                 </stackView>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FWr-DU-fzU">
                                     <rect key="frame" x="16" y="20" width="44" height="44"/>

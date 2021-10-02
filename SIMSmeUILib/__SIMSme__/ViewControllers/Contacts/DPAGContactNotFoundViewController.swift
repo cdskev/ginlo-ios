@@ -10,6 +10,7 @@ import MessageUI
 import SIMSmeCore
 import UIKit
 
+// TODO: Add an option to dismiss the view
 class DPAGContactNotFoundViewController: DPAGViewControllerBackground, DPAGContactNotFoundViewControllerProtocol {
     @IBOutlet private var imageView: UIImageView! {
         didSet {
@@ -37,10 +38,25 @@ class DPAGContactNotFoundViewController: DPAGViewControllerBackground, DPAGConta
     @IBOutlet private var viewButtonInvite: DPAGButtonPrimaryView! {
         didSet {
             self.viewButtonInvite.button.accessibilityIdentifier = "buttonInvite"
-            self.viewButtonInvite.button.setTitle(DPAGLocalizedString("contacts.button.inviteUserToSimsMe"), for: .normal)
-            self.viewButtonInvite.button.addTargetClosure { [weak self] _ in
-                guard let strongSelf = self else { return }
-                strongSelf.inviteContact()
+            if fromWelcomePage {
+                self.viewButtonInvite.button.setTitle(DPAGLocalizedString("contacts.button.ignore"), for: .normal)
+                self.viewButtonInvite.button.addTargetClosure { [weak self] _ in
+                    if let strongSelf = self, let presentedViewController = strongSelf.presentedViewController {
+                        presentedViewController.dismiss(animated: true) {
+                            NotificationCenter.default.post(name: DPAGStrings.Notification.Application.DID_COMPLETE_LOGIN, object: nil)
+                            NotificationCenter.default.post(name: DPAGStrings.Notification.Menu.MENU_SHOW_CHATS, object: nil, userInfo: nil)
+                        }
+                    } else {
+                        NotificationCenter.default.post(name: DPAGStrings.Notification.Application.DID_COMPLETE_LOGIN, object: nil)
+                        NotificationCenter.default.post(name: DPAGStrings.Notification.Menu.MENU_SHOW_CHATS, object: nil, userInfo: nil)
+                    }
+                }
+            } else {
+                self.viewButtonInvite.button.setTitle(DPAGLocalizedString("contacts.button.inviteUserToSimsMe"), for: .normal)
+                self.viewButtonInvite.button.addTargetClosure { [weak self] _ in
+                    guard let strongSelf = self else { return }
+                    strongSelf.inviteContact()
+                }
             }
         }
     }
@@ -59,6 +75,7 @@ class DPAGContactNotFoundViewController: DPAGViewControllerBackground, DPAGConta
         }
     }
 
+    var fromWelcomePage = false
     private let searchData: String
     private let searchMode: DPAGContactSearchMode
     private let sendEmailHelper = SendEmailHelper()
@@ -66,7 +83,6 @@ class DPAGContactNotFoundViewController: DPAGViewControllerBackground, DPAGConta
     init(searchData: String, searchMode: DPAGContactSearchMode) {
         self.searchData = searchData
         self.searchMode = searchMode
-
         super.init(nibName: nil, bundle: Bundle(for: type(of: self)))
     }
 
@@ -77,15 +93,21 @@ class DPAGContactNotFoundViewController: DPAGViewControllerBackground, DPAGConta
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = DPAGLocalizedString("contacts.options.addContact")
+        self.title = DPAGLocalizedString("contacts.options.addContact.notFound")
+        var stringFormatKey = "alert.contactSearch.noneFound.messageDescription.accountID"
         switch self.searchMode {
             case .accountID:
-                self.labelDescription.text = String(format: DPAGLocalizedString("alert.contactSearch.noneFound.messageDescription.accountID"), self.searchData, DPAGMandant.default.name)
+                stringFormatKey = "alert.contactSearch.noneFound.messageDescription.accountID"
             case .mail:
-                self.labelDescription.text = String(format: DPAGLocalizedString("alert.contactSearch.noneFound.messageDescription.emailAddress"), self.searchData, DPAGMandant.default.name)
+                stringFormatKey = "alert.contactSearch.noneFound.messageDescription.emailAddress"
             case .phone:
-                self.labelDescription.text = String(format: DPAGLocalizedString("alert.contactSearch.noneFound.messageDescription.phoneNumber"), self.searchData, DPAGMandant.default.name)
+                stringFormatKey = "alert.contactSearch.noneFound.messageDescription.phoneNumber"
         }
+        if fromWelcomePage {
+            stringFormatKey += ".fromWelcomePage"
+        }
+        self.labelDescription.text = String(format: DPAGLocalizedString(stringFormatKey), self.searchData, DPAGMandant.default.name)
+
     }
 
     private func inviteContact() {

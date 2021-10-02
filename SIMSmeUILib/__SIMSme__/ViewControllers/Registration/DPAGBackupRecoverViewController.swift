@@ -218,7 +218,7 @@ class DPAGBackupRecoverViewController: DPAGViewControllerBackground {
     private func popToPasswortInitialisation() {
         DPAGApplicationFacade.accountManager.resetDatabase()
 
-        let initialPasswordViewController = DPAGApplicationFacadeUIRegistration.initialPasswordVC(createDevice: false)
+        let initialPasswordViewController = DPAGApplicationFacadeUIRegistration.initialPasswordVC(initialPasswordJob: .createAccount)
 
         self.navigationController?.setViewControllers([initialPasswordViewController], animated: true)
     }

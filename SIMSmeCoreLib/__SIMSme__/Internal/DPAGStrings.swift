@@ -66,11 +66,6 @@ enum DPAGServerFunction {
     struct RemoveConfirmedPhone: Codable, CodableDict { var cmd: String = "removeConfirmedPhone" }
     struct RequestEncryptionInfo: Codable, CodableDict { var cmd: String = "requestEncryptionInfo" }
 
-    struct SetBrabblerSwitchState: Codable, CodableDict {
-           var cmd: String = "setOptInState"
-           let state: String
-    }
-    
     struct SendPrivateMessage: Codable, CodableDict {
         let cmd: String = "sendPrivateMessage"
         let message: String
@@ -467,11 +462,6 @@ enum DPAGServerFunction {
         let nickName: String?
     }
 
-    struct SaveReport: Codable, CodableDict {
-        var cmd: String = "saveReport"
-        let data: String
-    }
-
     struct GetAttachment: Codable, CodableDict {
         var cmd: String = "getAttachment"
         let guid: String
@@ -572,18 +562,6 @@ enum DPAGServerFunction {
 
     struct UnsubscribeService: Codable, CodableDict {
         var cmd: String = "cancelServiceSubscription"
-        let guid: String
-    }
-
-    struct GetInfoPages: Codable, CodableDict {
-        var cmd: String = "getInfoPages"
-        let version: String
-        let os: String
-        let language: String
-    }
-
-    struct GetInfoPageData: Codable, CodableDict {
-        var cmd: String = "getInfoPageData"
         let guid: String
     }
 
@@ -1119,7 +1097,6 @@ public enum DPAGStrings {
             public static let KEY_GUID = "keyGuid"
             public static let DATA = "data"
             public static let FEATURES = "features"
-            public static let TRACKING_GUID = "trackingGuid"
             public static let DEVICE_NAME = "deviceName"
             public static let DEVICE_TYPE = "deviceTyp"
             public static let LAST_ONLINE = "lastOnline"
@@ -1502,6 +1479,7 @@ public enum DPAGStrings {
         public static let KEY_CONTACT_COUNTRY_CODE = "prefix"
         public static let KEY_CONTACT_EMAIL_ADDRESS = "email"
         public static let KEY_CONTACT_SIMSMEID = "simsmeid"
+        public static let KEY_CONTACT_GINLOID = "ginloid"
 
         public static let HOST_CHANNEL = "channel"
         public static let PATH_CHANNEL_ADD = "/add"
@@ -1510,6 +1488,8 @@ public enum DPAGStrings {
         public static let HOST_SERVICE = "service"
         public static let PATH_SERVICE_ADD = "/add"
         public static let KEY_SERVICE = "service"
+        
+        public static let HOST_INVITE = "invite"
     }
 
     public enum ErrorCode {

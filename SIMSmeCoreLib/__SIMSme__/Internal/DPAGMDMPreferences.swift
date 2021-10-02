@@ -112,7 +112,7 @@ public class DPAGMDMPreferences: DPAGPreferences {
     public var maxDaysChannelMessagesValid: UInt {
         DPAGApplicationFacade.runtimeConfig.maxDaysChannelMessagesValid
     }
-
+ 
     public var maxNumChannelMessagesPerChannel: UInt {
         DPAGApplicationFacade.runtimeConfig.maxNumChannelMessagesPerChannel
     }
@@ -125,28 +125,6 @@ public class DPAGMDMPreferences: DPAGPreferences {
         DPAGApplicationFacade.runtimeConfig.isChannelsAllowed
     }
 
-    @objc public var isServicesAllowed: Bool {
-        DPAGApplicationFacade.runtimeConfig.isServicesAllowed
-    }
-
-    public var isServicesAvailable: Bool {
-        if !DPAGApplicationFacade.preferences.isBaMandant,
-            DPAGApplicationFacade.preferences.isServicesAllowed {
-            // true, if at least one service exists
-            return DPAGApplicationFacade.cache.allChannels().contains(where: { $0.feedType == .service })
-        }
-        return false
-    }
-
-    public var isServiceSubscriptionEnabled: Bool {
-        if !DPAGApplicationFacade.preferences.isBaMandant,
-            DPAGApplicationFacade.preferences.isServicesAllowed {
-            // true, if at least one not subscribed service exists
-            return DPAGApplicationFacade.cache.allChannels().contains(where: { $0.feedType == .service && $0.isSubscribed == false })
-        }
-        return false
-    }
-
     public var isCommentingEnabled: Bool {
         DPAGApplicationFacade.runtimeConfig.isCommentingEnabled
     }
@@ -157,6 +135,10 @@ public class DPAGMDMPreferences: DPAGPreferences {
 
     public var urlScheme: String? {
         DPAGApplicationFacade.runtimeConfig.urlScheme
+    }
+
+    public var urlSchemeOld: String? {
+        DPAGApplicationFacade.runtimeConfig.urlSchemeOld
     }
 
     @objc public var saltClient: String? {
@@ -181,18 +163,6 @@ public class DPAGMDMPreferences: DPAGPreferences {
 
     public var supportMultiDevice: Bool {
         self.isBaMandant || AppConfig.multiDeviceAllowed
-    }
-
-    public func trackingEventId(eventId: String) -> String {
-        DPAGApplicationFacade.runtimeConfig.trackingEventId(eventId: eventId)
-    }
-
-    public var trackingUrl: String {
-        DPAGApplicationFacade.runtimeConfig.trackingUrl
-    }
-
-    public var trackingAppToken: String? {
-        DPAGApplicationFacade.runtimeConfig.trackingAppToken
     }
 
     public func apnIdentifierWithBundleIdentifier(_ bundleIdentifier: String, deviceToken: String) -> String {

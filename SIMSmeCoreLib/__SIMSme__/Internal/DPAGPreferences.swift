@@ -88,28 +88,28 @@ public class DPAGPreferences: NSObject {
         func serialize(from fileURL: URL) -> Bool {
             var success = false
             self.queueAccess.sync(flags: .barrier) {
-                for _ in 0 ..< 20 {
-                    var dict: [String: Any]?
-                    DPAGLog("Trying to read the preferences")
-                    do {
-                        let data = try Data(contentsOf: fileURL)
-                        dict = try PropertyListSerialization.propertyList(from: data, format: nil) as? [String: Any]
-                    } catch {
-                        dict = nil
-                        if let nserror = error as NSError?, nserror.domain == "NSCocoaErrorDomain", nserror.code == 257 {
-                            DPAGLog(error, message: "I can not yet read the file in question because I don't have access - returning immediately to save time")
-                            break
-                        }
-                        DPAGLog(error, message: "error reading preferences file")
-                    }
-                    if let dict = dict {
-                        self.dict = dict
-                        success = true
-                        break
-                    } else {
-                        Thread.sleep(forTimeInterval: 0.1)
-                    }
-                }
+                  for _ in 0 ..< 20 {
+                      var dict: [String: Any]?
+                      DPAGLog("Trying to read the preferences")
+                      do {
+                          let data = try Data(contentsOf: fileURL)
+                          dict = try PropertyListSerialization.propertyList(from: data, format: nil) as? [String: Any]
+                      } catch {
+                          dict = nil
+                          if let nserror = error as NSError?, nserror.domain == "NSCocoaErrorDomain", nserror.code == 257 {
+                              DPAGLog(error, message: "I can not yet read the file in question because I don't have access - returning immediately to save time")
+                              break
+                          }
+                          DPAGLog(error, message: "error reading preferences file")
+                      }
+                      if let dict = dict {
+                          self.dict = dict
+                          success = true
+                          break
+                      } else {
+                          Thread.sleep(forTimeInterval: 0.1)
+                      }
+                  }
             }
             return success
         }
@@ -479,7 +479,6 @@ public class DPAGPreferences: NSObject {
         self[.kNotificationRegistrationError] = ""
         self[.kNotificationRegistrationNeedsDefaults] = true
 
-        self.trackingEnabled = true
         self.deleteData = false
         self.passwordOnStartEnabled = true
         self.cameraBackgroundEnabled = false
@@ -773,17 +772,6 @@ public class DPAGPreferences: NSObject {
         }
     }
 
-    public var deviceTrackingGuid: String {
-        if let trackingGuid = self[.kTrackingGuid], trackingGuid.count > 30 {
-            return trackingGuid
-        } else {
-            let uuid = String(format: "9:{%@}", DPAGFunctionsGlobal.uuid())
-            let trackingGuid = String(format: "%@1%@", String(uuid[..<uuid.index(uuid.startIndex, offsetBy: 9)]), String(uuid[uuid.index(uuid.startIndex, offsetBy: 10)...]))
-            self[.kTrackingGuid] = trackingGuid
-            return trackingGuid
-        }
-    }
-
     public var deviceToken: String? {
         get {
             self[DPAGPreferences.PropString.kDeviceToken]
@@ -997,16 +985,6 @@ public class DPAGPreferences: NSObject {
         }
         set {
             self[.kPasswordTriesLeft] = newValue
-        }
-    }
-
-    public var trackingEnabled: Bool {
-        get {
-            // Das SIMSme Tracking gibts in allen Mandanten
-            return self[.kTrackingEnabled] ?? false
-        }
-        set {
-            self[.kTrackingEnabled] = newValue
         }
     }
 
@@ -1913,8 +1891,6 @@ public class DPAGPreferences: NSObject {
                 key = .kGroupChatRingtone
             case .channel:
                 key = .kChannelChatRingtone
-            case .service:
-                key = .kServiceChatRingtone
         }
 
         return self[key] != DPAGPreferences.kValueNotificationSoundNone
@@ -1930,8 +1906,6 @@ public class DPAGPreferences: NSObject {
                 key = .kNotificationGroupChatEnabled
             case .channel:
                 key = .kNotificationChannelChatEnabled
-            case .service:
-                key = .kNotificationServiceChatEnabled
         }
 
         return self[key] != DPAGPreferences.kValueNotificationDisabled
@@ -1943,8 +1917,6 @@ public class DPAGPreferences: NSObject {
         switch feedType {
             case .channel:
                 key = String(format: "%@-%@", feedGuid, PropString.kNotificationChannelChatEnabled.rawValue)
-            case .service:
-                key = String(format: "%@-%@", feedGuid, PropString.kNotificationServiceChatEnabled.rawValue)
         }
 
         return (UserDefaults.standard.object(forKey: key) as? String) != DPAGPreferences.kValueNotificationDisabled

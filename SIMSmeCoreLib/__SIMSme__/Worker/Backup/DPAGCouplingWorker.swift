@@ -360,7 +360,9 @@ class DPAGCouplingWorker: DPAGCouplingWorkerProtocol {
         }
         guard let rc = try self.getAccountInfo(searchData: searchData, searchMode: searchMode), let account = rc.first as? [AnyHashable: Any], let accountDict = account["Account"] as? [AnyHashable: Any], let ca = DPAGCouplingAccount(data: accountDict) else { throw DPAGErrorCoupling.err007 }
         self.couplingAccount = ca
+        AppConfig.setIdleTimerDisabled(true)
     }
+
 
     func getAccountInfo(searchData: String, searchMode mode: String) throws -> [Any]? {
         var retVal: [Any]?
@@ -422,6 +424,7 @@ class DPAGCouplingWorker: DPAGCouplingWorkerProtocol {
         }
         self.couplingTransId = retVal
         self.couplingTan = tan
+        AppConfig.setIdleTimerDisabled(false)
     }
 
     func requestCouplingInternal(accountGuid: String, transId transaktionId: String, pubKey publicKey: String, encVrfy vrfy: String, reqType type: String, appData: String, signature sig: String) throws -> String? {

@@ -136,7 +136,7 @@ class DPAGChannelDetailsViewController: DPAGViewControllerBackground {
             assetTypesMissing.append("\(channelGuid);\(DPAGChannel.AssetType.itemForeground.rawValue)")
         }
 
-        if self.imageViewChannelProviderBack.backgroundColor == nil || self.feedType == .service {
+        if self.imageViewChannelProviderBack.backgroundColor == nil {
             self.imageViewChannelProviderBack.image = assetsList[.itemBackground] as? UIImage
 
             if self.imageViewChannelProviderBack.image == nil, assetsList.keys.contains(.itemBackground) == false {
@@ -173,7 +173,7 @@ class DPAGChannelDetailsViewController: DPAGViewControllerBackground {
 
                             strongSelf.imageViewChannelProviderFront.image = assetsList[.itemForeground] as? UIImage
 
-                            if strongSelf.imageViewChannelProviderBack.backgroundColor == nil || feedType == .service {
+                            if strongSelf.imageViewChannelProviderBack.backgroundColor == nil {
                                 strongSelf.imageViewChannelProviderBack.image = assetsList[.itemBackground] as? UIImage
                             }
 
@@ -290,50 +290,34 @@ class DPAGChannelDetailsViewController: DPAGViewControllerBackground {
         let feedType = self.feedType
 
         DPAGProgressHUD.sharedInstance.showForBackgroundProcess(true) { [weak self] _ in
-
             DPAGApplicationFacade.feedWorker.subscribeFeed(feedGuid: channelGuid, filter: currentFilter, feedType: feedType) { [weak self] _, _, errorMessage in
-
                 guard let strongSelf = self else { return }
-
                 if let errorMessage = errorMessage {
                     DPAGProgressHUD.sharedInstance.hide(true) { [weak self] in
                         self?.showErrorAlertCheck(alertConfig: AlertConfigError(messageIdentifier: errorMessage))
                     }
                 } else {
                     NotificationCenter.default.post(name: DPAGStrings.Notification.Menu.MENU_NEW_REINIT, object: nil)
-
                     if let channel = DPAGApplicationFacade.cache.channel(for: channelGuid), let channelStreamGuid = channel.stream {
                         if let navigationController = strongSelf.navigationController, navigationController.viewControllers.count > 1, navigationController.viewControllers[navigationController.viewControllers.count - 2] is DPAGSubscribeChannelViewControllerProtocol {
                             var viewControllers = navigationController.viewControllers
-
                             _ = viewControllers.popLast()
-
                             self?.performBlockOnMainThread {
                                 (viewControllers.last as? DPAGSubscribeChannelViewControllerProtocol)?.tableView.reloadData()
                             }
-
                             let chatStreamViewController: (UIViewController & DPAGChatStreamBaseViewControllerProtocol)?
-
-                            switch strongSelf.feedType {
-                            case .channel:
+                            if feedType == .channel {
                                 chatStreamViewController = DPAGApplicationFacadeUI.channelStreamVC(stream: channelStreamGuid, streamState: .readOnly)
-                            case .service:
-                                chatStreamViewController = DPAGApplicationFacadeUI.serviceStreamVC(stream: channelStreamGuid, streamState: .readOnly)
+                                if let chatStreamViewController = chatStreamViewController {
+                                    viewControllers.append(chatStreamViewController)
+                                    chatStreamViewController.createModel()
+                                }
                             }
-
-                            if let chatStreamViewController = chatStreamViewController {
-                                viewControllers.append(chatStreamViewController)
-
-                                chatStreamViewController.createModel()
-                            }
-
                             DPAGProgressHUD.sharedInstance.hide(true) { [weak self] in
-
                                 self?.navigationController?.setViewControllers(viewControllers, animated: true)
                             }
                         } else {
                             DPAGChatHelper.openChatStreamView(channelStreamGuid, navigationController: strongSelf.navigationController) { _ in
-
                                 DPAGProgressHUD.sharedInstance.hide(true)
                             }
                         }
@@ -345,7 +329,6 @@ class DPAGChannelDetailsViewController: DPAGViewControllerBackground {
 
     fileprivate func lighterColor(_ color: UIColor) -> UIColor {
         var h: CGFloat = 0, s: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
-
         if color.getHue(&h, saturation: &s, brightness: &b, alpha: &a) {
             return UIColor(hue: h, saturation: s, brightness: min(b * 1.3, 1.0), alpha: a)
         }
@@ -370,18 +353,13 @@ class DPAGChannelDetailsViewController: DPAGViewControllerBackground {
 
             if var colorTextLevel = colorText {
                 var whiteComponent: CGFloat = 0
-
                 colorTextLevel.getWhite(&whiteComponent, alpha: nil)
-
                 let lightenUp = whiteComponent > 0.7
-
                 for _ in 0 ..< level {
                     colorTextLevel = lightenUp ? self.lighterColor(colorTextLevel) : self.darkerColor(colorTextLevel)
                 }
-
                 colorText = colorTextLevel
             }
-
             cell.textLabel?.textColor = colorText
             cell.detailTextLabel?.textColor = colorText
         }
@@ -394,58 +372,39 @@ class DPAGChannelDetailsViewController: DPAGViewControllerBackground {
 
         if let optionToggle = option as? DPAGChannelToggle {
             let childrenBefore = self.allChildOptionsForOption(option)
-
             optionToggle.setOn(aSwitch.isOn)
-
             _ = self.optionsForced?.removeValue(forKey: option.ident)
-
             var level = 0
             var optionParent = option.parent?.option
-
             while optionParent != nil {
                 level += 1
                 optionParent = optionParent?.parent?.option
             }
-
             self.updateColorsForCell(cell, isOn: aSwitch.isOn, level: level)
-
             let childrenAfter = self.allChildOptionsForOption(option)
-
             self.tableView?.beginUpdates()
-
             if childrenBefore.count > 0 {
                 self.model.removeSubrange(indexPath.row + 1 ..< indexPath.row + 1 + childrenBefore.count)
-
                 var arrIdxPaths: [IndexPath] = []
-
                 for idx in 0 ..< childrenBefore.count {
                     arrIdxPaths.append(IndexPath(row: idx + 1 + indexPath.row, section: 1))
                 }
-
                 self.tableView?.deleteRows(at: arrIdxPaths, with: .automatic)
             }
             if childrenAfter.count > 0 {
                 self.model.insert(contentsOf: childrenAfter, at: indexPath.row + 1)
-
                 var arrIdxPaths: [IndexPath] = []
-
                 for idx in 0 ..< childrenAfter.count {
                     arrIdxPaths.append(IndexPath(row: idx + 1 + indexPath.row, section: 1))
                 }
-
                 self.tableView?.insertRows(at: arrIdxPaths, with: .automatic)
             }
             self.tableView?.endUpdates()
         }
         if self.channel.isSubscribed == false {
             self.viewButtonAction.isEnabled = (self.currentFilter().isEmpty == false)
-        } else if self.currentFilter().isEmpty {
-            switch self.feedType {
-            case .channel:
-                self.presentErrorAlert(alertConfig: AlertConfigError(titleIdentifier: "channel.details.alert.title.filter_is_empty", messageIdentifier: "channel.details.alert.message.filter_is_empty"))
-            case .service:
-                self.presentErrorAlert(alertConfig: AlertConfigError(titleIdentifier: "channel.details.alert.title.service_filter_is_empty", messageIdentifier: "channel.details.alert.message.service_filter_is_empty"))
-            }
+        } else if self.currentFilter().isEmpty && feedType == .channel {
+            self.presentErrorAlert(alertConfig: AlertConfigError(titleIdentifier: "channel.details.alert.title.filter_is_empty", messageIdentifier: "channel.details.alert.message.filter_is_empty"))
         }
 
         self.didSwitchSettings = true

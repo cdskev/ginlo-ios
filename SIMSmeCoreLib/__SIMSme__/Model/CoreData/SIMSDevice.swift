@@ -148,7 +148,6 @@ class SIMSDevice: SIMSManagedObjectEncrypted {
         let appVersion = model.appVersion ?? ""
         let keyGuid = self.keyRelationship?.guid ?? ""
         let attributes = type != "extension" ? (try self.getEncryptedAttributes() ?? "") : ""
-        let trackingGuid = DPAGApplicationFacade.preferences.deviceTrackingGuid
 
         let osName = DPAGApplicationFacade.accountManager.getOsName()
 
@@ -167,7 +166,6 @@ class SIMSDevice: SIMSManagedObjectEncrypted {
                 DPAGStrings.JSON.Device.KEY_GUID: keyGuid,
                 DPAGStrings.JSON.Device.DATA: attributes,
                 DPAGStrings.JSON.Device.FEATURES: features,
-                DPAGStrings.JSON.Device.TRACKING_GUID: trackingGuid,
                 DPAGStrings.JSON.Device.DEVICE_TYPE: type
             ]
         ]

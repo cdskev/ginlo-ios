@@ -16,15 +16,11 @@ protocol DPAGStatusBarNotificationDisplayDelegate: AnyObject {
 
 protocol DPAGStatusBarNotificationDisplayProtocol: AnyObject {
     var delegate: DPAGStatusBarNotificationDisplayDelegate? { get set }
-
     func playReceiveSound(_ playSounds: Int)
-
     func containerVC() -> (UIViewController & DPAGContainerViewControllerProtocol)?
-
     func showStatusBarNotification(forMessage messageGuid: String)
     func showStatusBarNotification(forInvitationToGroupStream streamGuid: String)
     func showStatusBarNotification(forUnconfirmedChatStream streamGuid: String)
-
     func showStatusBarNotification(title: String, text: String)
 }
 
@@ -35,20 +31,13 @@ class DPAGStatusBarNotificationDisplay: NSObject, DPAGStatusBarNotificationDispl
 
     override init() {
         super.init()
-
-        // Do not play a sound in the simulator
-        // This is known to cause leaks and exceptions
-
         if AppConfig.isSimulator == false {
             if let urlSoundMessageReceived = Bundle(for: type(of: self)).url(forResource: "read_sound", withExtension: "mp3", subdirectory: nil) {
                 var soundID: SystemSoundID = 0
-
                 if AudioServicesCreateSystemSoundID(urlSoundMessageReceived as CFURL, &soundID) == noErr {
                     self.soundIdMessageReceived = soundID
-
                     AudioServicesAddSystemSoundCompletion(soundID, nil, nil, { soundID, inClientData in
                         let me = unsafeBitCast(inClientData, to: DPAGStatusBarNotificationDisplay.self)
-                        // let me = Unmanaged<DPAGStatusBarNotificationDisplay>.fromOpaque(COpaquePointer(inClientData)).takeRetainedValue()
                         me.audioServicesPlaySystemSoundCompleted(soundID)
                     }, Unmanaged.passRetained(self).toOpaque())
                 }
@@ -65,30 +54,6 @@ class DPAGStatusBarNotificationDisplay: NSObject, DPAGStatusBarNotificationDispl
 
     private func playSounds() {
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
-
-        // Do not play a sound in the simulator
-        // This is known to cause leaks and exceptions
-
-        /* if Platform.isSimulator == false
-         {
-             if DPAGApplicationFacade.preferences.skipPlayingReceiveAudio() == false, let avPlayerMessageReceived = DPAGStatusBarNotificationDisplay.avPlayerMessageReceived
-             {
-                 do
-                 {
-                     try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
-                     //try AVAudioSession.sharedInstance().setMode(AVAudioSessionModeDefault)
-                     try AVAudioSession.sharedInstance().setActive(true)
-
-                     avPlayerMessageReceived.delegate = self
-
-                     avPlayerMessageReceived.play()
-                 }
-                 catch let error as NSError
-                 {
-                     DPAGLog("audioSession error: %@", error)
-                 }
-             }
-         } */
     }
 
     private var numberReceiveSounds: Int = 0
@@ -98,11 +63,8 @@ class DPAGStatusBarNotificationDisplay: NSObject, DPAGStatusBarNotificationDispl
             return
         }
         let startLoop = (self.numberReceiveSounds == 0)
-
         self.numberReceiveSounds = min(DPAGNewMessageNotifier.maximumNumberOfConsecutiveNotifications, self.numberReceiveSounds + playSounds)
-
         DPAGLog("%@ sounds to play", "\(self.numberReceiveSounds)")
-
         if startLoop {
             DPAGLog("play %@ sounds", "\(self.numberReceiveSounds)")
             self.performBlockOnMainThread {
@@ -126,7 +88,6 @@ class DPAGStatusBarNotificationDisplay: NSObject, DPAGStatusBarNotificationDispl
     private func audioServicesPlaySystemSoundCompleted(_: SystemSoundID) {
         self.numberReceiveSounds -= 1
         DPAGLog("%@ sounds still to play", "\(self.numberReceiveSounds)")
-
         if self.numberReceiveSounds > 0 {
             if DPAGApplicationFacade.preferences.skipPlayingReceiveAudio {
                 self.numberReceiveSounds = 0
@@ -144,22 +105,17 @@ class DPAGStatusBarNotificationDisplay: NSObject, DPAGStatusBarNotificationDispl
     func showStatusBarNotification(forMessage messageGuid: String) {
         guard DPAGSimsMeController.sharedInstance.canShowStatusBarNotification() else {
             self.delegate?.notificationIsCompletelyDismissedAndCanShowMore(true)
-
             return
         }
-        // TODO: ISO - Add AV-CAll Invitiation Here
         var imageProfile: UIImage?
         var roundedImageProfile = true
         var streamNameOrNil: String?
         var preview: String?
         var streamGuidOrNil: String?
-
         if let message = DPAGApplicationFacade.cache.decryptedMessage(messageGuid: messageGuid) {
             streamGuidOrNil = message.streamGuid
-
             if let decMessagePrivate = message as? DPAGDecryptedMessagePrivate, let contactGuid = decMessagePrivate.contactGuid, let contact = DPAGApplicationFacade.cache.contact(for: contactGuid) {
                 streamNameOrNil = contact.displayName
-
                 if decMessagePrivate.isSystemChat {
                     imageProfile = DPAGImageProvider.shared[.kImageChatSystemLogo]
                     roundedImageProfile = false
@@ -178,53 +134,41 @@ class DPAGStatusBarNotificationDisplay: NSObject, DPAGStatusBarNotificationDispl
                 imageProfile = self.profileImage(forChannel: channel)
                 roundedImageProfile = false
             }
-
             preview = self.getPreviewText(forMessage: message)
         }
-
         guard let streamName = streamNameOrNil, let streamGuid = streamGuidOrNil else {
             self.delegate?.notificationIsCompletelyDismissedAndCanShowMore(true)
             return
         }
-
         self.performBlockOnMainThread {
             DPAGLocalNotificationViewController.show(config: DPAGLocalNotificationViewController.LocalNotificationConfig(title: streamName, message: preview, image: nil, imageProfile: imageProfile, roundedImageProfile: roundedImageProfile, duration: DPAGLocalNotificationViewController.NOTIFICATION_DISPLAY_DURATION, isExpanded: false, completionOnShow: { [weak self] isShown in
-
                 if isShown {
                     self?.playSounds()
                 }
                 }, completionOnHide: { [weak self] isDismissedWithTapGesture, isDismissedWithSwipeUpGesture in
-
                     if isDismissedWithTapGesture {
                         self?.displayChatStream(streamGuid, withMessage: messageGuid)
                     }
-
                     self?.delegate?.notificationIsCompletelyDismissedAndCanShowMore(isDismissedWithSwipeUpGesture == false)
             }))
         }
     }
 
-    func showAVCallInvitation(forMessage messageGuid: String) {
-
-    }
+    func showAVCallInvitation(forMessage messageGuid: String) { }
 
     func showStatusBarNotification(forInvitationToGroupStream streamGuid: String) {
         guard DPAGSimsMeController.sharedInstance.canShowStatusBarNotification() else {
             self.delegate?.notificationIsCompletelyDismissedAndCanShowMore(true)
-
             return
         }
-
         guard let group = DPAGApplicationFacade.cache.group(for: streamGuid) else {
             self.delegate?.notificationIsCompletelyDismissedAndCanShowMore(true)
             return
         }
-
         let imageProfile = DPAGUIImageHelper.image(forGroupGuid: streamGuid, imageType: .chat)
         let groupName = group.name
         let groupType = group.groupType
         let groupMessage: String
-
         switch groupType {
             case .restricted:
                 groupMessage = "notification.restrictedRoomInvitation.message"
@@ -233,19 +177,15 @@ class DPAGStatusBarNotificationDisplay: NSObject, DPAGStatusBarNotificationDispl
             default:
                 groupMessage = "notification.groupInvitation.message"
         }
-
         self.performBlockOnMainThread {
             DPAGLocalNotificationViewController.show(config: DPAGLocalNotificationViewController.LocalNotificationConfig(title: groupName, message: DPAGLocalizedString(groupMessage), image: nil, imageProfile: imageProfile, roundedImageProfile: true, duration: DPAGLocalNotificationViewController.NOTIFICATION_DISPLAY_DURATION, isExpanded: true, completionOnShow: { [weak self] isShown in
-
                 if isShown {
                     self?.playSounds()
                 }
                 }, completionOnHide: { [weak self] isDismissedWithTapGesture, isDismissedWithSwipeUpGesture in
-
                     if isDismissedWithTapGesture {
                         self?.displayChatList(focusedStreamGuid: streamGuid)
                     }
-
                     self?.delegate?.notificationIsCompletelyDismissedAndCanShowMore(isDismissedWithSwipeUpGesture == false)
             }))
         }
@@ -254,14 +194,11 @@ class DPAGStatusBarNotificationDisplay: NSObject, DPAGStatusBarNotificationDispl
     func showStatusBarNotification(forUnconfirmedChatStream streamGuid: String) {
         guard DPAGSimsMeController.sharedInstance.canShowStatusBarNotification() else {
             self.delegate?.notificationIsCompletelyDismissedAndCanShowMore(true)
-
             return
         }
-
         var imageProfile: UIImage?
         var roundedImageProfile = true
         var streamName: String?
-
         if let stream = DPAGApplicationFacade.cache.decryptedStream(streamGuid: streamGuid, in: nil) {
             if let streamPrivate = stream as? DPAGDecryptedStreamPrivate, let contactGuid = streamPrivate.contactGuid, let contact = DPAGApplicationFacade.cache.contact(for: contactGuid) {
                 streamName = contact.displayName
@@ -275,24 +212,19 @@ class DPAGStatusBarNotificationDisplay: NSObject, DPAGStatusBarNotificationDispl
                 roundedImageProfile = false
             }
         }
-
         if streamName == nil {
             self.delegate?.notificationIsCompletelyDismissedAndCanShowMore(true)
             return
         }
-
         self.performBlockOnMainThread {
             DPAGLocalNotificationViewController.show(config: DPAGLocalNotificationViewController.LocalNotificationConfig(title: streamName, message: DPAGLocalizedString("notification.unconfirmedChatStream.message"), image: nil, imageProfile: imageProfile, roundedImageProfile: roundedImageProfile, duration: DPAGLocalNotificationViewController.NOTIFICATION_DISPLAY_DURATION, isExpanded: true, completionOnShow: { [weak self] isShown in
-
                 if isShown {
                     self?.playSounds()
                 }
                 }, completionOnHide: { [weak self] isDismissedWithTapGesture, isDismissedWithSwipeUpGesture in
-
                     if isDismissedWithTapGesture {
                         self?.displayChatList(focusedStreamGuid: streamGuid)
                     }
-
                     self?.delegate?.notificationIsCompletelyDismissedAndCanShowMore(isDismissedWithSwipeUpGesture == false)
             }))
         }
@@ -302,53 +234,41 @@ class DPAGStatusBarNotificationDisplay: NSObject, DPAGStatusBarNotificationDispl
 
     private func getPreviewText(forMessage message: DPAGDecryptedMessage) -> String? {
         var contentType: DPAGMessageContentType = message.contentType
-
         if message.errorType != .none, message.errorType != .notChecked {
             contentType = .plain
         }
-
         let isOwnMessage = message.isOwnMessage
         var previewText: String?
-
         if message.isSelfDestructive {
             previewText = DPAGLocalizedString("chat.selfdestruction.preview")
         } else {
             switch contentType {
-            case .avCallInvitation:
-                previewText = "📞"
-            case .controlMsgNG:
-                previewText = ""
-            case .plain, .oooStatusMessage, .textRSS:
-                if let decryptedMessageChannel = message as? DPAGDecryptedMessageChannel, let content = decryptedMessageChannel.content {
-                    switch decryptedMessageChannel.feedType {
-                    case .channel:
-                        previewText = (DPAGApplicationFacade.feedWorker as? DPAGFeedWorkerProtocolSwift)?.replaceChannelLink(content, contentLinkReplacer: decryptedMessageChannel.contentLinkReplacer).content
-                    case .service:
-                        previewText = (DPAGApplicationFacade.feedWorker as? DPAGFeedWorkerProtocolSwift)?.replaceServiceLinks(content, contentLinkReplacerRegex: decryptedMessageChannel.contentLinkReplacerRegex).content
+                case .avCallInvitation:
+                    previewText = "📞"
+                case .controlMsgNG:
+                    previewText = ""
+                case .plain, .oooStatusMessage, .textRSS:
+                    if let decryptedMessageChannel = message as? DPAGDecryptedMessageChannel, let content = decryptedMessageChannel.content {
+                        switch decryptedMessageChannel.feedType {
+                            case .channel:
+                                previewText = (DPAGApplicationFacade.feedWorker as? DPAGFeedWorkerProtocolSwift)?.replaceChannelLink(content, contentLinkReplacer: decryptedMessageChannel.contentLinkReplacer).content
+                        }
+                    } else {
+                        previewText = message.content
                     }
-                } else {
-                    previewText = message.content
-                }
-            case .image:
-                previewText = isOwnMessage ? DPAGLocalizedString("chat.overview.preview.imageSent")
-                    : DPAGLocalizedString("chat.overview.preview.imageReceived")
-            case .video:
-                previewText = isOwnMessage ? DPAGLocalizedString("chat.overview.preview.videoSent")
-                    : DPAGLocalizedString("chat.overview.preview.videoReceived")
-            case .location:
-                previewText = isOwnMessage ? DPAGLocalizedString("chat.overview.preview.locationSent")
-                    : DPAGLocalizedString("chat.overview.preview.locationReceived")
-            case .contact:
-                previewText = isOwnMessage ? DPAGLocalizedString("chat.overview.preview.contactSent")
-                    : DPAGLocalizedString("chat.overview.preview.contactReceived")
-            case .voiceRec:
-                previewText = isOwnMessage ? DPAGLocalizedString("chat.overview.preview.VoiceSent")
-                    : DPAGLocalizedString("chat.overview.preview.VoiceReceived")
-            case .file:
-                previewText = isOwnMessage ? DPAGLocalizedString("chat.overview.preview.FileSent")
-                    : DPAGLocalizedString("chat.overview.preview.FileReceived")
+                case .image:
+                    previewText = isOwnMessage ? DPAGLocalizedString("chat.overview.preview.imageSent") : DPAGLocalizedString("chat.overview.preview.imageReceived")
+                case .video:
+                    previewText = isOwnMessage ? DPAGLocalizedString("chat.overview.preview.videoSent") : DPAGLocalizedString("chat.overview.preview.videoReceived")
+                case .location:
+                    previewText = isOwnMessage ? DPAGLocalizedString("chat.overview.preview.locationSent") : DPAGLocalizedString("chat.overview.preview.locationReceived")
+                case .contact:
+                    previewText = isOwnMessage ? DPAGLocalizedString("chat.overview.preview.contactSent") : DPAGLocalizedString("chat.overview.preview.contactReceived")
+                case .voiceRec:
+                    previewText = isOwnMessage ? DPAGLocalizedString("chat.overview.preview.VoiceSent") : DPAGLocalizedString("chat.overview.preview.VoiceReceived")
+                case .file:
+                    previewText = isOwnMessage ? DPAGLocalizedString("chat.overview.preview.FileSent") : DPAGLocalizedString("chat.overview.preview.FileReceived")
             }
-
             if message.isHighPriorityMessage {
                 previewText = DPAGLocalizedString("chat.overview.preview.HighPriorityPre") + (previewText ?? "")
             }
@@ -359,13 +279,11 @@ class DPAGStatusBarNotificationDisplay: NSObject, DPAGStatusBarNotificationDispl
 
     private func profileImage(forChannel channel: DPAGChannel) -> UIImage? {
         let assetsList = DPAGApplicationFacade.feedWorker.assetsChat(feedGuid: channel.guid)
-
         if let profileImage = assetsList[.profile] as? UIImage {
             return profileImage
         } else {
             DPAGApplicationFacade.feedWorker.updateAssets(feedGuids: [channel.guid], feedType: channel.feedType) {}
         }
-
         return nil
     }
 
@@ -408,24 +326,14 @@ class DPAGStatusBarNotificationDisplay: NSObject, DPAGStatusBarNotificationDispl
     }
 
     func containerVC() -> (UIViewController & DPAGContainerViewControllerProtocol)? {
-        guard let window = AppConfig.appWindow(), let viewControllerRoot = window?.rootViewController as? (UIViewController & DPAGRootContainerViewControllerProtocol) else {
-            return nil
-        }
-
-        guard let viewController = viewControllerRoot.children.first as? (UIViewController & DPAGContainerViewControllerProtocol) else {
-            return nil
-        }
-
+        guard let window = AppConfig.appWindow(), let viewControllerRoot = window?.rootViewController as? (UIViewController & DPAGRootContainerViewControllerProtocol) else { return nil }
+        guard let viewController = viewControllerRoot.children.first as? (UIViewController & DPAGContainerViewControllerProtocol) else { return nil }
         return viewController
     }
 
     private func displayChatList(focusedStreamGuid streamGuid: String?) {
-        guard let containerVC = self.containerVC() else {
-            return
-        }
-
+        guard let containerVC = self.containerVC() else { return }
         self.closeCurrentView(containerVC.mainNavigationController)
-
         if let streamGuid = streamGuid {
             DPAGSimsMeController.sharedInstance.chatsListViewController.scrollToStream(streamGuid)
         }
@@ -433,14 +341,11 @@ class DPAGStatusBarNotificationDisplay: NSObject, DPAGStatusBarNotificationDispl
 
     private func closeCurrentView(_ navigationController: UINavigationController) {
         let activeViewControllers = navigationController.viewControllers
-
         var chatVC: (UIViewController & DPAGChatsListViewControllerProtocol)?
-
         for vc in activeViewControllers where vc is (UIViewController & DPAGChatsListViewControllerProtocol) {
             chatVC = vc as? (UIViewController & DPAGChatsListViewControllerProtocol)
             break
         }
-
         if let chatVC = chatVC {
             if navigationController.presentedViewController != nil {
                 navigationController.dismiss(animated: true) {

@@ -9,7 +9,7 @@
 "invite.friends.after.chatcreation.message" = "Jetzt gleich Kontakte zu ginlo Business einladen, falls noch welche fehlen.";
 "settings.companyemail.askafterinstall.hint" = "Fügen Sie Ihre E-Mail-Adresse zum Verzeichnis Ihres Unternehmens hinzu, um Kollegen mit E-Mail-Adressen desselben Unternehmens zu finden. Die Daten liegen uns zu keinem Zeitpunkt im Klartext vor.";
 "settings.profile.statusLabel" = "Verfügbarkeit";
-"contacts.smsMessageBody" = "Hallo, ich nutze jetzt den ginlo Business Messenger. Laden Sie sich die App hier runter: ginlo.net/business-messenger";
+"contacts.smsMessageBody" = "Hallo, ich nutze jetzt den ginlo Business Messenger. Laden Sie sich die App hier runter: %@\n";
 "settings.companyprofile.contactsoverview.empty.text2" = "Leider haben wir keine Kontakte gefunden, die eine berufliche E-Mail-Adresse mit der Domäne %@ mit dem Account verknüpft haben.\n\nEmpfehlen Sie Kollegen, die bereits ginlo Business nutzen, eine E-Mail-Adresse zu verknüpfen.";
 "registration.agb.AGB" = "AGB";
 "registration.backup.not_found.headline" = "Wir konnten leider kein Backup finden.";
@@ -17,8 +17,9 @@
 "registration.backup.not_found.step1" = "Öffnen Sie %@ auf Ihrem anderen Smartphone.";
 "registration.createDevice.welcome.description" = "Importieren Sie ein Backup, oder fügen Sie dieses Gerät als weiteres Gerät zu einem bestehenden hinzu.";
 "registration.headline.phoneAndCountryCode" = "Weiter geht's mit Ihrer Handynummer oder E-Mail-Adresse.";
+"registration.headline.creatingInvitationAccount" = "Account wird angelegt, bitte warten...";
 "intro.screen0.description2" = "DSGVO-konform";
-"intro.screen1.buttonCreateDeviceTitle" = "Ich habe schon einen Account.";
+"intro.screen1.buttonCreateDeviceTitle" = "Ich habe schon einen Account";
 "settings.termsandcondition" = "AGB";
 "settings.termsandcondition.url" = "https://app-help.ginlo.net/business/de/terms";
 "settings.faq.url" = "https://app-help.ginlo.net/business/de/support";

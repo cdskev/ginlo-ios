@@ -105,7 +105,6 @@ class DPAGConfirmAccountViewController: DPAGViewControllerWithKeyboard, DPAGConf
 
     init(confirmationCode code: String?) {
         self.confirmationCode = code
-
         super.init(nibName: "DPAGConfirmAccountViewController", bundle: Bundle(for: type(of: self)))
     }
 
@@ -129,15 +128,10 @@ class DPAGConfirmAccountViewController: DPAGViewControllerWithKeyboard, DPAGConf
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         self.title = DPAGLocalizedString("registration.title.createAccount")
-
         self.configureGui()
-
         let dateRegistrationStarted = DPAGApplicationFacade.preferences.accountRegisteredAt
-
         let timeRegistrationStarted = Date().timeIntervalSince(dateRegistrationStarted)
-
         if dateRegistrationStarted.isInFuture || (timeRegistrationStarted > DPAGConfirmAccountViewController.kConfirmTimeout && (self.navigationController?.viewControllers.count ?? 0) > 1) {
             DPAGApplicationFacade.preferences.accountRegisteredAt = Date()
         }
@@ -153,22 +147,18 @@ class DPAGConfirmAccountViewController: DPAGViewControllerWithKeyboard, DPAGConf
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
         self.navigationController?.isNavigationBarHidden = false
-
         self.setLeftBackBarButtonItem(action: #selector(checkRegistrationTimer))
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
         if let confirmationCode = self.confirmationCode, confirmationCode.isEmpty == false {
             self.proceed(code: confirmationCode)
             self.confirmationCode = nil
         } else if self.viewAlphaNum.isHidden {
             let empty0 = (self.textField0.text?.isEmpty ?? true)
             let empty1 = (self.textField1.text?.isEmpty ?? true)
-
             if empty0 {
                 self.textField0.becomeFirstResponder()
             } else if empty1 {
@@ -181,16 +171,13 @@ class DPAGConfirmAccountViewController: DPAGViewControllerWithKeyboard, DPAGConf
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-
         self.timerRegistrationStarted?.invalidate()
     }
 
     @objc
     private func checkRegistrationTimer() {
         let dateRegistrationStarted = DPAGApplicationFacade.preferences.accountRegisteredAt
-
         let timeRegistrationStarted = Date().timeIntervalSince(dateRegistrationStarted)
-
         if timeRegistrationStarted >= DPAGConfirmAccountViewController.kConfirmTimeout {
             if let controllers = self.navigationController?.viewControllers {
                 if controllers.count < 2 {
@@ -212,34 +199,24 @@ class DPAGConfirmAccountViewController: DPAGViewControllerWithKeyboard, DPAGConf
 
     private func popToPasswortInitialisation() {
         DPAGApplicationFacade.accountManager.resetDatabase()
-
-        let initialPasswordViewController = DPAGApplicationFacadeUIRegistration.initialPasswordVC(createDevice: false)
-
+        let initialPasswordViewController = DPAGApplicationFacadeUIRegistration.initialPasswordVC(initialPasswordJob: .createAccount)
         self.navigationController?.setViewControllers([DPAGApplicationFacadeUIRegistration.introVC(), initialPasswordViewController], animated: true)
     }
 
     @objc
     private func updateRegistrationTimer() {
         let dateRegistrationStarted = DPAGApplicationFacade.preferences.accountRegisteredAt
-
         var timeRegistrationStarted = Date().timeIntervalSince(dateRegistrationStarted)
-
         self.labelTimer.isHidden = false
-
         if timeRegistrationStarted >= DPAGConfirmAccountViewController.kConfirmTimeout {
             self.timerRegistrationStarted?.invalidate()
             self.navigationItem.leftBarButtonItem?.isEnabled = true
-
-            self.labelTimer.text = " " // <- dieser Label darf leider nicht leer sein damit XCUITest diesen noch verwenden kann.
+            self.labelTimer.text = " " // <- This label must NOT BE empty-string, dieser Label darf leider nicht leer sein damit XCUITest diesen noch verwenden kann.
         } else {
             let localizedString = DPAGLocalizedString("registration.registerAccount.timer")
-
             timeRegistrationStarted = DPAGConfirmAccountViewController.kConfirmTimeout - timeRegistrationStarted
-
             self.navigationItem.leftBarButtonItem?.isEnabled = false
-
             self.timerRegistrationStarted = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateRegistrationTimer), userInfo: nil, repeats: false)
-
             self.labelTimer.text = String(format: "%@ %.2i:%.2i", localizedString, Int(timeRegistrationStarted) / 60, Int(timeRegistrationStarted) % 60)
             self.labelTimer.accessibilityIdentifier = "registration.registerAccount.timer"
         }
@@ -252,12 +229,9 @@ class DPAGConfirmAccountViewController: DPAGViewControllerWithKeyboard, DPAGConf
         } else {
             self.textFieldConfirmCode.text = code
         }
-
         if DPAGApplicationFacade.preferences.bootstrappingOverrideAccount {
             DPAGProgressHUD.sharedInstance.showForBackgroundProcess(true) { _ in
-
                 DPAGApplicationFacade.accountManager.isConfirmationValid(code: code, responseBlock: { _, _, errorMessage in
-
                     if let errorMessage = errorMessage {
                         if errorMessage == DPAGLocalizedString("service.error499") {
                             self.handleServiceError("service.error499.createAccount")
@@ -272,9 +246,7 @@ class DPAGConfirmAccountViewController: DPAGViewControllerWithKeyboard, DPAGConf
             }
         } else {
             DPAGProgressHUD.sharedInstance.showForBackgroundProcess(true) { _ in
-
                 DPAGApplicationFacade.accountManager.confirmAccount(code: code, responseBlock: { _, _, errorMessage in
-
                     if let errorMessage = errorMessage {
                         if errorMessage == DPAGLocalizedString("service.error499") {
                             self.handleServiceError("service.error499.createAccount")
@@ -292,25 +264,20 @@ class DPAGConfirmAccountViewController: DPAGViewControllerWithKeyboard, DPAGConf
     private func configureGui() {
         // reinit phoneNumber if this is first VC after start
         let contact = DPAGApplicationFacade.cache.contact(for: DPAGApplicationFacade.cache.account?.guid ?? "???")
-
         if let eMailAddress = contact?.eMailAddress {
             self.viewDigits.isHidden = true
-
             self.labelHeadline.text = DPAGLocalizedString("registration.label.labelHeadline.emailAddress")
             self.textField0.accessibilityLabel = DPAGLocalizedString("registration.label.labelHeadline.emailAddress")
             self.textField1.accessibilityLabel = DPAGLocalizedString("registration.label.labelHeadline.emailAddress")
             self.labelConfirmationText.text = String(format: DPAGLocalizedString("registration.textView.confirmationTextView.emailAddress"), eMailAddress)
-
             self.textFieldConfirmCode.text = self.confirmationCode
         } else {
             self.viewAlphaNum.isHidden = true
-
             self.telephoneNumber = contact?.phoneNumber ?? "-"
             self.labelHeadline.text = DPAGLocalizedString("registration.label.labelHeadline")
             self.textField0.accessibilityLabel = DPAGLocalizedString("registration.label.labelHeadline")
             self.textField1.accessibilityLabel = DPAGLocalizedString("registration.label.labelHeadline")
             self.labelConfirmationText.text = String(format: DPAGLocalizedString("registration.textView.confirmationTextView"), self.telephoneNumber)
-
             if let confirmationCode = self.confirmationCode {
                 self.textField0.text = confirmationCode.count > 3 ? String(confirmationCode[...confirmationCode.index(confirmationCode.startIndex, offsetBy: 3)]) : confirmationCode
                 self.textField1.text = confirmationCode.count > 3 ? String(confirmationCode[confirmationCode.index(confirmationCode.startIndex, offsetBy: 3)...]) : ""
@@ -318,7 +285,6 @@ class DPAGConfirmAccountViewController: DPAGViewControllerWithKeyboard, DPAGConf
                 self.textField0.text = ""
                 self.textField1.text = ""
             }
-
             self.textField0.configure(textFieldBefore: nil, textFieldAfter: self.textField1, textFieldMaxLength: 3, didChangeCompletion: self.updateBtnState)
             self.textField1.configure(textFieldBefore: self.textField0, textFieldAfter: nil, textFieldMaxLength: 3, didChangeCompletion: self.updateBtnState)
         }
@@ -334,13 +300,11 @@ class DPAGConfirmAccountViewController: DPAGViewControllerWithKeyboard, DPAGConf
 
     override func handleKeyboardWillShow(_ aNotification: Notification) {
         self.setRightBarButtonItem(image: DPAGImageProvider.shared[.kImageBarButtonNavCheck], action: #selector(handleNumberInputDoneTapped(_:)), accessibilityLabelIdentifier: "navigation.done")
-
         super.handleKeyboardWillShow(aNotification, scrollView: self.scrollView, viewVisible: self.textField0, viewButtonPrimary: self.viewButtonNext)
     }
 
     override func handleKeyboardWillHide(_ aNotification: Notification) {
         self.navigationItem.setRightBarButton(nil, animated: true)
-
         super.handleKeyboardWillHide(aNotification, scrollView: self.scrollView, viewButtonPrimary: self.viewButtonNext)
     }
 
@@ -362,7 +326,6 @@ class DPAGConfirmAccountViewController: DPAGViewControllerWithKeyboard, DPAGConf
     @objc
     private func handleContinueTapped() {
         self.dismissKeyboard()
-
         if self.viewAlphaNum.isHidden {
             if let text1 = self.textField0.text, let text2 = self.textField1.text, text1.isEmpty == false || text2.isEmpty == false {
                 self.proceed(code: text1 + text2)
@@ -376,9 +339,7 @@ class DPAGConfirmAccountViewController: DPAGViewControllerWithKeyboard, DPAGConf
 
     private func handleServiceSuccessNoBackup() {
         DPAGProgressHUD.sharedInstance.hide(true) { [weak self] in
-            guard let strongSelf = self, let account = DPAGApplicationFacade.cache.account, let contact = DPAGApplicationFacade.cache.contact(for: account.guid), let accountID = contact.accountID else {
-                return
-            }
+            guard let strongSelf = self, let account = DPAGApplicationFacade.cache.account, let contact = DPAGApplicationFacade.cache.contact(for: account.guid), let accountID = contact.accountID else { return }
             DPAGApplicationFacade.preferences.shouldInviteFriendsAfterInstall = true
             DPAGApplicationFacade.preferences.shouldInviteFriendsAfterChatPrivateCreation = true
             DPAGApplicationFacade.preferences.didAskForCompanyEmail = contact.eMailAddress != nil
@@ -498,19 +459,12 @@ class DPAGConfirmAccountViewController: DPAGViewControllerWithKeyboard, DPAGConf
 
     private func handleServiceError(_ message: String) {
         DPAGProgressHUD.sharedInstance.hide(true) { [weak self] in
-
-            guard let strongSelf = self else {
-                return
-            }
-
+            guard let strongSelf = self else { return }
             if message == "service.ERR-0062" {
                 strongSelf.viewButtonNext.isEnabled = false
-
                 strongSelf.presentErrorAlert(alertConfig: AlertConfigError(messageIdentifier: message, okActionHandler: { [weak self] _ in
-
                     if let strongSelf = self {
                         let controllers = strongSelf.navigationController?.viewControllers
-
                         if (controllers?.count ?? 0) < 2 {
                             strongSelf.popToPasswortInitialisation()
                         } else {
@@ -538,7 +492,6 @@ extension DPAGConfirmAccountViewController: DPAGProgressHUDDelegate {
 extension DPAGConfirmAccountViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_: UITextField) -> Bool {
         self.handleContinueTapped()
-
         return true
     }
 
@@ -556,16 +509,13 @@ extension DPAGConfirmAccountViewController: UITextFieldDelegate {
                 }
             }
         }
-
         if let textFieldText = textField.text {
             let text: NSString = textFieldText as NSString
             let resultedString = text.replacingCharacters(in: range, with: string)
-
             self.viewButtonNext.isEnabled = resultedString.isEmpty == false
         } else {
             self.viewButtonNext.isEnabled = false
         }
-
         return true
     }
 }

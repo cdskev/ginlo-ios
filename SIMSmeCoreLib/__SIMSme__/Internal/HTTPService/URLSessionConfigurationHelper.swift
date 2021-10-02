@@ -17,65 +17,48 @@ class URLSessionConfigurationHelper: URLSessionConfigurationHelperProtocol {
 
     func getConfiguration(type: RequestConfigurationType) -> URLSessionConfiguration {
         switch type {
-        case let .attachments(options):
-            return self.createAttachmentsConfiguration(options: options)
-
-        case .getMessages:
-            return self.createGetMessagesConfiguration()
-
-        case let .sendMessages(requestInBackgroundId):
-            return self.createSendMessagesConfiguration(requestInBackgroundId: requestInBackgroundId)
-
-        case .service:
-            return self.createDefaultConfiguration()
+            case let .attachments(options):
+                return self.createAttachmentsConfiguration(options: options)
+            case .getMessages:
+                return self.createGetMessagesConfiguration()
+            case let .sendMessages(requestInBackgroundId):
+                return self.createSendMessagesConfiguration(requestInBackgroundId: requestInBackgroundId)
+            case .service:
+                return self.createDefaultConfiguration()
         }
     }
 
     // MARK: -
 
     func createAttachmentsConfiguration(options: RequestConfigurationAttachmentOptions) -> URLSessionConfiguration {
-        guard let requestInBackgroundId = options.requestInBackgroundId else {
-            return self.createDefaultConfiguration()
-        }
-
+        guard let requestInBackgroundId = options.requestInBackgroundId else { return self.createDefaultConfiguration() }
         if options.autodownload {
             return self.createAutodownloadAttachmentsConfiguration(requestInBackgroundId: requestInBackgroundId)
         }
-
         return self.createRegularAttachmentsConfiguration(requestInBackgroundId: requestInBackgroundId)
     }
 
     func createGetMessagesConfiguration() -> URLSessionConfiguration {
         let configuration = URLSessionConfiguration.ephemeral
-
         configuration.httpMaximumConnectionsPerHost = 1
         configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
         configuration.allowsCellularAccess = true
         configuration.isDiscretionary = false
         configuration.networkServiceType = .responsiveData
-
         configuration.urlCache = nil
         configuration.urlCredentialStorage = nil
         return configuration
     }
 
     func createSendMessagesConfiguration(requestInBackgroundId: String?) -> URLSessionConfiguration {
-        guard let requestInBackgroundId = requestInBackgroundId else {
-            return self.createDefaultConfiguration()
-        }
-
+        guard let requestInBackgroundId = requestInBackgroundId else { return self.createDefaultConfiguration() }
         let config = URLSessionConfiguration.background(withIdentifier: requestInBackgroundId)
-
-        // config.shouldUseExtendedBackgroundIdleMode = true;
         config.allowsCellularAccess = true
         config.isDiscretionary = false
         config.networkServiceType = .responsiveData
         config.sharedContainerIdentifier = DPAGApplicationFacade.preferences.sharedContainerConfig.groupID
-
         config.requestCachePolicy = .reloadIgnoringLocalCacheData
-
         config.httpMaximumConnectionsPerHost = 4
-
         config.urlCache = nil
         config.urlCredentialStorage = nil
         return config
@@ -83,7 +66,6 @@ class URLSessionConfigurationHelper: URLSessionConfigurationHelperProtocol {
 
     func createAutodownloadAttachmentsConfiguration(requestInBackgroundId: String) -> URLSessionConfiguration {
         let config = URLSessionConfiguration.background(withIdentifier: requestInBackgroundId)
-
         config.allowsCellularAccess = true
         config.isDiscretionary = false
         config.networkServiceType = .background
@@ -92,23 +74,17 @@ class URLSessionConfigurationHelper: URLSessionConfigurationHelperProtocol {
         config.httpMaximumConnectionsPerHost = 2
         config.urlCache = nil
         config.urlCredentialStorage = nil
-
         return config
     }
 
     func createRegularAttachmentsConfiguration(requestInBackgroundId: String) -> URLSessionConfiguration {
         let config = URLSessionConfiguration.background(withIdentifier: requestInBackgroundId)
-
-        // config.shouldUseExtendedBackgroundIdleMode = true;
         config.allowsCellularAccess = true
         config.isDiscretionary = false
         config.networkServiceType = .responsiveData
         config.sharedContainerIdentifier = DPAGApplicationFacade.preferences.sharedContainerConfig.groupID
-
         config.requestCachePolicy = .reloadIgnoringLocalCacheData
-
         config.httpMaximumConnectionsPerHost = 4
-
         config.urlCache = nil
         config.urlCredentialStorage = nil
         return config
@@ -116,12 +92,10 @@ class URLSessionConfigurationHelper: URLSessionConfigurationHelperProtocol {
 
     func createDefaultConfiguration() -> URLSessionConfiguration {
         let configuration = URLSessionConfiguration.ephemeral
-
         configuration.httpMaximumConnectionsPerHost = 4
         configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
         configuration.allowsCellularAccess = true
         configuration.isDiscretionary = false
-
         configuration.urlCache = nil
         configuration.urlCredentialStorage = nil
         return configuration

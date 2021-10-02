@@ -338,13 +338,8 @@ extension DPAGChatsListViewController {
             }
         } else if let groupStream = stream as? DPAGDecryptedStreamGroup, let group = DPAGApplicationFacade.cache.group(for: groupStream.guid), group.isConfirmed {
             vcStream = DPAGApplicationFacadeUI.chatGroupStreamVC(stream: groupStream.guid, streamState: groupStream.streamState)
-        } else if let channelStream = stream as? DPAGDecryptedStreamChannel {
-            switch channelStream.feedType {
-                case .channel:
-                    vcStream = DPAGApplicationFacadeUI.channelStreamVC(stream: channelStream.guid, streamState: .readOnly)
-                case .service:
-                    vcStream = DPAGApplicationFacadeUI.serviceStreamVC(stream: channelStream.guid, streamState: .readOnly)
-            }
+        } else if let channelStream = stream as? DPAGDecryptedStreamChannel, channelStream.feedType == .channel {
+            vcStream = DPAGApplicationFacadeUI.channelStreamVC(stream: channelStream.guid, streamState: .readOnly)
         }
         guard let nextVC = vcStream else { return }
         self.openStreamViewController(tableView, nextVC: nextVC, stream: stream, indexPath: indexPath)

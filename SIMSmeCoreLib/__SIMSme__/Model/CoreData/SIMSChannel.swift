@@ -345,8 +345,6 @@ class SIMSChannel: SIMSManagedObject {
         switch self.validFeedType {
             case .channel:
                 return self.colorWithKey("_colorNavigationbarText", colorDefault: nil)
-            case .service:
-                return self.colorWithKey("_colorNavigationbarText", colorDefault: nil)
         }
     }
 
