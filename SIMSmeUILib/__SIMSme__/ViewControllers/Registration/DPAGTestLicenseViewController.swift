@@ -1,6 +1,6 @@
 //
 //  DPAGTestLicenseViewController.swift
-//  SIMSme
+// ginlo
 //
 //  Created by Yves Hetzer on 19.06.17.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

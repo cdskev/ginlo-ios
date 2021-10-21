@@ -1,6 +1,6 @@
 //
 //  SIMSContact.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 19/10/15.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

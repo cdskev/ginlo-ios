@@ -1,6 +1,6 @@
 //
 //  DPAGChatListViews.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 16/03/2017.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

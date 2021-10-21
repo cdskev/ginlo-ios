@@ -1,6 +1,6 @@
 //
 //  DPAGSettingsOptionSelectViewController.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 17.04.18.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

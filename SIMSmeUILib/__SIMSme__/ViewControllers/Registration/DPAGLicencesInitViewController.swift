@@ -1,6 +1,6 @@
 //
 //  DPAGLicencesInitViewController.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 20/06/16.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

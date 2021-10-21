@@ -1,6 +1,6 @@
 //
 //  DPAGContactNotFoundViewController.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 27.04.18.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

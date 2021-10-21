@@ -1,6 +1,6 @@
 //
 //  DPAGMDMPreferences.swift
-//  SIMSme
+// ginlo
 //
 //  Created by Florian Plewka on 11.04.16.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

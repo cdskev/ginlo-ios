@@ -1,6 +1,6 @@
 //
 //  DPAGActiveChatsListViewController.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 03/03/16.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

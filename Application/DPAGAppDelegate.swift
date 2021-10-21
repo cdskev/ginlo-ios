@@ -1,6 +1,6 @@
 //
 //  DPAGAppDelegate.m
-//  SIMSme
+// ginlo
 //
 //  Created by mg on 12.09.13.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

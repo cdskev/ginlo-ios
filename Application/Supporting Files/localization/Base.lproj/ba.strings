@@ -1,5 +1,5 @@
 "contacts.eMailMessageBody" = "Hi!
-I want to invite you to SIMSme Business. This is THE secure messenger specifically for companies.
+I want to invite you to ginlo Business. This is THE secure messenger specifically for companies.
 Use the following to speed up communication with contacts and colleagues:
 - Faster exchange on the team – individual and group chats, channels and distribution lists
 - Simple sharing of contents – video and audio messages, photos and documents
@@ -7,18 +7,18 @@ Use the following to speed up communication with contacts and colleagues:
 - Available on all devices – computers, tablets and smartphones
 Download the app now at https://www.ginlo.net/join and try it out.
 Kind regards";
-"settings.informFriends" = "Invite colleagues";
+"settings.informFriends" = "Invite contacts";
 "contacts.eMailMessageSubject" = "Join me on ginlo Business, the secure business messenger";
-"contacts.options.invite" = "Invite colleagues";
+"contacts.options.invite" = "Invite contacts";
 "contacts.search.empty.search" = "Search for colleagues with %@";
-"contacts.search.empty.invite" = "Invite colleagues";
+"contacts.search.empty.invite" = "Invite contacts";
 "settings.profile.qr_code_desc" = "Have your QR code scanned (or scan your contacts’ codes) to add someone as contact, confirm identity or invite someone to ginlo.";
-"contacts.invitationActionSheetTitle" = "Invite colleagues to SIMSme";
-"invite.friends.after.chatcreation.message" = "You seem to enjoy using SIMSme. Do you want to invite more colleagues?";
-"settings.companyemail.askafterinstall.hint" = "When you specify your email address, SIMSme can find your colleagues with the same email domain automatically. Would you like to link a professional email to your account?";
+"contacts.invitationActionSheetTitle" = "Invite contacts to ginlo";
+"invite.friends.after.chatcreation.message" = "You seem to enjoy using ginlo. Do you want to invite more contacts?";
+"settings.companyemail.askafterinstall.hint" = "When you specify your email address, ginlo can find your colleagues with the same email domain automatically. Would you like to link a professional email to your account?";
 "settings.profile.statusLabel" = "Availability";
 "contacts.smsMessageBody" = "Hello! I use the ginlo Business Messenger. Download the app here: %@\n";
-"settings.companyprofile.contactsoverview.empty.text2" = "Unfortunately, we could not find any contacts that have linked a professional email address with the domain %@.\n\nRecommend to your colleagues that use SIMSme to link an email address.";
+"settings.companyprofile.contactsoverview.empty.text2" = "Unfortunately, we could not find any contacts that have linked a professional email address with the domain %@.\n\nRecommend to your colleagues that use ginlo to link an email address.";
 "registration.agb.AGB" = "Terms & Conditions";
 "registration.backup.not_found.headline" = "We could not find a backup";
 "registration.backup.not_found.description" = "This telephone number is already registered with %@, but we could not find a chat backup for it. A backup lets you transfer your existing chats, contacts and media. Creating a backup:";

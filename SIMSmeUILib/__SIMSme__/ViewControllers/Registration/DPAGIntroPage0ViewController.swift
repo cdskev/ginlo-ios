@@ -1,6 +1,6 @@
 //
 //  DPAGIntroPage0ViewController.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 01/06/16.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.
