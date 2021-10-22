@@ -1,6 +1,6 @@
 //
 //  DPAGApplicationFacade.accountManager.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 04/11/15.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

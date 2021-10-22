@@ -1,6 +1,6 @@
 //
 //  DPAGCompanyContactsOverViewController.swift
-//  SIMSme
+// ginlo
 //
 //  Created by Yves Hetzer on 27.10.16.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

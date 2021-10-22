@@ -1,6 +1,6 @@
 //
 //  DPAGServiceCell.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 16/02/2017.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

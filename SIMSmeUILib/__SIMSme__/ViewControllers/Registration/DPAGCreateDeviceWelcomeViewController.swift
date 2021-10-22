@@ -1,6 +1,6 @@
 //
 //  DPAGCreateDeviceWelcomeViewController.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 06.12.17.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

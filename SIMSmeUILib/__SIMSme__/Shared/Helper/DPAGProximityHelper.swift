@@ -1,6 +1,6 @@
 //
 //  DPAGProximityHelper.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 08/11/2016.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

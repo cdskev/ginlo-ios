@@ -46,14 +46,14 @@ public struct DPAGApplicationFacadeUIRegistration {
 
     static func beforeCreateDeviceVC(password: String, enabled: Bool) -> (UIViewController) {
         if AppConfig.buildConfigurationMode == .DEBUG || AppConfig.buildConfigurationMode == .BETA {
-            return PageEndpointViewController(password: password, enabled: enabled, invitationData: nil)
+          return PageEndpointViewController(password: password, enabled: enabled, creationJob: .createDevice, invitationData: nil)
         }
         return DPAGCreateDeviceRequestCodeViewController(password: password, enabled: enabled)
     }
 
     static func beforeRegistrationVC(password: String, enabled: Bool) -> (UIViewController) {
         if AppConfig.buildConfigurationMode == .DEBUG || AppConfig.buildConfigurationMode == .BETA {
-            return PageEndpointViewController(password: password, enabled: enabled, creationJob: GNInitialCreationType.createAccount, invitationData: nil)
+            return PageEndpointViewController(password: password, enabled: enabled, creationJob: .createAccount, invitationData: nil)
         }
         return DPAGRequestAccountViewController(password: password, enabled: enabled, endpoint: nil)
     }

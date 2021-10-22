@@ -1,6 +1,6 @@
 //
 //  DPAGPreferences.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 20/10/15.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.
@@ -255,7 +255,7 @@ public class DPAGPreferences: NSObject {
             kSystemGeneratedPassword = "System_generated_password",
             kIsCrashReportEnabled,
 
-            // SIMSme MDM Config Keys
+            // ginlo MDM Config Keys
             kMdmDisableNoPwLogin = "disableNoPwLogin",
             kMdmForceComplexPin = "forceComplexPin",
             kMdmDisableTouchId = "disableFaceAndTouchID",
@@ -328,7 +328,7 @@ public class DPAGPreferences: NSObject {
 
             kLastRunningVersion = "MGHelperLastRunningVersion",
 
-            // SIMSme MDM Config Keys
+            // ginlo MDM Config Keys
             kPasswordUsedPasswords = "simsPasswordUsedPasswords",
             kPasswordsAesKey = "simsPasswordsAesKey",
 
@@ -389,7 +389,7 @@ public class DPAGPreferences: NSObject {
             kPasswordMinClasses = "kPreferencesPasswordMinClasses",
             kPasswordMaxDuration = "kPreferencesPasswordMaxDuration",
 
-            // SIMSme MDM Config Keys
+            // ginlo MDM Config Keys
             kMdmSimsLockApplicationDelay = "simsLockApplicationDelay",
             kMdmSimsPasswordTries = "simsPasswordTries",
             kMdmPasswordMinLength = "passwordMinLength",

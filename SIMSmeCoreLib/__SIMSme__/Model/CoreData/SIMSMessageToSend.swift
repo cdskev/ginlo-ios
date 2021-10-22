@@ -1,6 +1,6 @@
 //
 //  SIMSMessageToSend.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 02/05/16.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

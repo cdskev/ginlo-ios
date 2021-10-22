@@ -1,6 +1,6 @@
 //
 //  DPAGConfirmAccountOverrideViewController.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 26/05/16.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

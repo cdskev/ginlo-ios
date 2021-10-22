@@ -1,6 +1,6 @@
 //
 //  SIMSMessageReceiver.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 31/08/16.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  DPAGDeviceTableViewCell.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 08.01.18.
 //  Copyright © 2019 Deutsche Post AG. All rights reserved.

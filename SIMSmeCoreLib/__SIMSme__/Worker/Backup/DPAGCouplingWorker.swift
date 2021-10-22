@@ -363,7 +363,6 @@ class DPAGCouplingWorker: DPAGCouplingWorkerProtocol {
         AppConfig.setIdleTimerDisabled(true)
     }
 
-
     func getAccountInfo(searchData: String, searchMode mode: String) throws -> [Any]? {
         var retVal: [Any]?
         var errorCodeBlock: String?

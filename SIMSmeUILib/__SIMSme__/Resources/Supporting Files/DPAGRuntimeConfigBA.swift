@@ -1,6 +1,6 @@
 //
 //  DPAGRuntimeConfigBA.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 10/01/2017.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

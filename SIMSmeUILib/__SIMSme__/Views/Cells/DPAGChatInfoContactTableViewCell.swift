@@ -1,6 +1,6 @@
 //
 //  DPAGChatInfoContactTableViewCell.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 12/09/16.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

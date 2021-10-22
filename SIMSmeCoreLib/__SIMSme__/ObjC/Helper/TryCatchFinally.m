@@ -1,6 +1,6 @@
 //
 //  TryCatchFinally.m
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 27/01/16.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.
