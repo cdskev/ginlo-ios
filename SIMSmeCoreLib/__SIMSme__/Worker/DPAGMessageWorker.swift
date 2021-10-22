@@ -1,6 +1,6 @@
 //
 //  DPAGMessageWorker.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 27/01/16.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.
@@ -214,28 +214,22 @@ class DPAGMessageCryptoWorker: NSObject, DPAGMessageCryptoWorkerProtocol {
     }
 
     func decryptOwnMessageDict(_ message: SIMSPrivateMessage) -> DPAGMessageDictionary? {
-        DPAGLog("decryptOwnMessage")
         return self.decryptMessageDict(message.data, encAesKey: message.fromKey, encAesKey2: message.fromKey2, aesKeyIV: message.aesKey2IV)
     }
 
     func decryptOwnMessageToSendDict(_ message: SIMSMessageToSendPrivate) -> DPAGMessageDictionary? {
-        DPAGLog("decryptOwnMessage")
         return self.decryptMessageDict(message.data, encAesKey: message.fromKey, encAesKey2: message.fromKey2, aesKeyIV: message.aesKey2IV)
     }
 
     func decryptContactMessageDict(_ message: SIMSPrivateMessage) -> DPAGMessageDictionary? {
-        DPAGLog("decryptContactMessage")
         return self.decryptMessageDict(message.data, encAesKey: message.toKey, encAesKey2: message.toKey2, aesKeyIV: message.aesKey2IV)
     }
 
     func decryptPrivateInternalMessage(data: String, encAesKey: String) -> DPAGMessageDictionary? {
-        DPAGLog("decryptInternalMessage")
         return self.decryptMessageDict(data, encAesKey: encAesKey, encAesKey2: nil, aesKeyIV: nil)
     }
 
     func decryptMessageDict(_ message: SIMSPrivateMessage) -> DPAGMessageDictionary? {
-        DPAGLog("decryptMessage")
-
         if message.isOwnMessage {
             return self.decryptOwnMessageDict(message)
         }

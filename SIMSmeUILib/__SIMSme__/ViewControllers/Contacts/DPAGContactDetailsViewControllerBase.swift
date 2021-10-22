@@ -1,6 +1,6 @@
 //
 //  DPAGContactDetailsViewControllerBase.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 19/05/16.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

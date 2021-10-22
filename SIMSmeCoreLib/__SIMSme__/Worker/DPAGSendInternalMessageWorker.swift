@@ -1,6 +1,6 @@
 //
 //  DPAGSendInternalMessageWorker.m
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 17/06/2015.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

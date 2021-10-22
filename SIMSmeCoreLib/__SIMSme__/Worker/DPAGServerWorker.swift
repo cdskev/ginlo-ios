@@ -81,7 +81,6 @@ protocol DPAGServerWorkerProtocol {
     func acceptInvitationForRoom(roomGuid: String, nickNameEncoded nickName: String?, withResponse responseBlock: @escaping DPAGServiceResponseBlock)
     func declineInvitationForRoom(roomGuid: String, nickNameEncoded nickName: String?, withResponse responseBlock: @escaping DPAGServiceResponseBlock)
 
-    func sendCrashReport(report: String, withResponse responseBlock: DPAGServiceResponseBlock?)
     func getAttachment(guid: String, progress downloadProgressBlock: DPAGProgressBlock?, destination: @escaping ((_ targetPath: URL?, _ response: URLResponse?) -> URL), withResponse responseBlock: @escaping DPAGServiceResponseBlock)
 
     func isTrackingDisabled(withResponse responseBlock: @escaping DPAGServiceResponseBlock)
@@ -102,7 +101,6 @@ protocol DPAGServerWorkerProtocol {
 
     func resetBadge(withResponse response: @escaping DPAGServiceResponseBlock)
     func createBackgroundAccessToken(withResponse response: @escaping DPAGServiceResponseBlock)
-    func logEvents(events: [[AnyHashable: Any]])
 
     func getChannels(withResponse responseBlock: @escaping DPAGServiceResponseBlock)
     func getChannelChecksum(channelGuid: String, withResponse responseBlock: @escaping DPAGServiceResponseBlock)
@@ -122,9 +120,6 @@ protocol DPAGServerWorkerProtocol {
     func getServiceAssets(serviceAssetIdents: [String], withResponse responseBlock: @escaping DPAGServiceResponseBlock)
     func subscribeService(serviceGuid: String, filter: String, withResponse responseBlock: @escaping DPAGServiceResponseBlock)
     func unsubscribeService(serviceGuid: String, withResponse responseBlock: @escaping DPAGServiceResponseBlock)
-
-    func getInfoPages(withResponse responseBlock: @escaping DPAGServiceResponseBlock)
-    func getInfoPageData(pageGuid: String, withResponse responseBlock: @escaping DPAGServiceResponseBlock)
 
     func createBackupPasstoken(accountGuid: String, withResponse responseBlock: @escaping DPAGServiceResponseBlock)
     func setFollowedChannels(channelInfos: [[AnyHashable: Any]], withResponse responseBlock: @escaping DPAGServiceResponseBlock)
@@ -200,7 +195,6 @@ protocol DPAGServerWorkerProtocol {
     func handleEvents(forBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void)
 
     func getAutoAttachment(guid: String, contentType: DPAGMessageContentType, progress downloadProgressBlock: DPAGProgressBlock?, destination: @escaping ((_ targetPath: URL?, _ response: URLResponse?) -> URL), withResponse responseBlock: @escaping DPAGServiceResponseBlock)
-    func setBrabblerSwitchState()
 }
 
 class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
@@ -214,59 +208,47 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
     func sendCommandAnonymous(_ command: CodableDict, withResponse responseBlock: DPAGServiceResponseBlock?) {
         DPAGApplicationFacade.service.perform(request: {
             let request = DPAGHttpServiceRequest()
-
             request.parametersCodable = command
             request.responseBlock = responseBlock
             request.path = PATH_CREATE_ACCOUNT
             request.authenticate = .none
-
             return request
         }())
     }
 
     func createAccount(metadata: String, responseBlock: @escaping DPAGServiceResponseBlock) throws {
         let checksum = try CryptoHelperCoding.shared.md5Hash(value: metadata)
-
         var mandant: String?
-
         if DPAGApplicationFacade.preferences.isWhiteLabelBuild {
             let ident = DPAGApplicationFacade.preferences.mandantIdent
             mandant = ident ?? ""
         }
-
         self.sendCommandAnonymous(DPAGServerFunction.CreateAccount(language: DPAGApplicationFacade.model.language ?? "de", data: metadata, dataChecksum: checksum, allowFreeMailer: 1, mandant: mandant), withResponse: responseBlock)
     }
 
     func createAutomaticAccount(metadata: String, cockpitToken: String, cockpitData: String, responseBlock: @escaping DPAGServiceResponseBlock) throws {
         let checksum = try CryptoHelperCoding.shared.md5Hash(value: metadata)
-
         var mandant: String?
-
         if DPAGApplicationFacade.preferences.isWhiteLabelBuild {
             let ident = DPAGApplicationFacade.preferences.mandantIdent
             mandant = ident ?? ""
         }
-
         self.sendCommandAnonymous(DPAGServerFunction.CreateAutomaticAccount(language: DPAGApplicationFacade.model.language ?? "de", data: metadata, dataChecksum: checksum, cockpitToken: cockpitToken, cockpitData: cockpitData, mandant: mandant), withResponse: responseBlock)
     }
 
     func createDeviceInAccount(accountGuid _: String, phoneNumber phone: String?, metadata: String, withResponse responseBlock: @escaping DPAGServiceResponseBlock) {
         var mandant = DPAGMandant.IDENT_DEFAULT
-
         if DPAGApplicationFacade.preferences.isWhiteLabelBuild {
             let ident = DPAGApplicationFacade.preferences.mandantIdent
             mandant = ident ?? ""
         }
-
         let requestPath = PATH_RECOVER_BACKUP
-
         DPAGApplicationFacade.service.perform(request: {
             let request = DPAGHttpServiceRequest()
             request.parametersCodable = DPAGServerFunction.CreateDeviceInAccount(phoneNumber: phone, device: metadata, mandant: mandant)
             request.responseBlock = responseBlock
             request.path = requestPath
             request.authenticate = .recovery
-
             return request
         }())
     }
@@ -289,7 +271,6 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
 
     func requestSimsmeRecoveryKey(parameter: [AnyHashable: Any], withResponse responseBlock: @escaping DPAGServiceResponseBlock) {
         let requestPath = "BackgroundService"
-
         DPAGApplicationFacade.service.perform(request: {
             let request = DPAGHttpServiceRequest()
             request.parameters = parameter
@@ -297,7 +278,6 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
             request.responseBlock = responseBlock
             request.path = requestPath
             request.authenticate = .background
-
             return request
         }())
     }
@@ -309,7 +289,6 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
     func getKnownAccounts(hashedAccountSearchAttributes: [String], searchMode: String, withResponse responseBlock: @escaping DPAGServiceResponseBlock) {
         do {
             let hashedAccountSearchAttributesJson = try hashedAccountSearchAttributes.jsonString()
-
             self.sendCommand(DPAGServerFunction.GetKnownAccountInfo(data: hashedAccountSearchAttributesJson, profileInfo: "1", mandant: "1", searchMode: searchMode), withResponse: responseBlock)
         } catch {
             responseBlock(nil, nil, error.localizedDescription)
@@ -324,7 +303,6 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
         do {
             let hashedAccountSearchAttributesJson = try hashedAccountSearchAttributes.jsonString()
             let checksum = try CryptoHelperCoding.shared.md5Hash(value: hashedAccountSearchAttributesJson)
-
             self.sendCommand(DPAGServerFunction.GetKnownAccounts(salt: mandant.salt, data: hashedAccountSearchAttributesJson, profileInfo: "1", mandant: mandant.ident, dataChecksum: checksum, searchMode: searchMode), withResponse: responseBlock)
         } catch {
             responseBlock(nil, nil, error.localizedDescription)
@@ -346,7 +324,6 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
     func setAutoGenerateConfirmReadMessage(enabled: Bool, withResponse responseBlock: @escaping DPAGServiceResponseBlock) {
         do {
             let json = try ["confirmRead": enabled ? "1" : "0"].jsonString()
-
             self.sendCommand(DPAGServerFunction.SetAutoGeneratedMessages(data: json), withResponse: responseBlock)
         } catch {
             responseBlock(nil, nil, error.localizedDescription)
@@ -399,7 +376,6 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
 
     func sendMessage(msgInstance: DPAGSendMessageWorkerInstance, concurrent _: Bool, requestInBackgroundId: String?, withResponse responseBlock: @escaping DPAGServiceResponseBlock) throws {
         let checksum = try CryptoHelperCoding.shared.md5Hash(value: msgInstance.messageJson!)
-
         DPAGApplicationFacade.service.perform(request: {
             let request = DPAGHttpServiceRequestSendMessages()
             autoreleasepool {
@@ -408,14 +384,12 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
             }
             request.responseBlock = responseBlock
             request.requestInBackgroundId = requestInBackgroundId
-
             return request
         }())
     }
 
     func sendTimedMessage(msgInstance: DPAGSendMessageWorkerInstance, sendTime: Date, concurrent _: Bool, requestInBackgroundId: String?, withResponse responseBlock: @escaping DPAGServiceResponseBlock) throws {
         let checksum = try CryptoHelperCoding.shared.md5Hash(value: msgInstance.messageJson!)
-
         DPAGApplicationFacade.service.perform(request: {
             let request = DPAGHttpServiceRequestSendMessages()
             autoreleasepool {
@@ -424,14 +398,12 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
             }
             request.responseBlock = responseBlock
             request.requestInBackgroundId = requestInBackgroundId
-
             return request
         }())
     }
 
     func sendInternalMessage(messageJson: String, to _: SIMSContactIndexEntry, withResponse responseBlock: @escaping DPAGServiceResponseBlock) throws {
         let checksum = try CryptoHelperCoding.shared.md5Hash(value: messageJson)
-
         self.sendCommand(DPAGServerFunction.SendPrivateInternalMessage(message: messageJson, messageChecksum: checksum, returnConfirmMessage: 1), withResponse: responseBlock)
     }
 
@@ -443,7 +415,6 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
 
     func sendGroupMessage(msgInstance: DPAGSendMessageWorkerInstance, concurrent _: Bool, requestInBackgroundId: String?, withResponse responseBlock: @escaping DPAGServiceResponseBlock) throws {
         let checksum = try CryptoHelperCoding.shared.md5Hash(value: msgInstance.messageJson!)
-
         DPAGApplicationFacade.service.perform(request: {
             let request = DPAGHttpServiceRequestSendMessages()
             autoreleasepool {
@@ -452,14 +423,12 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
             }
             request.responseBlock = responseBlock
             request.requestInBackgroundId = requestInBackgroundId
-
             return request
         }())
     }
 
     func sendTimedGroupMessage(msgInstance: DPAGSendMessageWorkerInstance, sendTime: Date, concurrent _: Bool, requestInBackgroundId: String?, withResponse responseBlock: @escaping DPAGServiceResponseBlock) throws {
         let checksum = try CryptoHelperCoding.shared.md5Hash(value: msgInstance.messageJson!)
-
         DPAGApplicationFacade.service.perform(request: {
             let request = DPAGHttpServiceRequestSendMessages()
             autoreleasepool {
@@ -468,25 +437,18 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
             }
             request.responseBlock = responseBlock
             request.requestInBackgroundId = requestInBackgroundId
-
             return request
         }())
     }
 
     private func loadShareExtensionMessages() -> [[AnyHashable: Any]] {
         var retVal: [[AnyHashable: Any]] = []
-
         do {
             if let urlMetadataRoot = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: DPAGApplicationFacade.preferences.sharedContainerConfig.groupID) {
                 try FileManager.default.contentsOfDirectory(at: urlMetadataRoot, includingPropertiesForKeys: nil, options: .skipsHiddenFiles).filter({ $0.pathExtension == "mmd" }).forEach({ fileURL in
-
                     do {
                         let data = try Data(contentsOf: fileURL)
-
-                        guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? [AnyHashable: Any] else {
-                            return
-                        }
-
+                        guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? [AnyHashable: Any] else { return }
                         retVal.append(json)
                     } catch {
                         DPAGLog(error, message: "error loadShareExtensionMessages")
@@ -496,7 +458,6 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
         } catch {
             DPAGLog(error, message: "error loadShareExtensionMessages")
         }
-
         return retVal
     }
 
@@ -514,24 +475,13 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
 
     func getNewMessages(withResponse responseBlock: DPAGServiceResponseBlock?, useLazy: Bool) -> URLSessionTask? {
         var cachedresultShareExtension: [[AnyHashable: Any]] = []
-
         DPAGFunctionsGlobal.synchronized(self) {
             cachedresultShareExtension = self.loadShareExtensionMessages()
         }
-
-        /* if cachedresult.count > 0 && responseBlock != nil
-         {
-             responseBlock?(cachedresult, nil, nil)
-             self.cleanupShareExtensionMessages()
-             return nil
-         } */
-
         var cachedresultBackground: [[AnyHashable: Any]] = []
-
         DPAGFunctionsGlobal.synchronized(self) {
             cachedresultBackground = self.loadBackgroundReceivedMessages()
         }
-
         if cachedresultShareExtension.count > 0 || cachedresultBackground.count > 0 {
             // Alle als Prefetched Speichern
             var cachedresult: [[AnyHashable: Any]] = []
@@ -541,18 +491,12 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
             self.cleanupShareExtensionMessages()
             // die Prio1 Nachrochten abholen (prefetched Nachrichten korrekt einsortieren
             let responseBlock: DPAGServiceResponseBlock = { [weak self] responseObject, errorCode, errorMessage in
-
-                guard let strongSelf = self else {
-                    return
-                }
-
+                guard let strongSelf = self else { return }
                 if let errorMessage = errorMessage {
                     responseBlock?(nil, errorCode, errorMessage)
                 } else if let responseArray = responseObject as? [Any] {
                     DPAGLog("Got Prio1 Messages")
-
                     var newArray: [[AnyHashable: Any]] = []
-
                     for messageObj in responseArray {
                         if let message = messageObj as? String {
                             if let m = strongSelf.getPrefetchedMessage(messageGuid: message) {
@@ -561,7 +505,6 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
                             }
                         } else if let message = messageObj as? [AnyHashable: Any] {
                             var response = message
-
                             response[DPAGStrings.JSON.MessagePrivate.OBJECT_KEY] = strongSelf.dictDownloaded(forDict: response[DPAGStrings.JSON.MessagePrivate.OBJECT_KEY] as? [AnyHashable: Any])
                             response[DPAGStrings.JSON.MessagePrivateInternal.OBJECT_KEY] = strongSelf.dictDownloaded(forDict: response[DPAGStrings.JSON.MessagePrivateInternal.OBJECT_KEY] as? [AnyHashable: Any])
                             response[DPAGStrings.JSON.MessageInternal.OBJECT_KEY] = strongSelf.dictDownloaded(forDict: response[DPAGStrings.JSON.MessageInternal.OBJECT_KEY] as? [AnyHashable: Any])
@@ -570,7 +513,6 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
                             response[DPAGStrings.JSON.MessageChannel.OBJECT_KEY] = strongSelf.dictDownloaded(forDict: response[DPAGStrings.JSON.MessageChannel.OBJECT_KEY] as? [AnyHashable: Any])
                             response[DPAGStrings.JSON.MessageService.OBJECT_KEY] = strongSelf.dictDownloaded(forDict: response[DPAGStrings.JSON.MessageService.OBJECT_KEY] as? [AnyHashable: Any])
                             response[DPAGStrings.JSON.ConfirmMessageSend.OBJECT_KEY] = strongSelf.dictDownloaded(forDict: response[DPAGStrings.JSON.ConfirmMessageSend.OBJECT_KEY] as? [AnyHashable: Any])
-
                             if response[DPAGStrings.JSON.MessagePrivate.OBJECT_KEY] != nil
                                 || response[DPAGStrings.JSON.MessagePrivateInternal.OBJECT_KEY] != nil
                                 || response[DPAGStrings.JSON.MessageInternal.OBJECT_KEY] != nil
@@ -584,21 +526,17 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
                             }
                         }
                     }
-
                     self?.saveBackgroundReceivedMessages(array: [])
                     responseBlock?(newArray, errorCode, errorMessage)
                 }
             }
-
             return DPAGApplicationFacade.service.perform(request: {
                 let request = DPAGHttpServiceRequestGetMessages()
                 request.parametersCodable = DPAGServerFunction.GetNewPrio1Messages(prefetchedMessages: self.getPrefetchedMessages().joined(separator: ","))
                 request.responseBlock = responseBlock
-
                 return request
             }())
         }
-
         if useLazy {
             return DPAGApplicationFacade.service.perform(request: {
                 let request = DPAGHttpServiceRequestGetMessages()
@@ -606,10 +544,8 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
                 request.parametersCodable = DPAGServerFunction.GetNewMessages()
                 request.responseBlock = responseBlock
                 request.timeout = TimeInterval(DPAGApplicationFacade.preferences.lazyGetTimeout)
-
                 return request
             }())
-            // (forPath: "LazyService", parameters: parameters, authenticate: .standard, concurrent: true, response: responseBlock, timeout: TimeInterval(DPAGApplicationFacade.preferences.lazyGetTimeout), requestInBackgroundId : nil)
         } else {
             return DPAGApplicationFacade.service.perform(request: DPAGHttpServiceRequestGetMessages(parametersCodable: DPAGServerFunction.GetNewMessages(), responseBlock: responseBlock))
         }
@@ -640,9 +576,7 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
     }
 
     func confirmRead(guids: [String], chatGuid: String?, withResponse responseBlock: @escaping DPAGServiceResponseBlock) {
-        guard guids.count > 0 else {
-            return
-        }
+        guard guids.count > 0 else { return }
 
         if let guidsJson = guids.JSONString {
             self.sendCommand(DPAGServerFunction.SetMessageState(state: DPAGServerMessageState.read.rawValue, guids: guidsJson, chatGuid: chatGuid), withResponse: responseBlock)
@@ -652,9 +586,7 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
     }
 
     func confirmDeleted(guids: [String], withResponse responseBlock: DPAGServiceResponseBlock?) {
-        guard guids.count > 0 else {
-            return
-        }
+        guard guids.count > 0 else { return }
 
         if let guidsJson = guids.JSONString {
             self.sendCommand(DPAGServerFunction.SetMessageState(state: DPAGServerMessageState.deleted.rawValue, guids: guidsJson, chatGuid: nil), withResponse: responseBlock)
@@ -671,13 +603,10 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
 
         if let deviceJson = deviceDict.JSONString {
             let checksum = try CryptoHelperCoding.shared.md5Hash(value: deviceJson)
-
             DPAGLog("setDeviceData: %@", deviceJson)
-
             let responseBlock: DPAGServiceResponseBlock = { responseObject, _, errorMessage in
                 DPAGLog("setDeviceDataResponse: error: %@\nresponse: %@", errorMessage ?? "nix", (responseObject as AnyObject?)?.debugDescription ?? "garnix")
             }
-
             self.sendCommand(DPAGServerFunction.SetDeviceData(data: deviceJson, dataChecksum: checksum), withResponse: responseBlock)
         } else {
             DPAGLog("Cannot set device data because deviceJson is nil")
@@ -687,18 +616,14 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
 
     func setNotification(enable: Bool, forChatType type: DPAGNotificationChatType, withResponse responseBlock: @escaping DPAGServiceResponseBlock) {
         let cmd: CodableDict
-
         switch type {
-        case .single:
-            cmd = DPAGServerFunction.SetNotification(enabled: enable ? 1 : 0)
-        case .group:
-            cmd = DPAGServerFunction.SetGroupNotification(enabled: enable ? 1 : 0)
-        case .channel:
-            cmd = DPAGServerFunction.SetChannelNotification(enabled: enable ? 1 : 0)
-        case .service:
-            cmd = DPAGServerFunction.SetServiceNotification(enabled: enable ? 1 : 0)
+            case .single:
+                cmd = DPAGServerFunction.SetNotification(enabled: enable ? 1 : 0)
+            case .group:
+                cmd = DPAGServerFunction.SetGroupNotification(enabled: enable ? 1 : 0)
+            case .channel:
+                cmd = DPAGServerFunction.SetChannelNotification(enabled: enable ? 1 : 0)
         }
-
         self.sendCommand(cmd, withResponse: responseBlock)
     }
 
@@ -714,23 +639,13 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
         let preferences = DPAGApplicationFacade.preferences
 
         switch type {
-        case .single:
-
-            notificationDict = SetNotificationSoundTypes(privateMessage: enable ? (preferences[DPAGPreferences.PropString.kChatRingtone] ?? DPAGPreferences.kValueNotificationSoundDefault) : DPAGPreferences.kValueNotificationSoundNone, groupMessage: preferences[DPAGPreferences.PropString.kGroupChatRingtone] ?? DPAGPreferences.kValueNotificationSoundDefault, channelMessage: preferences[DPAGPreferences.PropString.kChannelChatRingtone] ?? DPAGPreferences.kValueNotificationSoundDefault, serviceMessage: preferences[DPAGPreferences.PropString.kServiceChatRingtone] ?? DPAGPreferences.kValueNotificationSoundDefault)
-
-        case .group:
-
-            notificationDict = SetNotificationSoundTypes(privateMessage: preferences[DPAGPreferences.PropString.kChatRingtone] ?? DPAGPreferences.kValueNotificationSoundDefault, groupMessage: enable ? (preferences[DPAGPreferences.PropString.kGroupChatRingtone] ?? DPAGPreferences.kValueNotificationSoundDefault) : DPAGPreferences.kValueNotificationSoundNone, channelMessage: preferences[DPAGPreferences.PropString.kChannelChatRingtone] ?? DPAGPreferences.kValueNotificationSoundDefault, serviceMessage: preferences[DPAGPreferences.PropString.kServiceChatRingtone] ?? DPAGPreferences.kValueNotificationSoundDefault)
-
-        case .channel:
-
-            notificationDict = SetNotificationSoundTypes(privateMessage: preferences[DPAGPreferences.PropString.kChatRingtone] ?? DPAGPreferences.kValueNotificationSoundDefault, groupMessage: preferences[DPAGPreferences.PropString.kGroupChatRingtone] ?? DPAGPreferences.kValueNotificationSoundDefault, channelMessage: enable ? (preferences[DPAGPreferences.PropString.kChannelChatRingtone] ?? DPAGPreferences.kValueNotificationSoundDefault) : DPAGPreferences.kValueNotificationSoundNone, serviceMessage: preferences[DPAGPreferences.PropString.kServiceChatRingtone] ?? DPAGPreferences.kValueNotificationSoundDefault)
-
-        case .service:
-
-            notificationDict = SetNotificationSoundTypes(privateMessage: preferences[DPAGPreferences.PropString.kChatRingtone] ?? DPAGPreferences.kValueNotificationSoundDefault, groupMessage: preferences[DPAGPreferences.PropString.kGroupChatRingtone] ?? DPAGPreferences.kValueNotificationSoundDefault, channelMessage: preferences[DPAGPreferences.PropString.kChannelChatRingtone] ?? DPAGPreferences.kValueNotificationSoundDefault, serviceMessage: enable ? (preferences[DPAGPreferences.PropString.kServiceChatRingtone] ?? DPAGPreferences.kValueNotificationSoundDefault) : DPAGPreferences.kValueNotificationSoundNone)
+            case .single:
+                notificationDict = SetNotificationSoundTypes(privateMessage: enable ? (preferences[DPAGPreferences.PropString.kChatRingtone] ?? DPAGPreferences.kValueNotificationSoundDefault) : DPAGPreferences.kValueNotificationSoundNone, groupMessage: preferences[DPAGPreferences.PropString.kGroupChatRingtone] ?? DPAGPreferences.kValueNotificationSoundDefault, channelMessage: preferences[DPAGPreferences.PropString.kChannelChatRingtone] ?? DPAGPreferences.kValueNotificationSoundDefault, serviceMessage: preferences[DPAGPreferences.PropString.kServiceChatRingtone] ?? DPAGPreferences.kValueNotificationSoundDefault)
+            case .group:
+                notificationDict = SetNotificationSoundTypes(privateMessage: preferences[DPAGPreferences.PropString.kChatRingtone] ?? DPAGPreferences.kValueNotificationSoundDefault, groupMessage: enable ? (preferences[DPAGPreferences.PropString.kGroupChatRingtone] ?? DPAGPreferences.kValueNotificationSoundDefault) : DPAGPreferences.kValueNotificationSoundNone, channelMessage: preferences[DPAGPreferences.PropString.kChannelChatRingtone] ?? DPAGPreferences.kValueNotificationSoundDefault, serviceMessage: preferences[DPAGPreferences.PropString.kServiceChatRingtone] ?? DPAGPreferences.kValueNotificationSoundDefault)
+            case .channel:
+                notificationDict = SetNotificationSoundTypes(privateMessage: preferences[DPAGPreferences.PropString.kChatRingtone] ?? DPAGPreferences.kValueNotificationSoundDefault, groupMessage: preferences[DPAGPreferences.PropString.kGroupChatRingtone] ?? DPAGPreferences.kValueNotificationSoundDefault, channelMessage: enable ? (preferences[DPAGPreferences.PropString.kChannelChatRingtone] ?? DPAGPreferences.kValueNotificationSoundDefault) : DPAGPreferences.kValueNotificationSoundNone, serviceMessage: preferences[DPAGPreferences.PropString.kServiceChatRingtone] ?? DPAGPreferences.kValueNotificationSoundDefault)
         }
-
         if let dataJson = try? JSONEncoder().encode(notificationDict), let dataStr = String(data: dataJson, encoding: .utf8) {
             self.sendCommand(DPAGServerFunction.SetNotificationSound(data: dataStr, enabled: enable ? 1 : 0), withResponse: responseBlock)
         } else {
@@ -791,22 +706,6 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
         self.sendCommand(DPAGServerFunction.DeclineRoomInvitation(guid: roomGuid, returnComplexResult: "1", nickName: nickName), withResponse: responseBlock)
     }
 
-    func sendCrashReport(report: String, withResponse responseBlock: DPAGServiceResponseBlock?) {
-        if let reportData = report.data(using: .utf8) {
-            let report64 = reportData.base64EncodedString()
-
-            DPAGApplicationFacade.service.perform(request: {
-                let request = DPAGHttpServiceRequest()
-                request.parametersCodable = DPAGServerFunction.SaveReport(data: report64)
-                request.responseBlock = responseBlock
-                request.path = kPathDiag
-                request.authenticate = .none
-
-                return request
-            }())
-        }
-    }
-
     func getAttachment(guid: String, progress downloadProgressBlock: DPAGProgressBlock?, destination: @escaping ((_ targetPath: URL?, _ response: URLResponse?) -> URL), withResponse responseBlock: @escaping DPAGServiceResponseBlock) {
         DPAGApplicationFacade.service.performDownload(request: {
             let request = DPAGHttpServiceRequestAttachments()
@@ -815,7 +714,6 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
             request.requestInBackgroundId = guid
             request.downloadProgressBlock = downloadProgressBlock
             request.destination = destination
-
             return request
         }())
     }
@@ -880,7 +778,6 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
             request.responseBlock = responseBlock
             request.path = requestPath
             request.authenticate = .background
-
             return request
         }())
     }
@@ -891,20 +788,6 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
 
     func createBackgroundAccessToken(withResponse response: @escaping DPAGServiceResponseBlock) {
         self.sendCommand(DPAGServerFunction.CreateBackgroundAccessToken(), withResponse: response)
-    }
-
-    func logEvents(events: [[AnyHashable: Any]]) {
-        if let eventData = events.JSONString {
-            DPAGApplicationFacade.service.perform(request: {
-                let request = DPAGHttpServiceRequest()
-                request.parametersCodable = DPAGServerFunction.TrackEvents(guid: DPAGApplicationFacade.preferences.deviceTrackingGuid, data: eventData)
-                request.responseBlock = nil
-                request.path = kPathDiag
-                request.authenticate = .none
-
-                return request
-            }())
-        }
     }
 
     func getChannels(withResponse responseBlock: @escaping DPAGServiceResponseBlock) {
@@ -973,16 +856,6 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
 
     func unsubscribeService(serviceGuid: String, withResponse responseBlock: @escaping DPAGServiceResponseBlock) {
         self.sendCommand(DPAGServerFunction.UnsubscribeService(guid: serviceGuid), withResponse: responseBlock)
-    }
-
-    func getInfoPages(withResponse responseBlock: @escaping DPAGServiceResponseBlock) {
-        let model = DPAGApplicationFacade.model
-
-        self.sendCommand(DPAGServerFunction.GetInfoPages(version: model.appVersion ?? "notSet", os: "iOS", language: Bundle.main.preferredLocalizations.first ?? "de"), withResponse: responseBlock)
-    }
-
-    func getInfoPageData(pageGuid: String, withResponse responseBlock: @escaping DPAGServiceResponseBlock) {
-        self.sendCommand(DPAGServerFunction.GetInfoPageData(guid: pageGuid), withResponse: responseBlock)
     }
 
     func createBackupPasstoken(accountGuid _: String, withResponse responseBlock: @escaping DPAGServiceResponseBlock) {
@@ -1166,11 +1039,9 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
     func insUpdPrivateIndex(data: [String: String], withResponse responseBlock: @escaping DPAGServiceResponseBlock) {
         DPAGApplicationFacade.service.perform(request: {
             let request = DPAGHttpServiceRequest()
-
             request.parameters = data
             request.parametersCodable = DPAGServerFunction.InsUpdPrivateIndexEntry()
             request.responseBlock = responseBlock
-
             return request
         }())
     }
@@ -1217,12 +1088,10 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
 
     func getOnlineState(accountGuid: String, lastKnownState: String, withResponse responseBlock: @escaping DPAGServiceResponseBlock) {
         let request = DPAGHttpServiceRequest()
-
         request.path = "LazyService"
         request.parametersCodable = DPAGServerFunction.GetOnlineState(guid: accountGuid, lastKnownState: lastKnownState)
         request.responseBlock = responseBlock
         request.timeout = TimeInterval(DPAGApplicationFacade.preferences.lazyGetTimeout)
-
         DPAGApplicationFacade.service.perform(request: request)
     }
 
@@ -1457,11 +1326,5 @@ class DPAGServerWorker: NSObject, DPAGServerWorkerProtocol {
             request.contentType = contentType
             return request
         }())
-    }
-
-    func setBrabblerSwitchState() {
-        DPAGLog("Setting OptIn to accepted")
-        self.sendCommand(DPAGServerFunction.SetBrabblerSwitchState(state: "auto"), withResponse: { (_, _, _) in
-        })
     }
 }

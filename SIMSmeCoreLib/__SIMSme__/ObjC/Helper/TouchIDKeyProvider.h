@@ -1,6 +1,6 @@
 //
 //  TouchIDKeyProvider.h
-//  SIMSme
+// ginlo
 //
 //  Created by Florin Pop on 19/01/15.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

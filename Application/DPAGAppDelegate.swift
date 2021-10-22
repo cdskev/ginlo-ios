@@ -1,6 +1,6 @@
 //
 //  DPAGAppDelegate.m
-//  SIMSme
+// ginlo
 //
 //  Created by mg on 12.09.13.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.
@@ -99,6 +99,7 @@ open class DPAGAppDelegate: UIResponder, UIApplicationDelegate {
     var crashReporter: CrashReporter?
     var preferencesLoaded: Bool = false
     var syncHelper: DPAGSynchronizationHelperAddressbook?
+    var canAcceptUrls: Bool = false
 
     // MARK: AppLicationDelegate
     // 1. APPLICATION LAUNCH LIFE-TIME
@@ -124,15 +125,19 @@ open class DPAGAppDelegate: UIResponder, UIApplicationDelegate {
     public func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         DPAGLog("didFinishLaunchingWithOptions: (ENTER) applicationState: \(UIApplication.shared.applicationState.rawValue)")
         DPAGApplicationFacadeUIBase.sharedApplication = application
-        if !self.preferencesLoaded {
-            self.preferencesLoaded = DPAGApplicationFacade.preferences.setup()
-        }
+//        if !self.preferencesLoaded {
+//            self.preferencesLoaded = DPAGApplicationFacade.preferences.setup()
+//        }
         if self.window == nil {
             self.initWindow(application, inBackgroundWithOptions: launchOptions)
         }
         // If the database is not ready, we should wait for it, otherwise we screw up the
         // app state
         waitForDatabase()
+        if let urlToHandle = self.urlToHandle {
+            _ = self.application(application, open: urlToHandle, options: [:])
+        }
+        DPAGLog("didFinishLaunchingWithOptions: (EXIT-1) applicationState: \(UIApplication.shared.applicationState.rawValue)")
         guard let launchOptions = launchOptions else { return true }
         JitsiMeet.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         DPAGLog("didFinishLaunchingWithOptions: (EXIT-2) applicationState: \(UIApplication.shared.applicationState.rawValue)")
@@ -143,9 +148,9 @@ open class DPAGAppDelegate: UIResponder, UIApplicationDelegate {
     public func applicationWillEnterForeground(_ application: UIApplication) {
         DPAGApplicationFacadeUIBase.sharedApplication = application
         DPAGLog("applicationWillEnterForeground: (ENTER) applicationState: \(UIApplication.shared.applicationState.rawValue)")
-        if !self.preferencesLoaded {
-            self.preferencesLoaded = DPAGApplicationFacade.preferences.setup()
-        }
+//        if !self.preferencesLoaded {
+//            self.preferencesLoaded = DPAGApplicationFacade.preferences.setup()
+//        }
         if self.window == nil {
             self.initWindow(application, inBackgroundWithOptions: nil)
         }
@@ -321,8 +326,6 @@ open class DPAGAppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
         NotificationCenter.default.post(name: DPAGStrings.Notification.Application.DID_ENTER_BACKGROUND, object: nil)
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         self.appWasUnlocked = false
     }
 
@@ -330,6 +333,7 @@ open class DPAGAppDelegate: UIResponder, UIApplicationDelegate {
 
     public func application(_ application: UIApplication, open url: URL, options _: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         DPAGApplicationFacadeUIBase.sharedApplication = application
+        DPAGLog("openUrl:: \(url)")
         var isActiveState = 0
         let block = { isActiveState = UIApplication.shared.applicationState.rawValue }
         if Thread.current == Thread.main {
@@ -339,27 +343,42 @@ open class DPAGAppDelegate: UIResponder, UIApplicationDelegate {
         }
         DPAGLog("application: openURL applicationState: \(isActiveState)")
         DPAGLog("Start with URL")
-        if self.databaseReady == false {
-            DPAGLog("Database  not ready ")
+        if self.databaseReady == false || canAcceptUrls == false {
+            DPAGLog("Database or Application not ready for acdcepting URLs")
             self.urlToHandle = url
             return false
         }
         DPAGLog("Database ready")
         var canHandle = false
         self.urlToHandle = nil
-        if url.isFileURL || url.scheme == DPAGApplicationFacade.preferences.urlScheme {
+        if url.isFileURL || DPAGApplicationFacadeUI.urlHandler.hasMyUrlScheme(url) {
             if DPAGSimsMeController.sharedInstance.isWaitingForLogin {
                 self.urlToHandle = url
             } else {
-                let viewControllers = DPAGApplicationFacadeUI.urlHandler.handleUrl(url)
-                if viewControllers.count > 0 {
-                    canHandle = true
-                    if DPAGApplicationFacadeUIBase.containerVC.mainNavigationController.presentedViewController != nil {
-                        DispatchQueue.main.async {
-                            DPAGApplicationFacadeUIBase.containerVC.mainNavigationController.dismiss(animated: false, completion: nil)
+                let block = {
+                    let viewControllers = DPAGApplicationFacadeUI.urlHandler.handleUrl(url)
+                    if viewControllers.count > 0 {
+                        canHandle = true
+                        if DPAGApplicationFacadeUIBase.containerVC.mainNavigationController.presentedViewController != nil {
+                            DispatchQueue.main.async {
+                                DPAGApplicationFacadeUIBase.containerVC.mainNavigationController.dismiss(animated: false, completion: nil)
+                            }
                         }
+                        DPAGApplicationFacadeUIBase.containerVC.mainNavigationController.setViewControllers(viewControllers, animated: true)
                     }
-                    DPAGApplicationFacadeUIBase.containerVC.mainNavigationController.setViewControllers(viewControllers, animated: true)
+                }
+                if DPAGApplicationFacadeUI.urlHandler.shouldCreateInvitationBasedAccount(url) {
+                    self.performBlockOnMainThread {
+                        let actionCancel = UIAlertAction(titleIdentifier: "alert.welcome.invitationbased-creation.buttonCancel", style: .cancel, handler: { _ in
+                            canHandle = false
+                        })
+                        let actionOK = UIAlertAction(titleIdentifier: "alert.welcome.invitationbased-creation.buttonOk", style: .default, handler: { _ in
+                            block()
+                        })
+                        DPAGApplicationFacadeUIBase.containerVC.presentAlert(alertConfig: UIViewController.AlertConfig(messageIdentifier: "alert.welcome.invitationbased-creation.message", cancelButtonAction: actionCancel, otherButtonActions: [actionOK]))
+                    }
+                } else {
+                    block()
                 }
             }
         }
@@ -575,8 +594,6 @@ open class DPAGAppDelegate: UIResponder, UIApplicationDelegate {
     func coreDataRunLoop() {
         autoreleasepool {
             Thread.current.name = "RootSavingContext Init"
-            // Simulate slow starting Database-Migration
-            // [NSThread sleepForTimeInterval:20]
             DPAGLog("Trying to start launchDB")
             DPAGApplicationFacade.setupModel()
             DPAGLog("setupModel Successfull")
@@ -601,7 +618,6 @@ open class DPAGAppDelegate: UIResponder, UIApplicationDelegate {
             if let semaphore = self.semaphore {
                 semaphore.signal()
             }
-            // Enter RunLoop
             let runLoop = RunLoop.current
             runLoop.add(NSMachPort(), forMode: RunLoop.Mode.default)
             CFRunLoopRun()
@@ -646,16 +662,18 @@ open class DPAGAppDelegate: UIResponder, UIApplicationDelegate {
             if launchOptions != nil, let userInfo = launchOptions?[UIApplication.LaunchOptionsKey.remoteNotification] as? [AnyHashable: Any] {
                 DPAGSimsMeController.sharedInstance.handleUserInfo(userInfo, forApplication: application, wasInState: applicationState)
             }
-            // Start monitoring the internet connection
             AFNetworkReachabilityManager.shared().startMonitoring()
             if DPAGApplicationFacade.preferences.isBaMandant {
-                // Add Notification Center observer to be alerted of any change to NSUserDefaults.
-                // Managed app configuration changes pushed down from an MDM server appear in NSUSerDefaults.
                 strongSelf.observerUserDefaults = NotificationCenter.default.addObserver(forName: UserDefaults.didChangeNotification, object: nil, queue: .main, using: { _ in
                     DPAGApplicationFacade.preferences.readMDMValues()
                 })
             }
             strongSelf.syncAddressBook()
+            strongSelf.canAcceptUrls = true
+            if let urlToHandle = strongSelf.urlToHandle {
+                DPAGLog("Will try loading the url")
+                _ = strongSelf.application(application, open: urlToHandle, options: [:])
+            }
         }
         DPAGLog("launchApplication: (EXIT) applicationState: \(applicationState.rawValue)")
     }
@@ -679,7 +697,6 @@ open class DPAGAppDelegate: UIResponder, UIApplicationDelegate {
         DPAGLog("appUIReadyWithPrivateKey: applicationState: \(UIApplication.shared.applicationState.rawValue)")
         self.appWasUnlocked = true
         self.backupStartDate = Date().addingTimeInterval(30)
-        // Update push notifications registration status
         if self.notificationUpdateWorker == nil {
             let state = DPAGApplicationFacade.preferences.notificationRegistrationState
             self.notificationUpdateWorker = DPAGApplicationFacadeUI.notificationStateUpdateWorker()
@@ -695,9 +712,7 @@ open class DPAGAppDelegate: UIResponder, UIApplicationDelegate {
             if DPAGApplicationFacade.preferences[.kPublicOnlineState] == nil {
                 DPAGApplicationFacade.profileWorker.setPublicOnlineState(enabled: true, withResponse: nil)
             }
-//            DPAGApplicationFacade.companyAdressbook.updateFullTextStates()
         }
-        // 30 Sekunden warten, bevor wir das Backup starten
         self.perform(#selector(checkAndStartBackup), with: self, afterDelay: 30)
         UNUserNotificationCenter.current().delegate = self
     }
@@ -770,7 +785,6 @@ open class DPAGAppDelegate: UIResponder, UIApplicationDelegate {
                     break
                 }
                 DPAGLog("Database still not ready")
-                // Wenn die Datenbank noch nicht geladen wurde, dann 100 ms warten, insgesamt nicht mehr als 1 sekunden
                 RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.1))
             }
         }
@@ -853,9 +867,7 @@ open class DPAGAppDelegate: UIResponder, UIApplicationDelegate {
         waitForDatabase()
         if applicationState == .inactive {
             DPAGLog("Inactive")
-            // TODO: userInfo zwischenspeichern
             if DPAGSimsMeController.sharedInstance.pushNotificationUserInfo == nil {
-                // We can't handle this right now, save it for later
                 var notificationUserInfo = userInfo
                 notificationUserInfo["applicationState"] = NSNumber(value: applicationState.rawValue)
                 DPAGSimsMeController.sharedInstance.pushNotificationUserInfo = notificationUserInfo
@@ -863,7 +875,6 @@ open class DPAGAppDelegate: UIResponder, UIApplicationDelegate {
             completionHandler(.failed)
         } else if applicationState == .background {
             DPAGLog("Background")
-            // Fetch  the Message
             if let messageGuid = userInfo["messageGuid"] as? String, messageGuid.hasPrefix(.messageChat) || messageGuid.hasPrefix(.messageGroup) || messageGuid.hasPrefix(.messagePrivateInternal) || messageGuid.hasPrefix(.messageInternal) {
                 DPAGLog("Background Message %@", messageGuid)
                 if self.pushHandleMessageGuids.contains(messageGuid) || DPAGApplicationFacade.model.httpUsername == nil {
@@ -886,18 +897,22 @@ open class DPAGAppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-    public func application(_ application: UIApplication, handleActionWithIdentifier identifier: String?, forRemoteNotification userInfo: [AnyHashable: Any], completionHandler: @escaping DPAGCompletion) {
-        DPAGLog("handleActionWithIdentifier:\n%@,\nuserInfo:\n%@,\napplicationState: %@", identifier ?? "noIdent", LoggingHelper.stripNameFromPayload(userInfo), NSNumber(value: application.applicationState.rawValue as Int))
-        let applicationState = application.applicationState
-        DispatchQueue.main.async {
-            self.waitForDatabase()
-            DPAGSimsMeController.sharedInstance.handleUserInfo(userInfo, forApplication: application, wasInState: applicationState)
-            completionHandler()
-        }
-    }
-
     public func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-       JitsiMeet.sharedInstance().application(application, continue: userActivity, restorationHandler: restorationHandler)
+        DPAGLog("ContinueUserActivity:: \(userActivity)")
+        guard userActivity.activityType == NSUserActivityTypeBrowsingWeb,
+              let incomingURL = userActivity.webpageURL,
+              DPAGApplicationFacade.contactsWorker.validateScanResult(text: incomingURL.absoluteString),
+              let components = NSURLComponents(url: incomingURL, resolvingAgainstBaseURL: true),
+              let params = components.queryItems,
+              let actualParams = params.first(where: { $0.name == "p" })?.value,
+              let signature = params.first(where: { $0.name == "q" })?.value else { return false }
+
+        if let url = URL(string: "ginlo://invite?p=\(actualParams)&q=\(signature)"), self.application(application, open: url, options: [:]) {
+            JitsiMeet.sharedInstance().application(application, continue: userActivity, restorationHandler: restorationHandler)
+            return true
+        }
+        JitsiMeet.sharedInstance().application(application, continue: userActivity, restorationHandler: restorationHandler)
+        return false
     }
 }
 

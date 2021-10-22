@@ -121,9 +121,9 @@ struct DPAGSimsMeControllerCacheVersions {
                 if DPAGApplicationFacade.preferences.isChannelsAllowed == false {
                     cacheVersions.updateChannels = false
                 }
-                if DPAGApplicationFacade.preferences.isServicesAllowed == false {
+//                if DPAGApplicationFacade.preferences.isServicesAllowed == false {
                     cacheVersions.updateServices = false
-                }
+//                }
             } else {
                 cacheVersions.updateChannels = false
                 cacheVersions.updateServices = false
@@ -725,21 +725,21 @@ public class DPAGSimsMeController: NSObject {
                         }
                     }
                 }
-                if cacheVersions.updateServices {
-                    Thread.sleep(forTimeInterval: 1)
-                    DPAGApplicationFacade.feedWorker.updatedFeedListWithFeedsToUpdate(forFeedType: .service) { _, serviceGuidsToUpdate, errorMessage in
-                        guard errorMessage == nil else { return }
-                        if serviceGuidsToUpdate.count > 0 {
-                            DPAGApplicationFacade.feedWorker.updateFeeds(feedGuids: serviceGuidsToUpdate, feedType: .service) { _, _, errorMessage in
-                                if errorMessage == nil {
-                                    DPAGApplicationFacade.preferences.cacheVersionTaskCompleted(.kCacheVersionServices, cacheVersionServer: cacheVersions.cacheVersionServicesServer)
-                                }
-                            }
-                        } else {
-                            DPAGApplicationFacade.preferences.cacheVersionTaskCompleted(.kCacheVersionServices, cacheVersionServer: cacheVersions.cacheVersionServicesServer)
-                        }
-                    }
-                }
+//                if cacheVersions.updateServices {
+//                    Thread.sleep(forTimeInterval: 1)
+//                    DPAGApplicationFacade.feedWorker.updatedFeedListWithFeedsToUpdate(forFeedType: .service) { _, serviceGuidsToUpdate, errorMessage in
+//                        guard errorMessage == nil else { return }
+//                        if serviceGuidsToUpdate.count > 0 {
+//                            DPAGApplicationFacade.feedWorker.updateFeeds(feedGuids: serviceGuidsToUpdate, feedType: .service) { _, _, errorMessage in
+//                                if errorMessage == nil {
+//                                    DPAGApplicationFacade.preferences.cacheVersionTaskCompleted(.kCacheVersionServices, cacheVersionServer: cacheVersions.cacheVersionServicesServer)
+//                                }
+//                            }
+//                        } else {
+//                            DPAGApplicationFacade.preferences.cacheVersionTaskCompleted(.kCacheVersionServices, cacheVersionServer: cacheVersions.cacheVersionServicesServer)
+//                        }
+//                    }
+//                }
                 if cacheVersions.updateCompanyLayout, isCompanyManaged {
                     Thread.sleep(forTimeInterval: 1)
                     DPAGApplicationFacade.requestWorker.getCompanyLayout { responseObject, _, errorMessage in

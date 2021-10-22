@@ -1,6 +1,6 @@
 //
 //  DPAGContactNewCreateViewController.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 18.12.17.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.
@@ -10,6 +10,8 @@ import SIMSmeCore
 import UIKit
 
 class DPAGContactNewCreateViewController: DPAGContactDetailsViewControllerBase, DPAGContactNewCreateViewControllerProtocol {
+    var confirmConfidence = false
+    
     override func configureTitle() {
         self.title = DPAGLocalizedString("contacts.createNew.title")
     }
@@ -42,12 +44,18 @@ class DPAGContactNewCreateViewController: DPAGContactDetailsViewControllerBase, 
         _ = self.resignFirstResponder()
         let image = self.imageViewContactChanged.image
         DPAGProgressHUD.sharedInstance.showForBackgroundProcess(true) { [weak self] _ in
-            if let contactEdit = self?.contactEdit {
+            if let strongSelf = self {
+                let contactEdit = strongSelf.contactEdit
+                let contactAccountGuid = strongSelf.contactEdit.guid
                 DPAGApplicationFacade.contactsWorker.saveContact(contact: contactEdit)
+                if strongSelf.confirmConfidence {
+                    DPAGApplicationFacade.contactsWorker.contactConfidenceHigh(contactAccountGuid: contactAccountGuid)
+                    DPAGApplicationFacade.contactsWorker.saveContact(contact: contactEdit)
+                }
                 if let imageChanged = image {
                     _ = DPAGApplicationFacade.contactsWorker.saveImage(imageChanged, forContact: contactEdit.guid)
                 }
-                if let contactAccountGuid = self?.contactEdit.guid, let contact = DPAGApplicationFacade.cache.contact(for: contactAccountGuid), let streamGuid = contact.streamGuid {
+                if let contact = DPAGApplicationFacade.cache.contact(for: contactAccountGuid), let streamGuid = contact.streamGuid {
                     _ = DPAGApplicationFacade.cache.decryptedStream(streamGuid: streamGuid, in: nil)
                 }
             }

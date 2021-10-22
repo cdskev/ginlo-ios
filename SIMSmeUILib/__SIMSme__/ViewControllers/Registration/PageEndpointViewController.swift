@@ -55,30 +55,32 @@ class PageEndpointViewController: DPAGViewControllerWithKeyboard {
     }
 
     private func validateButtonClicked() {
-        guard let endpoint = selectedEndpoint() else {
-            return
-        }
+        guard let endpoint = selectedEndpoint() else { return }
         EndpointDAO.save(endpoint: endpoint)
         AppConfig.hostHttpService = endpoint
-        if accountCreation {
-            navigationController?.pushViewController(DPAGApplicationFacadeUIRegistration.requestAccountVC(password: password, enabled: enabled, endpoint: endpoint),
-                                                     animated: true)
-        } else {
-            navigationController?.pushViewController(DPAGApplicationFacadeUIRegistration.createDeviceRequestCodeVC(password: password,
-                                                                                                                   enabled: enabled),
-                                                     animated: true)
+        switch self.creationJob {
+            case .createAccount:
+                navigationController?.pushViewController(DPAGApplicationFacadeUIRegistration.requestAccountVC(password: password, enabled: enabled, endpoint: endpoint), animated: true)
+            case .createDevice:
+                navigationController?.pushViewController(DPAGApplicationFacadeUIRegistration.createDeviceRequestCodeVC(password: password, enabled: enabled), animated: true)
+            case .scanInvitation, .executeInvitation:
+                if let invitationData = self.inivitationData {
+                    navigationController?.pushViewController(DPAGApplicationFacadeUIRegistration.invitationRegistrationVC(password: password, enabled: enabled, endpoint: endpoint, invitationData: invitationData), animated: true)
+                }
         }
     }
 
     var viewModel = PageEndPointViewModel()
     let password: String
     let enabled: Bool
-    let accountCreation: Bool
+    let creationJob: GNInitialCreationType
+    let inivitationData: [String: Any]?
 
-    init(password: String, enabled: Bool, accountCreation: Bool = false) {
+    init(password: String, enabled: Bool, creationJob: GNInitialCreationType = .createAccount, invitationData: [String: Any]? = nil) {
         self.password = password
         self.enabled = enabled
-        self.accountCreation = accountCreation
+        self.inivitationData = invitationData
+        self.creationJob = creationJob
         super.init(nibName: "PageEndpointViewController", bundle: Bundle(for: type(of: self)))
     }
 

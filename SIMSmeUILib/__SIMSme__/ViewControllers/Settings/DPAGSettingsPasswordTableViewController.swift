@@ -1,6 +1,6 @@
 //
 //  DPAGSettingsPasswordTableViewController.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 10.04.18.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

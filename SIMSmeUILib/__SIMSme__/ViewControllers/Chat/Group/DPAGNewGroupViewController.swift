@@ -1,6 +1,6 @@
 //
 //  DPAGNewGroupViewController.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 28/04/16.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

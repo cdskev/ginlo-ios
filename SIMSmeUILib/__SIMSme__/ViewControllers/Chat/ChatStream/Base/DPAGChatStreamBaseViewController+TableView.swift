@@ -1,6 +1,6 @@
 //
-//  DPAGChatStreamBaseViewController+FileView.swift
-//  SIMSme
+//  DPAGChatCellBaseViewController.swift
+// ginlo
 //
 //  Created by RBU on 01/02/16.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

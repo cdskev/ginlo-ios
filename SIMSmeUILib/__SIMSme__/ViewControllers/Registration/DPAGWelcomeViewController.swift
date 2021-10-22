@@ -1,6 +1,6 @@
 //
 //  DPAGWelcomeViewController.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 23/02/16.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.
@@ -231,6 +231,7 @@ class DPAGWelcomeViewController: DPAGViewControllerWithKeyboard, DPAGWelcomeView
     private var profileImage: UIImage?
 
     var accountGuid: String
+    var invitationData: [String: Any]?
     private var accountID: String
     private var phoneNumber: String?
     private var eMailAddress: String?
@@ -264,9 +265,7 @@ class DPAGWelcomeViewController: DPAGViewControllerWithKeyboard, DPAGWelcomeView
 
     private func configureGui() {
         self.navigationItem.hidesBackButton = true
-
         self.title = DPAGLocalizedString("registration.profile.title")
-
         self.stackViewPhoneNumber.isHidden = self.phoneNumber == nil
         self.stackViewEMailAddress.isHidden = self.eMailAddress == nil
         self.stackViewFirstName.isHidden = self.eMailDomain == nil || DPAGApplicationFacade.preferences.isCompanyManagedState
@@ -275,10 +274,8 @@ class DPAGWelcomeViewController: DPAGViewControllerWithKeyboard, DPAGWelcomeView
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
         if DPAGApplicationFacade.preferences.didShowProfileInfo == false {
             self.present(DPAGApplicationFacadeUIBase.navVC(rootViewController: DPAGApplicationFacadeUIRegistration.showIdentityVC(accountID: self.accountID)), animated: false, completion: nil)
-
             return
         }
     }
@@ -338,14 +335,22 @@ class DPAGWelcomeViewController: DPAGViewControllerWithKeyboard, DPAGWelcomeView
             try? DPAGApplicationFacade.devicesWorker.createShareExtensionDevice(withResponse: nil)
         }
         let block = { [weak self] in
+            guard let strongSelf = self else { return }
             if AppConfig.buildConfigurationMode == .TEST {
                 DPAGApplicationFacade.preferences.isInAppNotificationEnabled = false
             } else {
                 DPAGApplicationFacade.preferences.isInAppNotificationEnabled = true
             }
-            let blockCompleted = { [weak self] in
+            var blockCompleted = { [weak self] in
                 NotificationCenter.default.post(name: DPAGStrings.Notification.Application.DID_COMPLETE_LOGIN, object: nil)
                 self?.dismiss(animated: true, completion: nil)
+            }
+            if let invitationData = strongSelf.invitationData, let accountID = invitationData["i"] as? String, let signature = invitationData["s"] as? Data {
+                let createNewChat = (invitationData["c"] as? String) ?? "0" == "1"
+                blockCompleted = { [weak self] in
+                    guard let strongSelf = self else { return }
+                    strongSelf.searchAccount(accountID: accountID, signature: signature, createNewChat: createNewChat, presentingVC: strongSelf)
+                }
             }
             if self?.eMailAddress != nil {
                 self?.syncHelper = DPAGSynchronizationHelperAddressbook()
@@ -368,7 +373,6 @@ class DPAGWelcomeViewController: DPAGViewControllerWithKeyboard, DPAGWelcomeView
             case .accountDeleted, .declined, .requested, .unknown:
                 break
         }
-
         let blockUpdate = {
             DPAGProgressHUD.sharedInstance.hide(true) { [weak self] in
                 self?.syncHelper = DPAGSynchronizationHelperAddressbook()
@@ -435,14 +439,65 @@ class DPAGWelcomeViewController: DPAGViewControllerWithKeyboard, DPAGWelcomeView
 
     override func handleKeyboardWillShow(_ aNotification: Notification) {
         self.setRightBarButtonItem(image: DPAGImageProvider.shared[.kImageBarButtonNavCheck], action: #selector(handleProfileInputDoneTapped), accessibilityLabelIdentifier: "navigation.done")
-
         super.handleKeyboardWillShow(aNotification, scrollView: self.scrollView, viewVisible: self.textFieldProfilName, viewButtonPrimary: self.viewButtonNext)
     }
 
     override func handleKeyboardWillHide(_ aNotification: Notification) {
         self.navigationItem.setRightBarButton(nil, animated: true)
-
         super.handleKeyboardWillHide(aNotification, scrollView: self.scrollView, viewButtonPrimary: self.viewButtonNext)
+    }
+    
+    private func searchAccount(accountID: String, signature: Data?, createNewChat: Bool, presentingVC: UIViewController) {
+        DPAGProgressHUD.sharedInstance.showForBackgroundProcess(true) { _ in
+            DPAGApplicationFacade.contactsWorker.searchAccount(searchData: accountID, searchMode: .accountID) { responseObject, _, errorMessage in
+                DPAGProgressHUD.sharedInstance.hide(true) { [weak presentingVC] in
+                    if let errorMessage = errorMessage {
+                        presentingVC?.presentErrorAlert(alertConfig: UIViewController.AlertConfigError(titleIdentifier: "attention", messageIdentifier: errorMessage))
+                    } else if let guids = responseObject as? [String] {
+                        if let account = DPAGApplicationFacade.cache.account, let contactSelf = DPAGApplicationFacade.cache.contact(for: account.guid) {
+                           if let guid = guids.first, let contactCache = DPAGApplicationFacade.cache.contact(for: guid) {
+                                switch contactCache.entryTypeServer {
+                                    case .company:
+                                        let nextVC = DPAGApplicationFacadeUIContacts.contactDetailsVC(contact: contactCache)
+                                        presentingVC?.navigationController?.pushViewController(nextVC, animated: true)
+                                    case .email:
+                                        if contactCache.eMailDomain == contactSelf.eMailDomain {
+                                            let nextVC = DPAGApplicationFacadeUIContacts.contactDetailsVC(contact: contactCache)
+                                            presentingVC?.navigationController?.pushViewController(nextVC, animated: true)
+                                        } else {
+                                            let nextVC = DPAGApplicationFacadeUIContacts.contactScannedCreateVC(contact: contactCache)
+                                            if let signature = signature, let publicKey = contactCache.publicKey, DPAGApplicationFacade.contactsWorker.validateSignature(signature: signature, publicKey: publicKey) {
+                                                nextVC.confirmConfidence = true
+                                            }
+                                            nextVC.isLogin = true
+                                            nextVC.createNewChat = createNewChat
+                                            presentingVC?.navigationController?.pushViewController(nextVC, animated: true)
+                                        }
+                                    case .meMyselfAndI:
+                                        break
+                                    case .privat:
+                                        let nextVC = DPAGApplicationFacadeUIContacts.contactScannedCreateVC(contact: contactCache)
+                                        if let signature = signature, let publicKey = contactCache.publicKey, DPAGApplicationFacade.contactsWorker.validateSignature(signature: signature, publicKey: publicKey) {
+                                            nextVC.confirmConfidence = true
+                                        }
+                                        nextVC.isLogin = true
+                                        nextVC.createNewChat = createNewChat
+                                        presentingVC?.navigationController?.pushViewController(nextVC, animated: true)
+                                }
+                            } else {
+                                let nextVC = DPAGApplicationFacadeUIContacts.contactNotFoundVC(searchData: accountID, searchMode: .accountID)
+                                nextVC.fromWelcomePage = true
+                                presentingVC?.navigationController?.pushViewController(nextVC, animated: true)
+                            }
+                        } else {
+                            let nextVC = DPAGApplicationFacadeUIContacts.contactNotFoundVC(searchData: accountID, searchMode: .accountID)
+                            nextVC.fromWelcomePage = true
+                            presentingVC?.navigationController?.pushViewController(nextVC, animated: true)
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -552,13 +607,8 @@ extension DPAGWelcomeViewController: UITextFieldDelegate {
 extension DPAGWelcomeViewController: DPAGRegistrationCompletedCheck {
     var completionRegistrationCheck: DPAGCompletion? {
         { [weak self] in
-
-            guard let strongSelf = self else {
-                return
-            }
-
+            guard let strongSelf = self else { return }
             strongSelf.textFieldProfilName.becomeFirstResponder()
-
             strongSelf.stackViewFirstName.isHidden = strongSelf.stackViewFirstName.isHidden || DPAGApplicationFacade.preferences.isCompanyManagedState
             strongSelf.stackViewLastName.isHidden = strongSelf.stackViewLastName.isHidden || DPAGApplicationFacade.preferences.isCompanyManagedState
         }
@@ -566,12 +616,8 @@ extension DPAGWelcomeViewController: DPAGRegistrationCompletedCheck {
 
     private func syncDirectories(completion: @escaping () -> Void) {
         DPAGProgressHUD.sharedInstance.hide(true) { [weak self] in
-
             self?.syncHelper = DPAGSynchronizationHelperAddressbook()
-
             self?.syncHelper?.syncCompanyAddressbook(completion: { [weak self] in
-
-                // keeping instance alive until work is finished
                 self?.syncHelper = nil
                 completion()
             })
@@ -581,16 +627,12 @@ extension DPAGWelcomeViewController: DPAGRegistrationCompletedCheck {
 
 protocol DPAGRegistrationCompletedCheck: AnyObject {
     var testLicenseAvailable: Bool { get set }
-
     var completionRegistrationCheck: DPAGCompletion? { get }
-
     func doCheckUsage(syncDirectoriesCompletion: @escaping (@escaping () -> Void) -> Void)
-
     func showErrorAlertCheck(alertConfig: UIViewController.AlertConfigError)
 
     @discardableResult
     func presentAlert(alertConfig: UIViewController.AlertConfig) -> UIAlertController
-
     func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Swift.Void)?)
 }
 
@@ -599,10 +641,8 @@ extension DPAGRegistrationCompletedCheck {
         let blockPurchase = {
             _ = DPAGProgressHUD.sharedInstance.showForBackgroundProcess(true) { _ in
                 DPAGPurchaseWorker.getPurchasedProductsWithResponse { [weak self] responseObject, _, errorMessage in
-
                     if self != nil {
                         DPAGProgressHUD.sharedInstance.hide(true) { [weak self] in
-
                             if let strongSelf = self {
                                 if let errorMessage = errorMessage {
                                     strongSelf.showErrorAlertCheck(alertConfig: UIViewController.AlertConfigError(messageIdentifier: errorMessage))
@@ -610,14 +650,12 @@ extension DPAGRegistrationCompletedCheck {
                                     if responseArray.count == 0 {
                                         if let vc = strongSelf.testLicenseAvailable ? DPAGApplicationFacade.preferences.viewControllerForIdent(DPAGWhiteLabelNextView.dpagTestLicenseViewController) : DPAGApplicationFacade.preferences.viewControllerForIdent(DPAGWhiteLabelNextView.dpagLicenseInitViewController) {
                                             let nvc = DPAGApplicationFacadeUIBase.navVC(rootViewController: vc)
-
                                             strongSelf.present(nvc, animated: true, completion: nil)
                                         }
                                     } else if let responseDict = responseArray.first, let ident = responseDict["ident"] as? String, ident == "usage" {
                                         if let valid = responseDict["valid"] as? String, let dateValid = DPAGFormatter.date.date(from: valid), dateValid.isEarlierThan(Date()) {
                                             if let vc: UIViewController = strongSelf.testLicenseAvailable ? DPAGApplicationFacade.preferences.viewControllerForIdent(DPAGWhiteLabelNextView.dpagTestLicenseViewController) : DPAGApplicationFacade.preferences.viewControllerForIdent(DPAGWhiteLabelNextView.dpagLicenseInitViewController) {
                                                 let nvc = DPAGApplicationFacadeUIBase.navVC(rootViewController: vc)
-
                                                 strongSelf.present(nvc, animated: true, completion: nil)
                                             }
                                         } else {
@@ -635,139 +673,112 @@ extension DPAGRegistrationCompletedCheck {
                 }
             }
         }
-
         DPAGProgressHUD.sharedInstance.showForBackgroundProcess(true) { _ in
-
             let responseBlock: (String?, String?, String?, Bool, DPAGAccountCompanyManagedState) -> Void = { [weak self] _, errorMessage, companyName, testLicenseAvailable, accountStateManaged in
-
                 if errorMessage != nil {
                     DPAGProgressHUD.sharedInstance.hide(false, completion: blockPurchase)
                 } else {
                     self?.testLicenseAvailable = testLicenseAvailable
-
                     switch accountStateManaged {
-                    case .requested:
-
-                        DispatchQueue.main.async { [weak self] in
-
-                            self?.requestAccountManagement(forCompany: companyName, completions: RequestAccountManagementCompletions(completionAccepted: {
-                                do {
-                                    try DPAGApplicationFacade.accountManager.ensureCompanyRecoveryPassword()
-                                } catch {
-                                    DPAGLog(error)
-                                }
+                        case .requested:
+                            DispatchQueue.main.async { [weak self] in
+                                self?.requestAccountManagement(forCompany: companyName, completions: RequestAccountManagementCompletions(completionAccepted: {
+                                    do {
+                                        try DPAGApplicationFacade.accountManager.ensureCompanyRecoveryPassword()
+                                    } catch {
+                                        DPAGLog(error)
+                                    }
+                                    syncDirectoriesCompletion(blockPurchase)
+                                    }, completionRequired: {
+                                        do {
+                                            try DPAGApplicationFacade.accountManager.ensureCompanyRecoveryPassword()
+                                        } catch {
+                                            DPAGLog(error)
+                                        }
+                                        blockPurchase()
+                                }, completionDeclined: blockPurchase, completionError: blockPurchase))
+                            }
+                        case .accepted:
+                            do {
+                                try DPAGApplicationFacade.accountManager.ensureCompanyRecoveryPassword()
+                            } catch {
+                                DPAGLog(error)
+                            }
+                            DPAGApplicationFacade.preferences.isCompanyManagedState = true
+                            DPAGProgressHUD.sharedInstance.hide(false) {
                                 syncDirectoriesCompletion(blockPurchase)
-                                }, completionRequired: {
-                                    do {
-                                        try DPAGApplicationFacade.accountManager.ensureCompanyRecoveryPassword()
-                                    } catch {
-                                        DPAGLog(error)
-                                    }
-                                    blockPurchase()
-                            }, completionDeclined: blockPurchase, completionError: blockPurchase))
-                        }
-
-                    case .accepted:
-                        do {
-                            try DPAGApplicationFacade.accountManager.ensureCompanyRecoveryPassword()
-                        } catch {
-                            DPAGLog(error)
-                        }
-                        DPAGApplicationFacade.preferences.isCompanyManagedState = true
-                        DPAGProgressHUD.sharedInstance.hide(false) {
-                            syncDirectoriesCompletion(blockPurchase)
-                        }
-
-                    case .acceptedEmailRequired:
-
-                        DPAGApplicationFacade.preferences.isCompanyManagedState = true
-                        DPAGProgressHUD.sharedInstance.hide(false, completion: {
-                            if let vc = DPAGApplicationFacade.preferences.viewControllerForIdent(DPAGWhiteLabelNextView.dpagProfileViewController_startCompanyProfilInitEMailController) {
-                                (vc as? DPAGViewControllerWithCompletion)?.completion = {
-                                    do {
-                                        try DPAGApplicationFacade.accountManager.ensureCompanyRecoveryPassword()
-                                    } catch {
-                                        DPAGLog(error)
-                                    }
-                                    blockPurchase()
-                                }
-
-                                let nextVC = DPAGApplicationFacadeUIBase.navVC(rootViewController: vc)
-
-                                AppConfig.appWindow()??.rootViewController?.present(nextVC, animated: true, completion: nil)
                             }
-                        })
-
-                    case .acceptedEmailFailed:
-
-                        DPAGApplicationFacade.preferences.isCompanyManagedState = true
-                        DPAGProgressHUD.sharedInstance.hide(false, completion: {
-                            if let vc = DPAGApplicationFacade.preferences.viewControllerForIdent(DPAGWhiteLabelNextView.dpagProfileViewController_startCompanyProfilInitEMailController) {
-                                (vc as? DPAGCompanyProfilConfirmEMailControllerSkipDelegate)?.skipToEmailValidation = true
-
-                                (vc as? DPAGViewControllerWithCompletion)?.completion = {
-                                    do {
-                                        try DPAGApplicationFacade.accountManager.ensureCompanyRecoveryPassword()
-                                    } catch {
-                                        DPAGLog(error)
+                        case .acceptedEmailRequired:
+                            DPAGApplicationFacade.preferences.isCompanyManagedState = true
+                            DPAGProgressHUD.sharedInstance.hide(false, completion: {
+                                if let vc = DPAGApplicationFacade.preferences.viewControllerForIdent(DPAGWhiteLabelNextView.dpagProfileViewController_startCompanyProfilInitEMailController) {
+                                    (vc as? DPAGViewControllerWithCompletion)?.completion = {
+                                        do {
+                                            try DPAGApplicationFacade.accountManager.ensureCompanyRecoveryPassword()
+                                        } catch {
+                                            DPAGLog(error)
+                                        }
+                                        blockPurchase()
                                     }
-                                    blockPurchase()
+                                    let nextVC = DPAGApplicationFacadeUIBase.navVC(rootViewController: vc)
+                                    AppConfig.appWindow()??.rootViewController?.present(nextVC, animated: true, completion: nil)
                                 }
-
-                                let nextVC = DPAGApplicationFacadeUIBase.navVC(rootViewController: vc)
-
-                                AppConfig.appWindow()??.rootViewController?.present(nextVC, animated: true, completion: nil)
-                            }
-                        })
-
-                    case .acceptedPhoneRequired:
-
-                        DPAGApplicationFacade.preferences.isCompanyManagedState = true
-                        DPAGProgressHUD.sharedInstance.hide(false, completion: {
-                            if let vc = DPAGApplicationFacade.preferences.viewControllerForIdent(DPAGWhiteLabelNextView.dpagProfileViewController_startCompanyProfilInitPhoneNumberController) {
-                                (vc as? DPAGViewControllerWithCompletion)?.completion = {
-                                    do {
-                                        try DPAGApplicationFacade.accountManager.ensureCompanyRecoveryPassword()
-                                    } catch {
-                                        DPAGLog(error)
+                            })
+                        case .acceptedEmailFailed:
+                            DPAGApplicationFacade.preferences.isCompanyManagedState = true
+                            DPAGProgressHUD.sharedInstance.hide(false, completion: {
+                                if let vc = DPAGApplicationFacade.preferences.viewControllerForIdent(DPAGWhiteLabelNextView.dpagProfileViewController_startCompanyProfilInitEMailController) {
+                                    (vc as? DPAGCompanyProfilConfirmEMailControllerSkipDelegate)?.skipToEmailValidation = true
+                                    (vc as? DPAGViewControllerWithCompletion)?.completion = {
+                                        do {
+                                            try DPAGApplicationFacade.accountManager.ensureCompanyRecoveryPassword()
+                                        } catch {
+                                            DPAGLog(error)
+                                        }
+                                        blockPurchase()
                                     }
-                                    blockPurchase()
+                                    let nextVC = DPAGApplicationFacadeUIBase.navVC(rootViewController: vc)
+                                    AppConfig.appWindow()??.rootViewController?.present(nextVC, animated: true, completion: nil)
                                 }
-
-                                let nextVC = DPAGApplicationFacadeUIBase.navVC(rootViewController: vc)
-
-                                AppConfig.appWindow()??.rootViewController?.present(nextVC, animated: true, completion: nil)
-                            }
-                        })
-
-                    case .acceptedPhoneFailed:
-
-                        DPAGApplicationFacade.preferences.isCompanyManagedState = true
-                        DPAGProgressHUD.sharedInstance.hide(false, completion: {
-                            if let vc = DPAGApplicationFacade.preferences.viewControllerForIdent(DPAGWhiteLabelNextView.dpagProfileViewController_startCompanyProfilInitPhoneNumberController) {
-                                (vc as? DPAGCompanyProfilConfirmPhoneNumberControllerSkipDelegate)?.skipToPhoneNumberValidation = true
-
-                                (vc as? DPAGViewControllerWithCompletion)?.completion = {
-                                    do {
-                                        try DPAGApplicationFacade.accountManager.ensureCompanyRecoveryPassword()
-                                    } catch {
-                                        DPAGLog(error)
+                            })
+                        case .acceptedPhoneRequired:
+                            DPAGApplicationFacade.preferences.isCompanyManagedState = true
+                            DPAGProgressHUD.sharedInstance.hide(false, completion: {
+                                if let vc = DPAGApplicationFacade.preferences.viewControllerForIdent(DPAGWhiteLabelNextView.dpagProfileViewController_startCompanyProfilInitPhoneNumberController) {
+                                    (vc as? DPAGViewControllerWithCompletion)?.completion = {
+                                        do {
+                                            try DPAGApplicationFacade.accountManager.ensureCompanyRecoveryPassword()
+                                        } catch {
+                                            DPAGLog(error)
+                                        }
+                                        blockPurchase()
                                     }
-                                    blockPurchase()
+                                    let nextVC = DPAGApplicationFacadeUIBase.navVC(rootViewController: vc)
+                                    AppConfig.appWindow()??.rootViewController?.present(nextVC, animated: true, completion: nil)
                                 }
-
-                                let nextVC = DPAGApplicationFacadeUIBase.navVC(rootViewController: vc)
-
-                                AppConfig.appWindow()??.rootViewController?.present(nextVC, animated: true, completion: nil)
-                            }
-                        })
-
-                    case .declined, .acceptedPendingValidation, .accountDeleted, .unknown:
-                        DPAGProgressHUD.sharedInstance.hide(false, completion: blockPurchase)
+                            })
+                        case .acceptedPhoneFailed:
+                            DPAGApplicationFacade.preferences.isCompanyManagedState = true
+                            DPAGProgressHUD.sharedInstance.hide(false, completion: {
+                                if let vc = DPAGApplicationFacade.preferences.viewControllerForIdent(DPAGWhiteLabelNextView.dpagProfileViewController_startCompanyProfilInitPhoneNumberController) {
+                                    (vc as? DPAGCompanyProfilConfirmPhoneNumberControllerSkipDelegate)?.skipToPhoneNumberValidation = true
+                                    (vc as? DPAGViewControllerWithCompletion)?.completion = {
+                                        do {
+                                            try DPAGApplicationFacade.accountManager.ensureCompanyRecoveryPassword()
+                                        } catch {
+                                            DPAGLog(error)
+                                        }
+                                        blockPurchase()
+                                    }
+                                    let nextVC = DPAGApplicationFacadeUIBase.navVC(rootViewController: vc)
+                                    AppConfig.appWindow()??.rootViewController?.present(nextVC, animated: true, completion: nil)
+                                }
+                            })
+                        case .declined, .acceptedPendingValidation, .accountDeleted, .unknown:
+                            DPAGProgressHUD.sharedInstance.hide(false, completion: blockPurchase)
                     }
                 }
             }
-
             DPAGApplicationFacade.companyAdressbook.checkCompanyManagement(withResponse: responseBlock)
         }
     }
@@ -775,96 +786,66 @@ extension DPAGRegistrationCompletedCheck {
     private func requestAccountManagement(forCompany companyName: String?, completions: RequestAccountManagementCompletions) {
         if AppConfig.appWindow()??.rootViewController?.presentedViewController == nil {
             DPAGProgressHUD.sharedInstance.hide(false, completion: { [weak self] in
-
                 let message = DPAGLocalizedString("business.alert.accountManagementRequested.message")
-
                 let actionDecline = UIAlertAction(titleIdentifier: "business.alert.accountManagementRequested.btnDecline.title", style: .cancel, handler: { _ in
-
                     DPAGProgressHUD.sharedInstance.showForBackgroundProcess(true) { _ in
-
                         let responseBlock: DPAGServiceResponseBlock = { [weak self] _, _, errorMessage in
-
                             DPAGProgressHUD.sharedInstance.hide(true) { [weak self] in
-
                                 guard self != nil else { return }
-
                                 if let errorMessage = errorMessage {
                                     self?.showErrorAlertCheck(alertConfig: UIViewController.AlertConfigError(messageIdentifier: errorMessage))
                                 }
                                 completions.completionDeclined()
                             }
                         }
-
                         DPAGApplicationFacade.companyAdressbook.declineCompanyManagement(withResponse: responseBlock)
                     }
                 })
-
                 let actionAccept = UIAlertAction(titleIdentifier: "business.alert.accountManagementRequested.btnAccept.title", style: .default, handler: { _ in
-
                     DPAGProgressHUD.sharedInstance.showForBackgroundProcess(true) { _ in
-
                         let responseBlock: DPAGServiceResponseBlock = { [weak self] _, _, errorMessage in
-
                             if let errorMessage = errorMessage {
                                 DPAGProgressHUD.sharedInstance.hide(true) { [weak self] in
-
                                     guard self != nil else { return }
                                     self?.showErrorAlertCheck(alertConfig: UIViewController.AlertConfigError(messageIdentifier: errorMessage))
                                     completions.completionError()
                                 }
                                 return
                             }
-
                             guard self != nil else { return }
-
                             let accountStateManaged: DPAGAccountCompanyManagedState = DPAGApplicationFacade.cache.account?.companyManagedState ?? .unknown
-
                             switch accountStateManaged {
-                            case .accepted, .acceptedEmailFailed, .acceptedPhoneFailed, .acceptedEmailRequired, .acceptedPhoneRequired, .acceptedPendingValidation:
-                                DPAGApplicationFacade.preferences.isCompanyManagedState = true
-
-                                DPAGApplicationFacade.profileWorker.getCompanyInfo(withResponse: nil)
-
-                            case .accountDeleted, .declined, .requested, .unknown:
-                                break
+                                case .accepted, .acceptedEmailFailed, .acceptedPhoneFailed, .acceptedEmailRequired, .acceptedPhoneRequired, .acceptedPendingValidation:
+                                    DPAGApplicationFacade.preferences.isCompanyManagedState = true
+                                    DPAGApplicationFacade.profileWorker.getCompanyInfo(withResponse: nil)
+                                case .accountDeleted, .declined, .requested, .unknown:
+                                    break
                             }
-
                             DPAGProgressHUD.sharedInstance.hide(true) { [weak self] in
-
                                 guard self != nil else { return }
-
                                 switch accountStateManaged {
-                                case .accepted:
-                                    completions.completionAccepted()
-
-                                case .acceptedEmailRequired:
-                                    if let vc = DPAGApplicationFacade.preferences.viewControllerForIdent(DPAGWhiteLabelNextView.dpagProfileViewController_startCompanyProfilInitEMailController) {
-                                        (vc as? DPAGViewControllerWithCompletion)?.completion = completions.completionRequired
-
-                                        let nextVC = DPAGApplicationFacadeUIBase.navVC(rootViewController: vc)
-
-                                        AppConfig.appWindow()??.rootViewController?.present(nextVC, animated: true, completion: nil)
-                                    }
-
-                                case .acceptedPhoneRequired:
-
-                                    if let vc = DPAGApplicationFacade.preferences.viewControllerForIdent(DPAGWhiteLabelNextView.dpagProfileViewController_startCompanyProfilInitPhoneNumberController) {
-                                        (vc as? DPAGViewControllerWithCompletion)?.completion = completions.completionRequired
-
-                                        let nextVC = DPAGApplicationFacadeUIBase.navVC(rootViewController: vc)
-
-                                        AppConfig.appWindow()??.rootViewController?.present(nextVC, animated: true, completion: nil)
-                                    }
-                                default:
-                                    completions.completionError()
+                                    case .accepted:
+                                        completions.completionAccepted()
+                                    case .acceptedEmailRequired:
+                                        if let vc = DPAGApplicationFacade.preferences.viewControllerForIdent(DPAGWhiteLabelNextView.dpagProfileViewController_startCompanyProfilInitEMailController) {
+                                            (vc as? DPAGViewControllerWithCompletion)?.completion = completions.completionRequired
+                                            let nextVC = DPAGApplicationFacadeUIBase.navVC(rootViewController: vc)
+                                            AppConfig.appWindow()??.rootViewController?.present(nextVC, animated: true, completion: nil)
+                                        }
+                                    case .acceptedPhoneRequired:
+                                        if let vc = DPAGApplicationFacade.preferences.viewControllerForIdent(DPAGWhiteLabelNextView.dpagProfileViewController_startCompanyProfilInitPhoneNumberController) {
+                                            (vc as? DPAGViewControllerWithCompletion)?.completion = completions.completionRequired
+                                            let nextVC = DPAGApplicationFacadeUIBase.navVC(rootViewController: vc)
+                                            AppConfig.appWindow()??.rootViewController?.present(nextVC, animated: true, completion: nil)
+                                        }
+                                    default:
+                                        completions.completionError()
                                 }
                             }
                         }
-
                         DPAGApplicationFacade.companyAdressbook.acceptCompanyManagement(withResponse: responseBlock)
                     }
                 })
-
                 self?.presentAlert(alertConfig: UIViewController.AlertConfig(titleIdentifier: "business.alert.accountManagementRequested.title", messageIdentifier: String(format: message, companyName ?? "??"), otherButtonActions: [actionDecline, actionAccept]))
             })
         } else {

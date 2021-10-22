@@ -1,6 +1,6 @@
 //
 //  DPAGRuntimeConfigBA.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 10/01/2017.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.
@@ -20,11 +20,7 @@ class DPAGRuntimeConfigBA: DPAGRuntimeConfigWhiteLabel {
     }
 
     override var maxFileSize: UInt64 {
-        0x3200000
-    }
-
-    override var trackingAppToken: String? {
-        "xi8ccliinxmo"
+        0x6400000
     }
 
     override var isBaMandant: Bool {

@@ -21,8 +21,6 @@ public protocol DPAGRequestWorkerProtocol: AnyObject {
 
     func resetBadge(withResponse response: @escaping DPAGServiceResponseBlock)
 
-    func sendCrashReport(report: String, withResponse responseBlock: DPAGServiceResponseBlock?)
-
     func setDeviceData() throws
 
     func getConfigVersions(withResponse responseBlock: @escaping DPAGServiceResponseBlock)
@@ -77,10 +75,6 @@ class DPAGRequestWorker: DPAGRequestWorkerProtocol {
 
     func setDeviceData() throws {
         try DPAGApplicationFacade.server.setDeviceData()
-    }
-
-    func sendCrashReport(report: String, withResponse responseBlock: DPAGServiceResponseBlock?) {
-        DPAGApplicationFacade.server.sendCrashReport(report: report, withResponse: responseBlock)
     }
 
     func resetBadge(withResponse response: @escaping DPAGServiceResponseBlock) {

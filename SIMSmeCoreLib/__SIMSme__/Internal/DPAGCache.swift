@@ -1,6 +1,6 @@
 //
 //  DPAGCache.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 05/11/15.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.
@@ -783,9 +783,6 @@ public class DPAGCache: NSObject {
                 decMessageChannel.colorChatMessageSectionPre = channel.colorChatMessageSectionPre
                 decMessageChannel.colorChatMessageSection = channel.colorChatMessageSection
                 decMessageChannel.contentLinkReplacer = channel.contentLinkReplacer
-                if decMessageChannel.feedType == .service {
-                    decMessageChannel.contentLinkReplacerRegex = self.contentLinkReplacer(forService: channel)
-                }
                 decMessage.attributedText = ""
                 if let content = decMessage.content, decMessageChannel.feedType == .channel {
                     if let contentChannel = (DPAGApplicationFacade.feedWorker as? DPAGFeedWorkerProtocolSwift)?.replaceChannelLink(content, contentLinkReplacer: decMessageChannel.contentLinkReplacer) {
@@ -1224,7 +1221,7 @@ public class DPAGCache: NSObject {
             messageToSendFirst = messageToSend
         }
         if let messages = stream.messages, let msg = messages.lastObject as? SIMSMessage {
-            if ((msg.fromAccountGuid?.isSystemChatGuid ?? false) == false || ((stream as? SIMSChannelStream)?.channel?.validFeedType ?? .channel) == .service || DPAGSystemChat.isSystemChat(stream) == true) || (stream.wasDeleted?.boolValue ?? false) {
+            if ((msg.fromAccountGuid?.isSystemChatGuid ?? false) == false || DPAGSystemChat.isSystemChat(stream) == true) || (stream.wasDeleted?.boolValue ?? false) {
                 return (messageToSendFirst?.dateCreated?.isLaterThan(date: msg.dateSendServer ?? Date()) ?? false) ? messageToSendFirst : msg
             }
             var i = (messages.count - 2)

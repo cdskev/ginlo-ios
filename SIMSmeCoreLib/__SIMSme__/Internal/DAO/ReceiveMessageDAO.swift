@@ -812,8 +812,6 @@ class ReceiveMessageDAO: ReceiveMessageDAOProtocol, DPAGClassPerforming {
                     switch channel.validFeedType {
                         case .channel:
                             channelsToUnsubscribe.insert(channelGuid)
-                        case .service:
-                            servicesToUnsubscribe.insert(channelGuid)
                     }
                 }
             }

@@ -1,6 +1,6 @@
 //
 //  DPAGApplicationFacade.accountManager.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 04/11/15.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.
@@ -116,6 +116,8 @@ public protocol DPAGAccountManagerProtocol: AnyObject {
     func hasAccount() -> Bool
     func isFirstRunOrBrokenSetup() -> Bool
     func accountStateSetup() -> DPAGAccountState
+    
+    func autoConfirmAccount(accountID: String)
 }
 
 class DPAGAccountManager: NSObject, DPAGAccountManagerProtocol {
@@ -126,6 +128,10 @@ class DPAGAccountManager: NSObject, DPAGAccountManagerProtocol {
         accountDAO.getAccountState() ?? DPAGAccountState.unknown
     }
 
+    func autoConfirmAccount(accountID: String) {
+        accountDAO.confirmAccount(accountID: accountID)
+    }
+    
     func isFirstRunOrBrokenSetup() -> Bool {
         var isFirstRun = accountDAO.isDeviceFirstRun() ?? true
         if isFirstRun == false, let deviceCrypto = CryptoHelper.sharedInstance, deviceCrypto.hasPrivateKey(), ((try? deviceCrypto.aesKeyFileExists(forPasswordProtectedKey: true)) ?? false) == false {
@@ -274,7 +280,6 @@ class DPAGAccountManager: NSObject, DPAGAccountManagerProtocol {
             } else if let accountID = self?.validateResponseForAccountConfirmation(dictionary: responseObject as? [AnyHashable: Any]) {
                 self?.accountDAO.confirmAccount(accountID: accountID)
                 DPAGApplicationFacade.model.update(with: nil)
-                DPAGApplicationFacade.profileWorker.setBrabblerSwitchState()
                 responseBlock(responseObject, errorCode, errorMessage)
             } else {
                 responseBlock(nil, "service.tryAgainLater", "service.tryAgainLater")

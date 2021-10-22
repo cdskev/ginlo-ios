@@ -1,6 +1,6 @@
 //
 //  DPAGIntroPage1ViewController.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 01/06/16.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.
@@ -24,6 +24,7 @@ class DPAGIntroPage1ViewController: DPAGIntroPageViewController {
 
     @IBOutlet private var imageViewCheck2: UIImageView! {
         didSet {
+            DPAGLog("didSet imageViewCheck2")
             self.imageViewCheck2.image = DPAGImageProvider.shared[.kImageStar]
         }
     }
@@ -37,6 +38,7 @@ class DPAGIntroPage1ViewController: DPAGIntroPageViewController {
 
     @IBOutlet private var label1: UILabel! {
         didSet {
+            DPAGLog("didSet label1")
             self.configureLabel(self.label1)
             self.label1.text = DPAGLocalizedString("intro.screen0.description1")
         }
@@ -57,13 +59,29 @@ class DPAGIntroPage1ViewController: DPAGIntroPageViewController {
         }
     }
 
+    @IBOutlet private var scanInvitationButton: UIButton! {
+        didSet {
+            if DPAGApplicationFacade.preferences.isBaMandant {
+                self.scanInvitationButton.isHidden = true
+            } else {
+                self.scanInvitationButton.accessibilityIdentifier = "btnContinue"
+                self.scanInvitationButton.setTitle(DPAGLocalizedString("intro.screen1.invitationButtonTitle"), for: .normal)
+                self.scanInvitationButton.configureButton(backgroundColor: .clear, textColor: DPAGColorProvider.shared[.buttonTintNoBackground])
+                self.scanInvitationButton.addTargetClosure { [weak self] _ in
+                    if let nextVC = DPAGApplicationFacade.preferences.viewControllerForIdent(DPAGWhiteLabelNextView.dpagIntroViewController_handleScanInvitationTapped) {
+                        self?.navigationController?.pushViewController(nextVC, animated: true)
+                    }
+                }
+            }
+        }
+    }
+    
     @IBOutlet private var btnAutomaticallyCreateDevice: UIButton! {
         didSet {
             self.btnAutomaticallyCreateDevice.accessibilityIdentifier = "btnAutomaticallyCreateDevice"
             self.btnAutomaticallyCreateDevice.setTitle("AutoCreate", for: .normal)
             self.btnAutomaticallyCreateDevice.configureButton(backgroundColor: .clear, textColor: DPAGColorProvider.shared[.buttonDestructiveTintNoBackground])
             self.btnAutomaticallyCreateDevice.addTargetClosure { [weak self] _ in
-
                 if AppConfig.buildConfigurationMode == .TEST {
                     self?.navigationController?.pushViewController(DPAGApplicationFacadeUIRegistration.requestAutomaticTestRegistrationVC(), animated: true)
                 }
@@ -120,6 +138,7 @@ class DPAGIntroPage1ViewController: DPAGIntroPageViewController {
                 self.btnAutomaticallyCreateDevice.configureButton(backgroundColor: .clear, textColor: DPAGColorProvider.shared[.buttonDestructiveTintNoBackground])
                 self.btnCreateDevice.configureButton(backgroundColor: .clear, textColor: DPAGColorProvider.shared[.buttonTintNoBackground])
                 self.btnCancel.tintColor = DPAGColorProvider.shared[.buttonTintNoBackground]
+                self.scanInvitationButton.configureButton(backgroundColor: .clear, textColor: DPAGColorProvider.shared[.buttonTintNoBackground])
                 self.configureLabel(self.label0)
                 self.configureLabel(self.label1)
                 self.configureLabel(self.label2)

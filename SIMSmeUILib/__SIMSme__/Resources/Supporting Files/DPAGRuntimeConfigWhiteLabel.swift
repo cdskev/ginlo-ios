@@ -1,6 +1,6 @@
 //
 //  DPAGRuntimeConfigWhiteLabel.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 10/01/2017.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.
@@ -53,22 +53,9 @@ class DPAGRuntimeConfigWhiteLabel: DPAGRuntimeConfigUI {
         }
     }
 
-    override var trackingAppToken: String? {
-        nil
-    }
-
-    override func trackingEventId(eventId: String) -> String {
-        String(format: "%@-%@", self.mandantIdent ?? "default", eventId)
-    }
-
     override var urlScheme: String {
         if let urlScheme = self.urlSchemeInternal {
-            switch AppConfig.buildConfigurationMode {
-                case .ADHOC, .BETA, .DEBUG, .TEST:
-                    return String(format: "%@%@", urlScheme, "debug")
-                case .RELEASE:
-                    return urlScheme
-            }
+            return urlScheme
         }
         return super.urlScheme
     }

@@ -1,6 +1,6 @@
 //
 //  DPAGChatsListViewController+TableView.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 07/04/16.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.
@@ -219,13 +219,6 @@ extension DPAGChatsListViewController: UITableViewDataSource {
                         cell = cellChannel
                         cell?.accessibilityIdentifier = "channel-" + streamName
                     }
-                case .service:
-                    if let cellService = tableView.dequeueReusableCell(withIdentifier: DPAGChatsListViewController.ServiceCellIdentifier, for: indexPath) as? (UITableViewCell & DPAGServiceCellProtocol) {
-                        cellService.setLabelNameHighlight(searchText)
-                        cellService.configureCellWithStream(streamChannel)
-                        cell = cellService
-                        cell?.accessibilityIdentifier = "service-" + streamName
-                    }
             }
         } else if let streamGroup = stream as? DPAGDecryptedStreamGroup, let group = DPAGApplicationFacade.cache.group(for: streamGroup.guid) {
             if DPAGApplicationFacade.preferences.streamVisibilityNew {
@@ -325,7 +318,7 @@ extension DPAGChatsListViewController: UITableViewDataSource {
                 hasInfo = (group.groupType != .restricted)
             } else if let channelStream = stream as? DPAGDecryptedStreamChannel {
                 isChannel = true
-                isChannelService = channelStream.feedType == .service
+                isChannelService = false
                 hasUnreadMessages = channelStream.newMessagesCount > 0
             }
         }
@@ -504,8 +497,6 @@ extension DPAGChatsListViewController: UITableViewDataSource {
             switch channelStream.feedType {
                 case .channel:
                     retVal = DPAGLocalizedString("chat.list.action.removeMessages.channel")
-                case .service:
-                    retVal = DPAGLocalizedString("chat.list.action.unsubscribe.service")
             }
         }
 

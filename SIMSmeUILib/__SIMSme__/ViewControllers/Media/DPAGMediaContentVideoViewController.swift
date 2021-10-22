@@ -1,6 +1,6 @@
 //
 //  DPAGMediaContentVideoViewController.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 02/02/16.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

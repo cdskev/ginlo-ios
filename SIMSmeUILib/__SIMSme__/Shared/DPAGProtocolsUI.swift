@@ -445,18 +445,28 @@ public protocol DPAGContactDetailsViewControllerProtocol: DPAGContactDetailsView
     var enableRemove: Bool { get set }
 }
 
-public protocol DPAGContactNewCreateViewControllerProtocol: DPAGContactDetailsViewControllerBaseProtocol {}
+public protocol DPAGContactNewCreateViewControllerProtocol: DPAGContactDetailsViewControllerBaseProtocol {
+    var confirmConfidence: Bool { get set }
+}
+
+public protocol GNContactScannedCreateViewControllerProtocol: DPAGContactDetailsViewControllerBaseProtocol {
+    var confirmConfidence: Bool { get set }
+    var isLogin: Bool { get set }
+    var createNewChat: Bool { get set }
+}
 
 public protocol DPAGContactNewSearchViewControllerProtocol: AnyObject {
     var phoneNumInit: String? { get set }
     var countryCodeInit: String? { get set }
     var emailAddressInit: String? { get set }
-    var simsmeIDInit: String? { get set }
+    var ginloIDInit: String? { get set }
 }
 
 public protocol DPAGContactNewSelectViewControllerProtocol: AnyObject {}
 
-public protocol DPAGContactNotFoundViewControllerProtocol: AnyObject {}
+public protocol DPAGContactNotFoundViewControllerProtocol: AnyObject {
+    var fromWelcomePage: Bool { get set }
+}
 
 public protocol DPAGContactsSelectionGroupMembersDelegate: AnyObject {
     func addMembers(_ members: Set<DPAGContact>)
@@ -512,6 +522,7 @@ public protocol DPAGLicencesInitConsumer: AnyObject {
 
 public protocol DPAGWelcomeViewControllerProtocol: AnyObject {
     var accountGuid: String { get }
+    var invitationData: [String: Any]? { get set }
 }
 
 public protocol DPAGBackupRecoverPasswordViewControllerDelegate: AnyObject {

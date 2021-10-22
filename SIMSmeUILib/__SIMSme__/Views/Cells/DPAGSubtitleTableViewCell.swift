@@ -1,6 +1,6 @@
 //
 //  DPAGSettingsSubtitleTableViewCell.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 26/10/15.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

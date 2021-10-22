@@ -1,6 +1,6 @@
 //
 //  DPAGContactsSelectionSendingViewController.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 31.01.18.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

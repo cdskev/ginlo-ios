@@ -1,6 +1,6 @@
 //
 //  DPAGInitialPasswordBaseViewController.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 22/02/16.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.
@@ -46,15 +46,11 @@ open class DPAGInitialPasswordBaseViewController: DPAGPasswordViewControllerBase
 
     override open func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-
         self.configureView()
     }
 
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
     }
 
@@ -79,45 +75,32 @@ open class DPAGInitialPasswordBaseViewController: DPAGPasswordViewControllerBase
 
         if let vcPasswortNext = vcPasswort {
             vcPasswortNext.state = .registration
-
             vcPasswortPrev?.willMove(toParent: nil)
             vcPasswortPrev?.view.removeFromSuperview()
             vcPasswortPrev?.removeFromParent()
-
             vcPasswortNext.willMove(toParent: self)
             self.addChild(vcPasswortNext)
             self.viewPasswordInput.addSubview(vcPasswortNext.view)
             vcPasswortNext.didMove(toParent: self)
-
             vcPasswortNext.view.translatesAutoresizingMaskIntoConstraints = false
-
             NSLayoutConstraint.activate(self.viewPasswordInput.constraintsFill(subview: vcPasswortNext.view))
-
             if vcPasswortPrev === self.passwordViewControllerPIN {
                 self.passwordViewControllerPIN = nil
             }
             if vcPasswortPrev === self.passwordViewControllerComplex {
                 self.passwordViewControllerComplex = nil
             }
-
             let blockAnimation = { [weak self] in
-
                 guard let strongSelf = self else { return }
-
                 strongSelf.view.layoutIfNeeded()
             }
             let blockCompletion = { [weak self] (_: Bool) in
-
                 guard let strongSelf = self else { return }
-
                 vcPasswortPrev?.didMove(toParent: nil)
                 vcPasswortNext.delegate = strongSelf
-
                 strongSelf.viewButtonNext.isEnabled = vcPasswortNext.passwordEnteredCanBeValidated(vcPasswortNext.getEnteredPassword())
-
                 completion?()
             }
-
             if animated {
                 UIView.animate(withDuration: TimeInterval(UINavigationController.hideShowBarDuration), animations: blockAnimation, completion: blockCompletion)
             } else {
@@ -129,7 +112,6 @@ open class DPAGInitialPasswordBaseViewController: DPAGPasswordViewControllerBase
 
     override open func enteredPassword() -> String? {
         let isPINInput = (self.switchInputType?.isOn ?? false)
-
         if isPINInput {
             return self.passwordViewControllerPIN?.getEnteredPassword()
         } else {

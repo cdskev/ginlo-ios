@@ -1,6 +1,6 @@
 //
 //  DPAGAppDelegateExt.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 03.05.18.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

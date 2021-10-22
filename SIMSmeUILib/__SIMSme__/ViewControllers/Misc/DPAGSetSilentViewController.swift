@@ -1,6 +1,6 @@
 //
 //  DPAGSetSilentViewController.swift
-//  SIMSme
+// ginlo
 //
 //  Created by Yves Hetzer on 20.04.18.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

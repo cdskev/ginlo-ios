@@ -1,6 +1,6 @@
 //
 //  DPAGLocalNotificationViewController.m
-//  SIMSme
+// ginlo
 //
 //  Created by Florin Pop on 20/11/14.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

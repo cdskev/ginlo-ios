@@ -1,6 +1,6 @@
 //
 //  DPAGContactNewSearchViewController.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 18.12.17.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.
@@ -75,7 +75,7 @@ class DPAGContactNewSearchViewController: DPAGViewControllerWithKeyboard, DPAGCo
     var phoneNumInit: String?
     var countryCodeInit: String?
     var emailAddressInit: String?
-    var simsmeIDInit: String?
+    var ginloIDInit: String?
 
     init() {
         super.init(nibName: "DPAGContactNewSearchViewController", bundle: Bundle(for: type(of: self)))
@@ -93,8 +93,8 @@ class DPAGContactNewSearchViewController: DPAGViewControllerWithKeyboard, DPAGCo
         if self.countryCodeInit != nil {
             self.viewDataSelection.updateCountryInfo(index: DPAGCountryCodes.sharedInstance.indexForCode(self.countryCodeInit))
         }
-        if self.simsmeIDInit != nil {
-            self.viewDataSelection.textFieldAccountID.text = self.simsmeIDInit
+        if self.ginloIDInit != nil {
+            self.viewDataSelection.textFieldAccountID.text = self.ginloIDInit
             self.viewDataSelection.updateDataSelection(index: .simsmeID, withStack: true)
         } else if self.phoneNumInit != nil {
             self.viewDataSelection.textFieldPhone.text = self.phoneNumInit

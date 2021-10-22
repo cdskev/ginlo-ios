@@ -1,6 +1,6 @@
 //
 //  DPAGSubscribeChannelViewController.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 18/10/15.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

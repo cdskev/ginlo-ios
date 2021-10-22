@@ -1,6 +1,6 @@
 //
 //  DPAGScanCreateDeviceTANViewController.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 28.11.17.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

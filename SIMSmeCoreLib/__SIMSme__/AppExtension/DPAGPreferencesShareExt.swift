@@ -82,7 +82,7 @@ class DPAGPreferencesShareExt: DPAGPreferencesShareExtProtocol {
     var sharedContainerConfig: DPAGSharedContainerConfig { self.prefs?.sharedContainerConfig ?? DPAGSharedContainerConfig(keychainAccessGroupName: "???", groupID: "???", urlHttpService: "???") }
     var maximumNumberOfMediaAttachments: Int = 10
     var imageOptionsForSending: DPAGImageOptions {
-        if let l = self.prefs?.imageOptionsForSending ?? nil {
+        if let l = self.prefs?.imageOptionsForSending {
             var s = l.size
             s.width = min(s.width, 1_920)
             s.height = min(s.height, 1_920)

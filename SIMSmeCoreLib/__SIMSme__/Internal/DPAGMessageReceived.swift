@@ -15,7 +15,6 @@ public class DPAGAesKeyDecrypted: NSObject {
     public init(aesKey: String, iv: String) {
         self.aesKey = aesKey
         self.iv = iv
-
         super.init()
     }
 
@@ -38,50 +37,33 @@ public enum DPAGMessageContentType: Int {
         controlMsgNG
 
     static func contentType(for typeIn: String?) -> DPAGMessageContentType {
-        guard var type = typeIn else {
-            return .plain
-        }
-
+        guard var type = typeIn else { return .plain }
         type = type.replacingOccurrences(of: "/selfdest", with: "")
-
         let contentType: DPAGMessageContentType
-
         switch type {
-        case DPAGStrings.JSON.Message.ContentType.PLAIN:
+          case DPAGStrings.JSON.Message.ContentType.PLAIN:
             contentType = .plain
-
-        case DPAGStrings.JSON.Message.ContentType.IMAGE:
+          case DPAGStrings.JSON.Message.ContentType.IMAGE:
             contentType = .image
-
-        case DPAGStrings.JSON.Message.ContentType.VIDEO:
+          case DPAGStrings.JSON.Message.ContentType.VIDEO:
             contentType = .video
-
-        case DPAGStrings.JSON.Message.ContentType.LOCATION:
+          case DPAGStrings.JSON.Message.ContentType.LOCATION:
             contentType = .location
-
-        case DPAGStrings.JSON.Message.ContentType.CONTACT:
-            contentType = .contact
-
-        case DPAGStrings.JSON.Message.ContentType.VOICEREC:
+          case DPAGStrings.JSON.Message.ContentType.CONTACT:
+          contentType = .contact
+          case DPAGStrings.JSON.Message.ContentType.VOICEREC:
             contentType = .voiceRec
-
-        case DPAGStrings.JSON.Message.ContentType.FILE:
+          case DPAGStrings.JSON.Message.ContentType.FILE:
             contentType = .file
-
-        case DPAGStrings.JSON.Message.ContentType.OOO_STATUS_MESSAGE:
+          case DPAGStrings.JSON.Message.ContentType.OOO_STATUS_MESSAGE:
             contentType = .oooStatusMessage
-
-        case DPAGStrings.JSON.Message.ContentType.TEXT_RSS:
+          case DPAGStrings.JSON.Message.ContentType.TEXT_RSS:
             contentType = .textRSS
-
-        case DPAGStrings.JSON.Message.ContentType.AV_CALL_INVITATION:
+          case DPAGStrings.JSON.Message.ContentType.AV_CALL_INVITATION:
             contentType = .avCallInvitation
-            
-        case DPAGStrings.JSON.Message.ContentType.CONTROL_MSG_NG:
+          case DPAGStrings.JSON.Message.ContentType.CONTROL_MSG_NG:
             contentType = .controlMsgNG
-        
-        default:
-            DPAGLog("setting contentType to plain for unknown '\(type)'", level: .error)
+          default:
             contentType = .plain
         }
 
@@ -90,30 +72,29 @@ public enum DPAGMessageContentType: Int {
 
     public var stringRepresentation: String {
         let contentTypeString: String
-
         switch self {
-        case .plain:
-            contentTypeString = DPAGStrings.JSON.Message.ContentType.PLAIN
-        case .image:
-            contentTypeString = DPAGStrings.JSON.Message.ContentType.IMAGE
-        case .video:
-            contentTypeString = DPAGStrings.JSON.Message.ContentType.VIDEO
-        case .location:
-            contentTypeString = DPAGStrings.JSON.Message.ContentType.LOCATION
-        case .contact:
-            contentTypeString = DPAGStrings.JSON.Message.ContentType.CONTACT
-        case .voiceRec:
-            contentTypeString = DPAGStrings.JSON.Message.ContentType.VOICEREC
-        case .file:
-            contentTypeString = DPAGStrings.JSON.Message.ContentType.FILE
-        case .oooStatusMessage:
-            contentTypeString = DPAGStrings.JSON.Message.ContentType.OOO_STATUS_MESSAGE
-        case .textRSS:
-            contentTypeString = DPAGStrings.JSON.Message.ContentType.TEXT_RSS
-        case .avCallInvitation:
-            contentTypeString = DPAGStrings.JSON.Message.ContentType.AV_CALL_INVITATION
-        case .controlMsgNG:
-            contentTypeString = DPAGStrings.JSON.Message.ContentType.CONTROL_MSG_NG
+          case .plain:
+              contentTypeString = DPAGStrings.JSON.Message.ContentType.PLAIN
+          case .image:
+              contentTypeString = DPAGStrings.JSON.Message.ContentType.IMAGE
+          case .video:
+              contentTypeString = DPAGStrings.JSON.Message.ContentType.VIDEO
+          case .location:
+              contentTypeString = DPAGStrings.JSON.Message.ContentType.LOCATION
+          case .contact:
+              contentTypeString = DPAGStrings.JSON.Message.ContentType.CONTACT
+          case .voiceRec:
+              contentTypeString = DPAGStrings.JSON.Message.ContentType.VOICEREC
+          case .file:
+              contentTypeString = DPAGStrings.JSON.Message.ContentType.FILE
+          case .oooStatusMessage:
+              contentTypeString = DPAGStrings.JSON.Message.ContentType.OOO_STATUS_MESSAGE
+          case .textRSS:
+              contentTypeString = DPAGStrings.JSON.Message.ContentType.TEXT_RSS
+          case .avCallInvitation:
+              contentTypeString = DPAGStrings.JSON.Message.ContentType.AV_CALL_INVITATION
+          case .controlMsgNG:
+              contentTypeString = DPAGStrings.JSON.Message.ContentType.CONTROL_MSG_NG
         }
         return contentTypeString
     }
@@ -179,64 +160,62 @@ struct DPAGMessageDictionary {
 
     init(dict: [String: Any]) {
         dict.forEach { key, obj in
-
             switch key {
-            case DPAGStrings.JSON.Message.CONTENT_TYPE:
-                self.contentType = obj is NSNull ? DPAGStrings.JSON.Message.ContentType.PLAIN : ((obj as? String) ?? DPAGStrings.JSON.Message.ContentType.PLAIN)
-            case DPAGStrings.JSON.Message.CONTENT_TYPE_2:
-                self.contentType = obj is NSNull ? DPAGStrings.JSON.Message.ContentType.PLAIN : ((obj as? String) ?? DPAGStrings.JSON.Message.ContentType.PLAIN)
-            case DPAGStrings.JSON.Message.DESTRUCTION_DATE:
-                if obj is NSNull {
-                    self.destructionDate = Date()
-                } else if let destructionDateStr = obj as? String, let destructionDate = DPAGMessageDictionary.formatter.date(from: destructionDateStr) {
-                    self.destructionDate = destructionDate
-                }
-            case DPAGStrings.JSON.Message.DESTRUCTION_COUNTDOWN:
-                if obj is NSNull {
-                    self.destructionCountDown = 1
-                } else if let num = obj as? NSNumber {
-                    self.destructionCountDown = num.intValue
-                } else if let destructionCountdownStr = obj as? String, let destructionCountdown = Int(destructionCountdownStr) {
-                    self.destructionCountDown = destructionCountdown
-                }
-            case DPAGStrings.JSON.Message.PHONE:
-                self.phone = obj as? String
-            case DPAGStrings.JSON.Message.NICKNAME:
-                self.nick = obj as? String
-            case DPAGStrings.JSON.Message.CONTENT:
-                self.content = obj as? String
-            case DPAGStrings.JSON.Message.CONTENT_DESCRIPTION:
-                self.contentDescription = obj as? String
-            case DPAGStrings.JSON.Message.VCARDACCOUNTGUID:
-                self.vcardAccountGuid = obj as? String
-            case DPAGStrings.JSON.Message.VCARDACCOUNTID:
-                self.vcardAccountID = obj as? String
-            case DPAGStrings.JSON.Message.ACCOUNT_PROFIL_KEY:
-                self.profilKey = obj as? String
-            case DPAGStrings.JSON.Message.AdditionalData.FILE_NAME:
-                self.additionalData.fileName = obj as? String
-            case DPAGStrings.JSON.Message.AdditionalData.FILE_SIZE:
-                self.additionalData.fileSize = obj as? String
-                self.additionalData.fileSizeNum = obj as? NSNumber
-            case DPAGStrings.JSON.Message.AdditionalData.FILE_TYPE:
-                self.additionalData.fileType = obj as? String
-            case DPAGStrings.JSON.Message.AdditionalData.ENCODING_VERSION:
-                self.additionalData.encodingVersion = obj as? String
-                self.additionalData.encodingVersionNum = (obj as? NSNumber)?.intValue
-            case DPAGStrings.JSON.Message.IMAGE_PREVIEW:
-                if let previewDict = obj as? [AnyHashable: Any], let previewContent = previewDict[DPAGStrings.JSON.Message.ImagePreview.CONTENT] as? String {
-                    let imageData = Data(base64Encoded: previewContent, options: .ignoreUnknownCharacters)
-
-                    self.imagePreviewData = imageData
-                }
-            case DPAGStrings.JSON.Channel.SECTION:
-                self.channelSection = obj as? String
-            case "citation":
-                if let citationDict = obj as? [AnyHashable: Any] {
-                    self.citationContent = DPAGCitationContent(dict: citationDict)
-                }
-            default:
-                self.unknownContent[key] = obj
+              case DPAGStrings.JSON.Message.CONTENT_TYPE:
+                  self.contentType = obj is NSNull ? DPAGStrings.JSON.Message.ContentType.PLAIN : ((obj as? String) ?? DPAGStrings.JSON.Message.ContentType.PLAIN)
+              case DPAGStrings.JSON.Message.CONTENT_TYPE_2:
+                  self.contentType = obj is NSNull ? DPAGStrings.JSON.Message.ContentType.PLAIN : ((obj as? String) ?? DPAGStrings.JSON.Message.ContentType.PLAIN)
+              case DPAGStrings.JSON.Message.DESTRUCTION_DATE:
+                  if obj is NSNull {
+                      self.destructionDate = Date()
+                  } else if let destructionDateStr = obj as? String, let destructionDate = DPAGMessageDictionary.formatter.date(from: destructionDateStr) {
+                      self.destructionDate = destructionDate
+                  }
+              case DPAGStrings.JSON.Message.DESTRUCTION_COUNTDOWN:
+                  if obj is NSNull {
+                      self.destructionCountDown = 1
+                  } else if let num = obj as? NSNumber {
+                      self.destructionCountDown = num.intValue
+                  } else if let destructionCountdownStr = obj as? String, let destructionCountdown = Int(destructionCountdownStr) {
+                      self.destructionCountDown = destructionCountdown
+                  }
+              case DPAGStrings.JSON.Message.PHONE:
+                  self.phone = obj as? String
+              case DPAGStrings.JSON.Message.NICKNAME:
+                  self.nick = obj as? String
+              case DPAGStrings.JSON.Message.CONTENT:
+                  self.content = obj as? String
+              case DPAGStrings.JSON.Message.CONTENT_DESCRIPTION:
+                  self.contentDescription = obj as? String
+              case DPAGStrings.JSON.Message.VCARDACCOUNTGUID:
+                  self.vcardAccountGuid = obj as? String
+              case DPAGStrings.JSON.Message.VCARDACCOUNTID:
+                  self.vcardAccountID = obj as? String
+              case DPAGStrings.JSON.Message.ACCOUNT_PROFIL_KEY:
+                  self.profilKey = obj as? String
+              case DPAGStrings.JSON.Message.AdditionalData.FILE_NAME:
+                  self.additionalData.fileName = obj as? String
+              case DPAGStrings.JSON.Message.AdditionalData.FILE_SIZE:
+                  self.additionalData.fileSize = obj as? String
+                  self.additionalData.fileSizeNum = obj as? NSNumber
+              case DPAGStrings.JSON.Message.AdditionalData.FILE_TYPE:
+                  self.additionalData.fileType = obj as? String
+              case DPAGStrings.JSON.Message.AdditionalData.ENCODING_VERSION:
+                  self.additionalData.encodingVersion = obj as? String
+                  self.additionalData.encodingVersionNum = (obj as? NSNumber)?.intValue
+              case DPAGStrings.JSON.Message.IMAGE_PREVIEW:
+                  if let previewDict = obj as? [AnyHashable: Any], let previewContent = previewDict[DPAGStrings.JSON.Message.ImagePreview.CONTENT] as? String {
+                      let imageData = Data(base64Encoded: previewContent, options: .ignoreUnknownCharacters)
+                      self.imagePreviewData = imageData
+                  }
+              case DPAGStrings.JSON.Channel.SECTION:
+                  self.channelSection = obj as? String
+              case "citation":
+                  if let citationDict = obj as? [AnyHashable: Any] {
+                      self.citationContent = DPAGCitationContent(dict: citationDict)
+                  }
+              default:
+                  self.unknownContent[key] = obj
             }
         }
     }
@@ -334,25 +313,17 @@ class DPAGMessageReceivedBase: DPAGMessageReceivedCore {
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-
         self.data = try container.decode(String.self, forKey: .data)
-
         guard let dateSend = DPAGFormatter.date.date(from: try container.decode(String.self, forKey: .dateSend)) else {
             let context = DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Invalid date format")
-
             throw DecodingError.typeMismatch(Date.self, context)
         }
-
         self.dateSend = dateSend
-
         self.senderId = try container.decodeIfPresent(String.self, forKey: .senderId)
         self.features = try container.decodeIfPresent(String.self, forKey: .dateDownloaded)
         self.dateDownloaded = try container.decodeIfPresent(String.self, forKey: .dateDownloaded)
-
         self.pushInfo = try container.decodeIfPresent(String.self, forKey: .pushInfo)
-
         let attachments = try container.decodeIfPresent([String].self, forKey: .attachments)
-
         if let attachments = attachments, self.senderId != nil {
             if AppConfig.isShareExtension {
                 self.attachments = attachments
@@ -360,20 +331,17 @@ class DPAGMessageReceivedBase: DPAGMessageReceivedCore {
                 self.attachments = attachments
             } else {
                 var attachmentGuids: [String] = []
-
                 for attachment in attachments {
                     if attachment.hasSuffix("}") {
                         attachmentGuids.append(attachment)
                     } else {
                         let attachmentArrayGuids: [String]? = try container.decodeIfPresent([String].self, forKey: .attachmentGuids)
-
                         var guid: String? = attachmentArrayGuids?.first
                         if guid == nil {
                             guid = DPAGFunctionsGlobal.uuid(prefix: .none)
                         }
                         if let guid = guid {
                             DPAGAttachmentWorker.saveEncryptedAttachment(attachment, forGuid: guid)
-
                             attachmentGuids.append(guid)
                         }
                     }
@@ -383,14 +351,12 @@ class DPAGMessageReceivedBase: DPAGMessageReceivedCore {
         } else {
             self.attachments = attachments
         }
-
         try super.init(from: decoder)
     }
 }
 
 class DPAGMessageReceivedCore: Decodable {
     let guid: String
-
     var messageType: DPAGMessageReceivedType = .unknown
 
     private enum CodingKeys: String, CodingKey {
@@ -399,7 +365,6 @@ class DPAGMessageReceivedCore: Decodable {
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-
         self.guid = try container.decode(String.self, forKey: .guid)
     }
 }
@@ -407,15 +372,11 @@ class DPAGMessageReceivedCore: Decodable {
 class DPAGMessageReceivedPrivate: DPAGMessageReceivedBase {
     let toAccountInfo: AccountInfo
     let fromAccountInfo: AccountInfo
-
     let aesKey2IV: String?
-
     let dataSignature: DPAGMessageSignaturePrivate?
     let dataSignature256: DPAGMessageSignaturePrivate?
     let dataSignatureTemp256: DPAGMessageSignaturePrivate?
-
     let messagePriorityHigh: Bool
-
     let contentTyp: String?
 
     private enum CodingKeys: String, CodingKey {
@@ -431,25 +392,16 @@ class DPAGMessageReceivedPrivate: DPAGMessageReceivedBase {
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-
         let toDicts = try container.decode([[String: ToDict]].self, forKey: .to)
-
-        guard let toDict = toDicts.first, let toAccountGuid = toDict.keys.first, let toKeyDict = toDict[toAccountGuid] else {
-            throw DPAGMessageReceivedError.errToDictNotFound
-        }
-
+        guard let toDict = toDicts.first, let toAccountGuid = toDict.keys.first, let toKeyDict = toDict[toAccountGuid] else { throw DPAGMessageReceivedError.errToDictNotFound }
         self.toAccountInfo = AccountInfo(accountGuid: toAccountGuid, encAesKey: toKeyDict.key, encAesKey2: toKeyDict.key2, tempDevice: toKeyDict.tempDevice)
-
         let fromDict = try container.decode([String: FromDict].self, forKey: .from)
-
         if let fromAccountGuid = fromDict.keys.first, let fromKeyDict = fromDict[fromAccountGuid] {
             self.fromAccountInfo = AccountInfo(accountGuid: fromAccountGuid, encAesKey: fromKeyDict.key, encAesKey2: fromKeyDict.key2, tempDevice: fromKeyDict.tempDevice)
         } else {
             throw DPAGMessageReceivedError.errFromDictNotFound
         }
-
         self.aesKey2IV = try container.decodeIfPresent(String.self, forKey: .key2IV)
-
         if let dataSignature = try? container.decodeIfPresent(DPAGMessageSignaturePrivate.self, forKey: .signature) {
             self.dataSignature = dataSignature
         } else {
@@ -465,13 +417,9 @@ class DPAGMessageReceivedPrivate: DPAGMessageReceivedBase {
         } else {
             self.dataSignatureTemp256 = nil
         }
-
         self.contentTyp = try container.decodeIfPresent(String.self, forKey: .messageType)
-
         self.messagePriorityHigh = (try container.decodeIfPresent(String.self, forKey: .importance)) == "high"
-
         try super.init(from: decoder)
-
         self.messageType = .private
     }
 }
@@ -491,9 +439,7 @@ class DPAGMessageReceivedPrivateInternal: DPAGMessageReceivedCore {
     }
 
     let data: String
-
     let dateSend: Date
-
     let toAccountInfo: AccountInfo
     let fromAccountInfo: AccountInfo
 
@@ -507,35 +453,22 @@ class DPAGMessageReceivedPrivateInternal: DPAGMessageReceivedCore {
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-
         self.data = try container.decode(String.self, forKey: .data)
-
         guard let dateSend = DPAGFormatter.date.date(from: try container.decode(String.self, forKey: .dateSend)) else {
             let context = DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Invalid date format")
-
             throw DecodingError.typeMismatch(Date.self, context)
         }
-
         self.dateSend = dateSend
-
         let toDicts = try container.decode([[String: ToDict]].self, forKey: .to)
-
-        guard let toDict = toDicts.first, let toAccountGuid = toDict.keys.first, let toKeyDict = toDict[toAccountGuid] else {
-            throw DPAGMessageReceivedError.errToDictNotFound
-        }
-
+        guard let toDict = toDicts.first, let toAccountGuid = toDict.keys.first, let toKeyDict = toDict[toAccountGuid] else { throw DPAGMessageReceivedError.errToDictNotFound }
         self.toAccountInfo = AccountInfo(accountGuid: toAccountGuid, encAesKey: toKeyDict.key)
-
         let fromDict = try container.decode([String: FromDict].self, forKey: .from)
-
         if let fromAccountGuid = fromDict.keys.first, let fromKeyDict = fromDict[fromAccountGuid] {
             self.fromAccountInfo = AccountInfo(accountGuid: fromAccountGuid, encAesKey: fromKeyDict.key)
         } else {
             throw DPAGMessageReceivedError.errFromDictNotFound
         }
-
         try super.init(from: decoder)
-
         self.messageType = .privateInternal
     }
 
@@ -544,46 +477,31 @@ class DPAGMessageReceivedPrivateInternal: DPAGMessageReceivedCore {
         if let contentAlreadyDecrypted = _contentDecrypted {
             return contentAlreadyDecrypted
         }
-
-        guard let decryptedContentObject = DPAGApplicationFacade.messageCryptoWorker.decryptPrivateInternalMessage(data: self.data, encAesKey: self.toAccountInfo.encAesKey) else {
-            return nil
-        }
-
-        guard let contentDecrypted = DPAGMessageReceivedPrivateInternalDecrypted(messageDict: decryptedContentObject) else {
-            return nil
-        }
-
+        guard let decryptedContentObject = DPAGApplicationFacade.messageCryptoWorker.decryptPrivateInternalMessage(data: self.data, encAesKey: self.toAccountInfo.encAesKey) else { return nil }
+        guard let contentDecrypted = DPAGMessageReceivedPrivateInternalDecrypted(messageDict: decryptedContentObject) else { return nil }
         _contentDecrypted = contentDecrypted
-
         return contentDecrypted
     }
 }
 
 class DPAGMessageReceivedPrivateInternalDecrypted {
-    let contentValue: Any?
-    let contentType: String
-    let contentDict: [AnyHashable: Any]?
+  let contentValue: Any?
+  let contentType: String
+  let contentDict: [AnyHashable: Any]?
+  let messageDict: DPAGMessageDictionary
 
-    let messageDict: DPAGMessageDictionary
-
-    init?(messageDict: DPAGMessageDictionary) {
+  init?(messageDict: DPAGMessageDictionary) {
         self.messageDict = messageDict
-
         if let contentString = messageDict.content, let contentData = contentString.data(using: .utf8) {
             var jsonData: [AnyHashable: Any]?
-
             do {
                 jsonData = try JSONSerialization.jsonObject(with: contentData, options: .allowFragments) as? [AnyHashable: Any]
             } catch {
                 return nil
             }
-
             guard let jsonDataDict = jsonData else { return nil }
 
-            guard let contentValue = jsonDataDict[DPAGStrings.Server.MessageReceivedPrivateInternalDecrypted.Response.CONTENT], let contentType = (jsonDataDict[DPAGStrings.Server.MessageReceivedPrivateInternalDecrypted.Response.CONTENT_TYPE] ?? messageDict.contentType) as? String else {
-                return nil
-            }
-
+            guard let contentValue = jsonDataDict[DPAGStrings.Server.MessageReceivedPrivateInternalDecrypted.Response.CONTENT], let contentType = (jsonDataDict[DPAGStrings.Server.MessageReceivedPrivateInternalDecrypted.Response.CONTENT_TYPE] ?? messageDict.contentType) as? String else { return nil }
             self.contentValue = contentValue
             self.contentType = contentType
             self.contentDict = jsonDataDict
@@ -607,9 +525,7 @@ struct DPAGMessageReceivedRecipient: Decodable {
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-
         let item = try container.decode(DPAGMessageReceivedRecipientItem.self, forKey: .item)
-
         self.contactGuid = item.contactGuid
         self.sendsReadConfirmation = item.sendsReadConfirmation
         self.dateRead = item.dateRead
@@ -633,17 +549,12 @@ struct DPAGMessageReceivedRecipient: Decodable {
 
 class DPAGMessageReceivedGroup: DPAGMessageReceivedBase {
     let toAccountGuid: String
-
     let fromAccountInfo: AccountInfo
-
     let contentTyp: String?
-
     let dataSignature: DPAGMessageSignatureGroup?
     let dataSignature256: DPAGMessageSignatureGroup?
     let dataSignatureTemp256: DPAGMessageSignatureGroup?
-
     let recipients: [DPAGMessageReceivedRecipient]?
-
     let messagePriorityHigh: Bool
 
     private enum CodingKeys: String, CodingKey {
@@ -660,49 +571,35 @@ class DPAGMessageReceivedGroup: DPAGMessageReceivedBase {
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-
         self.toAccountGuid = try container.decode(String.self, forKey: .to)
-
         self.contentTyp = try container.decodeIfPresent(String.self, forKey: .messageType)
-
         let fromDict = try container.decode([String: FromDict].self, forKey: .from)
-
         if let fromAccountGuid = fromDict.keys.first, let fromKeyDict = fromDict[fromAccountGuid] {
             self.fromAccountInfo = AccountInfo(accountGuid: fromAccountGuid, encAesKey: fromKeyDict.key, encAesKey2: fromKeyDict.key2, tempDevice: fromKeyDict.tempDevice)
         } else {
             throw DPAGMessageReceivedError.errFromDictNotFound
         }
-
         if let dataSignature = try? container.decodeIfPresent(DPAGMessageSignatureGroup.self, forKey: .signature) {
             self.dataSignature = dataSignature
-
             if let dataSignature256 = try? container.decodeIfPresent(DPAGMessageSignatureGroup.self, forKey: .signature256) {
                 self.dataSignature256 = dataSignature256
             } else {
                 self.dataSignature256 = nil
             }
-
             if let dataSignatureTemp256 = try? container.decodeIfPresent(DPAGMessageSignatureGroup.self, forKey: .signatureTemp256) {
                 self.dataSignatureTemp256 = dataSignatureTemp256
             } else {
                 self.dataSignatureTemp256 = nil
             }
         } else {
-            guard self.contentTyp == DPAGMessageContentType.textRSS.stringRepresentation else {
-                throw DPAGMessageReceivedError.errSignatureNotFound
-            }
-
+            guard self.contentTyp == DPAGMessageContentType.textRSS.stringRepresentation else { throw DPAGMessageReceivedError.errSignatureNotFound }
             self.dataSignature = nil
             self.dataSignature256 = nil
             self.dataSignatureTemp256 = nil
         }
-
         self.recipients = try container.decodeIfPresent([DPAGMessageReceivedRecipient].self, forKey: .receiver)
-
         self.messagePriorityHigh = (try container.decodeIfPresent(String.self, forKey: .importance)) == "high"
-
         try super.init(from: decoder)
-
         self.messageType = .group
     }
 }
@@ -716,11 +613,8 @@ class DPAGMessageReceivedChannel: DPAGMessageReceivedBase {
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-
         self.toAccountGuid = try container.decode(String.self, forKey: .to)
-
         try super.init(from: decoder)
-
         self.messageType = .channel
     }
 }
@@ -729,11 +623,9 @@ class DPAGMessageReceivedService: DPAGMessageReceivedChannel {}
 
 class DPAGMessageReceivedConfirmTimedMessageSend: DPAGMessageReceivedCore {
     let dateSend: Date
-
     let fromGuid: String
     let toGuid: String
     let sendGuid: String
-
     let notSent: [String]?
     let recipients: [DPAGMessageReceivedRecipient]?
 
@@ -748,24 +640,17 @@ class DPAGMessageReceivedConfirmTimedMessageSend: DPAGMessageReceivedCore {
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-
         guard let dateSend = DPAGFormatter.date.date(from: try container.decode(String.self, forKey: .dateSend)) else {
             let context = DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Invalid date format")
-
             throw DecodingError.typeMismatch(Date.self, context)
         }
-
         self.dateSend = dateSend
-
         self.fromGuid = try container.decode(String.self, forKey: .fromGuid)
         self.toGuid = try container.decode(String.self, forKey: .toGuid)
         self.sendGuid = try container.decode(String.self, forKey: .sendGuid)
-
         self.notSent = try container.decodeIfPresent([String].self, forKey: .notSent)
         self.recipients = try container.decodeIfPresent([DPAGMessageReceivedRecipient].self, forKey: .recipients)
-
         try super.init(from: decoder)
-
         self.messageType = .confirmTimedMessageSent
     }
 }

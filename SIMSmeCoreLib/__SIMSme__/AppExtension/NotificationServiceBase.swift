@@ -1,6 +1,6 @@
 //
 //  NotificationServiceBase.swift
-//  SIMSme
+// ginlo
 //
 //  Created by Matthias Röhricht on 20.03.18.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

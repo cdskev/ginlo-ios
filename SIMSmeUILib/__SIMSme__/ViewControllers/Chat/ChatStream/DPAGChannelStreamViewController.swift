@@ -1,6 +1,6 @@
 //
 //  DPAGChannelStreamViewController.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 11/02/16.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.
@@ -73,12 +73,6 @@ class DPAGChannelStreamViewController: DPAGChatStreamBaseViewController, UITable
                         assetTypesMissing.append("\(self.channelInfo.guid);\(DPAGChannel.AssetType.itemBackground.rawValue)")
                     }
                 }
-            case .service:
-                viewLogoBack.backgroundColor = nil
-                viewLogoBack.image = assetsList[.itemBackground] as? UIImage
-                if viewLogoBack.image == nil, assetsList.keys.contains(.itemBackground) == false {
-                    assetTypesMissing.append("\(self.channelInfo.guid);\(DPAGChannel.AssetType.itemBackground.rawValue)")
-                }
         }
         viewLogoFront.image = assetsList[.itemForeground] as? UIImage
         if viewLogoFront.image == nil, assetsList.keys.contains(.itemForeground) == false {
@@ -96,9 +90,6 @@ class DPAGChannelStreamViewController: DPAGChatStreamBaseViewController, UITable
                                 if viewLogoBack.backgroundColor == nil {
                                     viewLogoBack.image = assetsList[.itemBackground] as? UIImage
                                 }
-                            case .service:
-                                viewLogoBack.image = assetsList[.itemBackground] as? UIImage
-                                strongSelf.viewSettingsImage.image = assetsList[.itemBackground] as? UIImage
                         }
                         viewLogoFront.image = assetsList[.itemForeground] as? UIImage
                     }
@@ -143,8 +134,6 @@ class DPAGChannelStreamViewController: DPAGChatStreamBaseViewController, UITable
         switch self.channelInfo.feedType {
             case .channel:
                 return DPAGApplicationFacadeUI.cellMessageSimpleChannelLeftNib()
-            case .service:
-                return DPAGApplicationFacadeUI.cellMessageSimpleServiceLeftNib()
         }
     }
 
@@ -274,9 +263,6 @@ extension DPAGChannelStreamViewController {
             case .channel:
                 settingKey = String(format: "%@-%@", channelInfo.guid, DPAGPreferences.PropString.kNotificationChannelChatEnabled.rawValue)
                 settingKeyGlobal = .kNotificationChannelChatEnabled
-            case .service:
-                settingKey = String(format: "%@-%@", channelInfo.guid, DPAGPreferences.PropString.kNotificationServiceChatEnabled.rawValue)
-                settingKeyGlobal = .kNotificationServiceChatEnabled
         }
         let channelNotficationSettingGlobal = DPAGApplicationFacade.preferences[settingKeyGlobal]
         let channelNotficationSettingGlobalIsON = channelNotficationSettingGlobal != DPAGPreferences.kValueNotificationDisabled
@@ -373,12 +359,6 @@ extension DPAGChannelStreamViewController {
                                 } else if vc is DPAGChatsListViewControllerProtocol {
                                     vcNext = vc
                                 }
-                            case .service:
-                                if vc is DPAGSubscribeServiceViewControllerProtocol {
-                                    vcNext = vc
-                                } else if vc is DPAGChatsListViewControllerProtocol {
-                                    vcNext = vc
-                                }
                         }
                     }
                     if let vcNext = vcNext {
@@ -389,5 +369,3 @@ extension DPAGChannelStreamViewController {
         }
     }
 }
-
-class DPAGServiceStreamViewController: DPAGChannelStreamViewController {}
