@@ -1685,25 +1685,41 @@ class DPAGBackupWorker: DPAGBackupWorkerProtocol, DPAGClassPerforming {
                     if let messages = groupChatBackupInfo["messages"] as? [[AnyHashable: Any]] {
                         for message in messages {
                             if let groupMessageDict = message["GroupMessage"] as? [AnyHashable: Any] {
+                              do {
                                 try self.recoverGroupMessage(groupMessageDict: groupMessageDict, backupFileInfo: backupFileInfo, accountInfo: account, contactInfo: group, orderId: orderId, backupMode: mode, in: localContext)
-                                orderId += 1
+                              } catch {
+                                DPAGLog("Could not recover group Message, groupId = \(group.guid), message = \(groupMessageDict), orderId = \(orderId)")
+                              }
+                              orderId += 1
                             }
                             if let timedGroupMessageDict = message["TimedGroupMessage"] as? [AnyHashable: Any] {
+                              do {
                                 try self.recoverTimedGroupMessage(groupMessageDict: timedGroupMessageDict, backupFileInfo: backupFileInfo, accountInfo: account, contactInfo: group, orderId: orderId, backupMode: mode, in: localContext)
-                                orderId += 1
+                              } catch {
+                                DPAGLog("Could not recover group Message, groupId = \(group.guid), message = \(timedGroupMessageDict), orderId = \(orderId)")
+                              }
+                              orderId += 1
                             }
                         }
                     }
                     continue
                 }
-                guard let group = groupRecovered else { break                }
+                guard let group = groupRecovered else { break }
                 if let groupMessageDict = jsonDict["GroupMessage"] as? [AnyHashable: Any] {
+                  do {
                     try self.recoverGroupMessage(groupMessageDict: groupMessageDict, backupFileInfo: backupFileInfo, accountInfo: account, contactInfo: group, orderId: orderId, backupMode: mode, in: localContext)
-                    orderId += 1
+                  } catch {
+                    DPAGLog("Could not recover group Message, groupId = \(group.guid), message = \(groupMessageDict), orderId = \(orderId)")
+                  }
+                  orderId += 1
                 }
                 if let timedGroupMessageDict = jsonDict["TimedGroupMessage"] as? [AnyHashable: Any] {
+                  do {
                     try self.recoverTimedGroupMessage(groupMessageDict: timedGroupMessageDict, backupFileInfo: backupFileInfo, accountInfo: account, contactInfo: group, orderId: orderId, backupMode: mode, in: localContext)
-                    orderId += 1
+                  } catch {
+                    DPAGLog("Could not recover group Message, groupId = \(group.guid), message = \(timedGroupMessageDict), orderId = \(orderId)")
+                  }
+                  orderId += 1
                 }
             }
         }
