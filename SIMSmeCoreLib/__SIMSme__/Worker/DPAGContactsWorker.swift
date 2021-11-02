@@ -229,6 +229,7 @@ class DPAGContactsWorker: NSObject, DPAGContactsWorkerProtocol {
         var retval: [String: Any] = [:]
 
         DPAGLog("splitInvitationPParam:: param = \(param)")
+        NSLog("splitInvitationPParam:: param = \(param)")
         for s in components {
             let kv = s.components(separatedBy: "=")
             if kv.count >= 2 {
@@ -243,6 +244,7 @@ class DPAGContactsWorker: NSObject, DPAGContactsWorkerProtocol {
                 }
                 if key == "s" {
                     DPAGLog("splitInvigationPParam:: key= \(key), value = \(value)")
+                    NSLog("splitInvigationPParam:: key= \(key), value = \(value)")
                     if let data = Data(base64Encoded: value) {
                         retval[key] = data
                     } else {
@@ -254,6 +256,7 @@ class DPAGContactsWorker: NSObject, DPAGContactsWorkerProtocol {
             }
         }
         if retval.count > 0 {
+          NSLog("Returning retval = \(retval)")
             return retval
         }
         return nil
@@ -261,9 +264,12 @@ class DPAGContactsWorker: NSObject, DPAGContactsWorkerProtocol {
     
     private func pParamFromInvitationComponent(param: String, fingerprint: String) -> String? {
         DPAGLog("pParamFromInvitationComponent: param = \(param), fingerprint = \(fingerprint)")
+        NSLog("pParamFromInvitationComponent: param = \(param), fingerprint = \(fingerprint)")
         if let data = Data(base64Encoded: param), let pParams = String(data: data, encoding: .utf8) {
             let sha1 = (pParams + AppConfig.qrCodeSalt).sha1()
+          NSLog("sha1 = \(sha1), fingerprint = \(fingerprint)")
             if sha1 == fingerprint {
+              NSLog("Returning \(pParams)")
                 return pParams
             }
         }
@@ -279,22 +285,22 @@ class DPAGContactsWorker: NSObject, DPAGContactsWorkerProtocol {
     
     func parseInvitationQRCode(invitationContent: String) -> [String: Any]? {
         guard invitationContent.starts(with: "https://" + AppConfig.ginloNowInvitationUrl),
-              let incomingURL = URL(string: invitationContent),
-              let components = NSURLComponents(url: incomingURL, resolvingAgainstBaseURL: true),
-              let params = components.queryItems,
-              params.count == 2 else { return nil }
+            let incomingURL = URL(string: invitationContent),
+            let components = NSURLComponents(url: incomingURL, resolvingAgainstBaseURL: true),
+            let params = components.queryItems,
+            params.count == 2 else { return nil }
         let rawP: String?
         let q: String?
         switch params[0].name {
-            case "p":
-                rawP = params[0].value
-                q = params[1].value
-            default:
-                rawP = params[1].value
-                q = params[0].value
+          case "p":
+            rawP = params[0].value
+            q = params[1].value
+          default:
+            rawP = params[1].value
+            q = params[0].value
         }
         if let rp = rawP, let qq = q {
-            return parseInvitationParams(rawP: rp, q: qq)
+          return parseInvitationParams(rawP: rp, q: qq)
         }
         return nil
     }
@@ -304,34 +310,38 @@ class DPAGContactsWorker: NSObject, DPAGContactsWorkerProtocol {
     }
     
     private func validateOldQRCode(text: String, publicKey: String) -> Bool {
-        if text.hasPrefix("V2") {
-            let components = text.components(separatedBy: .newlines)
-            if components.count == 3 {
-                if let publicKeyData = components[2].data(using: .utf8), let publicKeyDataDecoded = Data(base64Encoded: publicKeyData, options: .ignoreUnknownCharacters) {
-                    let sha256 = publicKey.sha256Data()
-                    return (sha256 == publicKeyDataDecoded)
-                }
-            }
+      if text.hasPrefix("V2") {
+        let components = text.components(separatedBy: .newlines)
+        if components.count == 3 {
+          if let publicKeyData = components[2].data(using: .utf8), let publicKeyDataDecoded = Data(base64Encoded: publicKeyData, options: .ignoreUnknownCharacters) {
+            let sha256 = publicKey.sha256Data()
+            return (sha256 == publicKeyDataDecoded)
+          }
         }
-        return false
+      }
+      return false
     }
     
     func validateScanResult(text: String, publicKey: String) -> Bool {
-        if validateOldQRCode(text: text, publicKey: publicKey) {
-            return true
-        } else if let invitationData = parseInvitationQRCode(invitationContent: text), let signature = invitationData["s"], let sigData = signature as? Data {
-            return validateSignature(signature: sigData, publicKey: publicKey)
-        }
-        return false
+      NSLog("validateScanResult:: text = \(text), publicKey = \(publicKey)")
+      if validateOldQRCode(text: text, publicKey: publicKey) {
+        return true
+      } else if let invitationData = parseInvitationQRCode(invitationContent: text), let signature = invitationData["s"], let sigData = signature as? Data {
+        return validateSignature(signature: sigData, publicKey: publicKey)
+      }
+      return false
     }
 
     func validateScanResult(text: String) -> Bool {
-        validateInvitationQRCode(text: text)
+      validateInvitationQRCode(text: text)
     }
 
     func validateSignature(signature: Data, publicKey: String) -> Bool {
         let pks = publicKey.sha256Data()
-        DPAGLog("validateSignature:: signature = \(signature), publicKey.sha256 = \(pks)")
+      let x = signature.base64EncodedString()
+      let y = pks.base64EncodedString()
+        NSLog("validateSignature:: signature = \(x), publicKey.sha256 = \(y)")
+        DPAGLog("validateSignature:: signature = \(x), publicKey.sha256 = \(y)")
         return signature == pks
     }
     
