@@ -1577,7 +1577,7 @@ class DPAGBackupWorker: DPAGBackupWorkerProtocol, DPAGClassPerforming {
           contact.backupImportChat(singleChatBackupInfo: singleChatBackupInfo)
           DPAGLog("Will try to recover single chat \(guid)")
           if let messages = singleChatBackupInfo["messages"] as? [[AnyHashable: Any]] {
-            DPAGLog("•••• Will try to recover messages single chat; 'messages' = \(messages)")
+//            DPAGLog("•••• Will try to recover messages single chat; 'messages' = \(messages)")
             for message in messages {
               if let singleMessage = message["PrivateMessage"] as? [AnyHashable: Any] {
                 do {
@@ -1701,8 +1701,9 @@ class DPAGBackupWorker: DPAGBackupWorkerProtocol, DPAGClassPerforming {
             removableGroupGuids.append(guid)
           }
           group.updateStatus(in: localContext)
+          DPAGLog("Will try to recover single chat \(group.guid)")
           if let messages = groupChatBackupInfo["messages"] as? [[AnyHashable: Any]] {
-            DPAGLog("•••• Will try to recover messages of Group; 'messages' = \(messages)")
+//            DPAGLog("•••• Will try to recover messages of Group; 'messages' = \(messages)")
             for message in messages {
               if let groupMessageDict = message["GroupMessage"] as? [AnyHashable: Any] {
                 do {
