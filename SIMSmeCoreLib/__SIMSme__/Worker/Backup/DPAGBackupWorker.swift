@@ -483,7 +483,7 @@ class DPAGBackupWorker: DPAGBackupWorkerProtocol, DPAGClassPerforming {
     if mode != .miniBackupTempDevice {
       if let messages = messagestream.messages {
         for message in messages {
-          if let messagePrivate = message as? SIMSPrivateMessage {
+          if let messagePrivate = message as? SIMSPrivateMessage, shouldIncludeMessage(dateSendServer: messagePrivate.dateSendServer, inBackupMode: mode) {
             if let backupData = try self.convertSingleMessageToBackupJson(message: messagePrivate, zip: zipFile, writeOutput: &backupString, backupMode: mode) {
               messageDicts.append(backupData)
             }
@@ -623,6 +623,17 @@ class DPAGBackupWorker: DPAGBackupWorkerProtocol, DPAGClassPerforming {
     }
   }
   
+  func shouldIncludeMessage(dateSendServer: Date?, inBackupMode mode: DPAGBackupMode) -> Bool {
+    guard mode != .fullBackup else { return true }
+
+    let messageRETENTIONDAYS = 90.0
+    if mode == .miniBackup, let dateSendServer = dateSendServer {
+      return dateSendServer.isEarlierThan(date: Date() - 60.0 * 60.0 * 24.0 * messageRETENTIONDAYS) == false
+    }
+
+    return false
+  }
+  
   func groupChatBackup(messagestream: SIMSGroupStream, zip zipFile: OZZipFile?, writeOutput backupString: inout String?, backupMode mode: DPAGBackupMode, in localContext: NSManagedObjectContext) throws {
     guard let group = messagestream.group, let groupGuid = group.guid else { return }
     var innerData: [AnyHashable: Any] = [:]
@@ -661,7 +672,7 @@ class DPAGBackupWorker: DPAGBackupWorkerProtocol, DPAGClassPerforming {
     if mode != .miniBackupTempDevice {
       if let messages = messagestream.messages {
         for message in messages {
-          if let messageGroup = message as? SIMSGroupMessage {
+          if let messageGroup = message as? SIMSGroupMessage, shouldIncludeMessage(dateSendServer: messageGroup.dateSendServer, inBackupMode: mode) {
             if let backupData = try self.convertGroupMessageToBackupJson(message: messageGroup, zip: zipFile, writeOutput: &backupString, backupMode: mode) {
               messageDicts.append(backupData)
             }
