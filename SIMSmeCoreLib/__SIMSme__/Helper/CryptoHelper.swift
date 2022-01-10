@@ -1482,7 +1482,7 @@ public class CryptoHelper: CryptoHelperExtended {
         DPAGFunctionsGlobal.synchronized(self) {
             self.decryptRsa = nil
         }
-        self.queueKeys.async(flags: .barrier) {
+        self.queueKeys.sync(flags: .barrier) {
             self.decryptedKeyCache.removeAll()
         }
     }
@@ -1592,16 +1592,6 @@ extension CryptoHelper {
             throw DPAGErrorCrypto.errSIMSKey
         }
         let keyIdent = String(format: "%@#%@", keyGuid, keyDeviceGuid)
-        // for whatever reason, at least in 3.6.1, either self or self.decrpytedKeyCache was pointing to a garbage pointer:
-        // EXC_BAD_ACCESS
-        // count > tionCompanionBundleConfiguration >
-        // Attempted to dereference garbage pointer 0x10.
-        // DISCUSSION:
-        // We need to first check whether (a)  decryptedKeyCache is empty and (b) whether it contains the object
-        // with the key "keyIdent". Only if bot checks are true, can we continue. And since this needs to be Objective-C bridged,
-        // it is a little diferent than normally. Normally, a let retVal: [AnyHashable: Any]? = self.decryptedKeyCache[keyIdent]
-        // and then check for retVal != nil would be enough. But when assigning, for whatever reason, it seems to require
-        // non-optional type
         if self.decryptedKeyCache.isEmpty == false, self.decryptedKeyCache[keyIdent] != nil, let retVal = self.decryptedKeyCache[keyIdent] {
             return retVal
         }

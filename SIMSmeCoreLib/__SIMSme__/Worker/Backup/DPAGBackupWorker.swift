@@ -1610,7 +1610,7 @@ class DPAGBackupWorker: DPAGBackupWorkerProtocol, DPAGClassPerforming {
           }
           continue
         }
-        guard let contact = contactStream else { break                }
+        guard let contact = contactStream else { break }
         if let singleMessage = jsonDict["PrivateMessage"] as? [AnyHashable: Any] {
           do {
             try self.recoverPrivateMessage(singleMessage: singleMessage, backupFileInfo: backupFileInfo, accountInfo: account, contactInfo: contact, orderId: orderId, backupMode: mode, in: localContext)
@@ -1651,7 +1651,7 @@ class DPAGBackupWorker: DPAGBackupWorkerProtocol, DPAGClassPerforming {
       for jsonDict in stream {
         if groupRecovered == nil {
           guard let groupChatBackupInfo = jsonDict["ChatRoomBackup"] as? [AnyHashable: Any] else { continue }
-          guard let guid = groupChatBackupInfo["guid"] as? String else { continue}
+          guard let guid = groupChatBackupInfo["guid"] as? String else { continue }
           guard let aesKey = groupChatBackupInfo["aes_key"] as? String, let iv = groupChatBackupInfo["iv"] as? String else { continue }
           guard let stream = (SIMSMessageStream.findFirst(byGuid: guid, in: localContext) ?? SIMSGroupStream.mr_createEntity(in: localContext)) as? SIMSGroupStream else { continue }
           guard let group = SIMSGroup.findFirst(byGuid: guid, in: localContext) ?? SIMSGroup.mr_createEntity(in: localContext) else { continue }
