@@ -1124,14 +1124,7 @@ class DPAGBackupWorker: DPAGBackupWorkerProtocol, DPAGClassPerforming {
     let buffer = try DPAGBackupFileInfo.loadZipData(zipStream: accountJsonStream)
     try accountJsonStream.finishedReadingWithError()
     let decryptedData = try CryptoHelperDecrypter.decryptFromBackup(encryptedData: buffer, withAesKey: aesKey)
-    guard let accountJson = try JSONSerialization.jsonObject(with: decryptedData, options: .allowFragments) as? [AnyHashable: Any], let _ = accountJson["AccountBackup"] as? [AnyHashable: Any] else { throw DPAGErrorBackup.errFileInvalid }
-    // Because of ginloNow, we can't have this any more:
-    //
-    // let phoneNumber = accountInnerJson["phone"] as? String
-    // let eMailAddress = accountInnerJson["email"] as? String
-    // if phoneNumber == nil, eMailAddress == nil {
-    //    throw DPAGErrorBackup.errFileInvalid
-    // }
+    guard let accountJson = try JSONSerialization.jsonObject(with: decryptedData, options: .allowFragments) as? [AnyHashable: Any], accountJson["AccountBackup"] as? [AnyHashable: Any] != nil else { throw DPAGErrorBackup.errFileInvalid }
     backupFileInfo.aesKey = aesKey
   }
   
