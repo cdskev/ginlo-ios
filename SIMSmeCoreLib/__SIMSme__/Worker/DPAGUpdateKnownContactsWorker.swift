@@ -49,31 +49,21 @@ class DPAGUpdateKnownContactsWorker: DPAGUpdateKnownContactsWorkerProtocol {
   }
   
   func handleAccountDictInternal(dictAccountInfo: [AnyHashable: Any], nickNameNew: String?, in localContext: NSManagedObjectContext) -> (contact: SIMSContactIndexEntry?, isNew: Bool) {
-    guard let accountGuid = dictAccountInfo[SIMS_GUID] as? String else {
-      return (nil, false)
-    }
-    
+    guard let accountGuid = dictAccountInfo[SIMS_GUID] as? String else { return (nil, false) }
     let phone = dictAccountInfo[SIMS_PHONE] as? String
-    
     if let contact = DPAGApplicationFacade.contactFactory.contact(accountDict: dictAccountInfo, phoneNumber: phone, in: localContext) {
       if contact.guid == accountGuid {
         if let notificationToSend = DPAGApplicationFacade.contactFactory.updateModel(contact: contact, withAccountJson: dictAccountInfo, in: localContext) {
           NotificationCenter.default.post(name: notificationToSend, object: nil, userInfo: [DPAGStrings.Notification.Contact.CHANGED__USERINFO_KEY__CONTACT_GUID: accountGuid])
         }
-        
         DPAGApplicationFacade.preferences.setProfileSynchronizationDone(forProfileGuid: accountGuid)
         contact[.UPDATED_AT] = Date()
       } else {
-        // found by phone -> contact recreated
-        
         let contactOld = contact
-        
         if let contactNew = DPAGApplicationFacade.contactFactory.newModel(accountJson: dictAccountInfo, in: localContext) {
           contactNew[.UPDATED_AT] = Date()
-          
           if let streamOld = contactOld.stream, contactOld.confidenceState.rawValue >= DPAGConfidenceState.middle.rawValue, (streamOld.messages?.count ?? 0) > 0, contactOld[.MANDANT_IDENT] == contactNew[.MANDANT_IDENT] {
             let content = String(format: DPAGLocalizedString("chat.single.alert.message.contact_recreated"), contactOld.guid ?? "???")
-            
             DPAGApplicationFacade.messageFactory.newSystemMessage(content: content, forChat: streamOld, sendDate: Date(), guid: nil, in: localContext)
           }
           if let nickName = nickNameNew {
@@ -89,43 +79,33 @@ class DPAGUpdateKnownContactsWorker: DPAGUpdateKnownContactsWorkerProtocol {
     } else {
       if let contact = DPAGApplicationFacade.contactFactory.newOrUpdateModel(withAccountJson: dictAccountInfo, in: localContext) {
         contact[.UPDATED_AT] = Date()
-        
         if let nickName = nickNameNew {
           contact[.NICKNAME] = nickName
         }
-        
         return (contact, true)
       }
     }
-    
     return (nil, false)
   }
-  
+
   func synchronize(accountGuid guid: String, response: @escaping DPAGServiceResponseBlock) {
     DPAGApplicationFacade.server.getAccountInfo(guid: guid, withProfile: true, withTempDevice: false) { responseObject, errorCode, errorMessage in
-      
       if let errorMessage = errorMessage {
         response(nil, errorCode, errorMessage)
       } else if let dict = responseObject as? [AnyHashable: Any], let dictAccountInfo = dict[DPAGStrings.JSON.Account.OBJECT_KEY] as? [AnyHashable: Any] {
         var contactGuidBlock: String?
-        
         DPAGApplicationFacade.persistance.saveWithBlock { localContext in
-          
           if let contact = DPAGApplicationFacade.contactFactory.newOrUpdateModel(withAccountJson: dictAccountInfo, in: localContext), let contactGuid = contact.guid {
             if let groupMember = SIMSGroupMember.mr_findFirst(with: NSComparisonPredicate(leftExpression: NSExpression(forKeyPath: \SIMSGroupMember.accountGuid), rightExpression: NSExpression(forConstantValue: guid)), in: localContext) {
               groupMember.accountGuid = contactGuid
             }
-            
             if contact[.IS_DELETED] { // Fix for the bug of contact being deleted locally but not on server
               contact[.IS_DELETED] = false
             }
-            
             contactGuidBlock = contactGuid
           }
         }
-        
         response(contactGuidBlock, nil, nil)
-        
         if let contactGuid = contactGuidBlock {
           DPAGSendInternalMessageWorker.sendProfileToContacts([contactGuid])
         }
@@ -205,7 +185,6 @@ class DPAGUpdateKnownContactsWorker: DPAGUpdateKnownContactsWorkerProtocol {
     var accountsMissing: [String: String] = [:]
     let stepMax = ((phoneNumbersWithContactIdentifiers.count / stepNum) + 1) * mandanten.count
     var step = 1
-    //        NSLog("updateWithAddressbookPhoneNumbers")
     for mandant in mandanten {
       var hashedPhoneNumbersToDo = Array(mandant.hashedPhoneNumbers.keys)
       var hashedPhoneNumbersCurrent = hashedPhoneNumbersToDo[0 ..< min(hashedPhoneNumbersToDo.count, stepNum)]
@@ -224,13 +203,6 @@ class DPAGUpdateKnownContactsWorker: DPAGUpdateKnownContactsWorkerProtocol {
               for accountDict in dicts {
                 guard let hash = accountDict.keys.first as? String, let accountGuid = accountDict.values.first as? String else { continue }
                 if let contactDB = SIMSContactIndexEntry.findFirst(byGuid: accountGuid, in: localContext), contactDB[.PUBLIC_KEY] != nil, contactDB[.ACCOUNT_ID] != nil {
-                  //                                    NSLog("IMDAT")
-                  //                                    NSLog("ACCOUNT::---------------------------")
-                  //                                    NSLog("       AccountID: %@", contactDB[.ACCOUNT_ID] ?? "<NONE>")
-                  //                                    NSLog("       Firstname: %@", contactDB[.FIRST_NAME] ?? "-")
-                  //                                    NSLog("       last name: %@", contactDB[.LAST_NAME] ?? "-")
-                  //                                    NSLog("       PublicKey: %@", contactDB[.PUBLIC_KEY] ?? "<NONE>")
-                  //                                    NSLog("       Phone-Nr.: %@", contactDB[.PHONE_NUMBER] ?? "-")
                   if let contactPhone = contactDB[.PHONE_NUMBER], let contactIdentifier = phoneNumbersWithContactIdentifiers[contactPhone] {
                     contactDB[.IS_DELETED] = false
                     contactDB.update(withContactIdentifier: contactIdentifier)
