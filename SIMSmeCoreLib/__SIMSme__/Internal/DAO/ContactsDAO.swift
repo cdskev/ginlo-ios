@@ -389,9 +389,6 @@ class ContactsDAO: ContactsDAOProtocol {
         }
         contactDB[.ACCOUNT_ID] = accountID
         contactDB[.PUBLIC_KEY] = publicKey
-        NSLog("•••• nickname  = \(contactDB[.NICKNAME])")
-        NSLog("•••• publicKey  = \(contactDB[.PUBLIC_KEY])")
-        NSLog("•••• is_deleted = \(contactDB[.IS_DELETED])")
         contactDB[.IS_DELETED] = false
         if let encryptedStatus = accountDict[DPAGStrings.JSON.Account.STATUS] as? String {
           contactDB[.STATUS_ENCRYPTED] = encryptedStatus
