@@ -52,7 +52,7 @@ extension DPAGContactsOptionsProtocol {
     }
     presentingVC.presentAlertController(alertController)
   }
-
+  
   func updateWithAddressbook(presentingVC: UIViewController, modelVC: DPAGContactsOptionsViewControllerProtocol) {
     switch CNContactStore.authorizationStatus(for: .contacts) {
       case .authorized:
@@ -90,9 +90,9 @@ extension DPAGContactsOptionsProtocol {
     switch authStatus {
       case .notDetermined:
         AVCaptureDevice.requestAccess(for: .video, completionHandler: { [weak self] _ in
-            DispatchQueue.main.async { [weak self] in
-                self?.scanContact(presentingVC: presentingVC, modelVC: modelVC)
-            }
+          DispatchQueue.main.async { [weak self] in
+            self?.scanContact(presentingVC: presentingVC, modelVC: modelVC)
+          }
         })
       case .authorized:
         let nextVC = DPAGApplicationFacadeUIRegistration.scanInvitationVC(blockSuccess: { [weak presentingVC, weak self] (text: String) in
@@ -120,147 +120,147 @@ extension DPAGContactsOptionsProtocol {
   }
   
   private func searchAccount(accountID: String, signature: Data?, createNewChat: Bool, presentingVC: UIViewController) {
-      DPAGProgressHUD.sharedInstance.showForBackgroundProcess(true) { _ in
-          DPAGApplicationFacade.contactsWorker.searchAccount(searchData: accountID, searchMode: .accountID) { responseObject, _, errorMessage in
-              DPAGProgressHUD.sharedInstance.hide(true) { [weak presentingVC] in
-                  if let errorMessage = errorMessage {
-                      presentingVC?.presentErrorAlert(alertConfig: UIViewController.AlertConfigError(titleIdentifier: "attention", messageIdentifier: errorMessage))
-                  } else if let guids = responseObject as? [String] {
-                      if let account = DPAGApplicationFacade.cache.account, let contactSelf = DPAGApplicationFacade.cache.contact(for: account.guid) {
-                         if let guid = guids.first, let contactCache = DPAGApplicationFacade.cache.contact(for: guid) {
-                              switch contactCache.entryTypeServer {
-                                  case .company:
-                                      let nextVC = DPAGApplicationFacadeUIContacts.contactDetailsVC(contact: contactCache)
-                                      presentingVC?.navigationController?.pushViewController(nextVC, animated: true)
-                                  case .email:
-                                      if contactCache.eMailDomain == contactSelf.eMailDomain {
-                                          let nextVC = DPAGApplicationFacadeUIContacts.contactDetailsVC(contact: contactCache)
-                                          presentingVC?.navigationController?.pushViewController(nextVC, animated: true)
-                                      } else {
-                                          let nextVC = DPAGApplicationFacadeUIContacts.contactScannedCreateVC(contact: contactCache)
-                                          if let signature = signature, let publicKey = contactCache.publicKey, DPAGApplicationFacade.contactsWorker.validateSignature(signature: signature, publicKey: publicKey) {
-                                              nextVC.confirmConfidence = true
-                                          }
-                                          nextVC.createNewChat = createNewChat
-                                          presentingVC?.navigationController?.pushViewController(nextVC, animated: true)
-                                      }
-                                  case .meMyselfAndI:
-                                      break
-                                  case .privat:
-                                      let nextVC = DPAGApplicationFacadeUIContacts.contactScannedCreateVC(contact: contactCache)
-                                      if let signature = signature, let publicKey = contactCache.publicKey, DPAGApplicationFacade.contactsWorker.validateSignature(signature: signature, publicKey: publicKey) {
-                                          nextVC.confirmConfidence = true
-                                      }
-                                      nextVC.createNewChat = createNewChat
-                                      presentingVC?.navigationController?.pushViewController(nextVC, animated: true)
-                              }
-                          } else {
-                              let nextVC = DPAGApplicationFacadeUIContacts.contactNotFoundVC(searchData: accountID, searchMode: .accountID)
-                              presentingVC?.navigationController?.pushViewController(nextVC, animated: true)
-                          }
-                      } else {
-                          let nextVC = DPAGApplicationFacadeUIContacts.contactNotFoundVC(searchData: accountID, searchMode: .accountID)
-                          presentingVC?.navigationController?.pushViewController(nextVC, animated: true)
+    DPAGProgressHUD.sharedInstance.showForBackgroundProcess(true) { _ in
+      DPAGApplicationFacade.contactsWorker.searchAccount(searchData: accountID, searchMode: .accountID) { responseObject, _, errorMessage in
+        DPAGProgressHUD.sharedInstance.hide(true) { [weak presentingVC] in
+          if let errorMessage = errorMessage {
+            presentingVC?.presentErrorAlert(alertConfig: UIViewController.AlertConfigError(titleIdentifier: "attention", messageIdentifier: errorMessage))
+          } else if let guids = responseObject as? [String] {
+            if let account = DPAGApplicationFacade.cache.account, let contactSelf = DPAGApplicationFacade.cache.contact(for: account.guid) {
+              if let guid = guids.first, let contactCache = DPAGApplicationFacade.cache.contact(for: guid) {
+                switch contactCache.entryTypeServer {
+                  case .company:
+                    let nextVC = DPAGApplicationFacadeUIContacts.contactDetailsVC(contact: contactCache)
+                    presentingVC?.navigationController?.pushViewController(nextVC, animated: true)
+                  case .email:
+                    if contactCache.eMailDomain == contactSelf.eMailDomain {
+                      let nextVC = DPAGApplicationFacadeUIContacts.contactDetailsVC(contact: contactCache)
+                      presentingVC?.navigationController?.pushViewController(nextVC, animated: true)
+                    } else {
+                      let nextVC = DPAGApplicationFacadeUIContacts.contactScannedCreateVC(contact: contactCache)
+                      if let signature = signature, let publicKey = contactCache.publicKey, DPAGApplicationFacade.contactsWorker.validateSignature(signature: signature, publicKey: publicKey) {
+                        nextVC.confirmConfidence = true
                       }
-                  }
-              }
-          }
-      }
-  }
-
-  private func handleKnownContactsSyncInfo(_ aNotification: Notification) {
-      if let syncInfoState = aNotification.userInfo?[DPAGStrings.Notification.UpdateKnownContactsWorker.SyncInfoKeyState] as? DPAGUpdateKnownContactsWorkerSyncInfoState {
-          if let step = aNotification.userInfo?[DPAGStrings.Notification.UpdateKnownContactsWorker.SyncInfoKeyProgressStep] as? Int {
-              if let stepMax = aNotification.userInfo?[DPAGStrings.Notification.UpdateKnownContactsWorker.SyncInfoKeyProgressMax] as? Int {
-                  self.progressHUDSyncInfo?.labelTitle.text = DPAGLocalizedString("updateKnownContacts.syncInfo." + syncInfoState.rawValue) + "\n \(step)/\(stepMax)"
+                      nextVC.createNewChat = createNewChat
+                      presentingVC?.navigationController?.pushViewController(nextVC, animated: true)
+                    }
+                  case .meMyselfAndI:
+                    break
+                  case .privat:
+                    let nextVC = DPAGApplicationFacadeUIContacts.contactScannedCreateVC(contact: contactCache)
+                    if let signature = signature, let publicKey = contactCache.publicKey, DPAGApplicationFacade.contactsWorker.validateSignature(signature: signature, publicKey: publicKey) {
+                      nextVC.confirmConfidence = true
+                    }
+                    nextVC.createNewChat = createNewChat
+                    presentingVC?.navigationController?.pushViewController(nextVC, animated: true)
+                }
               } else {
-                  self.progressHUDSyncInfo?.labelTitle.text = DPAGLocalizedString("updateKnownContacts.syncInfo." + syncInfoState.rawValue) + "\n \(step)"
+                let nextVC = DPAGApplicationFacadeUIContacts.contactNotFoundVC(searchData: accountID, searchMode: .accountID)
+                presentingVC?.navigationController?.pushViewController(nextVC, animated: true)
               }
-          } else {
-              self.progressHUDSyncInfo?.labelTitle.text = DPAGLocalizedString("updateKnownContacts.syncInfo." + syncInfoState.rawValue)
+            } else {
+              let nextVC = DPAGApplicationFacadeUIContacts.contactNotFoundVC(searchData: accountID, searchMode: .accountID)
+              presentingVC?.navigationController?.pushViewController(nextVC, animated: true)
+            }
           }
+        }
       }
+    }
+  }
+  
+  private func handleKnownContactsSyncInfo(_ aNotification: Notification) {
+    if let syncInfoState = aNotification.userInfo?[DPAGStrings.Notification.UpdateKnownContactsWorker.SyncInfoKeyState] as? DPAGUpdateKnownContactsWorkerSyncInfoState {
+      if let step = aNotification.userInfo?[DPAGStrings.Notification.UpdateKnownContactsWorker.SyncInfoKeyProgressStep] as? Int {
+        if let stepMax = aNotification.userInfo?[DPAGStrings.Notification.UpdateKnownContactsWorker.SyncInfoKeyProgressMax] as? Int {
+          self.progressHUDSyncInfo?.labelTitle.text = DPAGLocalizedString("updateKnownContacts.syncInfo." + syncInfoState.rawValue) + "\n \(step)/\(stepMax)"
+        } else {
+          self.progressHUDSyncInfo?.labelTitle.text = DPAGLocalizedString("updateKnownContacts.syncInfo." + syncInfoState.rawValue) + "\n \(step)"
+        }
+      } else {
+        self.progressHUDSyncInfo?.labelTitle.text = DPAGLocalizedString("updateKnownContacts.syncInfo." + syncInfoState.rawValue)
+      }
+    }
   }
 }
 
 public struct DPAGApplicationFacadeUIContacts {
-    private init() {}
-
-    static func viewContactsDomainEmptyNib() -> UINib { UINib(nibName: "DPAGContactsDomainEmpty", bundle: Bundle(for: DPAGContactsDomainEmpty.self)) }
-    static func viewContactsDomainEmpty() -> (UIView & DPAGContactsDomainEmptyViewProtocol)? { UINib(nibName: "DPAGContactsDomainEmpty", bundle: Bundle(for: DPAGContactsDomainEmpty.self)).instantiate(withOwner: nil, options: nil).first as? (UIView & DPAGContactsDomainEmptyViewProtocol) }
-    static func viewContactsSearchEmptyNib() -> UINib { UINib(nibName: "DPAGContactsSearchEmptyView", bundle: Bundle(for: DPAGContactsSearchEmptyView.self)) }
-    static func viewContactsListHeader() -> (UIView & DPAGContactsListHeaderViewProtocol)? { UINib(nibName: "DPAGContactsListHeaderView", bundle: Bundle(for: DPAGContactsListHeaderView.self)).instantiate(withOwner: nil, options: nil).first as? (UIView & DPAGContactsListHeaderViewProtocol) }
-    static func cellGroupNib() -> UINib { UINib(nibName: "DPAGGroupCell", bundle: Bundle(for: DPAGGroupCell.self)) }
-    static func cellChatNib() -> UINib { UINib(nibName: "DPAGChatCell", bundle: Bundle(for: DPAGChatCell.self)) }
-    static func cellPersonNib() -> UINib { UINib(nibName: "DPAGPersonCell", bundle: Bundle(for: DPAGPersonCell.self)) }
-    public static func personToSendSelectVC(delegateSending: DPAGPersonSendingDelegate?) -> (UIViewController) { DPAGChoosePersonToSendViewController(delegateSending: delegateSending) }
-    public static func contactDetailsVC(contact: DPAGContact, contactEdit: DPAGContactEdit? = nil) -> UIViewController & DPAGContactDetailsViewControllerProtocol { DPAGContactDetailsViewController(contact: contact, contactEdit: contactEdit) }
-    public static func contactNewCreateVC(contact: DPAGContact, contactEdit: DPAGContactEdit? = nil) -> UIViewController & DPAGContactNewCreateViewControllerProtocol { DPAGContactNewCreateViewController(contact: contact, contactEdit: contactEdit) }
-    public static func contactScannedCreateVC(contact: DPAGContact, contactEdit: DPAGContactEdit? = nil) -> UIViewController & GNContactScannedCreateViewControllerProtocol { GNContactScannedCreateViewController(contact: contact, contactEdit: contactEdit) }
-    public static func contactNewSearchVC() -> (UIViewController & DPAGContactNewSearchViewControllerProtocol) { DPAGContactNewSearchViewController() }
-    static func contactNewSelectVC(contactGuids: [String]) -> UIViewController & DPAGContactNewSelectViewControllerProtocol { DPAGContactNewSelectViewController(contactGuids: contactGuids) }
-    static func contactNotFoundVC(searchData: String, searchMode: DPAGContactSearchMode) -> (UIViewController & DPAGContactNotFoundViewControllerProtocol) { DPAGContactNotFoundViewController(searchData: searchData, searchMode: searchMode) }
-    public static func contactSelectionGroupAdminsVC(members: Set<DPAGContact>, admins: Set<DPAGContact>, adminsFixed: Set<DPAGContact>, delegate selectionDelegate: DPAGContactsSelectionGroupAdminsDelegate) -> (UIViewController) { DPAGContactsSelectionGroupAdminsViewController(members: members, admins: admins, adminsFixed: adminsFixed, delegate: selectionDelegate) }
-    public static func contactsVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionBaseViewControllerProtocol) { DPAGContactsViewController(contactsSelected: contactsSelected) }
-    public static func contactsPageVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionBaseViewControllerProtocol) { DPAGContactsPageViewController(contactsSelected: contactsSelected) }
-    public static func contactsCompanyVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionBaseViewControllerProtocol) { DPAGContactsCompanyViewController(contactsSelected: contactsSelected) }
-    public static func contactsDomainVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionBaseViewControllerProtocol) { DPAGContactsDomainViewController(contactsSelected: contactsSelected) }
-    public static func contactsCompanyPageVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionBaseViewControllerProtocol) { DPAGContactsCompanyPageViewController(contactsSelected: contactsSelected) }
-    public static func contactsDomainPageVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionBaseViewControllerProtocol) { DPAGContactsDomainPageViewController(contactsSelected: contactsSelected) }
-    public static func contactsCompanyPagesVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsPagesViewControllerProtocol) { DPAGContactsCompanyPagesViewController(contactsSelected: contactsSelected) }
-    public static func contactsDomainPagesVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsPagesViewControllerProtocol) { DPAGContactsDomainPagesViewController(contactsSelected: contactsSelected) }
-    public static func contactsCompanyDomainPagesVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsPagesViewControllerProtocol) { DPAGContactsCompanyDomainPagesViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionDistributionListMembersVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionDistributionListMembersViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionDistributionListMembersPageVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionDistributionListMembersViewControllerProtocol) { DPAGContactsSelectionDistributionListMembersPageViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionDistributionListMembersCompanyVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionDistributionListMembersViewControllerProtocol) { DPAGContactsSelectionDistributionListMembersCompanyViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionDistributionListMembersDomainVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionDistributionListMembersViewControllerProtocol) { DPAGContactsSelectionDistributionListMembersDomainViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionDistributionListMembersCompanyPageVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionDistributionListMembersViewControllerProtocol) { DPAGContactsSelectionDistributionListMembersCompanyPageViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionDistributionListMembersDomainPageVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionDistributionListMembersViewControllerProtocol) { DPAGContactsSelectionDistributionListMembersDomainPageViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionDistributionListMembersCompanyPagesVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionDistributionListMembersCompanyPagesViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionDistributionListMembersDomainPagesVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionDistributionListMembersDomainPagesViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionDistributionListMembersCompanyDomainPagesVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionDistributionListMembersCompanyDomainPagesViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionGroupMembersRemoveVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionGroupMembersRemoveViewControllerProtocol) { DPAGContactsSelectionGroupMembersRemoveViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionGroupMembersAddVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionGroupMembersAddViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionGroupMembersAddPageVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionGroupMembersAddViewControllerProtocol) { DPAGContactsSelectionGroupMembersAddPageViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionGroupMembersAddCompanyVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionGroupMembersAddViewControllerProtocol) { DPAGContactsSelectionGroupMembersAddCompanyViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionGroupMembersAddDomainVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionGroupMembersAddViewControllerProtocol) { DPAGContactsSelectionGroupMembersAddDomainViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionGroupMembersAddCompanyPageVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionGroupMembersAddViewControllerProtocol) { DPAGContactsSelectionGroupMembersAddCompanyPageViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionGroupMembersAddDomainPageVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionGroupMembersAddViewControllerProtocol) { DPAGContactsSelectionGroupMembersAddDomainPageViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionGroupMembersAddCompanyPagesVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionGroupMembersAddCompanyPagesViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionGroupMembersAddDomainPagesVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionGroupMembersAddDomainPagesViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionGroupMembersAddCompanyDomainPagesVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionGroupMembersAddCompanyDomainPagesViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionNewChatVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionNewChatViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionNewChatPageVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionNewChatBaseViewControllerProtocol) { DPAGContactsSelectionNewChatPageViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionNewChatCompanyVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionNewChatBaseViewControllerProtocol) { DPAGContactsSelectionNewChatCompanyViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionNewChatDomainVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionNewChatBaseViewControllerProtocol) { DPAGContactsSelectionNewChatDomainViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionNewChatCompanyPageVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionNewChatBaseViewControllerProtocol) { DPAGContactsSelectionNewChatCompanyPageViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionNewChatDomainPageVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionNewChatBaseViewControllerProtocol) { DPAGContactsSelectionNewChatDomainPageViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionNewChatCompanyPagesVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionNewChatCompanyPagesViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionNewChatDomainPagesVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionNewChatDomainPagesViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionNewChatCompanyDomainPagesVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionNewChatCompanyDomainPagesViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionReceiverVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionReceiverViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionReceiverPageVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionReceiverViewControllerProtocol) { DPAGContactsSelectionReceiverPageViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionReceiverCompanyVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionReceiverViewControllerProtocol) { DPAGContactsSelectionReceiverCompanyViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionReceiverDomainVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionReceiverViewControllerProtocol) { DPAGContactsSelectionReceiverDomainViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionReceiverCompanyPageVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionReceiverViewControllerProtocol) { DPAGContactsSelectionReceiverCompanyPageViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionReceiverDomainPageVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionReceiverViewControllerProtocol) { DPAGContactsSelectionReceiverDomainPageViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionReceiverCompanyPagesVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionReceiverCompanyPagesViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionReceiverDomainPagesVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionReceiverDomainPagesViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionReceiverCompanyDomainPagesVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionReceiverCompanyDomainPagesViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionSendingVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionSendingViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionSendingPageVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionSendingBaseViewControllerProtocol) { DPAGContactsSelectionSendingPageViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionSendingCompanyVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionSendingBaseViewControllerProtocol) { DPAGContactsSelectionSendingCompanyViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionSendingDomainVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionSendingBaseViewControllerProtocol) { DPAGContactsSelectionSendingDomainViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionSendingCompanyPageVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionSendingBaseViewControllerProtocol) { DPAGContactsSelectionSendingCompanyPageViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionSendingDomainPageVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionSendingBaseViewControllerProtocol) { DPAGContactsSelectionSendingDomainPageViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionSendingCompanyPagesVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionSendingCompanyPagesViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionSendingDomainPagesVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionSendingDomainPagesViewController(contactsSelected: contactsSelected) }
-    public static func contactsSelectionSendingCompanyDomainPagesVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionSendingCompanyDomainPagesViewController(contactsSelected: contactsSelected) }
-    public static func activeChatsVC() -> (UIViewController & DPAGActiveChatsListViewControllerProtocol) { DPAGActiveChatsListViewController() }
-    public static func newFileChatVC(delegate: DPAGNewChatDelegate?, fileURL: URL) -> (UIViewController & DPAGNewFileChatViewControllerProtocol) { DPAGNewFileChatViewController(delegate: delegate, fileURL: fileURL) }
-    public static func setSilentVC(setSilentHelper: SetSilentHelper?) -> (UIViewController) { DPAGSetSilentViewController(setSilentHelper: setSilentHelper) }
-    static func personSearchResultsVC(delegate: DPAGPersonsSearchViewControllerDelegate) -> UIViewController & DPAGPersonsSearchResultsViewControllerProtocol { DPAGPersonsSearchResultsViewController(delegate: delegate) }
-    static func contactsPagesSearchResultsVC(delegate: DPAGContactsSearchViewControllerDelegate, emptyViewDelegate: DPAGContactsSearchEmptyViewDelegate?) -> UIViewController & DPAGContactsSearchResultsViewControllerProtocol { DPAGContactsPagesSearchResultsViewController(delegate: delegate, emptyViewDelegate: emptyViewDelegate) }
-    static func contactsSearchResultsVC(delegate: DPAGContactsSearchViewControllerDelegate, emptyViewDelegate: DPAGContactsSearchEmptyViewDelegate?) -> UIViewController & DPAGContactsSearchResultsViewControllerProtocol { DPAGContactsSearchResultsViewController(delegate: delegate, emptyViewDelegate: emptyViewDelegate) }
-    public static func scanProfileVC(contactGuid: String, blockSuccess successBlock: @escaping DPAGCompletion, blockFailed failedBlock: @escaping DPAGCompletion, blockCancelled cancelBlock: @escaping DPAGCompletion) -> (UIViewController) { DPAGScanProfileViewController(contactGuid: contactGuid, blockSuccess: successBlock, blockFailed: failedBlock, blockCancelled: cancelBlock) }
+  private init() {}
+  
+  static func viewContactsDomainEmptyNib() -> UINib { UINib(nibName: "DPAGContactsDomainEmpty", bundle: Bundle(for: DPAGContactsDomainEmpty.self)) }
+  static func viewContactsDomainEmpty() -> (UIView & DPAGContactsDomainEmptyViewProtocol)? { UINib(nibName: "DPAGContactsDomainEmpty", bundle: Bundle(for: DPAGContactsDomainEmpty.self)).instantiate(withOwner: nil, options: nil).first as? (UIView & DPAGContactsDomainEmptyViewProtocol) }
+  static func viewContactsSearchEmptyNib() -> UINib { UINib(nibName: "DPAGContactsSearchEmptyView", bundle: Bundle(for: DPAGContactsSearchEmptyView.self)) }
+  static func viewContactsListHeader() -> (UIView & DPAGContactsListHeaderViewProtocol)? { UINib(nibName: "DPAGContactsListHeaderView", bundle: Bundle(for: DPAGContactsListHeaderView.self)).instantiate(withOwner: nil, options: nil).first as? (UIView & DPAGContactsListHeaderViewProtocol) }
+  static func cellGroupNib() -> UINib { UINib(nibName: "DPAGGroupCell", bundle: Bundle(for: DPAGGroupCell.self)) }
+  static func cellChatNib() -> UINib { UINib(nibName: "DPAGChatCell", bundle: Bundle(for: DPAGChatCell.self)) }
+  static func cellPersonNib() -> UINib { UINib(nibName: "DPAGPersonCell", bundle: Bundle(for: DPAGPersonCell.self)) }
+  public static func personToSendSelectVC(delegateSending: DPAGPersonSendingDelegate?) -> (UIViewController) { DPAGChoosePersonToSendViewController(delegateSending: delegateSending) }
+  public static func contactDetailsVC(contact: DPAGContact, contactEdit: DPAGContactEdit? = nil) -> UIViewController & DPAGContactDetailsViewControllerProtocol { DPAGContactDetailsViewController(contact: contact, contactEdit: contactEdit) }
+  public static func contactNewCreateVC(contact: DPAGContact, contactEdit: DPAGContactEdit? = nil) -> UIViewController & DPAGContactNewCreateViewControllerProtocol { DPAGContactNewCreateViewController(contact: contact, contactEdit: contactEdit) }
+  public static func contactScannedCreateVC(contact: DPAGContact, contactEdit: DPAGContactEdit? = nil) -> UIViewController & GNContactScannedCreateViewControllerProtocol { GNContactScannedCreateViewController(contact: contact, contactEdit: contactEdit) }
+  public static func contactNewSearchVC() -> (UIViewController & DPAGContactNewSearchViewControllerProtocol) { DPAGContactNewSearchViewController() }
+  static func contactNewSelectVC(contactGuids: [String]) -> UIViewController & DPAGContactNewSelectViewControllerProtocol { DPAGContactNewSelectViewController(contactGuids: contactGuids) }
+  static func contactNotFoundVC(searchData: String, searchMode: DPAGContactSearchMode) -> (UIViewController & DPAGContactNotFoundViewControllerProtocol) { DPAGContactNotFoundViewController(searchData: searchData, searchMode: searchMode) }
+  public static func contactSelectionGroupAdminsVC(members: Set<DPAGContact>, admins: Set<DPAGContact>, adminsFixed: Set<DPAGContact>, delegate selectionDelegate: DPAGContactsSelectionGroupAdminsDelegate) -> (UIViewController) { DPAGContactsSelectionGroupAdminsViewController(members: members, admins: admins, adminsFixed: adminsFixed, delegate: selectionDelegate) }
+  public static func contactsVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionBaseViewControllerProtocol) { DPAGContactsViewController(contactsSelected: contactsSelected) }
+  public static func contactsPageVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionBaseViewControllerProtocol) { DPAGContactsPageViewController(contactsSelected: contactsSelected) }
+  public static func contactsCompanyVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionBaseViewControllerProtocol) { DPAGContactsCompanyViewController(contactsSelected: contactsSelected) }
+  public static func contactsDomainVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionBaseViewControllerProtocol) { DPAGContactsDomainViewController(contactsSelected: contactsSelected) }
+  public static func contactsCompanyPageVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionBaseViewControllerProtocol) { DPAGContactsCompanyPageViewController(contactsSelected: contactsSelected) }
+  public static func contactsDomainPageVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionBaseViewControllerProtocol) { DPAGContactsDomainPageViewController(contactsSelected: contactsSelected) }
+  public static func contactsCompanyPagesVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsPagesViewControllerProtocol) { DPAGContactsCompanyPagesViewController(contactsSelected: contactsSelected) }
+  public static func contactsDomainPagesVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsPagesViewControllerProtocol) { DPAGContactsDomainPagesViewController(contactsSelected: contactsSelected) }
+  public static func contactsCompanyDomainPagesVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsPagesViewControllerProtocol) { DPAGContactsCompanyDomainPagesViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionDistributionListMembersVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionDistributionListMembersViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionDistributionListMembersPageVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionDistributionListMembersViewControllerProtocol) { DPAGContactsSelectionDistributionListMembersPageViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionDistributionListMembersCompanyVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionDistributionListMembersViewControllerProtocol) { DPAGContactsSelectionDistributionListMembersCompanyViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionDistributionListMembersDomainVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionDistributionListMembersViewControllerProtocol) { DPAGContactsSelectionDistributionListMembersDomainViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionDistributionListMembersCompanyPageVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionDistributionListMembersViewControllerProtocol) { DPAGContactsSelectionDistributionListMembersCompanyPageViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionDistributionListMembersDomainPageVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionDistributionListMembersViewControllerProtocol) { DPAGContactsSelectionDistributionListMembersDomainPageViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionDistributionListMembersCompanyPagesVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionDistributionListMembersCompanyPagesViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionDistributionListMembersDomainPagesVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionDistributionListMembersDomainPagesViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionDistributionListMembersCompanyDomainPagesVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionDistributionListMembersCompanyDomainPagesViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionGroupMembersRemoveVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionGroupMembersRemoveViewControllerProtocol) { DPAGContactsSelectionGroupMembersRemoveViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionGroupMembersAddVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionGroupMembersAddViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionGroupMembersAddPageVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionGroupMembersAddViewControllerProtocol) { DPAGContactsSelectionGroupMembersAddPageViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionGroupMembersAddCompanyVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionGroupMembersAddViewControllerProtocol) { DPAGContactsSelectionGroupMembersAddCompanyViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionGroupMembersAddDomainVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionGroupMembersAddViewControllerProtocol) { DPAGContactsSelectionGroupMembersAddDomainViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionGroupMembersAddCompanyPageVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionGroupMembersAddViewControllerProtocol) { DPAGContactsSelectionGroupMembersAddCompanyPageViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionGroupMembersAddDomainPageVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionGroupMembersAddViewControllerProtocol) { DPAGContactsSelectionGroupMembersAddDomainPageViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionGroupMembersAddCompanyPagesVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionGroupMembersAddCompanyPagesViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionGroupMembersAddDomainPagesVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionGroupMembersAddDomainPagesViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionGroupMembersAddCompanyDomainPagesVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionGroupMembersAddCompanyDomainPagesViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionNewChatVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionNewChatViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionNewChatPageVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionNewChatBaseViewControllerProtocol) { DPAGContactsSelectionNewChatPageViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionNewChatCompanyVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionNewChatBaseViewControllerProtocol) { DPAGContactsSelectionNewChatCompanyViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionNewChatDomainVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionNewChatBaseViewControllerProtocol) { DPAGContactsSelectionNewChatDomainViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionNewChatCompanyPageVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionNewChatBaseViewControllerProtocol) { DPAGContactsSelectionNewChatCompanyPageViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionNewChatDomainPageVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionNewChatBaseViewControllerProtocol) { DPAGContactsSelectionNewChatDomainPageViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionNewChatCompanyPagesVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionNewChatCompanyPagesViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionNewChatDomainPagesVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionNewChatDomainPagesViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionNewChatCompanyDomainPagesVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionNewChatCompanyDomainPagesViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionReceiverVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionReceiverViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionReceiverPageVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionReceiverViewControllerProtocol) { DPAGContactsSelectionReceiverPageViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionReceiverCompanyVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionReceiverViewControllerProtocol) { DPAGContactsSelectionReceiverCompanyViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionReceiverDomainVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionReceiverViewControllerProtocol) { DPAGContactsSelectionReceiverDomainViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionReceiverCompanyPageVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionReceiverViewControllerProtocol) { DPAGContactsSelectionReceiverCompanyPageViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionReceiverDomainPageVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionReceiverViewControllerProtocol) { DPAGContactsSelectionReceiverDomainPageViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionReceiverCompanyPagesVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionReceiverCompanyPagesViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionReceiverDomainPagesVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionReceiverDomainPagesViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionReceiverCompanyDomainPagesVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionReceiverCompanyDomainPagesViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionSendingVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionSendingViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionSendingPageVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionSendingBaseViewControllerProtocol) { DPAGContactsSelectionSendingPageViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionSendingCompanyVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionSendingBaseViewControllerProtocol) { DPAGContactsSelectionSendingCompanyViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionSendingDomainVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionSendingBaseViewControllerProtocol) { DPAGContactsSelectionSendingDomainViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionSendingCompanyPageVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionSendingBaseViewControllerProtocol) { DPAGContactsSelectionSendingCompanyPageViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionSendingDomainPageVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController & DPAGContactsSelectionSendingBaseViewControllerProtocol) { DPAGContactsSelectionSendingDomainPageViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionSendingCompanyPagesVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionSendingCompanyPagesViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionSendingDomainPagesVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionSendingDomainPagesViewController(contactsSelected: contactsSelected) }
+  public static func contactsSelectionSendingCompanyDomainPagesVC(contactsSelected: DPAGSearchListSelection<DPAGContact>) -> (UIViewController) { DPAGContactsSelectionSendingCompanyDomainPagesViewController(contactsSelected: contactsSelected) }
+  public static func activeChatsVC() -> (UIViewController & DPAGActiveChatsListViewControllerProtocol) { DPAGActiveChatsListViewController() }
+  public static func newFileChatVC(delegate: DPAGNewChatDelegate?, fileURL: URL) -> (UIViewController & DPAGNewFileChatViewControllerProtocol) { DPAGNewFileChatViewController(delegate: delegate, fileURL: fileURL) }
+  public static func setSilentVC(setSilentHelper: SetSilentHelper?) -> (UIViewController) { DPAGSetSilentViewController(setSilentHelper: setSilentHelper) }
+  static func personSearchResultsVC(delegate: DPAGPersonsSearchViewControllerDelegate) -> UIViewController & DPAGPersonsSearchResultsViewControllerProtocol { DPAGPersonsSearchResultsViewController(delegate: delegate) }
+  static func contactsPagesSearchResultsVC(delegate: DPAGContactsSearchViewControllerDelegate, emptyViewDelegate: DPAGContactsSearchEmptyViewDelegate?) -> UIViewController & DPAGContactsSearchResultsViewControllerProtocol { DPAGContactsPagesSearchResultsViewController(delegate: delegate, emptyViewDelegate: emptyViewDelegate) }
+  static func contactsSearchResultsVC(delegate: DPAGContactsSearchViewControllerDelegate, emptyViewDelegate: DPAGContactsSearchEmptyViewDelegate?) -> UIViewController & DPAGContactsSearchResultsViewControllerProtocol { DPAGContactsSearchResultsViewController(delegate: delegate, emptyViewDelegate: emptyViewDelegate) }
+  public static func scanProfileVC(contactGuid: String, blockSuccess successBlock: @escaping DPAGCompletion, blockFailed failedBlock: @escaping DPAGCompletion, blockCancelled cancelBlock: @escaping DPAGCompletion) -> (UIViewController) { DPAGScanProfileViewController(contactGuid: contactGuid, blockSuccess: successBlock, blockFailed: failedBlock, blockCancelled: cancelBlock) }
 }

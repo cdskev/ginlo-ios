@@ -34,7 +34,7 @@ public protocol DPAGAccountIDSelectorViewProtocol: AnyObject {
     func enabledPhoneOnly()
 }
 
-public protocol DPAGAccountIDSelectorViewDelegate: AnyObject, UITextFieldDelegate {
+public protocol DPAGAccountIDSelectorViewDelegate: UITextFieldDelegate {
     var labelPhoneNumberSelection: String { get }
     var labelEMailAddressSelection: String { get }
     var labelSIMSmeIDSelection: String { get }

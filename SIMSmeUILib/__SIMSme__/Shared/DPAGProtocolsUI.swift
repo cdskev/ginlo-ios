@@ -231,7 +231,7 @@ public protocol DPAGMediaDetailViewControllerProtocol: AnyObject {
     var titleShow: String? { get set }
 }
 
-public protocol DPAGMediaViewControllerProtocol: AnyObject, UISearchBarDelegate, UISearchControllerDelegate, UICollectionViewDataSource {
+public protocol DPAGMediaViewControllerProtocol: UISearchBarDelegate, UISearchControllerDelegate, UICollectionViewDataSource {
     var searchController: UISearchController? { get set }
     var searchResultsController: (UIViewController & DPAGSearchResultsViewControllerProtocol)? { get set }
 
