@@ -1124,14 +1124,7 @@ class DPAGBackupWorker: DPAGBackupWorkerProtocol, DPAGClassPerforming {
     let buffer = try DPAGBackupFileInfo.loadZipData(zipStream: accountJsonStream)
     try accountJsonStream.finishedReadingWithError()
     let decryptedData = try CryptoHelperDecrypter.decryptFromBackup(encryptedData: buffer, withAesKey: aesKey)
-    guard let accountJson = try JSONSerialization.jsonObject(with: decryptedData, options: .allowFragments) as? [AnyHashable: Any], let accountInnerJson = accountJson["AccountBackup"] as? [AnyHashable: Any] else { throw DPAGErrorBackup.errFileInvalid }
-    //        Because of ginloNow, we can't have this any more:
-    //
-    //        let phoneNumber = accountInnerJson["phone"] as? String
-    //        let eMailAddress = accountInnerJson["email"] as? String
-    //        if phoneNumber == nil, eMailAddress == nil {
-    //            throw DPAGErrorBackup.errFileInvalid
-    //        }
+    guard let accountJson = try JSONSerialization.jsonObject(with: decryptedData, options: .allowFragments) as? [AnyHashable: Any], accountJson["AccountBackup"] as? [AnyHashable: Any] != nil else { throw DPAGErrorBackup.errFileInvalid }
     backupFileInfo.aesKey = aesKey
   }
   
@@ -1610,7 +1603,7 @@ class DPAGBackupWorker: DPAGBackupWorkerProtocol, DPAGClassPerforming {
           }
           continue
         }
-        guard let contact = contactStream else { break                }
+        guard let contact = contactStream else { break }
         if let singleMessage = jsonDict["PrivateMessage"] as? [AnyHashable: Any] {
           do {
             try self.recoverPrivateMessage(singleMessage: singleMessage, backupFileInfo: backupFileInfo, accountInfo: account, contactInfo: contact, orderId: orderId, backupMode: mode, in: localContext)
@@ -1651,11 +1644,11 @@ class DPAGBackupWorker: DPAGBackupWorkerProtocol, DPAGClassPerforming {
       for jsonDict in stream {
         if groupRecovered == nil {
           guard let groupChatBackupInfo = jsonDict["ChatRoomBackup"] as? [AnyHashable: Any] else { continue }
-          guard let guid = groupChatBackupInfo["guid"] as? String else { continue}
+          guard let guid = groupChatBackupInfo["guid"] as? String else { continue }
           guard let aesKey = groupChatBackupInfo["aes_key"] as? String, let iv = groupChatBackupInfo["iv"] as? String else { continue }
           guard let stream = (SIMSMessageStream.findFirst(byGuid: guid, in: localContext) ?? SIMSGroupStream.mr_createEntity(in: localContext)) as? SIMSGroupStream else { continue }
           guard let group = SIMSGroup.findFirst(byGuid: guid, in: localContext) ?? SIMSGroup.mr_createEntity(in: localContext) else { continue }
-          DPAGLog("Will try to recover group \(group.guid)")
+          DPAGLog("Will try to recover group \(String(describing: group.guid))")
           groupRecovered = group
           let lastMessageDate = groupChatBackupInfo["lastModifiedDate"] as? String
           let owner = groupChatBackupInfo["owner"] as? String
@@ -1712,7 +1705,7 @@ class DPAGBackupWorker: DPAGBackupWorkerProtocol, DPAGClassPerforming {
             removableGroupGuids.append(guid)
           }
           group.updateStatus(in: localContext)
-          DPAGLog("Will try to recover single chat \(group.guid)")
+          DPAGLog("Will try to recover single chat \(String(describing: group.guid))")
           if let messages = groupChatBackupInfo["messages"] as? [[AnyHashable: Any]] {
 //            DPAGLog("•••• Will try to recover messages of Group; 'messages' = \(messages)")
             for message in messages {

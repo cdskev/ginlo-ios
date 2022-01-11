@@ -805,7 +805,7 @@ class ReceiveMessageDAO: ReceiveMessageDAOProtocol, DPAGClassPerforming {
 
     func filterChannelsForUnsubscribe(channelGuids: Set<String>) -> ReceiveMessageDAOChannelUnsubscribeFilterResult {
         var channelsToUnsubscribe: Set<String> = Set()
-        var servicesToUnsubscribe: Set<String> = Set()
+        let servicesToUnsubscribe: Set<String> = Set()
         DPAGApplicationFacade.persistance.loadWithBlock { localContext in
             for channelGuid in channelGuids {
                 if let channel = SIMSChannel.findFirst(byGuid: channelGuid, in: localContext), channel.stream == nil, (channel.subscribed?.boolValue ?? false) == false {

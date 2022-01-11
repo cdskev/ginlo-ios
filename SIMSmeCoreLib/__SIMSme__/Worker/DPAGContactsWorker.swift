@@ -633,7 +633,6 @@ class DPAGContactsWorker: NSObject, DPAGContactsWorkerProtocol {
         return
       } else if let responseArray = responseObject as? [[AnyHashable: Any]], responseArray.count > 0, let account = DPAGApplicationFacade.cache.account, let contactSelf = DPAGApplicationFacade.cache.contact(for: account.guid) {
         contacts = self?.contactDAO.saveContactsFromServer(responseArray: responseArray, searchMode: searchMode, searchData: searchData, contactSelf: contactSelf) ?? contacts
-        
         responseBlock(contacts, errorCode, errorMessage)
         return
       }

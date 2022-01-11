@@ -7,20 +7,20 @@ import Contacts
 import CoreData
 
 public protocol DPAGUpdateKnownContactsWorkerProtocol: AnyObject {
-    func handleAccountDict(dictAccountInfo: [AnyHashable: Any], nickNameNew: String?, in localContext: NSManagedObjectContext)
-
-    func getAccountInfo(accountGuid guid: String, withProfile profile: Bool, withTempDevice tempDevice: Bool, response: @escaping DPAGServiceResponseBlock)
-
-    func getTempDeviceInfo(accountGuid guid: String, withTempDevice device: String, response: @escaping DPAGServiceResponseBlock)
-
-    func synchronize(accountGuid guid: String, response: @escaping DPAGServiceResponseBlock)
-    func synchronize(accountGuids guids: [String], response: @escaping DPAGServiceResponseBlock)
-
-    func synchronizeContacts()
-
-    func updateWithAddressbook()
-
-    func initMandanten(withResponse responseBlock: @escaping DPAGServiceResponseBlock)
+  func handleAccountDict(dictAccountInfo: [AnyHashable: Any], nickNameNew: String?, in localContext: NSManagedObjectContext)
+  
+  func getAccountInfo(accountGuid guid: String, withProfile profile: Bool, withTempDevice tempDevice: Bool, response: @escaping DPAGServiceResponseBlock)
+  
+  func getTempDeviceInfo(accountGuid guid: String, withTempDevice device: String, response: @escaping DPAGServiceResponseBlock)
+  
+  func synchronize(accountGuid guid: String, response: @escaping DPAGServiceResponseBlock)
+  func synchronize(accountGuids guids: [String], response: @escaping DPAGServiceResponseBlock)
+  
+  func synchronizeContacts()
+  
+  func updateWithAddressbook()
+  
+  func initMandanten(withResponse responseBlock: @escaping DPAGServiceResponseBlock)
 }
 
 class DPAGUpdateKnownContactsWorker: DPAGUpdateKnownContactsWorkerProtocol {
