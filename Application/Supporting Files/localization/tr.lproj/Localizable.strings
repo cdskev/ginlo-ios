@@ -10,7 +10,7 @@
 "alert.contactSearch.noneFound.messageDescription.phoneNumber.fromWelcomePage" = "It may be that this user has changed their phone number. The invitation is still valid, but the user cannot be added to your contacts.";
 "alert.contactSearch.noneFound.messageDescription.emailAddress.fromWelcomePage" = "It may be that the user has changed their email-address. The invitation is still valid but the user cannot be added to your contacts.";
 "alert.welcome.updateLocalContacts.buttonCancel" = "Hayır";
-"alert.welcome.updateLocalContacts.buttonOK" = "Evet";
+"alert.welcome.updateLocalContacts.buttonOK" = "Devam";
 "alert.welcome.updateLocalContacts.message" = "Want to find out who among your contacts is on ginlo, too?";
 "alert.welcome.invitationbased-creation.message" = "Great! You have an invitation. Let's create your ginlo account.";
 "alert.welcome.invitationbased-creation.buttonCancel" = "Cancel";
