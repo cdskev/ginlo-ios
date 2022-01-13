@@ -627,6 +627,7 @@
 "registration.button.pickFromAlbum" = "Bild auswählen";
 "registration.button.pickFromCamera" = "Foto aufnehmen";
 "registration.buttonNextLabel.createAccount" = "Zustimmen & Fortfahren";
+"registration.buttonNextLabel.skipContactInfo" = "Überspringen";
 "registration.buttonNextLabel.forgotPassword" = "Zurücksetzen";
 "registration.buttonNextLabel.initialPassword" = "Passwort festlegen";
 "registration.buttonNextLabel.repeatPassword" = "Passwort bestätigen";
@@ -678,7 +679,8 @@
 "registration.labelTitle.forgotPassword" = "Haben Sie Ihr Passwort vergessen?";
 "registration.registerAccount.timer" = "Warte auf Code";
 "registration.request_account.create_confirm.continue" = "Sieht gut aus";
-"registration.request_account.create_confirm.back" = "Ändern";
+"registration.request_account.create_confirm.continue_without_contact" = "Ja";
+"registration.request_account.create_confirm.back" = "Zurück";
 "registration.request_account.create_confirm.message" = "Ihre Handynummer lautet: ";
 "registration.request_account.create_confirm.title" = "Alles richtig so?";
 "registration.subline.accountID_empty" = "Bitte geben Sie Ihre ginlo ID ein.";
@@ -1075,6 +1077,7 @@
 "registration.label.labelHeadline.emailAddress" = "Ihre E-Mail-Adresse";
 "registration.label.emailAddressInput" = "Ihre E-Mail-Adresse";
 "registration.request_account.create_confirm.message_emailaddress" = "Ihre E-Mail-Adresse lautet: ";
+"registration.request_account.create_confirm.message_no_contact" = "Sind Sie sicher, dass Sie ein Konto ohne Kontakt-Information anlegen möchten?";
 "registration.textView.confirmationTextView.emailAddress" = "Bitte geben Sie den Bestätigungscode ein, den wir an %@ geschickt haben.";
 "settings.notification.channelChat.newMessageTune" = "Ton abspielen";
 "settings.notification.channelChat.notifications" = "Benachrichtigungen anzeigen";
