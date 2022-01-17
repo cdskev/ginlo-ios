@@ -328,14 +328,15 @@ class DPAGChatStreamInputBaseViewController: UIViewController, DPAGChatStreamInp
       var memojiToSend: [Data] = []
       var textToSend: String?
       if let attributedTextToSend = self.textView?.internalTextView?.attributedText {
-        attributedTextToSend.enumerateAttribute(NSAttributedString.Key.attachment, in: NSRange(location: 0, length: attributedTextToSend.length), options: [], using: {(value,range,_) -> Void in
-          if (value is NSTextAttachment) {
+        attributedTextToSend.enumerateAttribute(NSAttributedString.Key.attachment, in: NSRange(location: 0, length: attributedTextToSend.length), options: [], using: {(value, range, _) -> Void in
+          if value is NSTextAttachment {
             let attachment: NSTextAttachment? = (value as? NSTextAttachment)
             var image: UIImage?
             
-            if ((attachment?.image) != nil) {
+            if (attachment?.image) != nil {
               image = attachment?.image
             } else {
+              // swiftlint:disable force_unwrapping
               image = attachment?.image(forBounds: (attachment?.bounds)!, textContainer: nil, characterIndex: range.location)
             }
             

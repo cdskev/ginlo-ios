@@ -31,10 +31,10 @@
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="u6l-OI-4Kl">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="768"/>
                             <subviews>
-                                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bsP-jY-wqQ">
+                                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bsP-jY-wqQ">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="678"/>
                                     <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="7fq-l1-fVl">
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="7fq-l1-fVl">
                                             <rect key="frame" x="16" y="16" width="343" height="319"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cMA-y2-eMY">
@@ -42,24 +42,27 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CPM-XE-stS" customClass="DPAGAccountIDSelectorView" customModule="SIMSmeUILib" customModuleProvider="target">
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CPM-XE-stS" customClass="DPAGAccountIDSelectorView" customModule="SIMSmeUILib" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="35.333333333333329" width="343" height="202.33333333333337"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="showAccountID" value="NO"/>
                                                     </userDefinedRuntimeAttributes>
                                                 </view>
-                                                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zHH-ma-Jz1">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zHH-ma-Jz1">
                                                     <rect key="frame" x="0.0" y="252.66666666666669" width="343" height="31"/>
                                                     <state key="normal" title="Button"/>
                                                     <buttonConfiguration key="configuration" style="plain" title="Skip"/>
                                                 </button>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KCW-MT-T5j" customClass="DPAGChatLabel" customModule="SIMSmeUILib" customModuleProvider="target">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KCW-MT-T5j" customClass="DPAGChatLabel" customModule="SIMSmeUILib" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="298.66666666666669" width="343" height="20.333333333333314"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="319" id="Z6h-HU-MMW"/>
+                                            </constraints>
                                         </stackView>
                                     </subviews>
                                     <constraints>
@@ -70,11 +73,14 @@
                                         <constraint firstItem="7fq-l1-fVl" firstAttribute="top" secondItem="bsP-jY-wqQ" secondAttribute="top" constant="16" id="Khm-f2-E6s"/>
                                     </constraints>
                                 </scrollView>
-                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BY3-Ol-UZ0" customClass="DPAGButtonPrimaryView" customModule="SIMSmeUILib" customModuleProvider="target">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BY3-Ol-UZ0" customClass="DPAGButtonPrimaryView" customModule="SIMSmeUILib" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="678" width="375" height="90"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
                             </subviews>
+                            <constraints>
+                                <constraint firstAttribute="bottom" secondItem="bsP-jY-wqQ" secondAttribute="bottom" constant="90" id="bb1-Fj-e7g"/>
+                            </constraints>
                         </stackView>
                     </subviews>
                     <constraints>

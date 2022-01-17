@@ -134,11 +134,13 @@ class DPAGChatsListViewController: DPAGTableViewControllerWithSearch, DPAGProgre
 
     @objc
     private func menuShowChatstream(_ aNotification: Notification) {
+      self.performBlockOnMainThread {
         if let streamGuid = aNotification.userInfo?[DPAGStrings.Notification.Menu.MENU_SHOW_CHATSTREAM__USERINFO_KEY__STREAM_GUID] as? String {
             DPAGChatHelper.openChatStreamView(streamGuid, navigationController: DPAGApplicationFacadeUIBase.containerVC.secondaryNavigationController, startChatWithUnconfirmedContact: aNotification.userInfo?[DPAGStrings.Notification.Menu.MENU_SHOW_CHATSTREAM__USERINFO_KEY__WITH_UNCONFIRMED_CONTACT] != nil, completion: { _ in
                 DPAGProgressHUD.sharedInstance.hide(true)
             })
         }
+      }
     }
 
     @objc

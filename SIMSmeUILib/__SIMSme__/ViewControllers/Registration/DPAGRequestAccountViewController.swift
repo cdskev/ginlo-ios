@@ -113,44 +113,112 @@ class DPAGRequestAccountViewController: DPAGViewControllerWithKeyboard, DPAGRequ
   
   private func handleAnonymousServiceSuccess(_ responseArr: [Any]) {
     DPAGApplicationFacade.preferences.isInAppNotificationEnabled = false
-    // This part cannot happen if the account is created anonymously, but we need to
-    // know whether the user would like to restore a backup...
-    // ANONYMOUS:
-    if responseArr.count > 1 {
-      DPAGApplicationFacade.preferences.setBootstrappingCheckbackup(true)
-      DPAGApplicationFacade.preferences.bootstrappingOverrideAccount = true
-      var skipOverwriteWarning = true
-      var availableAccountID: [String] = []
-      responseArr.forEach { accountObj in
-        if let account = accountObj as? [String: Any], let accountDict = account["Account"] as? [String: String] {
-          let guid = accountDict["guid"]
-          let mandant = accountDict["mandant"]
-          let accountID = accountDict["accountID"]
-          if guid != self.accountGuid, let accountID = accountID {
-            availableAccountID.append(accountID)
-            if mandant == DPAGApplicationFacade.preferences.mandantIdent {
-              skipOverwriteWarning = false
-              DPAGApplicationFacade.preferences.bootstrappingOldAccountID = accountID
+    DPAGApplicationFacade.preferences.setBootstrappingCheckbackup(true)
+    DPAGApplicationFacade.preferences.bootstrappingOverrideAccount = true
+    DPAGApplicationFacade.preferences.bootstrappingAvailableAccountID = []
+    DPAGApplicationFacade.preferences.bootstrappingSkipWarningOverrideAccount = true
+    if let dictionary = responseArr[0] as? [AnyHashable: Any], let dictAccount = dictionary[DPAGStrings.JSON.Account.OBJECT_KEY] as? [AnyHashable: Any], let accountID = dictAccount[DPAGStrings.JSON.Account.ACCOUNT_ID] as? String {
+      DPAGApplicationFacade.preferences.bootstrappingOldAccountID = accountID
+      DPAGApplicationFacade.preferences.bootstrappingConfirmationCode = "ANONYMOUS"
+      self.handleServiceSuccessSearchBackup()
+    }
+  }
+  
+  private var iCloudQuery: NSMetadataQuery?
+  
+  private func handleServiceSuccessSearchBackup() {
+    DPAGProgressHUD.sharedInstance.hide(true) { [weak self] in
+      if ((try? DPAGApplicationFacade.backupWorker.isICloudEnabled()) ?? false) == false {
+        self?.didFinishGatheringMetadata()
+        return
+      }
+      AppConfig.setIdleTimerDisabled(true)
+      DPAGProgressHUDWithProgress.sharedInstanceProgress.showForBackgroundProcess(true, completion: { [weak self] _ in
+        self?.performBlockOnMainThread { [weak self] in
+          self?.setNeedsStatusBarAppearanceUpdate()
+        }
+        guard let strongSelf = self else { return }
+        strongSelf.iCloudQuery = NSMetadataQuery()
+        strongSelf.iCloudQuery?.operationQueue = OperationQueue.main
+        strongSelf.iCloudQuery?.searchScopes = [NSMetadataQueryUbiquitousDataScope]
+        strongSelf.iCloudQuery?.sortDescriptors = [NSSortDescriptor(key: NSMetadataItemDisplayNameKey, ascending: true)]
+        NotificationCenter.default.addObserver(strongSelf, selector: #selector(strongSelf.didFinishGatheringMetadata), name: NSNotification.Name.NSMetadataQueryDidFinishGathering, object: nil)
+        NotificationCenter.default.addObserver(strongSelf, selector: #selector(strongSelf.didFinishGatheringMetadata), name: NSNotification.Name.NSMetadataQueryDidUpdate, object: nil)
+        strongSelf.iCloudQuery?.start()
+      }, delegate: self)
+    }
+  }
+  
+  @objc
+  private func didFinishGatheringMetadata() {
+    var backupItems: [DPAGBackupFileInfo] = []
+    if let iCloudQuery = self.iCloudQuery {
+      iCloudQuery.disableUpdates()
+      if DPAGHelperEx.isNetworkReachable() {
+        do {
+          backupItems = try DPAGApplicationFacade.backupWorker.listBackups(accountIDs: DPAGApplicationFacade.preferences.bootstrappingAvailableAccountID ?? [], orPhone: nil, queryResults: iCloudQuery.results, checkContent: false)
+          var hasWork = false
+          for itemToDownload in backupItems {
+            if itemToDownload.isDownloading {
+              hasWork = true
+              continue
+            }
+            if itemToDownload.downloadingStatus == NSMetadataUbiquitousItemDownloadingStatusNotDownloaded || itemToDownload.downloadingStatus == NSMetadataUbiquitousItemDownloadingStatusDownloaded, let filePath = itemToDownload.filePath {
+              try? FileManager.default.startDownloadingUbiquitousItem(at: filePath)
+              hasWork = true
+              continue
             }
           }
+          if hasWork {
+            iCloudQuery.enableUpdates()
+            return
+          }
+        } catch {
+          iCloudQuery.enableUpdates()
+          AppConfig.setIdleTimerDisabled(false)
+          DPAGProgressHUDWithProgress.sharedInstanceProgress.hide(true, completion: { [weak self] in
+            self?.setNeedsStatusBarAppearanceUpdate()
+            self?.showErrorAlertCheck(alertConfig: AlertConfigError(messageIdentifier: error.localizedDescription))
+          })
+          return
         }
       }
-      DPAGApplicationFacade.preferences.bootstrappingAvailableAccountID = availableAccountID
-      DPAGApplicationFacade.preferences.bootstrappingSkipWarningOverrideAccount = skipOverwriteWarning
-    }
-    // END
-    if let dictionary = responseArr[0] as? [AnyHashable: Any], let dictAccount = dictionary[DPAGStrings.JSON.Account.OBJECT_KEY] as? [AnyHashable: Any], let accountID = dictAccount[DPAGStrings.JSON.Account.ACCOUNT_ID] as? String {
-      DPAGApplicationFacade.accountManager.autoConfirmAccount(accountID: accountID)
-      DPAGApplicationFacade.model.update(with: nil)
-      DPAGProgressHUD.sharedInstance.hide(true) { [weak self] in
-        if let strongSelf = self {
-          if strongSelf.enabledPassword == false {
-            DPAGApplicationFacade.preferences.passwordOnStartEnabled = false
+      do {
+        backupItems = try DPAGApplicationFacade.backupWorker.listBackups(accountIDs: DPAGApplicationFacade.preferences.bootstrappingAvailableAccountID ?? [], orPhone: nil, queryResults: iCloudQuery.results, checkContent: true).sorted(by: { (fi1, fi2) -> Bool in
+          if let d1 = fi1.backupDate {
+            if let d2 = fi2.backupDate {
+              return d1 > d2
+            }
+            return true
           }
-          guard let account = DPAGApplicationFacade.cache.account, let contact = DPAGApplicationFacade.cache.contact(for: account.guid), let accountID = contact.accountID else { return }
-          let vc = DPAGApplicationFacadeUIRegistration.welcomeVC(account: account.guid, accountID: accountID, phoneNumber: contact.phoneNumber, emailAddress: contact.eMailAddress, emailDomain: contact.eMailDomain, checkUsage: false)
-          strongSelf.navigationController?.pushViewController(vc, animated: true)
-        }
+          return false
+        })
+      } catch {
+        iCloudQuery.enableUpdates()
+        AppConfig.setIdleTimerDisabled(false)
+        DPAGProgressHUDWithProgress.sharedInstanceProgress.hide(true, completion: { [weak self] in
+          self?.setNeedsStatusBarAppearanceUpdate()
+          self?.showErrorAlertCheck(alertConfig: AlertConfigError(messageIdentifier: error.localizedDescription))
+        })
+        return
+      }
+    }
+    self.iCloudQuery?.stop()
+    AppConfig.setIdleTimerDisabled(false)
+    DPAGApplicationFacade.preferences.shouldInviteFriendsAfterInstall = true
+    DPAGApplicationFacade.preferences.shouldInviteFriendsAfterChatPrivateCreation = true
+    DPAGApplicationFacade.preferences.migrationVersion = .versionCurrent
+    DPAGApplicationFacade.preferences.createSimsmeRecoveryInfos()
+    let oldAccountId = DPAGApplicationFacade.preferences.bootstrappingOldAccountID
+    DPAGProgressHUDWithProgress.sharedInstanceProgress.hide(true) { [weak self] in
+      guard let strongSelf = self else { return }
+      strongSelf.setNeedsStatusBarAppearanceUpdate()
+      if backupItems.isEmpty == false {
+        let vc = DPAGApplicationFacadeUIRegistration.backupRecoverVC(oldAccountID: oldAccountId, backupEntries: backupItems)
+        strongSelf.navigationController?.pushViewController(vc, animated: false)
+      } else {
+        let vc = DPAGApplicationFacadeUIRegistration.backupNotFoundVC(oldAccountID: oldAccountId)
+        strongSelf.navigationController?.pushViewController(vc, animated: false)
       }
     }
   }
@@ -543,5 +611,15 @@ extension DPAGRequestAccountViewController: UITextFieldDelegate {
   
   func textFieldDidBeginEditing(_ textField: UITextField) {
     self.textFieldActive = textField
+  }
+}
+
+extension DPAGRequestAccountViewController: DPAGProgressHUDDelegate {
+  func setupHUD(_ hud: DPAGProgressHUDProtocol) {
+    if let hudWithLabels = hud as? DPAGProgressHUDWithProgressProtocol {
+      hudWithLabels.labelTitle.text = DPAGLocalizedString("backup.recover.connect")
+      hudWithLabels.labelDescription.text = ""
+      hudWithLabels.viewProgress.progress = 0
+    }
   }
 }
