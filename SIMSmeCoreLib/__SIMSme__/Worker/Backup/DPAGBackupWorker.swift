@@ -1147,6 +1147,8 @@ class DPAGBackupWorker: DPAGBackupWorkerProtocol, DPAGClassPerforming {
       let backupName = String(format: "SIMSme-%@", accountID)
       validFolderNames.append(backupName)
     }
+    // Anonymous registration cannot find any existing accountID or phone-number
+    validFolderNames.append("SIMSme-")
     var results: [DPAGBackupFileInfo] = []
     for result in queryResults where result is NSMetadataItem {
       if let aResult = result as? NSMetadataItem {
