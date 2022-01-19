@@ -68,6 +68,7 @@ class DPAGChatStreamInputBaseViewController: UIViewController, DPAGChatStreamInp
       self.textView?.internalTextView?.backgroundColor = DPAGColorProvider.shared[.defaultViewBackground]
       self.textView?.internalTextView?.layer.borderColor = DPAGColorProvider.shared[.textFieldBackground].cgColor
       self.textView?.internalTextView?.allowsEditingTextAttributes = true
+      self.textView?.internalTextView?.font = UIFont.kFontCallout
       if AppConfig.isShareExtension {
         let preferences = DPAGApplicationFacadeShareExt.preferences
         if preferences.isWhiteLabelBuild {
@@ -320,6 +321,8 @@ class DPAGChatStreamInputBaseViewController: UIViewController, DPAGChatStreamInp
     self.viewCitationContent?.alpha = 0
     self.viewCitationContent?.superview?.layoutIfNeeded()
     self.textView?.text = ""
+    self.textView?.font = UIFont.kFontCallout
+    self.textView?.internalTextView?.font = UIFont.kFontCallout
   }
   
   // MEMOJI: Retrieve the image here and send it as attachment
