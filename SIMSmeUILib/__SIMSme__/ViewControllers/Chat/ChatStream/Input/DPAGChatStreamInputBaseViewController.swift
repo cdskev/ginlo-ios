@@ -792,6 +792,11 @@ extension DPAGChatStreamInputBaseViewController: HPGrowingTextViewDelegate {
   func growingTextViewDidChange(_: HPGrowingTextView?) {
     self.updateButtonStates()
     self.inputDelegate?.inputContainerTextViewDidChange()
+    self.textView?.internalTextView.typingAttributes = [
+      NSAttributedString.Key.font: UIFont.kFontCallout,
+      NSAttributedString.Key.foregroundColor: DPAGColorProvider.shared[.textFieldText],
+      NSAttributedString.Key.backgroundColor: DPAGColorProvider.shared[.defaultViewBackground],
+    ]
   }
 }
 
