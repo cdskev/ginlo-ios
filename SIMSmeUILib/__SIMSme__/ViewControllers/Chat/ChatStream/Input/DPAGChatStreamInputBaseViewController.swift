@@ -58,6 +58,11 @@ class DPAGChatStreamInputBaseViewController: UIViewController, DPAGChatStreamInp
       self.textView?.returnKeyType = .default
       self.textView?.font = UIFont.kFontCallout
       self.textView?.delegate = self
+      self.textView?.internalTextView.typingAttributes = [
+        NSAttributedString.Key.font: UIFont.kFontCallout,
+        NSAttributedString.Key.foregroundColor: DPAGColorProvider.shared[.textFieldText],
+        NSAttributedString.Key.backgroundColor: DPAGColorProvider.shared[.defaultViewBackground],
+      ]
       self.textView?.internalTextView.scrollIndicatorInsets = UIEdgeInsets(top: 11, left: 0, bottom: 11, right: 0)
       self.textView?.internalTextView.textContainerInset = UIEdgeInsets(top: 11, left: 5, bottom: 11, right: 5)
       self.textView?.internalTextView.textContainer.lineFragmentPadding = 0
@@ -66,6 +71,7 @@ class DPAGChatStreamInputBaseViewController: UIViewController, DPAGChatStreamInp
       self.textView?.internalTextView?.layer.borderWidth = 1.0
       self.textView?.internalTextView?.layer.cornerRadius = 8
       self.textView?.internalTextView?.backgroundColor = DPAGColorProvider.shared[.defaultViewBackground]
+      self.textView?.internalTextView?.textColor = DPAGColorProvider.shared[.textFieldText]
       self.textView?.internalTextView?.layer.borderColor = DPAGColorProvider.shared[.textFieldBackground].cgColor
       self.textView?.internalTextView?.allowsEditingTextAttributes = true
       self.textView?.internalTextView?.font = UIFont.kFontCallout
@@ -151,9 +157,14 @@ class DPAGChatStreamInputBaseViewController: UIViewController, DPAGChatStreamInp
     self.inputTextContainer.backgroundColor = DPAGColorProvider.shared[.defaultViewBackground]
     self.inputTextContainer.tintColor = DPAGColorProvider.shared[.messageSendOptionsTint]
     self.viewSafeArea.backgroundColor = DPAGColorProvider.shared[.defaultViewBackground]
-    self.textView?.internalTextView?.textColor = DPAGColorProvider.shared[.textFieldText]
-    self.textView?.internalTextView?.backgroundColor = DPAGColorProvider.shared[.defaultViewBackground]
+    self.textView?.internalTextView.typingAttributes = [
+      NSAttributedString.Key.font: UIFont.kFontCallout,
+      NSAttributedString.Key.foregroundColor: DPAGColorProvider.shared[.textFieldText],
+      NSAttributedString.Key.backgroundColor: DPAGColorProvider.shared[.defaultViewBackground],
+    ]
     self.textView?.internalTextView?.layer.borderColor = DPAGColorProvider.shared[.textFieldBackground].cgColor
+    self.textView?.internalTextView?.backgroundColor = DPAGColorProvider.shared[.defaultViewBackground]
+    self.textView?.internalTextView?.textColor = DPAGColorProvider.shared[.textFieldText]
     self.btnSend.tintColor = DPAGColorProvider.shared[.buttonBackground]
     self.btnSend.backgroundColor = DPAGColorProvider.shared[.buttonTint]
     self.btnAdd?.setImage(DPAGImageProvider.shared[.kImageChatAttachment]?.imageWithTintColor(DPAGColorProvider.shared[.labelText]), for: .normal)
@@ -175,6 +186,11 @@ class DPAGChatStreamInputBaseViewController: UIViewController, DPAGChatStreamInp
   func configureGui() {
     self.handleDesignColorsUpdated()
     self.textView?.placeholder = self.inputDelegate?.inputContainerTextPlaceholder() ?? DPAGLocalizedString("chat.text.placeHolder")
+    self.textView?.internalTextView.attributedText = NSAttributedString(string: "", attributes: [
+      NSAttributedString.Key.font: UIFont.kFontCallout,
+      NSAttributedString.Key.foregroundColor: DPAGColorProvider.shared[.textFieldText],
+      NSAttributedString.Key.backgroundColor: DPAGColorProvider.shared[.defaultViewBackground],
+    ])
     self.textView?.internalTextView?.allowsEditingTextAttributes = true
   }
   
@@ -392,6 +408,7 @@ class DPAGChatStreamInputBaseViewController: UIViewController, DPAGChatStreamInp
     if self.sendOptionsVisible || (self.viewCitationContent?.isHidden ?? true) == false {
       self.updateSendOptionsContainerView(animated: true)
     }
+    handleDesignColorsUpdated()
   }
   
   func updateInputState(_ inputDisabled: Bool, animated: Bool) {

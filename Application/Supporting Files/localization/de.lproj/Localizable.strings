@@ -11,7 +11,7 @@
 "alert.contactSearch.noneFound.messageDescription.emailAddress.fromWelcomePage" = "It may be that the user has changed their email-address. The invitation is still valid but the user cannot be added to your contacts.";
 "alert.welcome.updateLocalContacts.buttonCancel" = "Nein";
 "alert.welcome.updateLocalContacts.buttonOK" = "Weiter";
-"alert.welcome.updateLocalContacts.message" = "Wollen Sie mal schauen, wer von Ihren Kontakten auch bei ginlo ist?";
+"alert.welcome.updateLocalContacts.message" = "Schauen wir mal wer von Ihren Kontakten auch bei ginlo ist. Dazu benötigt ginlo Zugriff auf Ihre Kontakte.";
 "alert.welcome.invitationbased-creation.message" = "Willkommen! Mit der Einladung können Sie den Account automatisch anlegen.";
 "alert.welcome.invitationbased-creation.buttonCancel" = "Abrechen";
 "alert.welcome.invitationbased-creation.buttonOk" = "Anlegen";

@@ -216,9 +216,30 @@ class DPAGRequestAccountViewController: DPAGViewControllerWithKeyboard, DPAGRequ
       if backupItems.isEmpty == false {
         let vc = DPAGApplicationFacadeUIRegistration.backupRecoverVC(oldAccountID: oldAccountId, backupEntries: backupItems)
         strongSelf.navigationController?.pushViewController(vc, animated: false)
+      } else if let accountID = oldAccountId, DPAGApplicationFacade.preferences.bootstrappingConfirmationCode == "ANONYMOUS" {
+        strongSelf.completeRegistrationWithoutBackup(accountID: accountID)
       } else {
         let vc = DPAGApplicationFacadeUIRegistration.backupNotFoundVC(oldAccountID: oldAccountId)
         strongSelf.navigationController?.pushViewController(vc, animated: false)
+      }
+    }
+  }
+  
+  private func completeRegistrationWithoutBackup(accountID: String) {
+    DPAGApplicationFacade.accountManager.autoConfirmAccount(accountID: accountID)
+    DPAGApplicationFacade.model.update(with: nil)
+    DPAGProgressHUD.sharedInstance.hide(true) { [weak self] in
+      guard let strongSelf = self, let account = DPAGApplicationFacade.cache.account, let contact = DPAGApplicationFacade.cache.contact(for: account.guid), let accountID = contact.accountID else { return }
+      DPAGApplicationFacade.preferences.shouldInviteFriendsAfterInstall = true
+      DPAGApplicationFacade.preferences.shouldInviteFriendsAfterChatPrivateCreation = true
+      DPAGApplicationFacade.preferences.didAskForCompanyEmail = contact.eMailAddress != nil
+      DPAGApplicationFacade.preferences.migrationVersion = .versionCurrent
+      if DPAGApplicationFacade.preferences.isBaMandant {
+        let vc = DPAGApplicationFacadeUIRegistration.welcomeVC(account: account.guid, accountID: accountID, phoneNumber: contact.phoneNumber, emailAddress: contact.eMailAddress, emailDomain: contact.eMailDomain, checkUsage: true)
+        strongSelf.navigationController?.pushViewController(vc, animated: true)
+      } else {
+        let vc = DPAGApplicationFacadeUIRegistration.welcomeVC(account: account.guid, accountID: accountID, phoneNumber: contact.phoneNumber, emailAddress: contact.eMailAddress, emailDomain: contact.eMailDomain, checkUsage: false)
+        strongSelf.navigationController?.pushViewController(vc, animated: true)
       }
     }
   }
