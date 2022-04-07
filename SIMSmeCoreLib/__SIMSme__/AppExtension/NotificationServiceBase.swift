@@ -47,8 +47,7 @@ open class NotificationServiceBase: UNNotificationServiceExtension {
   }
   
   public final func handleContent(_ request: UNNotificationRequest, config: DPAGSharedContainerConfig, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
-    DPAGLog("Received push notification, request = \(request)")
-    NSLog("Received Push Notification request = \(request)")
+    DPAGLog("IMDAT::Received push notification, request = \(request)")
     guard let bestAttemptContent = self.bestAttemptContent, let messageGuid = bestAttemptContent.userInfo["messageGuid"] as? String else {
       DPAGLog("no MessageGuid")
       contentHandler(request.content)

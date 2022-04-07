@@ -588,7 +588,7 @@ public class DPAGSimsMeController: NSObject {
       let apnIdentifierKnown = DPAGApplicationFacade.preferences.apnIdentifier
       let apnIdentifierDevice = DPAGApplicationFacade.preferences.apnIdentifierWithBundleIdentifier(bundleIdentifier ?? "SIMSme", deviceToken: deviceToken)
       let isFirstRunAfterUpdate = self.isFirstRunAfterUpdate()
-      if isFirstRunAfterUpdate || knownToken != deviceToken || apnIdentifierKnown != apnIdentifierDevice || DPAGApplicationFacade.preferences.needsDeviceTokenSynchronization() {
+      if isFirstRunAfterUpdate || knownToken != deviceToken || knownToken == deviceToken || apnIdentifierKnown != apnIdentifierDevice || DPAGApplicationFacade.preferences.needsDeviceTokenSynchronization() {
         do {
           try DPAGApplicationFacade.accountManager.ensureAccountProfilKey()
         } catch {
@@ -606,6 +606,7 @@ public class DPAGSimsMeController: NSObject {
           }
           do {
             try DPAGApplicationFacade.requestWorker.setDeviceData()
+            DPAGLog("IMDAT::: checkTokenAndUpdate:: deviceToken = \(deviceToken), ==> success")
           } catch {
             DPAGLog(error)
           }
