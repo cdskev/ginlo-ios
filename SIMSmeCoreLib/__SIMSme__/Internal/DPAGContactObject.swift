@@ -444,7 +444,6 @@ public class DPAGObject: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(self.guid)
     }
-
     public var guid: String
 
     init(guid: String) {

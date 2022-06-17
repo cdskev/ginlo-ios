@@ -1110,6 +1110,7 @@
 "share.extension.enable.setting" = "Per inviare file multimediali, attivare questa funzione nell'app ginlo, in Impostazioni e Chat \\”Invia file multimediali dall'app di fotografia\\”.";
 "share.extension.medias.hasMaxLengthError" = "Alcuni dei video selezionati non possono essere importati perché troppo lunghi.";
 "share.extension.medias.hasMaxLengthErrorAll" = "I video selezionati non possono essere importati perché sono troppo lunghi.";
+"share.extension.medias.unsupportedFormatError" = "The selected item is not supported. Please try again from within the app.";
 "chat.group.rss_channel.link_replacer.more" = "altro...";
 "registration.headline.initialPassword2" = "Iniziamo con la password del tuo dispositivo.";
 "registration.headline.initialPassword2.title" = "Benvenuto";
@@ -1131,8 +1132,8 @@
 "settings.termsandcondition.url" = "https://app-help.ginlo.net/consumer/en/terms";
 "settings.privacy" = "Politica di riservatezza";
 "settings.privacy.url" = "https://app-help.ginlo.net/consumer/en/privacy";
-"settings.faq" = "FAQ";
-"settings.faq.url" = "https://app-help.ginlo.net/consumer/en/support";
+"settings.faq" = "Guida";
+"settings.faq.url" = "https://app-help.ginlo.net/docs/en/";
 "companyAdressbook.waitForCompanyIndexInfo" = "Waiting for company directory access";
 "companyAdressbook.syncCompanyPre" = "Directory commerciale";
 "companyAdressbook.syncDomainPre" = "Directory dominio";
