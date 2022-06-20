@@ -103,12 +103,6 @@ extension DPAGInfoOverviewViewController: UITableViewDelegate {
   }
   
   func tableView(_: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//    switch Rows.forIndex(indexPath.row) {
-//      case .faq:
-//        guard DPAGApplicationFacade.preferences.isBaMandant else { return 0 }
-//      case .about, .privacy, .terms, .license, .companyDetails, .support:
-//        break
-//    }
-    return UITableView.automaticDimension
+    UITableView.automaticDimension
   }
 }
