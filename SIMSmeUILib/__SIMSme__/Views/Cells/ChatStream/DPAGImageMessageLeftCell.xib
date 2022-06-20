@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -11,7 +11,7 @@
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <tableViewCell contentMode="scaleToFill" verticalHuggingPriority="750" selectionStyle="default" indentationWidth="10" id="rNE-hq-00Z" customClass="DPAGImageMessageLeftCell" customModule="SIMSmeUILib" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="375" height="392"/>
-            <autoresizingMask key="autoresizingMask"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" verticalHuggingPriority="750" tableViewCell="rNE-hq-00Z" id="4p0-Px-Fdq">
                 <rect key="frame" x="0.0" y="0.0" width="375" height="392"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -34,20 +34,20 @@
                             <constraint firstAttribute="bottom" secondItem="S2K-qU-VMn" secondAttribute="bottom" id="sqw-cD-2dL"/>
                         </constraints>
                     </view>
-                    <view contentMode="scaleToFill" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wsi-zD-N9q">
+                    <view contentMode="scaleToFill" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wsi-zD-N9q">
                         <rect key="frame" x="41" y="0.0" width="263" height="376"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hnq-Yc-8DM">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hnq-Yc-8DM">
                                 <rect key="frame" x="0.0" y="352" width="24" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="24" id="Epl-Xe-Eyg"/>
                                     <constraint firstAttribute="height" constant="24" id="KPU-Ya-u3K"/>
                                 </constraints>
                             </imageView>
-                            <view contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Uxk-XU-jnE">
+                            <view contentMode="scaleToFill" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Uxk-XU-jnE">
                                 <rect key="frame" x="0.0" y="0.0" width="263" height="376"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="T3Q-Gt-zJ2">
+                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="T3Q-Gt-zJ2">
                                         <rect key="frame" x="0.0" y="0.0" width="263" height="376"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="ZMN-Rm-6ZE" customClass="DPAGSendOptionsCellView" customModule="SIMSmeUILib" customModuleProvider="target">
@@ -56,20 +56,20 @@
                                                     <constraint firstAttribute="height" constant="24" placeholder="YES" id="3xY-Ka-zAb"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ird-ip-TFd" customClass="DPAGCitationCellView" customModule="SIMSmeUILib" customModuleProvider="target">
+                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ird-ip-TFd" customClass="DPAGCitationCellView" customModule="SIMSmeUILib" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="24" width="263" height="56"/>
                                             </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qZI-B1-U2w" customClass="DPAGStackViewContentView" customModule="SIMSmeUILib" customModuleProvider="target">
+                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qZI-B1-U2w" customClass="DPAGStackViewContentView" customModule="SIMSmeUILib" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="80" width="263" height="296"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="5KA-u0-RiE">
                                                         <rect key="frame" x="0.0" y="0.0" width="263" height="296"/>
                                                         <subviews>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aej-CW-IAc" customClass="DPAGStackViewContentView" customModule="SIMSmeUILib" customModuleProvider="target">
-                                                                <rect key="frame" x="0.0" y="0.0" width="263" height="50"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="263" height="49"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wh9-iZ-L0m">
-                                                                        <rect key="frame" x="8" y="8" width="247" height="34"/>
+                                                                        <rect key="frame" x="8" y="8" width="247" height="33"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         <nil key="highlightedColor"/>
@@ -83,10 +83,10 @@
                                                                 </constraints>
                                                             </view>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Iif-eY-3jK">
-                                                                <rect key="frame" x="0.0" y="50" width="263" height="197.5"/>
+                                                                <rect key="frame" x="0.0" y="49" width="263" height="197"/>
                                                                 <subviews>
                                                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="RRb-FJ-c3a">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="263" height="197.5"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="263" height="197"/>
                                                                         <accessibility key="accessibilityConfiguration">
                                                                             <bool key="isElement" value="YES"/>
                                                                         </accessibility>
@@ -118,10 +118,10 @@
                                                                 </constraints>
                                                             </view>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0wk-5j-LAo" customClass="DPAGStackViewContentView" customModule="SIMSmeUILib" customModuleProvider="target">
-                                                                <rect key="frame" x="0.0" y="247.5" width="263" height="48.5"/>
+                                                                <rect key="frame" x="0.0" y="246" width="263" height="50"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XaK-pA-Gnc" customClass="DPAGChatLabel" customModule="SIMSmeUILib" customModuleProvider="target">
-                                                                        <rect key="frame" x="8" y="8" width="247" height="32.5"/>
+                                                                        <rect key="frame" x="8" y="8" width="247" height="34"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         <nil key="highlightedColor"/>

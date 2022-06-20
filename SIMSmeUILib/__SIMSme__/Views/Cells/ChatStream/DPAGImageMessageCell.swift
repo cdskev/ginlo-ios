@@ -38,7 +38,8 @@ class DPAGImageMessageLeftCell: DPAGImageMessageCell, DPAGChatStreamCellLeft {
     super.layoutSubviews()
     
     if let labelDesc = self.labelDesc {
-      labelDesc.preferredMaxLayoutWidth = self.contentView.frame.width - 128
+//      labelDesc.preferredMaxLayoutWidth = self.contentView.frame.width - 112
+      labelDesc.showsExpansionTextWhenTruncated = true
     }
   }
   
@@ -61,7 +62,8 @@ class DPAGImageMessageRightCell: DPAGImageMessageCell, DPAGChatStreamCellRight {
     super.layoutSubviews()
     
     if let labelDesc = self.labelDesc {
-      labelDesc.preferredMaxLayoutWidth = self.contentView.frame.width - 128
+//      labelDesc.preferredMaxLayoutWidth = self.contentView.frame.width - 112
+      labelDesc.showsExpansionTextWhenTruncated = true
     }
   }
 }
@@ -122,14 +124,14 @@ class DPAGImageMessageCell: DPAGMessageCell, DPAGImageMessageCellProtocol {
   
   override func layoutSubviews() {
     super.layoutSubviews()
-    if self.constraintViewImageWidth.constant != min(min(UIScreen.main.bounds.width, UIScreen.main.bounds.height) - 112, 320) {
+    if self.constraintViewImageWidth.constant != min(min(UIScreen.main.bounds.width, UIScreen.main.bounds.height) - 112, 480) {
       self.setNeedsUpdateConstraints()
     }
   }
   
   override func updateConstraints() {
     super.updateConstraints()
-    let newConstWidth = min(min(UIScreen.main.bounds.width, UIScreen.main.bounds.height) - 112, 320)
+    let newConstWidth = min(min(UIScreen.main.bounds.width, UIScreen.main.bounds.height) - 112, 480)
     if self.constraintViewImageWidth.constant != newConstWidth {
       self.constraintViewImageWidth.constant = newConstWidth
     }
