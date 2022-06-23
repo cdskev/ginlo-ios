@@ -1000,19 +1000,22 @@ public class DPAGSimsMeController: NSObject {
                 }
               case .acceptedPhoneRequired:
                 DPAGApplicationFacade.preferences.isCompanyManagedState = true
-                if let vc = DPAGApplicationFacade.preferences.viewControllerForIdent(DPAGWhiteLabelNextView.dpagProfileViewController_startCompanyProfilInitPhoneNumberController) {
-                  (vc as? DPAGViewControllerWithCompletion)?.completion = {
-                    self?.performBlockInBackground {
-                      do {
-                        try DPAGApplicationFacade.accountManager.ensureCompanyRecoveryPassword()
-                      } catch {
-                        DPAGLog(error)
+                // TODO: Move this to main Thread
+                self?.performBlockOnMainThread {
+                  if let vc = DPAGApplicationFacade.preferences.viewControllerForIdent(DPAGWhiteLabelNextView.dpagProfileViewController_startCompanyProfilInitPhoneNumberController) {
+                    (vc as? DPAGViewControllerWithCompletion)?.completion = {
+                      self?.performBlockInBackground {
+                        do {
+                          try DPAGApplicationFacade.accountManager.ensureCompanyRecoveryPassword()
+                        } catch {
+                          DPAGLog(error)
+                        }
+                        blockPurchase()
                       }
-                      blockPurchase()
                     }
+                    let nextVC = DPAGApplicationFacadeUIBase.navVC(rootViewController: vc)
+                    AppConfig.appWindow()??.rootViewController?.present(nextVC, animated: true, completion: nil)
                   }
-                  let nextVC = DPAGApplicationFacadeUIBase.navVC(rootViewController: vc)
-                  AppConfig.appWindow()??.rootViewController?.present(nextVC, animated: true, completion: nil)
                 }
               case .acceptedPhoneFailed:
                 DPAGApplicationFacade.preferences.isCompanyManagedState = true

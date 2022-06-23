@@ -37,10 +37,9 @@ class DPAGImageMessageLeftCell: DPAGImageMessageCell, DPAGChatStreamCellLeft {
   override func layoutSubviews() {
     super.layoutSubviews()
     
-    if let labelDesc = self.labelDesc {
+//    if let labelDesc = self.labelDesc {
 //      labelDesc.preferredMaxLayoutWidth = self.contentView.frame.width - 112
-      labelDesc.showsExpansionTextWhenTruncated = true
-    }
+//    }
   }
   
   override func chatTextColor() -> UIColor {
@@ -61,10 +60,9 @@ class DPAGImageMessageRightCell: DPAGImageMessageCell, DPAGChatStreamCellRight {
   override func layoutSubviews() {
     super.layoutSubviews()
     
-    if let labelDesc = self.labelDesc {
+//    if let labelDesc = self.labelDesc {
 //      labelDesc.preferredMaxLayoutWidth = self.contentView.frame.width - 112
-      labelDesc.showsExpansionTextWhenTruncated = true
-    }
+//    }
   }
 }
 
