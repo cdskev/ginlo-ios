@@ -187,6 +187,7 @@ class DPAGShareExtSendingViewController: DPAGReceiverSelectionViewController {
   private var mediaResources: [DPAGMediaResource] = []
   private var textToSend: String?
   private var containsFileType = false
+  private var unsupportedAttachmentTypeEncountered = false
   private let queueSync: DispatchQueue = DispatchQueue(label: "de.dpag.simsme.DPAGShareExtSendingViewController.queueSync", qos: .default, attributes: .concurrent, autoreleaseFrequency: .inherit, target: nil)
   
   override func didSelectReceiver(_ receiver: DPAGObject) {
@@ -255,6 +256,7 @@ class DPAGShareExtSendingViewController: DPAGReceiverSelectionViewController {
       self?.willSend = false
       self?.mediaResources = []
       self?.hasError = false
+      self?.unsupportedAttachmentTypeEncountered = false
     }
     var attachmentCountToLoad = 0
     for inputItem in extensionContext.inputItems {
@@ -286,20 +288,34 @@ class DPAGShareExtSendingViewController: DPAGReceiverSelectionViewController {
         } else if itemProvider.hasItemConformingToTypeIdentifier("public.text") {
           if attachments.count == 1 {
             self.loadText(itemProvider)
+            // Let's see if text could be loaded. Problem seems to be that
+            // Contacts are shown as text but cannot be loaded as string
+            // We do NOT support contacts or anything other than the types listed above
+            if self.textToSend == nil {
+              self.unsupportedAttachmentTypeEncountered = true
+              break;
+            }
           } else {
             // we remember this one here for later use (in case there was no other supported attachment in this share-item)
             textItemProvider = itemProvider
           }
+        } else {
+          self.unsupportedAttachmentTypeEncountered = true
+          break;
         }
       }
       if let textItemProvider = textItemProvider {
         self.loadText(textItemProvider)
       }
     }
-    self.attachmentCountToLoad = attachmentCountToLoad
-    if attachmentCountToLoad > 0 || self.textToSend != nil {
-      self.queueSync.sync(flags: .barrier) { [weak self] in
-        self?.checkSendMedia()
+    if self.unsupportedAttachmentTypeEncountered {
+      self.dismissUnsupportedMedia()
+    } else {
+      self.attachmentCountToLoad = attachmentCountToLoad
+      if attachmentCountToLoad > 0 || self.textToSend != nil {
+        self.queueSync.sync(flags: .barrier) { [weak self] in
+          self?.checkSendMedia()
+        }
       }
     }
   }
@@ -376,8 +392,6 @@ class DPAGShareExtSendingViewController: DPAGReceiverSelectionViewController {
     } else if self.textToSend != nil {
       self.hideProgressHUD(animated: true) {
       }
-    } else {
-      self.dismissUnsupportedMedia()
     }
   }
   
