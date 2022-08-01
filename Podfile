@@ -21,7 +21,7 @@ HPGrowingTextViewVersion = '1.1'
 SentryVersion = '5.2.2'
 SQLCipherVersion = '4.4.0'
 CocoaLumberjackVersion = '3.6.2'
-JitsiMeetSDKVersion = '3.2.0'
+JitsiMeetSDKVersion = '6.0.0'
 
 def podsApp
     pod 'SQLCipher', SQLCipherVersion, :inhibit_warnings => true

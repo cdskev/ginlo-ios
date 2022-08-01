@@ -58,19 +58,6 @@ class AVCallViewController: UIViewController, JitsiMeetViewDelegate {
             builder.audioMuted = false
             builder.userInfo = JitsiMeetUserInfo(displayName: self.localUser, andEmail: nil, andAvatar: nil)
             builder.subject = " "
-            builder.setFeatureFlag("meeting-name.enabled", withBoolean: false)
-            builder.setFeatureFlag("calendar.enabled", withBoolean: false)
-            builder.setFeatureFlag("add-people.enabled", withBoolean: false)
-            builder.setFeatureFlag("tile-view.enabled", withBoolean: false)
-            builder.setFeatureFlag("close-captions.enabled", withBoolean: false)
-            builder.setFeatureFlag("chat.enabled", withBoolean: false)
-            builder.setFeatureFlag("invite.enabled", withBoolean: false)
-            builder.setFeatureFlag("meeting-password.enabled", withBoolean: false)
-            builder.setFeatureFlag("recording.enabled", withBoolean: false)
-            builder.setFeatureFlag("ios.recording.enabled", withBoolean: false)
-            // The following might be a good idea to enable:
-            builder.setFeatureFlag("call-integration.enabled", withBoolean: false)
-            builder.setFeatureFlag("live-streaming.enabled", withBoolean: false)
             // For now:
             builder.setFeatureFlag("pip.enabled", withBoolean: false)
             builder.setFeatureFlag("raise-hand.enabled", withBoolean: true)
@@ -122,7 +109,7 @@ class AVCallViewController: UIViewController, JitsiMeetViewDelegate {
              }
         }
         DPAGSimsMeController.sharedInstance.pushToChatEnabled = true
-        DPAGApplicationFacadeUIBase.sharedApplication?.isIdleTimerDisabled = true
+        DPAGApplicationFacadeUIBase.sharedApplication?.isIdleTimerDisabled = false
     }
 
     func participantJoined(_ data: [AnyHashable: Any]!) {
