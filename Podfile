@@ -21,7 +21,8 @@ HPGrowingTextViewVersion = '1.1'
 SentryVersion = '5.2.2'
 SQLCipherVersion = '4.4.0'
 CocoaLumberjackVersion = '3.6.2'
-JitsiMeetSDKVersion = '3.2.0'
+JitsiMeetSDKVersion = '6.0.0'
+GiphyVersion = '2.1.22'
 
 def podsApp
     pod 'SQLCipher', SQLCipherVersion, :inhibit_warnings => true
@@ -35,6 +36,7 @@ def podsApp
     pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => SentryVersion
     pod 'CocoaLumberjack/Swift', CocoaLumberjackVersion
     pod 'JitsiMeetSDK', JitsiMeetSDKVersion
+    pod 'Giphy', GiphyVersion
 end
 
 def podsShareExtension
@@ -63,6 +65,7 @@ def podsCore
     pod 'SQLCipher', SQLCipherVersion, :inhibit_warnings => true
     pod 'CocoaLumberjack/Swift', CocoaLumberjackVersion
     pod 'JitsiMeetSDK', JitsiMeetSDKVersion
+    pod 'Giphy', GiphyVersion
 end
 
 target 'SIMSmeCore' do

@@ -10,8 +10,8 @@
 "alert.contactSearch.noneFound.messageDescription.phoneNumber.fromWelcomePage" = "It may be that this user has changed their phone number. The invitation is still valid, but the user cannot be added to your contacts.";
 "alert.contactSearch.noneFound.messageDescription.emailAddress.fromWelcomePage" = "It may be that the user has changed their email-address. The invitation is still valid but the user cannot be added to your contacts.";
 "alert.welcome.updateLocalContacts.buttonCancel" = "Nein";
-"alert.welcome.updateLocalContacts.buttonOK" = "Ja";
-"alert.welcome.updateLocalContacts.message" = "Wollen Sie mal schauen, wer von Ihren Kontakten auch bei ginlo ist?";
+"alert.welcome.updateLocalContacts.buttonOK" = "Weiter";
+"alert.welcome.updateLocalContacts.message" = "Schauen wir mal wer von Ihren Kontakten auch bei ginlo ist. Dazu benötigt ginlo Zugriff auf Ihre Kontakte.";
 "alert.welcome.invitationbased-creation.message" = "Willkommen! Mit der Einladung können Sie den Account automatisch anlegen.";
 "alert.welcome.invitationbased-creation.buttonCancel" = "Abrechen";
 "alert.welcome.invitationbased-creation.buttonOk" = "Anlegen";
@@ -627,6 +627,7 @@
 "registration.button.pickFromAlbum" = "Bild auswählen";
 "registration.button.pickFromCamera" = "Foto aufnehmen";
 "registration.buttonNextLabel.createAccount" = "Zustimmen & Fortfahren";
+"registration.buttonNextLabel.skipContactInfo" = "Überspringen";
 "registration.buttonNextLabel.forgotPassword" = "Zurücksetzen";
 "registration.buttonNextLabel.initialPassword" = "Passwort festlegen";
 "registration.buttonNextLabel.repeatPassword" = "Passwort bestätigen";
@@ -678,7 +679,8 @@
 "registration.labelTitle.forgotPassword" = "Haben Sie Ihr Passwort vergessen?";
 "registration.registerAccount.timer" = "Warte auf Code";
 "registration.request_account.create_confirm.continue" = "Sieht gut aus";
-"registration.request_account.create_confirm.back" = "Ändern";
+"registration.request_account.create_confirm.continue_without_contact" = "Ja";
+"registration.request_account.create_confirm.back" = "Zurück";
 "registration.request_account.create_confirm.message" = "Ihre Handynummer lautet: ";
 "registration.request_account.create_confirm.title" = "Alles richtig so?";
 "registration.subline.accountID_empty" = "Bitte geben Sie Ihre ginlo ID ein.";
@@ -1075,6 +1077,7 @@
 "registration.label.labelHeadline.emailAddress" = "Ihre E-Mail-Adresse";
 "registration.label.emailAddressInput" = "Ihre E-Mail-Adresse";
 "registration.request_account.create_confirm.message_emailaddress" = "Ihre E-Mail-Adresse lautet: ";
+"registration.request_account.create_confirm.message_no_contact" = "Sind Sie sicher, dass Sie ein Konto ohne Kontakt-Information anlegen möchten?";
 "registration.textView.confirmationTextView.emailAddress" = "Bitte geben Sie den Bestätigungscode ein, den wir an %@ geschickt haben.";
 "settings.notification.channelChat.newMessageTune" = "Ton abspielen";
 "settings.notification.channelChat.notifications" = "Benachrichtigungen anzeigen";
@@ -1107,6 +1110,7 @@
 "share.extension.enable.setting" = "Zum Senden von Medien muss die Funktion in der ginlo App unter Einstellungen > Chats > \"Medien aus Fotos-App senden\" aktiviert sein.";
 "share.extension.medias.hasMaxLengthError" = "Einige der gewählten Videos sind zu lang und können nicht importiert werden.";
 "share.extension.medias.hasMaxLengthErrorAll" = "Die gewählten Videos sind zu lang und können nicht importiert werden.";
+"share.extension.medias.unsupportedFormatError" = "Das ausgewählte Format wird nicht unterstützt. Bitte versuchen Sie es direkt von Ginlo aus.";
 "chat.group.rss_channel.link_replacer.more" = "mehr…";
 "registration.headline.initialPassword2" = "Los geht's mit Ihrem Gerätepasswort.";
 "registration.headline.initialPassword2.title" = "Willkommen";
@@ -1128,8 +1132,8 @@
 "settings.termsandcondition.url" = "https://app-help.ginlo.net/consumer/de/terms";
 "settings.privacy" = "Datenschutzhinweise";
 "settings.privacy.url" = "https://app-help.ginlo.net/consumer/de/privacy";
-"settings.faq" = "FAQs";
-"settings.faq.url" = "https://app-help.ginlo.net/consumer/de/support";
+"settings.faq" = "Handbuch";
+"settings.faq.url" = "https://app-help.ginlo.net/docs/de/";
 "companyAdressbook.waitForCompanyIndexInfo" = "Warte auf Firmenverzeichniszugang";
 "companyAdressbook.syncCompanyPre" = "Firmenverzeichnis";
 "companyAdressbook.syncDomainPre" = "Domänenverzeichnis";

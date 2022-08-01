@@ -784,8 +784,8 @@ open class DPAGAppDelegate: UIResponder, UIApplicationDelegate {
         if self.databaseReady {
           break
         }
-        DPAGLog("Database still not ready")
         RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.1))
+        DPAGLog("Database still not ready")
       }
     }
     if self.databaseReady == false {

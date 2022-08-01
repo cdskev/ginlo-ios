@@ -30,7 +30,7 @@ public class CrashReporterImpl: CrashReporter {
       options.dsn = self.dsn
       options.debug = true
       options.beforeSend = { event in
-        if event.message.contains("NSInternalInconsistencyException") {
+        if event.type?.contains("NSInternalInconsistencyException") ?? false {
           NSLog("NSInternalInconsistencyException")
           return nil
         }

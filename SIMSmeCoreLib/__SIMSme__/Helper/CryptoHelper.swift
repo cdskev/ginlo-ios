@@ -1592,11 +1592,17 @@ extension CryptoHelper {
       throw DPAGErrorCrypto.errSIMSKey
     }
     let keyIdent = String(format: "%@#%@", keyGuid, keyDeviceGuid)
-    if self.decryptedKeyCache.isEmpty == false, self.decryptedKeyCache[keyIdent] != nil, let retVal = self.decryptedKeyCache[keyIdent] {
-      return retVal
+    var cacheVal: [AnyHashable:Any]?
+    self.queueKeys.sync(flags: .barrier) {
+      if self.decryptedKeyCache.isEmpty == false, self.decryptedKeyCache[keyIdent] != nil {
+        cacheVal = self.decryptedKeyCache[keyIdent]
+      }
+    }
+    if let cacheVal = cacheVal {
+      return cacheVal
     }
     if let returnValue = try self.decryptAesKeyAsDict(encryptedAesKey: keyAesKey) {
-      self.queueKeys.async(flags: .barrier) {
+      self.queueKeys.sync(flags: .barrier) {
         self.decryptedKeyCache[keyIdent] = returnValue
       }
       return returnValue

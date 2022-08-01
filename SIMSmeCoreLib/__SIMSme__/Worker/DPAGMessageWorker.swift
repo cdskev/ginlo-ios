@@ -10,14 +10,11 @@ import UIKit
 
 protocol DPAGMessageCryptoWorkerProtocol: AnyObject {
   func decryptAesKey(_ encAesKey: String) throws -> String?
-  
   func decryptAttachment(_ encAttachment: String, encAesKey: String?) -> Data?
   func decryptAttachment(_ encAttachment: String, decAesKey: String?) -> Data?
   func decryptAttachment(_ encAttachment: String, decAesKeyDict: DPAGAesKeyDecrypted?) -> Data?
-  
   func decryptMessageDict(_ encMessageDict: String?, encAesKey: String?, encAesKey2: String?, aesKeyIV iv: String?) -> DPAGMessageDictionary?
   func decryptGroupMessageData(_ messageData: String, decAesKey: String) -> DPAGMessageDictionary?
-  
   func decryptMessageDict(_ message: SIMSPrivateMessage) -> DPAGMessageDictionary?
   func decryptOwnMessageToSendDict(_ message: SIMSMessageToSendPrivate) -> DPAGMessageDictionary?
   func decryptOwnMessageDict(_ message: SIMSPrivateMessage) -> DPAGMessageDictionary?
@@ -25,9 +22,7 @@ protocol DPAGMessageCryptoWorkerProtocol: AnyObject {
   func decryptGroupMessageDict(_ message: SIMSGroupMessage?, decAesKey: String) -> DPAGMessageDictionary?
   func decryptGroupMessageToSendDict(_ message: SIMSMessageToSend, decAesKey: String) -> DPAGMessageDictionary?
   func decryptChannelMessage(_ message: SIMSChannelMessage, decAesKeyDict: DPAGAesKeyDecrypted) -> DPAGMessageDictionary?
-  
   func decryptPrivateInternalMessage(data: String, encAesKey: String) -> DPAGMessageDictionary?
-  
   func decryptString(_ encString: String?, withKey keyIn: SIMSKey?) -> String?
 }
 
@@ -37,12 +32,8 @@ class DPAGMessageCryptoWorker: NSObject, DPAGMessageCryptoWorkerProtocol {
   }
   
   func decryptMessageDict(_ encMessageDict: String?, encAesKey: String?, encAesKey2: String?, aesKeyIV iv: String?) -> DPAGMessageDictionary? {
-    guard let messageDict = encMessageDict else {
-      return nil
-    }
-    
+    guard let messageDict = encMessageDict else { return nil }
     var decryptedMessageDict: DPAGMessageDictionary?
-    
     if let encAesKey2 = encAesKey2, let iv = iv {
       do {
         if let decAesKey = DPAGApplicationFacade.cache.cachedAesKey(key: encAesKey2) {
@@ -74,35 +65,27 @@ class DPAGMessageCryptoWorker: NSObject, DPAGMessageCryptoWorkerProtocol {
   
   func decryptMessageDict(_ encMessageDict: String, decAesKeyDictionary decAesKeyDict: DPAGAesKeyDecrypted) -> String? {
     var decMessage: String?
-    
     do {
       decMessage = try CryptoHelperDecrypter.decryptToString(encryptedString: encMessageDict, withAesKeyDict: decAesKeyDict.dict)
     } catch {
       DPAGLog(error)
     }
-    
     return decMessage
   }
   
   func decryptMessageDict(_ encMessageDict: String, decAesKey: String) -> String? {
     var decMessage: String?
-    
     do {
       decMessage = try CryptoHelperDecrypter.decryptToString(encryptedString: encMessageDict, withAesKey: decAesKey)
     } catch {
       DPAGLog(error)
     }
-    
     return decMessage
   }
   
   func decryptAttachment(_ encAttachment: String, encAesKey: String?) -> Data? {
     var decAttachment: Data?
-    
-    guard let encAesKey = encAesKey else {
-      return decAttachment
-    }
-    
+    guard let encAesKey = encAesKey else { return decAttachment }
     do {
       if let decAesKey = try DPAGCryptoHelper.newAccountCrypto()?.decryptAesKey(encryptedAeskey: encAesKey) {
         decAttachment = try CryptoHelperDecrypter.decrypt(encryptedString: encAttachment, withAesKey: decAesKey)
@@ -115,11 +98,7 @@ class DPAGMessageCryptoWorker: NSObject, DPAGMessageCryptoWorkerProtocol {
   
   func decryptAttachment(_ encAttachment: String, decAesKey: String?) -> Data? {
     var decAttachment: Data?
-    
-    guard let decAesKey = decAesKey else {
-      return decAttachment
-    }
-    
+    guard let decAesKey = decAesKey else { return decAttachment }
     do {
       decAttachment = try CryptoHelperDecrypter.decrypt(encryptedString: encAttachment, withAesKey: decAesKey)
     } catch {
@@ -130,11 +109,7 @@ class DPAGMessageCryptoWorker: NSObject, DPAGMessageCryptoWorkerProtocol {
   
   func decryptAttachment(_ encAttachment: String, decAesKeyDict: DPAGAesKeyDecrypted?) -> Data? {
     var decAttachment: Data?
-    
-    guard let decAesKeyDict = decAesKeyDict else {
-      return decAttachment
-    }
-    
+    guard let decAesKeyDict = decAesKeyDict else { return decAttachment }
     do {
       decAttachment = try CryptoHelperDecrypter.decrypt(encryptedString: encAttachment, withAesKeyDict: decAesKeyDict.dict)
     } catch {
@@ -155,14 +130,10 @@ class DPAGMessageCryptoWorker: NSObject, DPAGMessageCryptoWorkerProtocol {
   }
   
   func decryptGroupMessageDict(_ message: SIMSGroupMessage?, decAesKey: String) -> DPAGMessageDictionary? {
-    if message == nil {
-      return nil
-    }
+    guard message != nil else { return nil }
     var decryptedMessageDict: DPAGMessageDictionary?
     DPAGLog("decryptGroupMessage")
-    guard let messageData = message?.data else {
-      return decryptedMessageDict
-    }
+    guard let messageData = message?.data else { return decryptedMessageDict }
     decryptedMessageDict = self.decryptGroupMessageData(messageData, decAesKey: decAesKey)
     return decryptedMessageDict
   }
@@ -191,9 +162,7 @@ class DPAGMessageCryptoWorker: NSObject, DPAGMessageCryptoWorkerProtocol {
   func decryptGroupMessageToSendDict(_ message: SIMSMessageToSend, decAesKey: String) -> DPAGMessageDictionary? {
     var decryptedMessageDict: DPAGMessageDictionary?
     DPAGLog("decryptGroupMessageToSend")
-    guard let messageData = message.data else {
-      return decryptedMessageDict
-    }
+    guard let messageData = message.data else { return decryptedMessageDict }
     if let encMessageData = Data(base64Encoded: messageData) {
       if encMessageData.count >= 16 {
         let iv = encMessageData.subdata(in: 0 ..< 16).base64EncodedString()
@@ -238,7 +207,6 @@ class DPAGMessageCryptoWorker: NSObject, DPAGMessageCryptoWorkerProtocol {
   
   private func decryptedMessageDict(_ decMessage: String) -> DPAGMessageDictionary? {
     guard let data = decMessage.data(using: .utf8) else { return nil }
-    
     do {
       if let messageDict = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
         return DPAGMessageDictionary(dict: messageDict)
@@ -250,42 +218,29 @@ class DPAGMessageCryptoWorker: NSObject, DPAGMessageCryptoWorkerProtocol {
   }
   
   func decryptString(_ encString: String?, withKey keyIn: SIMSKey?) -> String? {
-    guard let key = keyIn, let encryptedString = encString else {
-      return nil
-    }
-    
+    guard let key = keyIn, let encryptedString = encString else { return nil }
     var decryptedString: String?
-    
     do {
       decryptedString = try CryptoHelper.sharedInstance?.decryptToString(encryptedString: encryptedString, with: key)
     } catch {
       DPAGLog(error)
     }
-    
     return decryptedString
   }
 }
 
 public protocol DPAGMessageWorkerProtocol: AnyObject {
   func migrateIllegalMessageSendingStates()
-  
   func formatLastMessageDate(_ date: Date?) -> String?
   func markMessageAsReadAttachment(messageGuid: String, chatGuid: String, messageType: DPAGMessageType)
-  
   func deleteTimedMessage(_ messageGuid: String, streamGuid: String, withResponse responseBlock: @escaping DPAGServiceResponseBlock)
   func exportStreamToURLWithStreamGuid(_ streamGuid: String) -> URL?
-  
   func isDestructiveMessageValid(messageGuid: String, sendOptions: DPAGSendMessageItemOptions?) -> Bool
-  
   func createCachedMessages(forStream streamGuid: String)
-  
   func deleteChatStreamMessage(messageGuid: String, streamGuid: String, withResponse responseBlock: @escaping DPAGServiceResponseBlock)
-  
   func prepareMessageToResend(messageGuid: String) -> DPAGDecryptedMessage?
-  
   func startSelfDestructionCountDown(messageGuid: String, sendOptions: DPAGSendMessageOptions?)
   func deleteSelfDestructedMessage(messageGuid: String)
-  
   func markStreamMessagesAsRead(streamGuid: String)
 }
 
@@ -293,21 +248,17 @@ class DPAGMessageWorker: NSObject, DPAGMessageWorkerProtocol {
   let messagesDAO: MessagesDAOProtocol = MessagesDAO()
   private static var dateFormatter: DateFormatter = {
     let df = DateFormatter()
-    
     df.doesRelativeDateFormatting = true
     df.dateStyle = .short
     df.timeStyle = .none
-    
     return df
   }()
   
   private static var timeFormatter: DateFormatter {
     let df = DateFormatter()
-    
     df.doesRelativeDateFormatting = true
     df.dateStyle = .none
     df.timeStyle = .short
-    
     return df
   }
   
@@ -324,7 +275,6 @@ class DPAGMessageWorker: NSObject, DPAGMessageWorkerProtocol {
       }
       let unreadServerMessageGuids = messagesDAO.fetchUnreadMessageServerGuids(streamGuid: streamGuid, chatGuid: messageStreamInfos.chatGuid)
       guard unreadServerMessageGuids.count > 0 else { return }
-      
       let unreadMessagesServerToConfirm = messagesDAO.fetchUnreadMessageServerToConfirm(unreadServerMessageGuids: unreadServerMessageGuids, dateNow: dateNow)
       guard unreadMessagesServerToConfirm.count > 0 else { return }
       DPAGApplicationFacade.server.confirmDownload(guids: unreadMessagesServerToConfirm) { _, _, errorMessage in
@@ -339,10 +289,8 @@ class DPAGMessageWorker: NSObject, DPAGMessageWorkerProtocol {
   
   func deleteSelfDestructedMessage(messageGuid: String) {
     DPAGApplicationFacade.persistance.saveWithBlock { localContext in
-      
       if let message = SIMSMessage.findFirst(byGuid: messageGuid, in: localContext) {
         DPAGApplicationFacade.persistance.deleteMessage(message, in: localContext)
-        
         if DPAGApplicationFacade.preferences.supportMultiDevice {
           if let messageGuid = message.guid {
             self.performBlockInBackground {
@@ -357,11 +305,9 @@ class DPAGMessageWorker: NSObject, DPAGMessageWorkerProtocol {
   func startSelfDestructionCountDown(messageGuid: String, sendOptions: DPAGSendMessageOptions?) {
     if let sendOptions = sendOptions {
       DPAGApplicationFacade.persistance.saveWithBlock { localContext in
-        
         if let sdm = SIMSSelfDestructMessage.mr_createEntity(in: localContext) {
           sendOptions.dateSelfDestruction = sendOptions.destructionDateForCountdown(messageGuid: messageGuid)
           sendOptions.countDownSelfDestruction = nil
-          
           sdm.dateDestruction = sendOptions.dateSelfDestruction
           sdm.messageGuid = messageGuid
         }
@@ -371,42 +317,32 @@ class DPAGMessageWorker: NSObject, DPAGMessageWorkerProtocol {
   
   func prepareMessageToResend(messageGuid: String) -> DPAGDecryptedMessage? {
     var decMessage: DPAGDecryptedMessage?
-    
     DPAGApplicationFacade.persistance.saveWithBlock { localContext in
-      
       if let messageToResend = SIMSMessage.findFirst(byGuid: messageGuid, in: localContext) {
         messageToResend.sendingState = NSNumber(value: DPAGMessageState.sending.rawValue)
-        
         decMessage = DPAGApplicationFacade.cache.decryptedMessage(messageToResend, in: localContext)
-        
         decMessage?.isSent = false
         decMessage?.sendingState = .sending
       } else if let messageToResend = SIMSMessageToSend.findFirst(byGuid: messageGuid, in: localContext) {
         messageToResend.sendingState = NSNumber(value: DPAGMessageState.sending.rawValue)
-        
         decMessage = DPAGApplicationFacade.cache.decryptedMessage(messageToResend, in: localContext)
-        
         decMessage?.isSent = false
         decMessage?.sendingState = .sending
       }
     }
-    
     return decMessage
   }
   
   func deleteChatStreamMessage(messageGuid: String, streamGuid: String, withResponse responseBlock: @escaping DPAGServiceResponseBlock) {
     DPAGApplicationFacade.persistance.saveWithBlock { localContext in
-      
       if let message = SIMSMessage.findFirst(byGuid: messageGuid, in: localContext) {
         DPAGApplicationFacade.persistance.deleteMessage(message, in: localContext)
         DPAGApplicationFacade.cache.updateDecryptedStream(streamGuid: streamGuid, stream: nil, in: localContext)
-        
         if DPAGApplicationFacade.preferences.supportMultiDevice {
           self.performBlockInBackground {
             DPAGApplicationFacade.server.confirmDeleted(guids: [messageGuid], withResponse: nil)
           }
         }
-        
         responseBlock(nil, nil, nil)
       } else if SIMSMessageToSend.findFirst(byGuid: messageGuid, in: localContext) != nil {
         DPAGApplicationFacade.messageWorker.deleteTimedMessage(messageGuid, streamGuid: streamGuid, withResponse: responseBlock)
@@ -417,13 +353,11 @@ class DPAGMessageWorker: NSObject, DPAGMessageWorkerProtocol {
   func createCachedMessages(forStream streamGuid: String) {
     tryC {
       DPAGApplicationFacade.persistance.loadWithBlock { localContext in
-        
         if let messages = SIMSMessageStream.findFirst(byGuid: streamGuid, in: localContext)?.messages {
           var cc = 0
-          // Restliche Nachrichten prefetchen
           for msg in messages.reverseObjectEnumerator() {
             if let message = msg as? SIMSMessage, let messageGuid = message.guid, DPAGApplicationFacade.cache.decryptedMessageFast(messageGuid: messageGuid) == nil {
-              /* DPAGDecryptedMessage *decMessage = */ DPAGApplicationFacade.cache.decryptedMessage(message, in: localContext)
+              DPAGApplicationFacade.cache.decryptedMessage(message, in: localContext)
               cc += 1
               if cc > 50 {
                 break
@@ -438,21 +372,15 @@ class DPAGMessageWorker: NSObject, DPAGMessageWorkerProtocol {
   }
   
   func formatLastMessageDate(_ date: Date?) -> String? {
-    guard let messageDate = date else {
-      return nil
-    }
-    
+    guard let messageDate = date else { return nil }
     let sinceNow = messageDate.timeIntervalSinceNow
-    
     if sinceNow > -86_400 {
       let dcNow = (Calendar.current as NSCalendar).components(.day, from: Date())
       let dcDate = (Calendar.current as NSCalendar).components(.day, from: messageDate)
-      
       if dcNow.day == dcDate.day {
         return DPAGMessageWorker.timeFormatter.string(from: messageDate)
       }
     }
-    
     return DPAGMessageWorker.dateFormatter.string(from: messageDate)
   }
   
@@ -466,7 +394,6 @@ class DPAGMessageWorker: NSObject, DPAGMessageWorkerProtocol {
     
     var isValid = true
     DPAGApplicationFacade.persistance.loadWithBlock { localContext in
-      
       if let sdm = SIMSSelfDestructMessage.mr_findFirst(with: NSComparisonPredicate(leftExpression: NSExpression(forKeyPath: \SIMSSelfDestructMessage.messageGuid), rightExpression: NSExpression(forConstantValue: messageGuid)), in: localContext), let dateDestruction = sdm.dateDestruction {
         if dateDestruction.isInPast {
           DPAGApplicationFacade.persistance.deleteMessageForStream(messageGuid)
@@ -474,58 +401,48 @@ class DPAGMessageWorker: NSObject, DPAGMessageWorkerProtocol {
         }
       }
     }
-    
     return isValid
   }
   
   // - Beim Appstart alle Nachrichten mit sendingState DPAGMessageStateSending auf DPAGMessageStateSentFailed setzen.
   func migrateIllegalMessageSendingStates() {
     DPAGApplicationFacade.persistance.saveWithBlock { localContext in
-      
       let privateMessages = SIMSPrivateMessage.mr_findAll(with: NSComparisonPredicate(leftExpression: NSExpression(forKeyPath: \SIMSPrivateMessage.sendingState), rightExpression: NSExpression(forConstantValue: DPAGMessageState.sending.rawValue)), in: localContext)
       let groupMessages = SIMSGroupMessage.mr_findAll(with: NSComparisonPredicate(leftExpression: NSExpression(forKeyPath: \SIMSGroupMessage.sendingState), rightExpression: NSExpression(forConstantValue: DPAGMessageState.sending.rawValue)), in: localContext)
       let privateInternalMessages = SIMSPrivateInternalMessage.mr_findAll(with: NSComparisonPredicate(leftExpression: NSExpression(forKeyPath: \SIMSPrivateInternalMessage.fromAccountGuid), rightExpression: NSExpression(forConstantValue: "")), in: localContext)
       let messagesToSend = SIMSMessageToSend.mr_findAll(with: NSComparisonPredicate(leftExpression: NSExpression(forKeyPath: \SIMSMessageToSend.sendingState), rightExpression: NSExpression(forConstantValue: DPAGMessageState.sending.rawValue)), in: localContext)
-      
       let predEmptyStream =
       NSCompoundPredicate(andPredicateWithSubpredicates:
                             [
                               NSPredicate(format: "(options & %d) == %d", DPAGStreamOption.hasUnreadMessages.rawValue, DPAGStreamOption.hasUnreadMessages.rawValue),
                               NSPredicate(format: "messages.@count == 0")
                             ])
-      
       let streamsEmpty = SIMSMessageStream.mr_findAll(with: predEmptyStream, in: localContext)
-      
       privateMessages?.forEach({ messageObj in
         if let message = messageObj as? SIMSMessage {
           message.sendingState = NSNumber(value: DPAGMessageState.sentFailed.rawValue)
         }
       })
-      
       groupMessages?.forEach { messageObj in
         if let message = messageObj as? SIMSMessage {
           message.sendingState = NSNumber(value: DPAGMessageState.sentFailed.rawValue)
         }
       }
-      
       privateInternalMessages?.forEach { messageObj in
         if let message = messageObj as? SIMSPrivateInternalMessage {
           message.fromAccountGuid = nil
         }
       }
-      
       messagesToSend?.forEach { messageObj in
         if let message = messageObj as? SIMSMessageToSend {
           message.sendingState = NSNumber(value: DPAGMessageState.sentFailed.rawValue)
         }
       }
-      
       streamsEmpty?.forEach { streamObj in
         if let stream = streamObj as? SIMSMessageStream {
           stream.optionsStream = stream.optionsStream.subtracting(.hasUnreadMessages)
         }
       }
-      
       if let defectOPrivateStream = SIMSStream.mr_findAll(with: NSCompoundPredicate(andPredicateWithSubpredicates: [NSComparisonPredicate(leftExpression: NSExpression(forKeyPath: \SIMSStream.contact?.guid), rightExpression: NSExpression(forConstantValue: nil)), NSComparisonPredicate(leftExpression: NSExpression(forKeyPath: \SIMSStream.contactIndexEntry?.guid), rightExpression: NSExpression(forConstantValue: nil))]), in: localContext) {
         defectOPrivateStream.forEach { stream in
           stream.mr_deleteEntity(in: localContext)
@@ -536,18 +453,15 @@ class DPAGMessageWorker: NSObject, DPAGMessageWorkerProtocol {
   
   public func deleteTimedMessage(_ messageGuid: String, streamGuid: String, withResponse responseBlock: @escaping DPAGServiceResponseBlock) {
     DPAGApplicationFacade.server.deleteTimedMessage(messageGuid: messageGuid) { responseObject, errorCode, errorMessage in
-      
       if let errorMessage = errorMessage {
         responseBlock(responseObject, errorCode, errorMessage)
       } else {
         DPAGApplicationFacade.persistance.saveWithBlock { localContext in
-          
           if let message = SIMSMessageToSend.findFirst(byGuid: messageGuid, in: localContext) {
             DPAGApplicationFacade.persistance.deleteMessage(message, in: localContext)
             DPAGApplicationFacade.cache.updateDecryptedStream(streamGuid: streamGuid, stream: nil, in: localContext)
           }
         }
-        
         responseBlock(responseObject, errorCode, errorMessage)
       }
     }
@@ -555,15 +469,12 @@ class DPAGMessageWorker: NSObject, DPAGMessageWorkerProtocol {
   
   func markMessageAsReadAttachment(messageGuid: String, chatGuid: String, messageType _: DPAGMessageType) {
     DPAGApplicationFacade.server.confirmRead(guids: [messageGuid], chatGuid: chatGuid) { _, _, _ in
-      // TODO: error check
       DPAGApplicationFacade.persistance.saveWithBlock { localContext in
-        
         if let unreadMessage = SIMSMessage.findFirst(byGuid: messageGuid, in: localContext) {
           if unreadMessage.attributes == nil {
             unreadMessage.attributes = SIMSMessageAttributes.mr_createEntity(in: localContext)
           }
           unreadMessage.attributes?.dateReadServer = Date()
-          
           DPAGApplicationFacade.cache.decryptedMessage(unreadMessage, in: localContext)?.isReadServerAttachment = true
         }
       }
@@ -572,17 +483,10 @@ class DPAGMessageWorker: NSObject, DPAGMessageWorkerProtocol {
   
   func exportStreamToURLWithStreamGuid(_ streamGuid: String) -> URL? {
     var retVal: URL?
-    
     DPAGApplicationFacade.persistance.saveWithBlock { localContext in
-      
-      guard let stream = SIMSMessageStream.findFirst(byGuid: streamGuid, in: localContext) else {
-        return
-      }
-      
+      guard let stream = SIMSMessageStream.findFirst(byGuid: streamGuid, in: localContext) else { return }
       var fileURLTemp = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-      
       var streamName = "???"
-      
       if let contactDB = (stream as? SIMSStream)?.contactIndexEntry, let contactGuid = contactDB.guid, let contact = DPAGApplicationFacade.cache.contact(for: contactGuid) {
         streamName = contact.displayName
       } else if let streamGroup = stream as? SIMSGroupStream, let group = streamGroup.group, let groupName = group.groupName {
@@ -607,9 +511,7 @@ class DPAGMessageWorker: NSObject, DPAGMessageWorkerProtocol {
       var contacts: [String: DPAGContact] = [:]
       // init file
       try? Data().write(to: fileURLTemp, options: [.atomic])
-      guard let messages = stream.messages?.array as? [SIMSMessage] else {
-        return
-      }
+      guard let messages = stream.messages?.array as? [SIMSMessage] else { return }
       if let fileHandle = try? FileHandle(forWritingTo: fileURLTemp) {
         defer {
           fileHandle.closeFile()
@@ -666,7 +568,6 @@ class DPAGMessageWorker: NSObject, DPAGMessageWorkerProtocol {
             fileHandle.write(data)
           }
         }
-        // compress_path(fileURLTemp!.path!, fileURLZipTemp!.path!, 9)
       }
     }
     return retVal

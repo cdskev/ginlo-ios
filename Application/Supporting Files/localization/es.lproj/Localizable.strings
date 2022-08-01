@@ -10,8 +10,8 @@
 "alert.contactSearch.noneFound.messageDescription.phoneNumber.fromWelcomePage" = "It may be that this user has changed their phone number. The invitation is still valid, but the user cannot be added to your contacts.";
 "alert.contactSearch.noneFound.messageDescription.emailAddress.fromWelcomePage" = "It may be that the user has changed their email-address. The invitation is still valid but the user cannot be added to your contacts.";
 "alert.welcome.updateLocalContacts.buttonCancel" = "No";
-"alert.welcome.updateLocalContacts.buttonOK" = "Sí";
-"alert.welcome.updateLocalContacts.message" = "Want to find out who among your contacts is on ginlo, too?";
+"alert.welcome.updateLocalContacts.buttonOK" = "Continuar";
+"alert.welcome.updateLocalContacts.message" = "Let's find out who among your contacts is on ginlo, too. For this you need to permit ginlo access to your contacts.";
 "alert.welcome.invitationbased-creation.message" = "Great! You have an invitation. Let's create your ginlo account.";
 "alert.welcome.invitationbased-creation.buttonCancel" = "Cancel";
 "alert.welcome.invitationbased-creation.buttonOk" = "Create";
@@ -627,6 +627,7 @@
 "registration.button.pickFromAlbum" = "Select a Photo";
 "registration.button.pickFromCamera" = "Take a Photo";
 "registration.buttonNextLabel.createAccount" = "Accept & Continue";
+"registration.buttonNextLabel.skipContactInfo" = "Skip";
 "registration.buttonNextLabel.forgotPassword" = "Restaurar";
 "registration.buttonNextLabel.initialPassword" = "Set Password";
 "registration.buttonNextLabel.repeatPassword" = "Confirm Password";
@@ -678,7 +679,8 @@
 "registration.labelTitle.forgotPassword" = "¿Has olvidado la contraseña?";
 "registration.registerAccount.timer" = "Espera el código";
 "registration.request_account.create_confirm.continue" = "Looks Good";
-"registration.request_account.create_confirm.back" = "Change";
+"registration.request_account.create_confirm.continue_without_contact" = "Si";
+"registration.request_account.create_confirm.back" = "Back";
 "registration.request_account.create_confirm.message" = "Your mobile number is: ";
 "registration.request_account.create_confirm.title" = "Let's Double-Check";
 "registration.subline.accountID_empty" = "Please enter your ginlo ID";
@@ -1075,6 +1077,7 @@
 "registration.label.labelHeadline.emailAddress" = "Your E-Mail Address";
 "registration.label.emailAddressInput" = "Tu dirección de correo electrónico";
 "registration.request_account.create_confirm.message_emailaddress" = "Your e-mail address is: ";
+"registration.request_account.create_confirm.message_no_contact" = "Are you sure you want to create an account without your contact information?";
 "registration.textView.confirmationTextView.emailAddress" = "Please enter the confirmation code we've sent to %@.";
 "settings.notification.channelChat.newMessageTune" = "Canales: Reproducir sonido";
 "settings.notification.channelChat.notifications" = "Canales: Notificaciones";
@@ -1107,6 +1110,7 @@
 "share.extension.enable.setting" = "To send media, this function needs to be activated in the ginlo app under Settings &gt; Chats &gt; \\”Send media from photo app\\”.";
 "share.extension.medias.hasMaxLengthError" = "Some of the chosen videos are too long and can't be imported.";
 "share.extension.medias.hasMaxLengthErrorAll" = "The chosen videos are too long and can't be imported.";
+"share.extension.medias.unsupportedFormatError" = "The selected item is not supported. Please try again from within the app.";
 "chat.group.rss_channel.link_replacer.more" = "más...";
 "registration.headline.initialPassword2" = "Let's start with your device password.";
 "registration.headline.initialPassword2.title" = "Welcome";
@@ -1128,8 +1132,8 @@
 "settings.termsandcondition.url" = "https://app-help.ginlo.net/consumer/en/terms";
 "settings.privacy" = "Privacy Policy";
 "settings.privacy.url" = "https://app-help.ginlo.net/consumer/en/privacy";
-"settings.faq" = "FAQs";
-"settings.faq.url" = "https://app-help.ginlo.net/consumer/en/support";
+"settings.faq" = "Guía";
+"settings.faq.url" = "https://app-help.ginlo.net/docs/en/";
 "companyAdressbook.waitForCompanyIndexInfo" = "Waiting for company directory access";
 "companyAdressbook.syncCompanyPre" = "Business directory";
 "companyAdressbook.syncDomainPre" = "Domain directory";
