@@ -59,17 +59,13 @@ class AVCallViewController: UIViewController, JitsiMeetViewDelegate {
       builder.setSubject(" ")
       // For now:
       builder.setFeatureFlag("pip.enabled", withBoolean: false)
-      builder.setFeatureFlag("pip.enabled", withValue: false)
-      builder.setFeatureFlag("welcomepage.enabled", withValue: false)
-      builder.setFeatureFlag("add-people.enabled", withValue: false)
-      builder.setFeatureFlag("invite.enabled", withValue: false)
-      builder.setFeatureFlag("chat.enabled", withValue: false)
-      builder.setFeatureFlag("lobby-mode.enabled", withValue: false)
+      builder.setFeatureFlag("welcomepage.enabled", withBoolean: false)
+      builder.setFeatureFlag("add-people.enabled", withBoolean: false)
+      builder.setFeatureFlag("invite.enabled", withBoolean: false)
+      builder.setFeatureFlag("chat.enabled", withBoolean: false)
       builder.setFeatureFlag("lobby-mode.enabled", withBoolean: false)
-      builder.setFeatureFlag("prejoinpage.enabled", withValue: false)
       builder.setFeatureFlag("prejoinpage.enabled", withBoolean: false)
     }
-    JitsiMeet.sharedInstance().defaultConferenceOptions = options
     jitsiMeetView?.delegate = self
     jitsiMeetView?.join(options)
     if let jitsiMeetView = jitsiMeetView {

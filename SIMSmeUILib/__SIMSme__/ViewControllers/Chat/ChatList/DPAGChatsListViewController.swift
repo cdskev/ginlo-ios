@@ -278,6 +278,21 @@ class DPAGChatsListViewController: DPAGTableViewControllerWithSearch, DPAGProgre
     }
   }
   
+  func prepareChatStreamForMyMessage(_ sguid: String?, completion: @escaping () -> Void) {
+    guard let streamGuid = sguid else { return }
+    DPAGProgressHUD.sharedInstance.show(true) { [weak self] _ in
+      DPAGSimsMeController.sharedInstance.dismissAllPresentedNavigationControllers(true, completionInBackground: true) { [weak self] in
+        self?.performBlockOnMainThread {
+          DPAGChatHelper.openChatStreamView(streamGuid, navigationController: self?.navigationController) { _ in
+            DPAGProgressHUD.sharedInstance.hide(true)
+            completion()
+          }
+        }
+      }
+    }
+    return
+  }
+  
   public func showAVCallInvitation(forMessage messageGuid: String) {
     // We don't want to disturb an ongoing call...
     // So, if we are already showing an AVCallViewController, don't do enaything...
@@ -295,7 +310,11 @@ class DPAGChatsListViewController: DPAGTableViewControllerWithSearch, DPAGProgre
         streamGuidOrNil = message.streamGuid
         if let decMessagePrivate = message as? DPAGDecryptedMessagePrivate, let contactGuid = decMessagePrivate.contactGuid, let contact = DPAGApplicationFacade.cache.contact(for: contactGuid) {
           streamNameOrNil = contact.displayName
-          presentGuid = contactGuid
+          if message.isOwnMessage {
+            presentGuid =  streamGuidOrNil
+          } else {
+            presentGuid = contactGuid
+          }
         } else if let messageGroup = message as? DPAGDecryptedMessageGroup, let streamGuid = messageGroup.streamGuid, let group = DPAGApplicationFacade.cache.group(for: streamGuid) {
           presentGuid = streamGuid
           if let contact = DPAGApplicationFacade.cache.contact(for: message.fromAccountGuid) {
@@ -331,8 +350,14 @@ class DPAGChatsListViewController: DPAGTableViewControllerWithSearch, DPAGProgre
           if let streamGuidOrNil = streamGuidOrNil {
             DPAGApplicationFacade.messageWorker.markStreamMessagesAsRead(streamGuid: streamGuidOrNil)
           }
-          self.prepareChatStream(presentGuid) { [alertController] in
-            self.presentAlertController(alertController)
+          if message.isOwnMessage {
+            self.prepareChatStreamForMyMessage(presentGuid) { [alertController] in
+              self.presentAlertController(alertController)
+            }
+          } else {
+            self.prepareChatStream(presentGuid) { [alertController] in
+              self.presentAlertController(alertController)
+            }
           }
         } else {
           DPAGSimsMeController.sharedInstance.pushToChatEnabled = ptceOld
@@ -730,8 +755,8 @@ class DPAGChatsListViewController: DPAGTableViewControllerWithSearch, DPAGProgre
     guard let account = DPAGApplicationFacade.cache.account,
           let contact = DPAGApplicationFacade.cache.contact(for: account.guid),
           let image = contact.image(for: .barButtonSettings) else {
-            return
-          }
+      return
+    }
     setLeftBarButtonItem(image: image, action: #selector(menuShowSettings), accessibilityLabelIdentifier: "")
   }
   
