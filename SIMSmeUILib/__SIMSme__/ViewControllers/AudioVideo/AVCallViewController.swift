@@ -57,7 +57,7 @@ class AVCallViewController: UIViewController, JitsiMeetViewDelegate {
       builder.setAudioMuted(false)
       builder.userInfo = JitsiMeetUserInfo(displayName: self.localUser, andEmail: nil, andAvatar: nil)
       builder.setSubject(" ")
-      // For now:
+
       builder.setFeatureFlag("pip.enabled", withBoolean: false)
       builder.setFeatureFlag("welcomepage.enabled", withBoolean: false)
       builder.setFeatureFlag("add-people.enabled", withBoolean: false)
@@ -65,6 +65,7 @@ class AVCallViewController: UIViewController, JitsiMeetViewDelegate {
       builder.setFeatureFlag("chat.enabled", withBoolean: false)
       builder.setFeatureFlag("lobby-mode.enabled", withBoolean: false)
       builder.setFeatureFlag("prejoinpage.enabled", withBoolean: false)
+      builder.setFeatureFlag("call-integration.enabled", withBoolean: false)
     }
     jitsiMeetView?.delegate = self
     jitsiMeetView?.join(options)
