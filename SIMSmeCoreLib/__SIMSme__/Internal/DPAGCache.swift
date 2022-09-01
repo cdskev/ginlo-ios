@@ -1021,7 +1021,10 @@ public class DPAGCache: NSObject {
     }
 
     func getContentIfValid(decryptedDictionary: DPAGMessageDictionary, errorType: DPAGMessageSecurityError) -> String {
-        switch errorType {
+      // https://github.com/ginlonet/ginlo-ios/issues/65
+      decryptedDictionary.content ?? ""
+      /*
+      switch errorType {
             case .hashesInvalid:
                 return DPAGLocalizedString("chat.encryption.hashInvalid")
             case .signatureInvalid:
@@ -1029,6 +1032,7 @@ public class DPAGCache: NSObject {
             case .none, .notChecked, .pendingTempDeviceInfo:
                 return decryptedDictionary.content ?? ""
         }
+       */
     }
 
     func decrypteStream(stream: SIMSMessageStream?) -> DPAGDecryptedStream? {
