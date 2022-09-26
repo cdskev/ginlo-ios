@@ -735,7 +735,9 @@ public class DPAGCache: NSObject {
     let decMessage = decMessagePart
     let isOwnMessage = message.isOwnMessage
     let content = self.getContentIfValid(decryptedDictionary: decryptedDictionary, errorType: decMessage.errorType)
+    NSLog("IMDAT:: processGroupMessage, content = \(content)")
     if let groupMessage = message as? SIMSGroupMessage, let decMessageGroup = decMessage as? DPAGDecryptedMessageGroup {
+      NSLog("IMDAT:: processGroupMessage, groupMessage = \(groupMessage)")
       decMessage.encAesKey = (groupMessage.stream as? SIMSGroupStream)?.groupAesKey
       if message.fromAccountGuid?.isSystemChatGuid ?? false {
         decMessage.isSystemGenerated = true
