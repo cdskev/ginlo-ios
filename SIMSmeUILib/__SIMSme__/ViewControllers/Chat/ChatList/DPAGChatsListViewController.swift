@@ -38,7 +38,7 @@ class DPAGChatsListViewController: DPAGTableViewControllerWithSearch, DPAGProgre
   static let SettingsCellHiddenIdentifier = "SettingsCellHidden"
   
   lazy var fetchedResultsController: DPAGFetchedResultsControllerChatList = DPAGFetchedResultsControllerChatList { [weak self] changes, streams in
-    guard let strongSelf = self, strongSelf.isViewLoaded else {
+    guard let strongSelf = self, strongSelf.isViewLoaded, strongSelf.tableView.numberOfSections > 0 else {
       self?.queueSyncVars.sync(flags: .barrier) {
         self?.streams = streams
       }
@@ -172,6 +172,8 @@ class DPAGChatsListViewController: DPAGTableViewControllerWithSearch, DPAGProgre
         presentedViewController.dismiss(animated: true) {
           DPAGApplicationFacadeUIBase.containerVC.showTopMainViewController(self, animated: true, completion: nil)
         }
+      } else if UIDevice.current.userInterfaceIdiom == .pad {
+        DPAGApplicationFacadeUIBase.containerVC.showTopMainViewController(self, animated: false, completion: nil)
       } else {
         DPAGApplicationFacadeUIBase.containerVC.showTopMainViewController(self, animated: true, completion: nil)
       }

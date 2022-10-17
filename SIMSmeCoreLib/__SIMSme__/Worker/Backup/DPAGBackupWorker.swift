@@ -2032,10 +2032,10 @@ class DPAGBackupWorker: DPAGBackupWorkerProtocol, DPAGClassPerforming {
           }
         }
         if serverMessageGuids.isEmpty == false {
-          for i in stride(from: 0, to: serverMessageGuids.count, by: 10) {
+          for i in stride(from: serverMessageGuids.startIndex, to: serverMessageGuids.endIndex, by: 10) {
             let fromIndex = i
             let toIndex = min(fromIndex + 10, serverMessageGuids.count)
-            let guids = Array(serverMessageGuids[fromIndex ..< (toIndex - fromIndex)])
+            let guids = Array(serverMessageGuids[fromIndex ..< toIndex])
             let messages = try self.loadTimedMessages(messageGuids: guids)
             for message in messages {
               guard let innerDict = message["TimedMessage"] as? [AnyHashable: Any] else { continue }

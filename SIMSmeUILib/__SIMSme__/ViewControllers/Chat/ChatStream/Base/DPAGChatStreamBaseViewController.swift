@@ -133,6 +133,7 @@ class DPAGChatStreamBaseViewController: DPAGChatCellBaseViewController, NSFetche
   }
   
   private func handleChangedTableRow(changedRow: DPAGFetchedResultsControllerRowChange) {
+    self.tableView.beginUpdates()
     switch changedRow.changeType {
       case .update:
         if let indexPathsForVisibleRows = self.tableView.indexPathsForVisibleRows, indexPathsForVisibleRows.contains(changedRow.changedIndexPath) {
@@ -154,9 +155,11 @@ class DPAGChatStreamBaseViewController: DPAGChatCellBaseViewController, NSFetche
       @unknown default:
         DPAGLog("Switch with unknown value: \(changedRow.changeType.rawValue)", level: .warning)
     }
+    self.tableView.endUpdates()
   }
   
   private func handleChangedTableSection(changedSection: DPAGFetchedResultsControllerSectionChange) {
+    self.tableView.beginUpdates()
     switch changedSection.changeType {
       case .update:
         self.tableView.reloadSections(IndexSet(integer: changedSection.changedSection), with: .none)
@@ -169,6 +172,7 @@ class DPAGChatStreamBaseViewController: DPAGChatCellBaseViewController, NSFetche
       @unknown default:
         DPAGLog("Switch with unknown value: \(changedSection.changeType.rawValue)", level: .warning)
     }
+    self.tableView.endUpdates()
   }
   
   var fetchedResultsController: DPAGFetchedResultsControllerChatStreamBase {
