@@ -47,35 +47,35 @@ class DPAGChatsListViewController: DPAGTableViewControllerWithSearch, DPAGProgre
     strongSelf.tableView.beginUpdates()
     strongSelf.queueSyncVars.sync(flags: .barrier) {
       strongSelf.streams = streams
-    for change in changes {
-      if let changedRow = change as? DPAGFetchedResultsControllerRowChange {
-        switch change.changeType {
-          case .insert:
-            strongSelf.tableView.insertRows(at: [changedRow.changedIndexPath], with: .automatic)
-          case .delete:
-            strongSelf.tableView.deleteRows(at: [changedRow.changedIndexPath], with: .automatic)
-          case .update:
-            strongSelf.tableView.reloadRows(at: [changedRow.changedIndexPath], with: .none)
-          case .move:
-            if let changedIndexPathMovedTo = changedRow.changedIndexPathMovedTo {
-              strongSelf.tableView.moveRow(at: changedRow.changedIndexPath, to: changedIndexPathMovedTo)
-            }
-          @unknown default:
-            DPAGLog("Switch with unknown value: \(change.changeType.rawValue)", level: .warning)
-        }
-      } else if let changedSection = change as? DPAGFetchedResultsControllerSectionChange {
-        switch change.changeType {
-          case .insert:
-            strongSelf.tableView.insertSections(IndexSet(integer: changedSection.changedSection), with: .automatic)
-          case .delete:
-            strongSelf.tableView.deleteSections(IndexSet(integer: changedSection.changedSection), with: .automatic)
-          case .update:
-            strongSelf.tableView.reloadSections(IndexSet(integer: changedSection.changedSection), with: .none)
-          default:
-            break
+      for change in changes {
+        if let changedRow = change as? DPAGFetchedResultsControllerRowChange {
+          switch change.changeType {
+            case .insert:
+              strongSelf.tableView.insertRows(at: [changedRow.changedIndexPath], with: .automatic)
+            case .delete:
+              strongSelf.tableView.deleteRows(at: [changedRow.changedIndexPath], with: .automatic)
+            case .update:
+              strongSelf.tableView.reloadRows(at: [changedRow.changedIndexPath], with: .none)
+            case .move:
+              if let changedIndexPathMovedTo = changedRow.changedIndexPathMovedTo {
+                strongSelf.tableView.moveRow(at: changedRow.changedIndexPath, to: changedIndexPathMovedTo)
+              }
+            @unknown default:
+              DPAGLog("Switch with unknown value: \(change.changeType.rawValue)", level: .warning)
+          }
+        } else if let changedSection = change as? DPAGFetchedResultsControllerSectionChange {
+          switch change.changeType {
+            case .insert:
+              strongSelf.tableView.insertSections(IndexSet(integer: changedSection.changedSection), with: .automatic)
+            case .delete:
+              strongSelf.tableView.deleteSections(IndexSet(integer: changedSection.changedSection), with: .automatic)
+            case .update:
+              strongSelf.tableView.reloadSections(IndexSet(integer: changedSection.changedSection), with: .none)
+            default:
+              break
+          }
         }
       }
-    }
     }
     strongSelf.tableView.endUpdates()
   }
