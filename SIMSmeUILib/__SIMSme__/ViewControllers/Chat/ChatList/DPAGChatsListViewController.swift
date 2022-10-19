@@ -47,7 +47,6 @@ class DPAGChatsListViewController: DPAGTableViewControllerWithSearch, DPAGProgre
     strongSelf.tableView.beginUpdates()
     strongSelf.queueSyncVars.sync(flags: .barrier) {
       strongSelf.streams = streams
-    }
     for change in changes {
       if let changedRow = change as? DPAGFetchedResultsControllerRowChange {
         switch change.changeType {
@@ -76,6 +75,7 @@ class DPAGChatsListViewController: DPAGTableViewControllerWithSearch, DPAGProgre
             break
         }
       }
+    }
     }
     strongSelf.tableView.endUpdates()
   }
