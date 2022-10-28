@@ -454,6 +454,7 @@ class DPAGSendMessageWorker: NSObject, DPAGSendMessageWorkerProtocol {
                         let messagesDAO: MessagesDAOProtocol = MessagesDAO()
                         messagesDAO.deleteMessageInstances(msgInstancesGuids: msgInstancesGuids)
                     }
+                  NSLog("IMDAT:: recipient = \(recipient), guid = \(recipient.recipientGuid)")
                     let isGroup = recipient.isGroup
                     autoreleasepool {
                         let sendMessageInfoResult = sendMessageInfoBlock(contentObject, recipient.recipientGuid)
@@ -476,6 +477,7 @@ class DPAGSendMessageWorker: NSObject, DPAGSendMessageWorkerProtocol {
                             DPAGLog(error)
                         }
                         if msgInstance.guidOutgoingMessage == nil {
+                          NSLog("IMDAT:: PROBLEM IS HERE")
                             errorBlock()
                             serviceResponseBlock?(nil, "service.tryAgainLater", "service.tryAgainLater")
                             return

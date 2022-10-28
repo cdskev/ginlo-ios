@@ -1,0 +1,15 @@
+/* Localized versions of Info.plist keys */
+
+NSCameraUsageDescription = "Jest to niezbędne do robienia zdjęć i udostępniania ich partnerom na czacie. Szyfrowane przez cały czas";
+
+NSContactsUsageDescription = "Jest to konieczne, aby znaleźć innych użytkowników aplikacji wśród kontaktów. W żadnym momencie nie posiadamy danych kontaktowych w postaci zwykłego tekstu";
+
+NSLocationWhenInUseUsageDescription = "Jest to niezbędne do udostępnienia lokalizacji partnerom czatu. Szyfrowane przez cały czas";
+
+NSLocationUsageDescription = "Jest to niezbędne do udostępnienia lokalizacji partnerom czatu. Szyfrowane przez cały czas";
+
+NSMicrophoneUsageDescription = "Jest to niezbędne do udostępniania filmów i wiadomości głosowych partnerom czatu. Szyfrowane przez cały czas";
+
+NSPhotoLibraryUsageDescription = "Jest to potrzebne do udostępniania zdjęć partnerom czatu. Szyfrowane przez cały czas";
+
+NSFaceIDUsageDescription = "Jest to niezbędne do odblokowania aplikacji za pomocą Face ID zamiast hasła urządzenia";
