@@ -172,7 +172,9 @@ extension DPAGFetchedResultsControllerChatStreamBase: NSFetchedResultsController
     for change in changesRowUpdate {
       var sectionContent = messages[change.changedIndexPath.section]
       if let decMessage = DPAGApplicationFacade.cache.decryptedMessage(messageGuid: change.guid, in: nil) {
-        sectionContent.remove(at: change.changedIndexPath.row)
+        if sectionContent.count > change.changedIndexPath.row {
+          sectionContent.remove(at: change.changedIndexPath.row)
+        }
         sectionContent.insert(decMessage, at: change.changedIndexPath.row)
         messages[change.changedIndexPath.section] = sectionContent
       } else {
