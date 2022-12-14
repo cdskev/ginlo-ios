@@ -980,6 +980,7 @@
 "settings.statusWorker.firstMessage" = "Auf der guten Seite des Messagings :-)";
 "settings.statusWorker.firstMessage.default" = "Auf der guten Seite des Messagings :-)";
 "settings.title.information" = "Hilfe";
+"settings.title.release_notes" = "Versionshinweise";
 "settings.version" = "Version";
 "touchID.unlock.message" = "Berühren Sie den Fingerabdrucksensor oder geben Sie das Passwort ein";
 "group.administration.action.no_name" = "Bitte geben Sie einen Gruppennamen an.";

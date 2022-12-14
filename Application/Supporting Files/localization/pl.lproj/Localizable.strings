@@ -980,6 +980,7 @@
 "settings.statusWorker.firstMessage" = "Po dobrej stronie komunikatów :-)";
 "settings.statusWorker.firstMessage.default" = "Po dobrej stronie komunikatorów :-)";
 "settings.title.information" = "Pomoc";
+"settings.title.release_notes" = "Release Notes";
 "settings.version" = "Wersja";
 "touchID.unlock.message" = "Dotknij czujnika linii papilarnych lub wprowadź hasło";
 "group.administration.action.no_name" = "Proszę określić nazwę grupy";

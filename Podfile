@@ -8,7 +8,7 @@ platform :ios, '12.0'
 workspace 'Ginlo'
 
 def allTargets
-    ['ginlo']
+    ['ginlo', 'ginlo-staging', 'ginloba', 'ginlo-ba-staging' ]
 end
 
 JFBCryptVersion = '0.1'
@@ -22,7 +22,7 @@ SentryVersion = '5.2.2'
 SQLCipherVersion = '4.4.0'
 CocoaLumberjackVersion = '3.6.2'
 JitsiMeetSDKVersion = '6.0.0'
-GiphyVersion = '2.1.22'
+GiphyVersion = '2.1.20'
 
 def podsApp
     pod 'SQLCipher', SQLCipherVersion, :inhibit_warnings => true
@@ -37,6 +37,7 @@ def podsApp
     pod 'CocoaLumberjack/Swift', CocoaLumberjackVersion
     pod 'JitsiMeetSDK', JitsiMeetSDKVersion
     pod 'Giphy', GiphyVersion
+    pod 'ImageSlideShowSwift'
 end
 
 def podsShareExtension
@@ -66,6 +67,7 @@ def podsCore
     pod 'CocoaLumberjack/Swift', CocoaLumberjackVersion
     pod 'JitsiMeetSDK', JitsiMeetSDKVersion
     pod 'Giphy', GiphyVersion
+    pod 'ImageSlideShowSwift'
 end
 
 target 'SIMSmeCore' do
@@ -77,8 +79,23 @@ target 'shareExtension' do
     podsShareExtension
 end
 
+target 'shareExtensionBA' do
+    project 'GinloBusiness.xcodeproj'
+    podsShareExtension
+end
+
 target 'notificationExtension' do
     project 'Ginlo.xcodeproj'
+    podsNotificationExtension
+end
+
+target 'notificationExtensionBA' do
+    project 'GinloBusiness.xcodeproj'
+    podsNotificationExtension
+end
+
+target 'notificationExtensionStaging' do
+    project 'GinloStaging.xcodeproj'
     podsNotificationExtension
 end
 
@@ -92,7 +109,21 @@ target 'ginlo' do
     project 'Ginlo.xcodeproj'
 end
 
-# TODO: Remove this hook when MagicalRecord is removed
+target 'ginlo-staging' do
+    podsApp
+    project 'GinloStaging.xcodeproj'
+end
+
+target 'ginloba' do
+    podsApp
+    project 'GinloBusiness.xcodeproj'
+end
+
+target 'ginlo-ba-staging' do
+    podsApp
+    project 'GinloBusinessStaging.xcodeproj'
+end
+
 post_install do |installer|
     installer.pods_project.targets.each do |target|
         target.build_configurations.each do |config|
@@ -103,5 +134,8 @@ post_install do |installer|
           end
         end
     end
+    Dir.chdir './src/'
+    FileUtils.ln_s '../Pods', '.', force: true
+    Dir.chdir '..'
 end
 

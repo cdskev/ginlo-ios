@@ -483,8 +483,10 @@ extension DPAGChatsListViewController: UITableViewDataSource {
         retVal = DPAGLocalizedString("chat.list.action.removeMessages.single")
       }
     } else if let groupStream = stream as? DPAGDecryptedStreamGroup, let group = DPAGApplicationFacade.cache.group(for: groupStream.guid) {
-      if group.isConfirmed == false || (group.groupType != .default && group.isDeleted == false) {
+      if group.isConfirmed == false {
         retVal = nil
+      } else if group.groupType != .default && group.isDeleted == false {
+        retVal = DPAGLocalizedString("chat.list.action.removeMessages.group")
       } else if group.groupType == .restricted {
         retVal = DPAGLocalizedString("chat.list.action.delete.single")
       } else {

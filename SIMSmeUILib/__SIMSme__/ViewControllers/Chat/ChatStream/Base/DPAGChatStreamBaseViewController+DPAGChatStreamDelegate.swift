@@ -750,17 +750,21 @@ extension DPAGChatCellBaseViewController: DPAGChatStreamDelegate {
       guard let strongSelf = self, let cell = cell else { return }
       if cell.isLoadingAttachment == false, let streamGuid = message.streamGuid {
         cell.isLoadingAttachment = true
-        strongSelf.loadAttachmentWithMessage(message, cell: cell as? DPAGCellWithProgress) { [weak self, weak cell] data, errorString in
-          guard let strongSelf = self else { return }
-          cell?.isLoadingAttachment = false
-          if let imageData = data {
-            strongSelf.performBlockOnMainThread { [weak self, weak cell] in
-              if let strongSelf = self, let cell = cell, cell.isHidden == false {
-                strongSelf.setUpImageViewWithData(imageData, messageGuid: message.messageGuid, decMessage: message, stream: streamGuid)
+        if !message.isSelfDestructive || message.isOwnMessage {
+          
+        } else {
+          strongSelf.loadAttachmentWithMessage(message, cell: cell as? DPAGCellWithProgress) { [weak self, weak cell] data, errorString in
+            guard let strongSelf = self else { return }
+            cell?.isLoadingAttachment = false
+            if let imageData = data {
+              strongSelf.performBlockOnMainThread { [weak self, weak cell] in
+                if let strongSelf = self, let cell = cell, cell.isHidden == false {
+                  strongSelf.setUpImageViewWithData(imageData, messageGuid: message.messageGuid, decMessage: message, stream: streamGuid)
+                }
               }
+            } else if let errorString = errorString {
+              strongSelf.showErrorAlertCheck(alertConfig: AlertConfigError(messageIdentifier: errorString))
             }
-          } else if let errorString = errorString {
-            strongSelf.showErrorAlertCheck(alertConfig: AlertConfigError(messageIdentifier: errorString))
           }
         }
       }

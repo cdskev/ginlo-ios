@@ -1015,6 +1015,7 @@ You have %i attempts remaining.";
 "settings.statusWorker.firstMessage" = "Hi! I'm using ginlo!";
 "settings.statusWorker.firstMessage.default" = "Hi! I'm using ginlo!";
 "settings.title.information" = "Help";
+"settings.title.release_notes" = "Release Notes";
 "settings.version" = "Version";
 "touchID.unlock.message" = "Touch the fingerprint sensor or enter the password";
 "group.administration.action.no_name" = "Please specify a group name.";
