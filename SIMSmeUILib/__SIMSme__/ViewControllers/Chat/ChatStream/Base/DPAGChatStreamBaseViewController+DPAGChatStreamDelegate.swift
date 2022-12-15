@@ -804,22 +804,21 @@ extension DPAGChatCellBaseViewController: DPAGChatStreamDelegate {
           controller.initialIndex = startIndex
           controller.enableZoom = true
           controller.controllerDidDismiss = {
-            debugPrint("Controller Dismissed")
-            debugPrint("last index viewed: \(controller.currentIndex)")
+            DPAGLog("SlideshowController Dismissed")
+            DPAGLog("Slideshowlast index viewed: \(controller.currentIndex)")
           }
           
           controller.slideShowViewDidLoad = {
-            debugPrint("Did Load")
+            DPAGLog("SlideshowDid Load")
           }
           
           controller.slideShowViewWillAppear = { animated in
-            debugPrint("Will Appear Animated: \(animated)")
+            DPAGLog("Slideshow Will Appear Animated: \(animated)")
           }
           
           controller.slideShowViewDidAppear = { animated in
-            debugPrint("Did Appear Animated: \(animated)")
+            DPAGLog("SlideshowDid Appear Animated: \(animated)")
           }
-          
         }
         return true
       }
