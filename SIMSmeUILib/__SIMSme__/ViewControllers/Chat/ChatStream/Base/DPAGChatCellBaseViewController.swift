@@ -25,6 +25,7 @@ class DPAGChatCellBaseViewController: DPAGChatBaseViewController, DPAGDefaultTra
     var openInController: UIDocumentInteractionController?
     var openInControllerOpensApplication = false
     var shouldUsePreferredSizes = true
+
     static let SimpleMessageLeftCellIdentifier = "SimpleMessageLeftCell"
     static let SimpleMessageRightCellIdentifier = "SimpleMessageRightCell"
     static let ImageMessageLeftCellIdentifier = "ImageMessageLeftCell"

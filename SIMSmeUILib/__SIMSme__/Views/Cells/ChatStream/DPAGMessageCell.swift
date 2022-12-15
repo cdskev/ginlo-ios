@@ -117,7 +117,7 @@ public protocol DPAGMessageCellProtocol: DPAGChatStreamCell {
   
   var isLoadingAttachment: Bool { get set }
   var isHidden: Bool { get }
-  
+
   func configureCellWithMessage(_ decryptedMessage: DPAGDecryptedMessage, forHeightMeasurement: Bool)
   
   func canPerformForward() -> Bool

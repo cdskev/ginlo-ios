@@ -10,19 +10,6 @@ import AVFoundation
 import CoreLocation
 import Photos
 import UIKit
-import ImageSlideShowSwift
-
-public class GNImageSource: NSObject, ImageSlideShowProtocol {
-  public var title: String? { "image" }
-  
-  public func slideIdentifier() -> String {
-  
-  }
-  
-  public func image(completion: @escaping (_ image:UIImage?, _ error:Error?) -> Void) {
-    
-  }
-}
 
 public class DPAGMediaResource {
     public private(set) var mediaType: DPAGMediaResourceType

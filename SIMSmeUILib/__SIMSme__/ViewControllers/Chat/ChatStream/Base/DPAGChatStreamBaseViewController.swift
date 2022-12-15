@@ -225,7 +225,7 @@ class DPAGChatStreamBaseViewController: DPAGChatCellBaseViewController, NSFetche
   var mediaToSend: DPAGMediaResource?
   
   private var showData = true
-  var messages: [[DPAGDecryptedMessage]] = []
+  public var messages: [[DPAGDecryptedMessage]] = []
   private var updateViewSema = DispatchSemaphore(value: 1)
   private var updateViewSema2 = DispatchSemaphore(value: 1)
   var isAtEndOfScreen: Bool = false

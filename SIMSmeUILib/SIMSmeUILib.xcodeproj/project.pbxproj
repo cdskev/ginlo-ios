@@ -164,6 +164,11 @@
 		72C3146125B6D20C00B8D54E /* DPAGGroupViewController+DPAGContactsSelectionGroupAdminsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C3145825B6D20C00B8D54E /* DPAGGroupViewController+DPAGContactsSelectionGroupAdminsDelegate.swift */; };
 		72DEDDD226E602D500D7CFB1 /* GNScanInvitationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DEDDD126E602D500D7CFB1 /* GNScanInvitationViewController.swift */; };
 		72DEDDD426E6062E00D7CFB1 /* GNScanInvitationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 72DEDDD326E6062E00D7CFB1 /* GNScanInvitationViewController.xib */; };
+		72F7C35F294B57EE00DD339B /* ImageSlideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F7C358294B57EE00DD339B /* ImageSlideViewController.swift */; };
+		72F7C360294B57EE00DD339B /* ImageSlideShowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F7C359294B57EE00DD339B /* ImageSlideShowViewController.swift */; };
+		72F7C361294B57EE00DD339B /* ImageSlideShowNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F7C35A294B57EE00DD339B /* ImageSlideShowNavigationController.swift */; };
+		72F7C362294B57EE00DD339B /* ImageSlideShow.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 72F7C35C294B57EE00DD339B /* ImageSlideShow.storyboard */; };
+		72F7C363294B57EE00DD339B /* UIPageViewController+ImageSlideShow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F7C35E294B57EE00DD339B /* UIPageViewController+ImageSlideShow.swift */; };
 		A3025E732304496700030861 /* SendEmailHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3025E722304496700030861 /* SendEmailHelper.swift */; };
 		A3056FEF22577F8F003A35FD /* AddAttachmentAlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3056FEE22577F8F003A35FD /* AddAttachmentAlertHelper.swift */; };
 		A30A27C522B3CC6200CCB484 /* DPAGChannelSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30A27BF22B3CC6200CCB484 /* DPAGChannelSearchViewController.swift */; };
@@ -654,6 +659,11 @@
 		72C3145825B6D20C00B8D54E /* DPAGGroupViewController+DPAGContactsSelectionGroupAdminsDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DPAGGroupViewController+DPAGContactsSelectionGroupAdminsDelegate.swift"; sourceTree = "<group>"; };
 		72DEDDD126E602D500D7CFB1 /* GNScanInvitationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GNScanInvitationViewController.swift; sourceTree = "<group>"; };
 		72DEDDD326E6062E00D7CFB1 /* GNScanInvitationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GNScanInvitationViewController.xib; sourceTree = "<group>"; };
+		72F7C358294B57EE00DD339B /* ImageSlideViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSlideViewController.swift; sourceTree = "<group>"; };
+		72F7C359294B57EE00DD339B /* ImageSlideShowViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSlideShowViewController.swift; sourceTree = "<group>"; };
+		72F7C35A294B57EE00DD339B /* ImageSlideShowNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSlideShowNavigationController.swift; sourceTree = "<group>"; };
+		72F7C35C294B57EE00DD339B /* ImageSlideShow.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ImageSlideShow.storyboard; sourceTree = "<group>"; };
+		72F7C35E294B57EE00DD339B /* UIPageViewController+ImageSlideShow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIPageViewController+ImageSlideShow.swift"; sourceTree = "<group>"; };
 		7CFD00128E932B1E935723A9 /* Pods-SIMSmeUILib.adhoc.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SIMSmeUILib.adhoc.xcconfig"; path = "../Pods/Target Support Files/Pods-SIMSmeUILib/Pods-SIMSmeUILib.adhoc.xcconfig"; sourceTree = "<group>"; };
 		89A4643DA663B299208D9D5B /* Pods_SIMSmeUILib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SIMSmeUILib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3025E722304496700030861 /* SendEmailHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendEmailHelper.swift; sourceTree = "<group>"; };
@@ -1261,6 +1271,7 @@
 		27DD419322C61951002D95BD /* __SIMSme__ */ = {
 			isa = PBXGroup;
 			children = (
+				72F7C356294B57EE00DD339B /* ImageSlideShow */,
 				275AEAD722CB9FCB009F4295 /* AppExtension */,
 				A313F0D222B250A5004C2E49 /* Factory */,
 				359FA96222C4F1E600562C32 /* Internal */,
@@ -1340,6 +1351,42 @@
 				72DEDDD326E6062E00D7CFB1 /* GNScanInvitationViewController.xib */,
 			);
 			path = Invitation;
+			sourceTree = "<group>";
+		};
+		72F7C356294B57EE00DD339B /* ImageSlideShow */ = {
+			isa = PBXGroup;
+			children = (
+				72F7C357294B57EE00DD339B /* Classes */,
+				72F7C35B294B57EE00DD339B /* Storyboard */,
+				72F7C35D294B57EE00DD339B /* Extensions */,
+			);
+			path = ImageSlideShow;
+			sourceTree = "<group>";
+		};
+		72F7C357294B57EE00DD339B /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				72F7C358294B57EE00DD339B /* ImageSlideViewController.swift */,
+				72F7C359294B57EE00DD339B /* ImageSlideShowViewController.swift */,
+				72F7C35A294B57EE00DD339B /* ImageSlideShowNavigationController.swift */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		72F7C35B294B57EE00DD339B /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				72F7C35C294B57EE00DD339B /* ImageSlideShow.storyboard */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		72F7C35D294B57EE00DD339B /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				72F7C35E294B57EE00DD339B /* UIPageViewController+ImageSlideShow.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		A30A27BE22B3CC6200CCB484 /* Channels */ = {
@@ -2135,6 +2182,7 @@
 				27DAED942099ECF300C64628 /* sound_animation@2x.gif in Resources */,
 				A38107B422B8EA1A0044F748 /* DPAGDeviceTableViewCell.xib in Resources */,
 				359FAA7C22C508E800562C32 /* DPAGServiceCell.xib in Resources */,
+				72F7C362294B57EE00DD339B /* ImageSlideShow.storyboard in Resources */,
 				359FAAB122C5091300562C32 /* DPAGSimpleMessageChannelLeftCell.xib in Resources */,
 				A32EE5A922B902BC00542DF9 /* backgroundart_06__pt.jpg in Resources */,
 				A32EE5A022B902BC00542DF9 /* backgroundart_08__pt.jpg in Resources */,
@@ -2325,6 +2373,7 @@
 				B610AF6422E85A4700998283 /* UITableView+Extensions.swift in Sources */,
 				A30A27C722B3CC6200CCB484 /* DPAGChannelCategoryViewController.swift in Sources */,
 				A313F18322B28F25004C2E49 /* DPAGCompanyEnterRecoveryKeyViewController.swift in Sources */,
+				72F7C360294B57EE00DD339B /* ImageSlideShowViewController.swift in Sources */,
 				A313F0AB22B24ED3004C2E49 /* DPAGCompanyProfilConfirmEMailController.swift in Sources */,
 				27DAEDCC2099ED4000C64628 /* DPAGChatStreamInputMediaOnlyViewController.xib in Sources */,
 				27DAEDCD2099ED4000C64628 /* DPAGChatStreamInputMediaViewController.swift in Sources */,
@@ -2359,6 +2408,7 @@
 				A3FF388F22B3E6D400891E55 /* DPAGRuntimeConfigUIBase.swift in Sources */,
 				A3FF388B22B3E6B000891E55 /* DPAGProtocolsUI.swift in Sources */,
 				270585F62126D32800522BB5 /* DPAGSendAVViewController.swift in Sources */,
+				72F7C361294B57EE00DD339B /* ImageSlideShowNavigationController.swift in Sources */,
 				27DAEDD82099ED4000C64628 /* DPAGDestructionViewController.swift in Sources */,
 				A30A280A22B3D3B500CCB484 /* DPAGDefaultTableViewCell.swift in Sources */,
 				A30A281022B3D3B500CCB484 /* DPAGDisclosureSubtitleTableViewCell.swift in Sources */,
@@ -2400,6 +2450,7 @@
 				A313F15E22B28E84004C2E49 /* DPAGAutomaticTestRegistrationViewController.swift in Sources */,
 				27DAEDDF2099ED4000C64628 /* DPAGShowVideoViewController.swift in Sources */,
 				A30A280F22B3D3B500CCB484 /* DPAGSubtitleTableViewCell.swift in Sources */,
+				72F7C35F294B57EE00DD339B /* ImageSlideViewController.swift in Sources */,
 				359FAAAA22C5091300562C32 /* DPAGTextMessageWithImagePreviewCell.swift in Sources */,
 				359FAA5B22C508BD00562C32 /* SubscribeChannelCell.swift in Sources */,
 				27DAEDE02099ED4000C64628 /* DPAGShowVoiceRecViewController.swift in Sources */,
@@ -2508,6 +2559,7 @@
 				359FAABE22C5091300562C32 /* DPAGSystemMessageCell.swift in Sources */,
 				A313F12822B271B8004C2E49 /* DPAGContactsViewController.swift in Sources */,
 				A313F11022B271B8004C2E49 /* DPAGContactsSelectionGroupAdminsViewController.swift in Sources */,
+				72F7C363294B57EE00DD339B /* UIPageViewController+ImageSlideShow.swift in Sources */,
 				359FAAFA22C50D6200562C32 /* DPAGMigrationBaseViewController.swift in Sources */,
 				A313F1AA22B29025004C2E49 /* DPAGIntroPage1ViewController.swift in Sources */,
 				359FAAB222C5091300562C32 /* DPAGSendOptionsCellView.swift in Sources */,

@@ -12,6 +12,39 @@ import CoreLocation
 import SIMSmeCore
 import UIKit
 
+public class GNImageSource: NSObject, ImageSlideShowProtocol {
+  public var message: DPAGDecryptedMessage
+  public var title: String? { "" }
+  
+  init(message: DPAGDecryptedMessage) {
+    self.message = message
+  }
+  
+  public func slideIdentifier() -> String {
+    return message.messageGuid
+  }
+  
+  public func image(completion: @escaping (_ image:UIImage?, _ error:Error?) -> Void) {
+    if let attachment = message.decryptedAttachment {
+      DPAGAttachmentWorker.decryptMessageAttachment(attachment: attachment) { data, err in
+        message.markDecryptedMessageAsReadAttachment()
+        if let data = data, err == nil {
+          let image = UIImage(data: data)
+          completion(image, nil)
+          return
+        } else {
+          completion(nil, nil)
+        }
+      }
+    }
+  }
+  
+  public func performShare(fromButton buttonPressed: UIBarButtonItem) -> Void {
+    guard let attachment = message.decryptedAttachment else { return }
+    DPAGAttachmentWorker.shareAttachment(attachment: attachment, buttonPressed: buttonPressed)
+  }
+}
+
 struct DPAGMessageRecoveryAction: OptionSet {
   let rawValue: Int
   init(rawValue: Int) { self.rawValue = rawValue }
@@ -745,14 +778,65 @@ extension DPAGChatCellBaseViewController: DPAGChatStreamDelegate {
     self.dismissInputController(completion: block)
   }
   
+  func displayImageSlideshow(_ startMessage: DPAGDecryptedMessage, inStream streamGuid: String) -> Bool {
+    if let s = self as? DPAGChatStreamBaseViewController {
+      var imageSources: [GNImageSource] = []
+      var startIndex = 0
+      var currentIndex = 0
+      for chatMessages in s.messages {
+        for msg in chatMessages {
+          if msg.contentType == .image, AttachmentHelper.attachmentAlreadySavedForGuid(msg.attachmentGuid) {
+            if msg.messageGuid == startMessage.messageGuid {
+              startIndex = currentIndex
+            }
+            imageSources.append(GNImageSource(message: msg))
+            currentIndex += 1
+          }
+        }
+      }
+      if imageSources.count > 0 {
+        ImageSlideShowViewController.presentFrom(self) {  controller in
+          if !DPAGApplicationFacade.preferences.canExportMedia {
+            controller.enableSharing = false
+          }
+          controller.dismissOnPanGesture = true
+          controller.slides = imageSources
+          controller.initialIndex = startIndex
+          controller.enableZoom = true
+          controller.controllerDidDismiss = {
+            debugPrint("Controller Dismissed")
+            debugPrint("last index viewed: \(controller.currentIndex)")
+          }
+          
+          controller.slideShowViewDidLoad = {
+            debugPrint("Did Load")
+          }
+          
+          controller.slideShowViewWillAppear = { animated in
+            debugPrint("Will Appear Animated: \(animated)")
+          }
+          
+          controller.slideShowViewDidAppear = { animated in
+            debugPrint("Did Appear Animated: \(animated)")
+          }
+          
+        }
+        return true
+      }
+    }
+    return false
+  }
+  
   func didSelectValidImage(_ message: DPAGDecryptedMessage, cell: DPAGMessageCellProtocol) {
     let block = { [weak self, weak cell] in
       guard let strongSelf = self, let cell = cell else { return }
       if cell.isLoadingAttachment == false, let streamGuid = message.streamGuid {
         cell.isLoadingAttachment = true
+        var shown = false
         if !message.isSelfDestructive || message.isOwnMessage {
-          
-        } else {
+          shown = strongSelf.displayImageSlideshow(message, inStream: streamGuid)
+        }
+        if !shown {
           strongSelf.loadAttachmentWithMessage(message, cell: cell as? DPAGCellWithProgress) { [weak self, weak cell] data, errorString in
             guard let strongSelf = self else { return }
             cell?.isLoadingAttachment = false
