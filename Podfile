@@ -22,6 +22,7 @@ SentryVersion = '5.2.2'
 SQLCipherVersion = '4.4.0'
 CocoaLumberjackVersion = '3.6.2'
 GiphyVersion = '2.1.20'
+JitsiMeetSDKVersion = '6.0.0'
 
 def podsApp
     pod 'SQLCipher', SQLCipherVersion, :inhibit_warnings => true
@@ -34,7 +35,7 @@ def podsApp
     pod 'HPGrowingTextView', HPGrowingTextViewVersion, :inhibit_warnings => true
     pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => SentryVersion
     pod 'CocoaLumberjack/Swift', CocoaLumberjackVersion
-    pod 'JitsiMeetSDK'
+    pod 'JitsiMeetSDK', JitsiMeetSDKVersion
     pod 'Giphy', GiphyVersion
 end
 
@@ -63,7 +64,7 @@ def podsCore
     pod 'ZXingObjC', :git => 'https://github.com/zxingify/zxingify-objc.git', :tag => ZXingObjCVersion
     pod 'SQLCipher', SQLCipherVersion, :inhibit_warnings => true
     pod 'CocoaLumberjack/Swift', CocoaLumberjackVersion
-    pod 'JitsiMeetSDK'
+    pod 'JitsiMeetSDK', JitsiMeetSDKVersion
     pod 'Giphy', GiphyVersion
 end
 

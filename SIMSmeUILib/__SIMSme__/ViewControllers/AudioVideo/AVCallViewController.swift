@@ -53,11 +53,11 @@ class AVCallViewController: UIViewController, JitsiMeetViewDelegate {
     let options = JitsiMeetConferenceOptions.fromBuilder{ (builder) in
       builder.serverURL = URL(string: "https://" + self.roomServer)
       builder.room = self.roomName
-      builder.setAudioOnly(!self.isVideoCall)
       builder.setAudioMuted(false)
+      builder.setVideoMuted(!self.isVideoCall)
       builder.userInfo = JitsiMeetUserInfo(displayName: self.localUser, andEmail: nil, andAvatar: nil)
       builder.setSubject(" ")
-
+      
       builder.setFeatureFlag("pip.enabled", withBoolean: false)
       builder.setFeatureFlag("welcomepage.enabled", withBoolean: false)
       builder.setFeatureFlag("add-people.enabled", withBoolean: false)

@@ -13,9 +13,7 @@ import UIKit
 class DPAGMediaContentImageViewController: DPAGMediaContentViewController, DPAGMediaContentImageViewControllerProtocol {
   func saveToLibrary(buttonPressed: UIBarButtonItem) {
     if AppConfig.isShareExtension == false {
-      guard let attachment = self.mediaResource.attachment else {
-        return
-      }
+      guard let attachment = self.mediaResource.attachment else { return }
       DPAGAttachmentWorker.shareAttachment(attachment: attachment, buttonPressed: buttonPressed)
     }
   }
