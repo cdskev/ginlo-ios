@@ -834,6 +834,9 @@ extension DPAGChatCellBaseViewController: DPAGChatStreamDelegate {
         var shown = false
         if !message.isSelfDestructive || message.isOwnMessage {
           shown = strongSelf.displayImageSlideshow(message, inStream: streamGuid)
+          if shown {
+            cell.isLoadingAttachment = false
+          }
         }
         if !shown {
           strongSelf.loadAttachmentWithMessage(message, cell: cell as? DPAGCellWithProgress) { [weak self, weak cell] data, errorString in
