@@ -1979,9 +1979,6 @@ class DPAGBackupWorker: DPAGBackupWorkerProtocol, DPAGClassPerforming {
 
     func recoverStates(fromDict dict: [AnyHashable: Any], forMessage message: SIMSMessage) {
       message.errorType = NSNumber(value: DPAGMessageSecurityError.none.rawValue)
-      if let signatureValid = dict["signatureValid"] as? String, signatureValid == "false" {
-        message.errorType = NSNumber(value: DPAGMessageSecurityError.signatureInvalid.rawValue)
-      }
       self.saveRecoveredSignatures(fromDict: dict, forMessage: message)
       if let sendingFailed = dict["sendingFailed"] as? String, sendingFailed == "true" {
         message.sendingState = NSNumber(value: DPAGMessageState.sentFailed.rawValue)
@@ -2035,10 +2032,10 @@ class DPAGBackupWorker: DPAGBackupWorkerProtocol, DPAGClassPerforming {
           }
         }
         if serverMessageGuids.isEmpty == false {
-          for i in stride(from: 0, to: serverMessageGuids.count, by: 10) {
+          for i in stride(from: serverMessageGuids.startIndex, to: serverMessageGuids.endIndex, by: 10) {
             let fromIndex = i
             let toIndex = min(fromIndex + 10, serverMessageGuids.count)
-            let guids = Array(serverMessageGuids[fromIndex ..< (toIndex - fromIndex)])
+            let guids = Array(serverMessageGuids[fromIndex ..< toIndex])
             let messages = try self.loadTimedMessages(messageGuids: guids)
             for message in messages {
               guard let innerDict = message["TimedMessage"] as? [AnyHashable: Any] else { continue }
@@ -2089,12 +2086,7 @@ class DPAGBackupWorker: DPAGBackupWorkerProtocol, DPAGClassPerforming {
       } else if message.sendingStateValid == .sentSucceeded {
         dict["sendingFailed"] = "false"
       }
-      let errorType = (message.errorType?.intValue ?? DPAGMessageSecurityError.none.rawValue)
-      if errorType == DPAGMessageSecurityError.hashesInvalid.rawValue || errorType == DPAGMessageSecurityError.signatureInvalid.rawValue {
-        dict["signatureValid"] = "false"
-      } else {
-        dict["signatureValid"] = "true"
-      }
+      dict["signatureValid"] = "true"
       if message.optionsMessage.contains(.priorityHigh) {
         dict[DPAGStrings.JSON.Message.PRIORITY] = "true"
       }

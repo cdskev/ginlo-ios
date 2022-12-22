@@ -38,7 +38,7 @@ class DPAGChatsListViewController: DPAGTableViewControllerWithSearch, DPAGProgre
   static let SettingsCellHiddenIdentifier = "SettingsCellHidden"
   
   lazy var fetchedResultsController: DPAGFetchedResultsControllerChatList = DPAGFetchedResultsControllerChatList { [weak self] changes, streams in
-    guard let strongSelf = self, strongSelf.isViewLoaded else {
+    guard let strongSelf = self, strongSelf.isViewLoaded, strongSelf.tableView.numberOfSections > 0 else {
       self?.queueSyncVars.sync(flags: .barrier) {
         self?.streams = streams
       }
@@ -47,33 +47,33 @@ class DPAGChatsListViewController: DPAGTableViewControllerWithSearch, DPAGProgre
     strongSelf.tableView.beginUpdates()
     strongSelf.queueSyncVars.sync(flags: .barrier) {
       strongSelf.streams = streams
-    }
-    for change in changes {
-      if let changedRow = change as? DPAGFetchedResultsControllerRowChange {
-        switch change.changeType {
-          case .insert:
-            strongSelf.tableView.insertRows(at: [changedRow.changedIndexPath], with: .automatic)
-          case .delete:
-            strongSelf.tableView.deleteRows(at: [changedRow.changedIndexPath], with: .automatic)
-          case .update:
-            strongSelf.tableView.reloadRows(at: [changedRow.changedIndexPath], with: .none)
-          case .move:
-            if let changedIndexPathMovedTo = changedRow.changedIndexPathMovedTo {
-              strongSelf.tableView.moveRow(at: changedRow.changedIndexPath, to: changedIndexPathMovedTo)
-            }
-          @unknown default:
-            DPAGLog("Switch with unknown value: \(change.changeType.rawValue)", level: .warning)
-        }
-      } else if let changedSection = change as? DPAGFetchedResultsControllerSectionChange {
-        switch change.changeType {
-          case .insert:
-            strongSelf.tableView.insertSections(IndexSet(integer: changedSection.changedSection), with: .automatic)
-          case .delete:
-            strongSelf.tableView.deleteSections(IndexSet(integer: changedSection.changedSection), with: .automatic)
-          case .update:
-            strongSelf.tableView.reloadSections(IndexSet(integer: changedSection.changedSection), with: .none)
-          default:
-            break
+      for change in changes {
+        if let changedRow = change as? DPAGFetchedResultsControllerRowChange {
+          switch change.changeType {
+            case .insert:
+              strongSelf.tableView.insertRows(at: [changedRow.changedIndexPath], with: .automatic)
+            case .delete:
+              strongSelf.tableView.deleteRows(at: [changedRow.changedIndexPath], with: .automatic)
+            case .update:
+              strongSelf.tableView.reloadRows(at: [changedRow.changedIndexPath], with: .none)
+            case .move:
+              if let changedIndexPathMovedTo = changedRow.changedIndexPathMovedTo {
+                strongSelf.tableView.moveRow(at: changedRow.changedIndexPath, to: changedIndexPathMovedTo)
+              }
+            @unknown default:
+              DPAGLog("Switch with unknown value: \(change.changeType.rawValue)", level: .warning)
+          }
+        } else if let changedSection = change as? DPAGFetchedResultsControllerSectionChange {
+          switch change.changeType {
+            case .insert:
+              strongSelf.tableView.insertSections(IndexSet(integer: changedSection.changedSection), with: .automatic)
+            case .delete:
+              strongSelf.tableView.deleteSections(IndexSet(integer: changedSection.changedSection), with: .automatic)
+            case .update:
+              strongSelf.tableView.reloadSections(IndexSet(integer: changedSection.changedSection), with: .none)
+            default:
+              break
+          }
         }
       }
     }
@@ -172,6 +172,8 @@ class DPAGChatsListViewController: DPAGTableViewControllerWithSearch, DPAGProgre
         presentedViewController.dismiss(animated: true) {
           DPAGApplicationFacadeUIBase.containerVC.showTopMainViewController(self, animated: true, completion: nil)
         }
+      } else if UIDevice.current.userInterfaceIdiom == .pad {
+        DPAGApplicationFacadeUIBase.containerVC.showTopMainViewController(self, animated: false, completion: nil)
       } else {
         DPAGApplicationFacadeUIBase.containerVC.showTopMainViewController(self, animated: true, completion: nil)
       }

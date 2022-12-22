@@ -606,7 +606,6 @@ public class DPAGSimsMeController: NSObject {
           }
           do {
             try DPAGApplicationFacade.requestWorker.setDeviceData()
-            DPAGLog("IMDAT::: checkTokenAndUpdate:: deviceToken = \(deviceToken), ==> success")
           } catch {
             DPAGLog(error)
           }

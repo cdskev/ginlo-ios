@@ -980,7 +980,8 @@
 "settings.statusWorker.firstMessage" = "On the good side of messaging :-)";
 "settings.statusWorker.firstMessage.default" = "On the good side of messaging :-)";
 "settings.title.information" = "Yardım";
-"settings.version" = "versiyon";
+"settings.title.release_notes" = "Versiyon bilgileri";
+"settings.version" = "Versiyon";
 "touchID.unlock.message" = "Parmak izi sensörüne dokunun veya şifreyi girin";
 "group.administration.action.no_name" = "Lütfen bir grup adı girin.";
 "chat.overview.preview.HighPriorityPre" = "önemli: ";

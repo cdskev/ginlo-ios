@@ -175,7 +175,6 @@ class ReceiveMessageDAO: ReceiveMessageDAOProtocol, DPAGClassPerforming {
     
     private func checkForControlMsgNGPrivate(_ controlMsgNG: DPAGMessageReceivedPrivate) -> Bool {
         if controlMsgNG.contentTyp == DPAGStrings.JSON.Message.ContentType.CONTROL_MSG_NG {
-            // IMDAT: WE COULD NOW STOP RINGING IF WE ARE RINGING AN INCOMING CALL (e.g.)
             return true
         }
         return false
@@ -183,7 +182,6 @@ class ReceiveMessageDAO: ReceiveMessageDAOProtocol, DPAGClassPerforming {
     
     private func checkForControlMsgNGGroup(_ controlMsgNG: DPAGMessageReceivedGroup) -> Bool {
         if controlMsgNG.contentTyp == DPAGStrings.JSON.Message.ContentType.CONTROL_MSG_NG {
-            // IMDAT: WE COULD NOW STOP RINGING IF WE ARE RINGING AN INCOMING CALL (e.g.)
             return true
         }
         return false

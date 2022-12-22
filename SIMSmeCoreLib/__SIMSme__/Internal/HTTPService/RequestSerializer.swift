@@ -113,7 +113,6 @@ class RequestSerializer: RequestSerializerProtocol {
     private func saveDataToBeZipped(data: Data) -> URL? {
         let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(DPAGFunctionsGlobal.uuid())
         do {
-//            NSLog("IMDAT:: DataSize BEFORE ZIP \(data.count)")
             try data.write(to: url)
             return url
         } catch {
@@ -136,7 +135,6 @@ class RequestSerializer: RequestSerializerProtocol {
         if continueCompression {
             if let dataUrl = dataUrl {
                 urlRequest.httpBody = DPAGHelper.gzipFile(dataUrl, length: length)
-//                NSLog("IMDAT:: DataSize AFTER ZIP \(urlRequest.httpBody?.count)")
                 urlRequest.addValue("gzip", forHTTPHeaderField: "Content-Encoding")
                 urlRequest.setValue("application/x-gzip", forHTTPHeaderField: "Content-Type")
             }

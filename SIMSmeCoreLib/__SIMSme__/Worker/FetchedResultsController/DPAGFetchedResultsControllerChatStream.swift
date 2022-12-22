@@ -72,7 +72,6 @@ extension DPAGFetchedResultsControllerChatStreamBase: NSFetchedResultsController
     switch type {
       case .insert:
         if let newIndexPath = newIndexPath, indexPath == nil {
-          DPAGLog("attempt insertRowsAtIndexPaths at \(newIndexPath)")
           if let aMessage = anObject as? SIMSManagedObjectMessage, let guid = aMessage.guid {
             self.changes.append(DPAGFetchedResultsControllerRowChange(changeType: .insert, guid: guid, changedIndexPath: newIndexPath, changedIndexPathMovedTo: nil))
             _ = DPAGApplicationFacade.cache.decryptedMessage(aMessage, in: controller.managedObjectContext)
@@ -80,14 +79,12 @@ extension DPAGFetchedResultsControllerChatStreamBase: NSFetchedResultsController
         }
       case .delete:
         if let indexPath = indexPath {
-          DPAGLog("attempt deleteRowsAtIndexPaths at \(indexPath)")
           if let aMessage = anObject as? SIMSManagedObjectMessage, let guid = aMessage.guid {
             self.changes.append(DPAGFetchedResultsControllerRowChange(changeType: .delete, guid: guid, changedIndexPath: indexPath, changedIndexPathMovedTo: nil))
           }
         }
       case .update:
         if let indexPath = indexPath {
-          DPAGLog("attempt reloadRowsAtIndexPaths at \(indexPath)")
           if let aMessage = anObject as? SIMSManagedObjectMessage, let guid = aMessage.guid {
             self.changes.append(DPAGFetchedResultsControllerRowChange(changeType: .update, guid: guid, changedIndexPath: indexPath, changedIndexPathMovedTo: nil))
             _ = DPAGApplicationFacade.cache.decryptedMessage(aMessage, in: controller.managedObjectContext)
@@ -95,7 +92,6 @@ extension DPAGFetchedResultsControllerChatStreamBase: NSFetchedResultsController
         }
       case .move:
         if let indexPath = indexPath, let newIndexPath = newIndexPath {
-          DPAGLog("attempt move with moveRowAt from \(indexPath) to \(newIndexPath)")
           if let aMessage = anObject as? SIMSManagedObjectMessage, let guid = aMessage.guid {
             self.changes.append(DPAGFetchedResultsControllerRowChange(changeType: .move, guid: guid, changedIndexPath: indexPath, changedIndexPathMovedTo: newIndexPath))
           }
@@ -110,15 +106,10 @@ extension DPAGFetchedResultsControllerChatStreamBase: NSFetchedResultsController
     switch type {
       case .insert:
         self.changes.append(DPAGFetchedResultsControllerSectionChange(changeType: type, changedSection: sectionIndex))
-        DPAGLog("attempt insertSections at \(sectionIndex)")
-        // self.messages.insert([], at: sectionIndex)
       case .delete:
         self.changes.append(DPAGFetchedResultsControllerSectionChange(changeType: type, changedSection: sectionIndex))
-        DPAGLog("attempt deleteSections at \(sectionIndex)")
-        // self.messages.remove(at: sectionIndex)
       case .update:
         self.changes.append(DPAGFetchedResultsControllerSectionChange(changeType: type, changedSection: sectionIndex))
-        DPAGLog("attempt reloadSections at \(sectionIndex)")
       default:
         break
     }
@@ -172,7 +163,9 @@ extension DPAGFetchedResultsControllerChatStreamBase: NSFetchedResultsController
     for change in changesRowUpdate {
       var sectionContent = messages[change.changedIndexPath.section]
       if let decMessage = DPAGApplicationFacade.cache.decryptedMessage(messageGuid: change.guid, in: nil) {
-        sectionContent.remove(at: change.changedIndexPath.row)
+        if sectionContent.count > change.changedIndexPath.row {
+          sectionContent.remove(at: change.changedIndexPath.row)
+        }
         sectionContent.insert(decMessage, at: change.changedIndexPath.row)
         messages[change.changedIndexPath.section] = sectionContent
       } else {

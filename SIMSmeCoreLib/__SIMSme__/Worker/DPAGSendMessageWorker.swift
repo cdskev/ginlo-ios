@@ -354,14 +354,14 @@ class DPAGSendMessageWorker: NSObject, DPAGSendMessageWorkerProtocol {
     }
 
     public func sendAVCallRejected(room: String, password: String, server: String, toRecipients recipientGuids: [DPAGSendMessageRecipient], sendMessageOptions sendOptions: DPAGSendMessageSendOptions?, response: DPAGServiceResponseBlock?) {
-        let message: String = "{ \"message\": \"avCallRejected\", \"orig-message-type\": \"text/x-ginlo-call-invite\", \"orig-message-identifier\":" + "\"" + password + "@" + room + "@" + server + "\"" + "\"additional-payload\": \"me\"}"
+        let message: String = "{ \"message\": \"avCallRejected\", \"orig-message-type\": \"text/x-ginlo-call-invite\", \"orig-message-identifier\":" + "\"" + password + "@" + room + "@" + server + "\", " + "\"additional-payload\": \"me\"}"
         self.sendMessage([message], recipients: recipientGuids, sendMessageOptions: sendOptions, featureSet: nil, sendMessageInfoBlock: { (contentObject, _) -> (sendMessageInfo: DPAGSendMessageInfo?, errorMessage: String?) in
             DPAGSendMessageInfo.loadControlMsgNG(contentObject)
         }, response: response)
     }
 
     public func sendAVCallAccepted(room: String, password: String, server: String, toRecipients recipientGuids: [DPAGSendMessageRecipient], sendMessageOptions sendOptions: DPAGSendMessageSendOptions?, response: DPAGServiceResponseBlock?) {
-        let message: String = "{ \"message\": \"avCallAccepted\", \"orig-message-type\": \"text/x-ginlo-call-invite\", \"orig-message-identifier\":" + "\"" + password + "@" + room + "@" + server + "\"" + "\"additional-payload\": \"me\"}"
+        let message: String = "{ \"message\": \"avCallAccepted\", \"orig-message-type\": \"text/x-ginlo-call-invite\", \"orig-message-identifier\":" + "\"" + password + "@" + room + "@" + server + "\", " + "\"additional-payload\": \"me\"}"
         self.sendMessage([message], recipients: recipientGuids, sendMessageOptions: sendOptions, featureSet: nil, sendMessageInfoBlock: { (contentObject, _) -> (sendMessageInfo: DPAGSendMessageInfo?, errorMessage: String?) in
             DPAGSendMessageInfo.loadControlMsgNG(contentObject)
         }, response: response)
@@ -454,6 +454,7 @@ class DPAGSendMessageWorker: NSObject, DPAGSendMessageWorkerProtocol {
                         let messagesDAO: MessagesDAOProtocol = MessagesDAO()
                         messagesDAO.deleteMessageInstances(msgInstancesGuids: msgInstancesGuids)
                     }
+                  NSLog("IMDAT:: recipient = \(recipient), guid = \(recipient.recipientGuid)")
                     let isGroup = recipient.isGroup
                     autoreleasepool {
                         let sendMessageInfoResult = sendMessageInfoBlock(contentObject, recipient.recipientGuid)
@@ -476,6 +477,7 @@ class DPAGSendMessageWorker: NSObject, DPAGSendMessageWorkerProtocol {
                             DPAGLog(error)
                         }
                         if msgInstance.guidOutgoingMessage == nil {
+                          NSLog("IMDAT:: PROBLEM IS HERE")
                             errorBlock()
                             serviceResponseBlock?(nil, "service.tryAgainLater", "service.tryAgainLater")
                             return

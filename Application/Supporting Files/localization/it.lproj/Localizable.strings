@@ -980,6 +980,7 @@
 "settings.statusWorker.firstMessage" = "I buoni della messaggistica :-)";
 "settings.statusWorker.firstMessage.default" = "I buoni della messaggistica :-)";
 "settings.title.information" = "Informazioni";
+"settings.title.release_notes" = "Release Notes";
 "settings.version" = "Versione";
 "touchID.unlock.message" = "Tocca il sensore di impronte digitali o immetti la password";
 "group.administration.action.no_name" = "Inserisca un nome per il gruppo.";

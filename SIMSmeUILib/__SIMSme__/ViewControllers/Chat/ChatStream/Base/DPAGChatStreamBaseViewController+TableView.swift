@@ -336,7 +336,7 @@ extension DPAGChatCellBaseViewController {
 
     func tableView(_ tableView: UITableView, createCellForImageMessage decMessage: DPAGDecryptedMessage, forIndexPath indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: decMessage.isOwnMessage ? DPAGChatStreamBaseViewController.ImageMessageRightCellIdentifier : DPAGChatStreamBaseViewController.ImageMessageLeftCellIdentifier, for: indexPath)
-
+        
         return cell
     }
 
