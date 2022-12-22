@@ -1,6 +1,6 @@
 //
 //  DPAGContactObject.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 08/06/16.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.
@@ -444,7 +444,6 @@ public class DPAGObject: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(self.guid)
     }
-
     public var guid: String
 
     init(guid: String) {

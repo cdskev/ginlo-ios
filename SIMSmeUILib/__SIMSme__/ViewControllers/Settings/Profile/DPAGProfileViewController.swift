@@ -1,6 +1,6 @@
 //
 //  DPAGProfileViewController.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 28/10/15.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.
@@ -789,7 +789,7 @@ class DPAGProfileViewController: DPAGViewControllerWithKeyboard, DPAGProfileView
 
     private func createQrCode(_ simsaccount: DPAGAccount) {
         do {
-            self.imageViewQRCode.image = try self.createQrCode(simsaccount, size: self.imageViewQRCode.frame.size, qrCodeVersion: .v2)
+            self.imageViewQRCode.image = try self.createQrCode(simsaccount, size: self.imageViewQRCode.frame.size, qrCodeVersion: .v3)
         } catch {
             self.showErrorAlertCheck(alertConfig: AlertConfigError(messageIdentifier: error.localizedDescription, accessibilityIdentifier: "error_create_qrcode"))
         }

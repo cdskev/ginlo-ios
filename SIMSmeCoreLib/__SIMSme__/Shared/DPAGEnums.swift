@@ -92,6 +92,8 @@ public enum DPAGGroupType: Int {
 
 public enum DPAGWhiteLabelNextView: Int {
     case dpagIntroViewController_handleFinishIntroTapped,
+         dpagIntroViewController_handleScanInvitationTapped,
+         dpagIntroViewController_haveAutomaticInvitation,
         dpagSimsMeController_startViewController,
         dpagProfileViewController_startCompanyProfilInitEMailController,
         dpagProfileViewController_startCompanyProfilConfirmEMailController,
@@ -203,8 +205,7 @@ public enum DPAGBannerType: Int {
 public enum DPAGNotificationChatType: UInt {
     case single = 0,
         group,
-        channel,
-        service
+        channel
 }
 
 public enum DPAGNotificationRegistrationState: Int {
@@ -275,8 +276,7 @@ public enum DPAGMessageType: Int {
 }
 
 public enum DPAGChannelType: Int {
-    case channel = 0,
-        service
+    case channel = 0
 }
 
 public enum DPAGInternalError: UInt {
@@ -328,8 +328,8 @@ struct DPAGMessageOptions: OptionSet {
 }
 
 public enum DPAGQRCodeVersion: Int {
-    case v1,
-        v2
+    case v2,
+        v3
 }
 
 public enum DPAGGuidPrefix: String {

@@ -1,6 +1,6 @@
 //
 //  DPAGBackupRecoverEntryView.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 27.11.17.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

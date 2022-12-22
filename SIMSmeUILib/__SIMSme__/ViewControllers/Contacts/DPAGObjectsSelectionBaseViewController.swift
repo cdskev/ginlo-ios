@@ -1,6 +1,6 @@
 //
 //  DPAGObjectsSelectionBaseViewController.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 14.12.17.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

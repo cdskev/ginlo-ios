@@ -1,6 +1,6 @@
 //
 //  DPAGChatHelper.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 07/04/16.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.
@@ -117,11 +117,8 @@ struct DPAGChatHelper {
             } else if let channelStream = messageStream as? DPAGDecryptedStreamChannel {
                 let streamState: DPAGChatStreamState = .readOnly // channelStream.streamState
                 let feedType = channelStream.feedType
-                switch feedType {
-                    case .channel:
-                        chatStreamViewController = DPAGApplicationFacadeUI.channelStreamVC(stream: streamGuid, streamState: streamState)
-                    case .service:
-                        chatStreamViewController = DPAGApplicationFacadeUI.serviceStreamVC(stream: streamGuid, streamState: streamState)
+                if feedType == .channel {
+                    chatStreamViewController = DPAGApplicationFacadeUI.channelStreamVC(stream: streamGuid, streamState: streamState)
                 }
             }
         }

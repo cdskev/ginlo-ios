@@ -1,6 +1,6 @@
 //
 //  DPAGXmlReader.h
-//  SIMSme
+// ginlo
 //
 //  Created by Florian Plewka on 03.03.16.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

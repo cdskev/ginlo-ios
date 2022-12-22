@@ -1,6 +1,6 @@
 //
 //  DPAGInitialPasswordViewController.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 22/02/16.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.
@@ -9,7 +9,19 @@
 import SIMSmeCore
 import UIKit
 
-class DPAGInitialPasswordViewController: DPAGInitialPasswordBaseViewController, DPAGNavigationViewControllerStyler {
+public enum GNInitialCreationType {
+    case createDevice,
+         createAccount,
+         scanInvitation,
+         executeInvitation
+}
+
+public protocol GNInvitationUIViewController {
+    var creationJob: GNInitialCreationType { get set }
+    var invitationData: [String: Any]? { get set }
+}
+
+class DPAGInitialPasswordViewController: DPAGInitialPasswordBaseViewController, DPAGNavigationViewControllerStyler, GNInvitationUIViewController {
     override var labelHeadline: UILabel? {
         didSet {
             self.labelHeadline?.text = DPAGLocalizedString("registration.title.setPassword")
@@ -50,13 +62,13 @@ class DPAGInitialPasswordViewController: DPAGInitialPasswordBaseViewController, 
         }
     }
 
-    private let createDevice: Bool
+    var creationJob: GNInitialCreationType
+    var invitationData: [String: Any]?
 
-    init(createDevice: Bool) {
-        self.createDevice = createDevice
-
+    init(initialPasswordJob: GNInitialCreationType) {
+        // self.createDevice = createDevice
+        self.creationJob = initialPasswordJob
         super.init(nibName: "DPAGInitialPasswordViewController", bundle: Bundle(for: type(of: self)))
-
         self.isNewPassword = true
     }
 
@@ -99,7 +111,6 @@ class DPAGInitialPasswordViewController: DPAGInitialPasswordBaseViewController, 
             }))
             return
         }
-
         if self.switchInputType?.isOn ?? false, passwordEntered.count < 4 {
             self.showErrorAlertCheck(alertConfig: AlertConfigError(messageIdentifier: "registration.validation.pinIsTooShort", okActionHandler: { [weak self] _ in
                 self?.passwordViewController?.becomeFirstResponder()
@@ -119,17 +130,16 @@ class DPAGInitialPasswordViewController: DPAGInitialPasswordBaseViewController, 
                     }
                 }
             }
-            let vc = DPAGApplicationFacadeUIRegistration.initialPasswordRepeatVC(password: passwordEntered, createDevice: self.createDevice)
+            var vc = DPAGApplicationFacadeUIRegistration.initialPasswordRepeatVC(password: passwordEntered, initialPasswordJob: self.creationJob)
+            vc.invitationData = self.invitationData
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
 
     override func handleInputTypeSwitched(_: Any?) {
         self.setupInputTypeAnimated(true, secLevelView: true, withCompletion: { [weak self] in
-
             if let strongSelf = self {
                 DPAGApplicationFacade.preferences.passwordType = (strongSelf.switchInputType?.isOn ?? false) ? .pin : .complex
-
                 strongSelf.passwordViewController?.becomeFirstResponder()
             }
         })

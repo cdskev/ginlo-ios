@@ -1,6 +1,6 @@
 //
-//  DPAGChatStreamBaseViewController+FileView.swift
-//  SIMSme
+//  DPAGChatCellBaseViewController.swift
+// ginlo
 //
 //  Created by RBU on 01/02/16.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.
@@ -336,7 +336,7 @@ extension DPAGChatCellBaseViewController {
 
     func tableView(_ tableView: UITableView, createCellForImageMessage decMessage: DPAGDecryptedMessage, forIndexPath indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: decMessage.isOwnMessage ? DPAGChatStreamBaseViewController.ImageMessageRightCellIdentifier : DPAGChatStreamBaseViewController.ImageMessageLeftCellIdentifier, for: indexPath)
-
+        
         return cell
     }
 

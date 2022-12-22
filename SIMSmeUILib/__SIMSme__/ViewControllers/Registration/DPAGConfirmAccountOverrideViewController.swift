@@ -1,6 +1,6 @@
 //
 //  DPAGConfirmAccountOverrideViewController.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 26/05/16.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.
@@ -147,7 +147,7 @@ class DPAGConfirmAccountOverrideViewController: DPAGViewControllerBackground {
 
     private func popToPasswortInitialisation() {
         DPAGApplicationFacade.accountManager.resetDatabase()
-        let initialPasswordViewController = DPAGApplicationFacadeUIRegistration.initialPasswordVC(createDevice: false)
+        let initialPasswordViewController = DPAGApplicationFacadeUIRegistration.initialPasswordVC(initialPasswordJob: .createAccount)
         self.navigationController?.setViewControllers([initialPasswordViewController], animated: true)
     }
 

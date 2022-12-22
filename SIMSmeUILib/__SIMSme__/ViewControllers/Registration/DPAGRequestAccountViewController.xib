@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina5_9" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -15,6 +13,7 @@
                 <outlet property="labelHeadline" destination="cMA-y2-eMY" id="hEt-Aa-5Vc"/>
                 <outlet property="labelTerms" destination="KCW-MT-T5j" id="SPE-ep-cQa"/>
                 <outlet property="scrollView" destination="bsP-jY-wqQ" id="m0i-0A-x4g"/>
+                <outlet property="skipEnterPhonenEmailButton" destination="zHH-ma-Jz1" id="5lA-i5-oeZ"/>
                 <outlet property="stackViewAll" destination="7fq-l1-fVl" id="qQM-9r-iJm"/>
                 <outlet property="view" destination="1" id="3"/>
                 <outlet property="viewButtonNext" destination="BY3-Ol-UZ0" id="qYV-sJ-3IC"/>
@@ -36,7 +35,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="678"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="7fq-l1-fVl">
-                                            <rect key="frame" x="16" y="16" width="343" height="273"/>
+                                            <rect key="frame" x="16" y="16" width="343" height="319"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cMA-y2-eMY">
                                                     <rect key="frame" x="0.0" y="0.0" width="343" height="20.333333333333332"/>
@@ -49,13 +48,21 @@
                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="showAccountID" value="NO"/>
                                                     </userDefinedRuntimeAttributes>
                                                 </view>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zHH-ma-Jz1">
+                                                    <rect key="frame" x="0.0" y="252.66666666666669" width="343" height="31"/>
+                                                    <state key="normal" title="Button"/>
+                                                    <buttonConfiguration key="configuration" style="plain" title="Skip"/>
+                                                </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KCW-MT-T5j" customClass="DPAGChatLabel" customModule="SIMSmeUILib" customModuleProvider="target">
-                                                    <rect key="frame" x="0.0" y="252.66666666666671" width="343" height="20.333333333333343"/>
+                                                    <rect key="frame" x="0.0" y="298.66666666666669" width="343" height="20.333333333333314"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="319" id="Z6h-HU-MMW"/>
+                                            </constraints>
                                         </stackView>
                                     </subviews>
                                     <constraints>
@@ -71,6 +78,9 @@
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
                             </subviews>
+                            <constraints>
+                                <constraint firstAttribute="bottom" secondItem="bsP-jY-wqQ" secondAttribute="bottom" constant="90" id="bb1-Fj-e7g"/>
+                            </constraints>
                         </stackView>
                     </subviews>
                     <constraints>
@@ -81,6 +91,7 @@
                     </constraints>
                 </view>
             </subviews>
+            <viewLayoutGuide key="safeArea" id="hmy-zu-gdn"/>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="wSE-8R-adx" firstAttribute="top" secondItem="hmy-zu-gdn" secondAttribute="top" id="4zm-H1-0I6"/>
@@ -88,7 +99,6 @@
                 <constraint firstItem="wSE-8R-adx" firstAttribute="leading" secondItem="hmy-zu-gdn" secondAttribute="leading" id="pH4-yl-mc3"/>
                 <constraint firstAttribute="bottom" secondItem="wSE-8R-adx" secondAttribute="bottom" id="xXI-Ae-N7j"/>
             </constraints>
-            <viewLayoutGuide key="safeArea" id="hmy-zu-gdn"/>
             <point key="canvasLocation" x="46" y="-33"/>
         </view>
     </objects>

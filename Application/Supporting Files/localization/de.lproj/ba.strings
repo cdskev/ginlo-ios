@@ -1,7 +1,7 @@
 "contacts.eMailMessageBody" = "Hallo,\n\nwechseln Sie mit mir zu ginlo Business, dem sicheren Messenger für vertrauliche und produktive Business-Kommunikation. DSGVO-konform & made in Germany - powered by Deutsche Post technology.\n\nUnd das hat ginlo Business zu bieten:\n\n- Einzel- und Gruppenchats, Channels und Verteiler\n- Versand von Dokumenten, Fotos, Videos und Sprachnachrichten\n- Nachrichten kommentieren, als wichtig markieren und zeitversetzt verschicken - so wird Zusammenarbeit effizient\n- Gleichzeitige Nutzung auf mehreren Geräten - mobil und am Desktop\n\nJetzt 30 Tage kostenlos testen: ginlo.net/business-messenger\n\nHerzliche Grüße";
 "settings.informFriends" = "Kontakte einladen";
 "contacts.eMailMessageSubject" = "Wechseln Sie mit mir zu ginlo Business, dem sicheren Business Messenger";
-"contacts.options.invite" = "Kollegen einladen";
+"contacts.options.invite" = "Kontakte einladen";
 "contacts.search.empty.search" = "Kontakte bei %@ suchen";
 "contacts.search.empty.invite" = "Kontakte einladen";
 "settings.profile.qr_code_desc" = "Lassen Sie Ihren QR-Code scannen, oder scannen Sie die Codes Ihrer Kontakte. So können Sie die Identität des jeweils anderen bestätigen.";
@@ -9,7 +9,7 @@
 "invite.friends.after.chatcreation.message" = "Jetzt gleich Kontakte zu ginlo Business einladen, falls noch welche fehlen.";
 "settings.companyemail.askafterinstall.hint" = "Fügen Sie Ihre E-Mail-Adresse zum Verzeichnis Ihres Unternehmens hinzu, um Kollegen mit E-Mail-Adressen desselben Unternehmens zu finden. Die Daten liegen uns zu keinem Zeitpunkt im Klartext vor.";
 "settings.profile.statusLabel" = "Verfügbarkeit";
-"contacts.smsMessageBody" = "Hallo, ich nutze jetzt den ginlo Business Messenger. Laden Sie sich die App hier runter: ginlo.net/business-messenger";
+"contacts.smsMessageBody" = "Hallo, ich nutze jetzt den ginlo Business Messenger. Laden Sie sich die App hier runter: %@\n";
 "settings.companyprofile.contactsoverview.empty.text2" = "Leider haben wir keine Kontakte gefunden, die eine berufliche E-Mail-Adresse mit der Domäne %@ mit dem Account verknüpft haben.\n\nEmpfehlen Sie Kollegen, die bereits ginlo Business nutzen, eine E-Mail-Adresse zu verknüpfen.";
 "registration.agb.AGB" = "AGB";
 "registration.backup.not_found.headline" = "Wir konnten leider kein Backup finden.";
@@ -17,8 +17,9 @@
 "registration.backup.not_found.step1" = "Öffnen Sie %@ auf Ihrem anderen Smartphone.";
 "registration.createDevice.welcome.description" = "Importieren Sie ein Backup, oder fügen Sie dieses Gerät als weiteres Gerät zu einem bestehenden hinzu.";
 "registration.headline.phoneAndCountryCode" = "Weiter geht's mit Ihrer Handynummer oder E-Mail-Adresse.";
+"registration.headline.creatingInvitationAccount" = "Account wird angelegt, bitte warten...";
 "intro.screen0.description2" = "DSGVO-konform";
-"intro.screen1.buttonCreateDeviceTitle" = "Ich habe schon einen Account.";
+"intro.screen1.buttonCreateDeviceTitle" = "Ich habe schon einen Account";
 "settings.termsandcondition" = "AGB";
 "settings.termsandcondition.url" = "https://app-help.ginlo.net/business/de/terms";
 "settings.faq.url" = "https://app-help.ginlo.net/business/de/support";

@@ -1,6 +1,6 @@
 //
 //  DPAGPersonSearchViewController.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 06/01/16.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

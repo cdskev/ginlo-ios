@@ -1,6 +1,6 @@
 //
 //  DPAGChannelCell.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 24/02/16.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

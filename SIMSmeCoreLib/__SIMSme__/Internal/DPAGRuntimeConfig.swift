@@ -23,52 +23,38 @@ open class DPAGRuntimeConfig {
         Int.max
     }
 
-    open var trackingAppToken: String? {
-        "ue73l7ch5tcy"
-    }
-
-    open var trackingUrl: String {
-        switch AppConfig.buildConfigurationMode {
-        case .ADHOC, .DEBUG, .TEST:
-            return "https://ginlo-prod.g3o.io/aio"
-        case .RELEASE, .BETA:
-            return "https://ginlo-prod.g3o.io/aio"
-        }
-    }
-
     open func apnIdentifier(bundleIdentifier: String, deviceToken: String?) -> String {
         guard let deviceToken = deviceToken else {
             return ""
         }
 
         switch AppConfig.buildConfigurationMode {
-        case .ADHOC, .DEBUG, .TEST:
-            return String(format: "sandbox.%@:%@", bundleIdentifier, deviceToken)
-        case .RELEASE, .BETA:
-            return String(format: "%@:%@", bundleIdentifier, deviceToken)
+            case .ADHOC, .DEBUG, .TEST:
+                return String(format: "sandbox.%@:%@", bundleIdentifier, deviceToken)
+            case .RELEASE, .BETA:
+                return String(format: "%@:%@", bundleIdentifier, deviceToken)
         }
     }
 
     open func apnIdentifierForSignaling(bundleIdentifier: String) -> String {
         switch AppConfig.buildConfigurationMode {
-        case .ADHOC, .DEBUG, .TEST:
-            return String(format: "sandbox.%@", bundleIdentifier)
-        case .RELEASE, .BETA:
-            return bundleIdentifier
+            case .ADHOC, .DEBUG, .TEST:
+                return String(format: "sandbox.%@", bundleIdentifier)
+            case .RELEASE, .BETA:
+                return bundleIdentifier
         }
     }
 
     open var urlScheme: String {
-        switch AppConfig.buildConfigurationMode {
-        case .ADHOC, .DEBUG, .TEST:
-            return "simsmedebug"
-        case .RELEASE, .BETA:
-            return "simsme"
-        }
+        "ginlo"
     }
 
+    open var urlSchemeOld: String {
+        "simsme"
+    }
+    
     open var maxFileSize: UInt64 {
-        0x1E00000
+        0x6400000
     }
 
     open var isWhiteLabelBuild: Bool {
@@ -117,9 +103,5 @@ open class DPAGRuntimeConfig {
 
     open var isBaMandant: Bool {
         false
-    }
-
-    open func trackingEventId(eventId: String) -> String {
-        eventId
     }
 }

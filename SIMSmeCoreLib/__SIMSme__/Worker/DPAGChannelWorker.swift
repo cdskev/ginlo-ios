@@ -1,6 +1,6 @@
 //
 //  DPAGFeedWorker.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 25/10/15.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.
@@ -129,10 +129,8 @@ class DPAGFeedWorker: DPAGFeedWorkerProtocol, DPAGFeedWorkerProtocolSwift {
         }
 
         switch feedType {
-        case .channel:
-            DPAGApplicationFacade.server.subscribeChannel(channelGuid: feedGuid, filter: filter, withResponse: block)
-        case .service:
-            DPAGApplicationFacade.server.subscribeService(serviceGuid: feedGuid, filter: filter, withResponse: block)
+            case .channel:
+                DPAGApplicationFacade.server.subscribeChannel(channelGuid: feedGuid, filter: filter, withResponse: block)
         }
     }
 
@@ -148,10 +146,8 @@ class DPAGFeedWorker: DPAGFeedWorkerProtocol, DPAGFeedWorkerProtocolSwift {
         }
 
         switch feedType {
-        case .channel:
-            DPAGApplicationFacade.server.unsubscribeChannel(channelGuid: feedGuid, withResponse: block)
-        case .service:
-            DPAGApplicationFacade.server.unsubscribeService(serviceGuid: feedGuid, withResponse: block)
+            case .channel:
+                DPAGApplicationFacade.server.unsubscribeChannel(channelGuid: feedGuid, withResponse: block)
         }
     }
 
@@ -328,10 +324,8 @@ class DPAGFeedWorker: DPAGFeedWorkerProtocol, DPAGFeedWorkerProtocolSwift {
         DPAGApplicationFacade.server.setChannelNotification(enable: enabled, forChannel: feedGuid) { responseObject, errorCode, errorMessage in
             if errorMessage == nil {
                 switch feedType {
-                case .channel:
-                    DPAGApplicationFacade.preferences[String(format: "%@-%@", feedGuid, DPAGPreferences.PropString.kNotificationChannelChatEnabled.rawValue)] = (enabled ? DPAGPreferences.kValueNotificationEnabled : DPAGPreferences.kValueNotificationDisabled)
-                case .service:
-                    DPAGApplicationFacade.preferences[String(format: "%@-%@", feedGuid, DPAGPreferences.PropString.kNotificationServiceChatEnabled.rawValue)] = (enabled ? DPAGPreferences.kValueNotificationEnabled : DPAGPreferences.kValueNotificationDisabled)
+                    case .channel:
+                        DPAGApplicationFacade.preferences[String(format: "%@-%@", feedGuid, DPAGPreferences.PropString.kNotificationChannelChatEnabled.rawValue)] = (enabled ? DPAGPreferences.kValueNotificationEnabled : DPAGPreferences.kValueNotificationDisabled)
                 }
             }
             responseBlock(responseObject, errorCode, errorMessage)
@@ -383,10 +377,8 @@ class DPAGFeedWorker: DPAGFeedWorkerProtocol, DPAGFeedWorkerProtocolSwift {
         }
 
         switch feedType {
-        case .channel:
-            DPAGApplicationFacade.server.getChannelDetails(channelGuids: feedGuids, withResponse: responseBlock)
-        case .service:
-            DPAGApplicationFacade.server.getServiceDetails(serviceGuids: feedGuids, withResponse: responseBlock)
+            case .channel:
+                DPAGApplicationFacade.server.getChannelDetails(channelGuids: feedGuids, withResponse: responseBlock)
         }
     }
 
@@ -411,10 +403,8 @@ class DPAGFeedWorker: DPAGFeedWorkerProtocol, DPAGFeedWorkerProtocolSwift {
         }
 
         switch feedType {
-        case .channel:
-            DPAGApplicationFacade.server.getChannels(withResponse: responseBlock)
-        case .service:
-            DPAGApplicationFacade.server.getServices(withResponse: responseBlock)
+            case .channel:
+                DPAGApplicationFacade.server.getChannels(withResponse: responseBlock)
         }
     }
 
@@ -445,10 +435,8 @@ class DPAGFeedWorker: DPAGFeedWorkerProtocol, DPAGFeedWorkerProtocolSwift {
         }
 
         switch feedType {
-        case .channel:
-            DPAGApplicationFacade.server.getChannelAssets(channelAssets: feedAssetIdentifier, withResponse: responseBlockAsset)
-        case .service:
-            DPAGApplicationFacade.server.getServiceAssets(serviceAssetIdents: feedAssetIdentifier, withResponse: responseBlockAsset)
+            case .channel:
+                DPAGApplicationFacade.server.getChannelAssets(channelAssets: feedAssetIdentifier, withResponse: responseBlockAsset)
         }
     }
 
@@ -468,10 +456,8 @@ class DPAGFeedWorker: DPAGFeedWorkerProtocol, DPAGFeedWorkerProtocolSwift {
         }
 
         switch feedType {
-        case .channel:
-            DPAGApplicationFacade.server.getChannelAssets(channelAssets: assetRequestIdents, withResponse: responseBlockAsset)
-        case .service:
-            DPAGApplicationFacade.server.getServiceAssets(serviceAssetIdents: assetRequestIdents, withResponse: responseBlockAsset)
+            case .channel:
+                DPAGApplicationFacade.server.getChannelAssets(channelAssets: assetRequestIdents, withResponse: responseBlockAsset)
         }
     }
 

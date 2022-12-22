@@ -1,6 +1,6 @@
 //
 //  SIMSChannel.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 19/10/15.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.
@@ -344,8 +344,6 @@ class SIMSChannel: SIMSManagedObject {
     var colorNavigationbarText: UIColor? {
         switch self.validFeedType {
             case .channel:
-                return self.colorWithKey("_colorNavigationbarText", colorDefault: nil)
-            case .service:
                 return self.colorWithKey("_colorNavigationbarText", colorDefault: nil)
         }
     }

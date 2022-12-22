@@ -826,7 +826,7 @@ class DPAGMessageModelFactory: DPAGMessageModelFactoryProtocol {
             message.dateSendLocal = message.dateSendServer
         }
         message.toGroupGuid = messageDict.toAccountGuid
-        message.errorType = NSNumber(value: messageDict.contentTyp == DPAGMessageContentType.textRSS.stringRepresentation ? DPAGMessageSecurityError.none.rawValue : DPAGMessageSecurityError.notChecked.rawValue)
+        message.errorType = NSNumber(value: DPAGMessageSecurityError.none.rawValue)
         if let dataSignature = messageDict.dataSignature?.JSONString {
             message.dataSignature = dataSignature
         }
@@ -939,7 +939,7 @@ class DPAGMessageModelFactory: DPAGMessageModelFactoryProtocol {
         message.toKey = messageDict.toAccountInfo.encAesKey
         message.toKey2 = messageDict.toAccountInfo.encAesKey2
         message.aesKey2IV = messageDict.aesKey2IV
-        message.errorType = NSNumber(value: messageDict.contentTyp == DPAGMessageContentType.textRSS.stringRepresentation ? DPAGMessageSecurityError.none.rawValue : DPAGMessageSecurityError.notChecked.rawValue)
+      message.errorType = NSNumber(value: DPAGMessageSecurityError.none.rawValue)
         if let dataSignature = messageDict.dataSignature?.JSONString {
             message.dataSignature = dataSignature
         }

@@ -32,11 +32,16 @@ class DPAGChatStreamSectionHeaderView: UITableViewHeaderFooterView, DPAGChatStre
     }
 
     @IBOutlet private var viewBackground: UIView! {
-        didSet {
-            self.viewBackground.backgroundColor = DPAGColorProvider.shared[.defaultViewBackgroundInverted]
-            self.viewBackground.layer.cornerRadius = 12
-            self.viewBackground.layer.masksToBounds = true
+      didSet {
+        self.viewBackground.backgroundColor = DPAGColorProvider.shared[.defaultViewBackgroundInverted]
+        self.viewBackground.layer.cornerRadius = 12
+        self.viewBackground.layer.masksToBounds = true
+        if #available(iOS 14.0, *) {
+          self.backgroundConfiguration = UIBackgroundConfiguration.clear()
+        } else {
+          self.backgroundView?.backgroundColor = .clear
         }
+      }
     }
 
     override func awakeFromNib() {

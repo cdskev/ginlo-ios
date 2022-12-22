@@ -1,6 +1,6 @@
 //
 //  UIColor+Extensions.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 14/01/16.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

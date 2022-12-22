@@ -1,6 +1,6 @@
 //
 //  DPAGPasswordViewControllerBase.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 23/05/16.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.
@@ -60,17 +60,12 @@ open class DPAGPasswordViewControllerBase: DPAGViewControllerWithKeyboard, DPAGP
 
     override open func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-
         self.configureView()
     }
 
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
         self.passwordViewController?.reset()
-
         self.viewButtonNext.isEnabled = false
     }
 
@@ -87,23 +82,16 @@ open class DPAGPasswordViewControllerBase: DPAGViewControllerWithKeyboard, DPAGP
 
     public func setupInputTypeComplex(_ secLevelView: Bool) {
         self.passwordViewControllerComplex = DPAGApplicationFacadeUIBase.passwordComplexVC(secLevelView: secLevelView, isNewPassword: self.isNewPassword)
-
         if let vcPasswortNext = self.passwordViewControllerComplex {
             vcPasswortNext.state = .changePassword
-
             vcPasswortNext.willMove(toParent: self)
             self.addChild(vcPasswortNext)
             self.viewPasswordInput.addSubview(vcPasswortNext.view)
             vcPasswortNext.didMove(toParent: self)
-
             vcPasswortNext.view.translatesAutoresizingMaskIntoConstraints = false
-
             NSLayoutConstraint.activate(self.viewPasswordInput.constraintsFill(subview: vcPasswortNext.view))
-
             self.passwordViewControllerPIN = nil
-
             vcPasswortNext.delegate = self
-
             self.viewButtonNext.isEnabled = vcPasswortNext.passwordEnteredCanBeValidated(vcPasswortNext.getEnteredPassword())
         }
     }
@@ -118,7 +106,6 @@ open class DPAGPasswordViewControllerBase: DPAGViewControllerWithKeyboard, DPAGP
         if let textFieldText = textField.text {
             let text: NSString = textFieldText as NSString
             let resultedString = text.replacingCharacters(in: range, with: string)
-
             self.viewButtonNext.isEnabled = self.passwordViewController?.passwordEnteredCanBeValidated(resultedString) ?? false
         } else {
             self.viewButtonNext.isEnabled = false

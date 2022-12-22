@@ -1,6 +1,6 @@
 //
 //  DPAGMessageReceiverInfoViewController.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 11/09/16.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.

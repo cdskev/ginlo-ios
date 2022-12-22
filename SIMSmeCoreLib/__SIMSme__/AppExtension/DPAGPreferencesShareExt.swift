@@ -81,7 +81,17 @@ class DPAGPreferencesShareExt: DPAGPreferencesShareExtProtocol {
     var sendNickname: Bool { self.prefs?.sendNickname ?? false }
     var sharedContainerConfig: DPAGSharedContainerConfig { self.prefs?.sharedContainerConfig ?? DPAGSharedContainerConfig(keychainAccessGroupName: "???", groupID: "???", urlHttpService: "???") }
     var maximumNumberOfMediaAttachments: Int = 10
-    var imageOptionsForSending: DPAGImageOptions { self.prefs?.imageOptionsForSending ?? DPAGImageOptions(size: CGSize(width: 1_024, height: 1_024), quality: 0.75, interpolationQuality: CGInterpolationQuality.default.rawValue) }
+    var imageOptionsForSending: DPAGImageOptions {
+        if let l = self.prefs?.imageOptionsForSending {
+            var s = l.size
+            s.width = min(s.width, 1_920)
+            s.height = min(s.height, 1_920)
+            return DPAGImageOptions(size: s, quality: l.quality, interpolationQuality: l.interpolationQuality)
+        } else {
+            return DPAGImageOptions(size: CGSize(width: 1_024, height: 1_024), quality: 0.75, interpolationQuality: CGInterpolationQuality.default.rawValue)
+        }
+    }
+        
     var videoOptionsForSending: DPAGVideoOptions { self.prefs?.videoOptionsForSending ?? DPAGVideoOptions(size: CGSize(width: 854, height: 480), bitrate: 800_000, fps: 30, profileLevel: AVVideoProfileLevelH264Baseline41) }
     var maxFileSize: UInt64 { self.prefs?.maxFileSize ?? 0x1E00000 }
     var maxLengthForSentVideos: TimeInterval { self.prefs?.maxLengthForSentVideos ?? 0 }

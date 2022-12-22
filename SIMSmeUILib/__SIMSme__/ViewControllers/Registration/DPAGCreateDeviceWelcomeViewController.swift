@@ -1,6 +1,6 @@
 //
 //  DPAGCreateDeviceWelcomeViewController.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 06.12.17.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.
@@ -157,9 +157,9 @@ class DPAGCreateDeviceWelcomeViewController: DPAGViewControllerBackground, DPAGN
     @objc
     private func handleContinue() {
         if self.imageViewDeviceCreateCheck.isHidden {
-            self.navigationController?.pushViewController(DPAGApplicationFacadeUIRegistration.initialPasswordVC(createDevice: false), animated: true)
+            self.navigationController?.pushViewController(DPAGApplicationFacadeUIRegistration.initialPasswordVC(initialPasswordJob: .createAccount), animated: true)
         } else {
-            self.navigationController?.pushViewController(DPAGApplicationFacadeUIRegistration.initialPasswordVC(createDevice: true), animated: true)
+            self.navigationController?.pushViewController(DPAGApplicationFacadeUIRegistration.initialPasswordVC(initialPasswordJob: .createDevice), animated: true)
         }
     }
 }

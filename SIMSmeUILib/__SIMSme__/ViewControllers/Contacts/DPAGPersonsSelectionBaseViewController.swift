@@ -1,6 +1,6 @@
 //
 //  DPAGPersonsSelectionBaseViewController.swift
-//  SIMSme
+// ginlo
 //
 //  Created by RBU on 16.12.17.
 //  Copyright © 2020 ginlo.net GmbH. All rights reserved.
