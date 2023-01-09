@@ -26,6 +26,7 @@ public class GNImageSource: NSObject, ImageSlideShowProtocol {
   
   public func image(completion: @escaping (_ image:UIImage?, _ error:Error?) -> Void) {
     if let attachment = message.decryptedAttachment {
+      DPAGAttachmentWorker.autoSave(attachment: attachment)
       DPAGAttachmentWorker.decryptMessageAttachment(attachment: attachment) { data, err in
         message.markDecryptedMessageAsReadAttachment()
         if let data = data, err == nil {
